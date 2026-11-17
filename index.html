@@ -334,7 +334,7 @@ function initTop(){
 function save(){try{localStorage.setItem(skey(),JSON.stringify(S));localStorage.setItem('gm-last-team',ME)}catch(e){}}
 function load(){try{const s=localStorage.getItem(skey());if(s){const o=JSON.parse(s);if(o&&o.lineup)return o}}catch(e){}return null}
 function snap(){HIST.push(JSON.stringify(S));if(HIST.length>80)HIST.shift()}
-function commit(){save();render()}
+function commit(){if(S&&S.rot)tidyDepth();save();render()}
 
 /* ---------- player helpers ---------- */
 const fvn=f=>{if(!f)return 0;const n=parseFloat(f);return n+(String(f).includes('+')?.5:0)};
@@ -419,9 +419,17 @@ function contractCalc(c){
 }
 
 /* ---------- slots ---------- */
-const SLOTKEYS=()=>[...S.lineup.map((_,i)=>'L'+i),...S.bench.map((_,i)=>'B'+i),...S.rot.map((_,i)=>'R'+i),...S.pen.map((_,i)=>'P'+i)];
-function getSlot(k){const t=k[0],i=+k.slice(1);if(t==='L')return S.lineup[i][1];if(t==='B')return S.bench[i][1];if(t==='R')return S.rot[i];return S.pen[i][1]}
-function setSlot(k,id){const t=k[0],i=+k.slice(1);if(t==='L')S.lineup[i][1]=id;else if(t==='B')S.bench[i][1]=id;else if(t==='R')S.rot[i]=id;else S.pen[i][1]=id}
+/* H = position-player depth, D = bullpen depth, R6+ = rotation depth: all off the 26-man */
+function ensureDep(){if(!S.hdep)S.hdep=[];if(!S.pdep)S.pdep=[]}
+const SLOTKEYS=()=>{ensureDep();return [...S.lineup.map((_,i)=>'L'+i),...S.bench.map((_,i)=>'B'+i),...S.rot.map((_,i)=>'R'+i),...S.pen.map((_,i)=>'P'+i),...S.hdep.map((_,i)=>'H'+i),...S.pdep.map((_,i)=>'D'+i)]};
+function getSlot(k){ensureDep();const t=k[0],i=+k.slice(1);if(t==='L')return S.lineup[i][1];if(t==='B')return S.bench[i][1];if(t==='R')return S.rot[i]||null;if(t==='H')return S.hdep[i]||null;if(t==='D')return S.pdep[i]||null;return S.pen[i][1]}
+function setSlot(k,id){ensureDep();const t=k[0],i=+k.slice(1);if(t==='L')S.lineup[i][1]=id;else if(t==='B')S.bench[i][1]=id;else if(t==='R')S.rot[i]=id;else if(t==='H')S.hdep[i]=id;else if(t==='D')S.pdep[i]=id;else S.pen[i][1]=id}
+/* tidy depth after every change: no gaps, no duplicates, rotation keeps at least 4 depth slots plus an open one */
+function tidyDepth(){ensureDep();const live=new Set([...S.lineup.map(x=>x[1]),...S.bench.map(x=>x[1]),...S.rot.slice(0,6),...S.pen.map(x=>x[1])].filter(Boolean));
+  const uniq=a=>a.filter((x,i)=>x&&!live.has(x)&&a.indexOf(x)===i);
+  S.hdep=uniq(S.hdep);S.pdep=uniq(S.pdep);
+  const rd=uniq(S.rot.slice(6));while(rd.length<4)rd.push(null);if(rd.every(Boolean))rd.push(null);
+  while(S.rot.length<6)S.rot.push(null);S.rot=S.rot.slice(0,6).concat(rd)}
 function slotOf(id){return SLOTKEYS().find(k=>getSlot(k)===id)}
 function place(id,k){
   const cur=getSlot(k),from=slotOf(id);
@@ -430,10 +438,16 @@ function place(id,k){
   if(from){setSlot(from,cur||null)}
   setSlot(k,id);commit();
 }
-function clearSlot(k){snap();setSlot(k,null);commit()}
+function clearSlot(k){const id=getSlot(k),t=k[0],i=+k.slice(1);snap();setSlot(k,null);
+  if(id){ /* off the 26-man goes to that unit's depth; off a depth list goes back to the 40-man */
+    if(t==='L'||t==='B')S.hdep.unshift(id);
+    else if(t==='P')S.pdep.unshift(id);
+    else if(t==='R'&&i<6){S.rot.splice(6,0,id)}
+  }
+  commit()}
 function unslot(id){for(const k of SLOTKEYS())if(getSlot(k)===id)setSlot(k,null)}
-function on26(id){const k=slotOf(id);return !!k&&!(k[0]==='R'&&+k.slice(1)>=6)}
-function active26(){return SLOTKEYS().filter(k=>!(k[0]==='R'&&+k.slice(1)>=6)).map(getSlot).filter(Boolean)}
+function on26(id){const k=slotOf(id);return !!k&&on26Key(k)}
+function active26(){return SLOTKEYS().filter(on26Key).map(getSlot).filter(Boolean)}
 
 /* ---------- transactions ---------- */
 function addLog(type,text,inc,out){S.log.push({d:today(),type,text,inc:inc||0,out:out||0})}
@@ -506,11 +520,12 @@ function slotHTML(k,label,labelOpts){
   return `<div class="slot ${p?'filled':''} ${flag?'flag':''} ${on26Key(k)?'':'depth'}" data-slot="${k}">
     ${lbl}
     <div class="who">${p?`<div class="nm" draggable="true" data-drag="${id}" data-open="${id}">${esc(p.n)} <span class="hint">(${esc(hand(id))})</span></div><div class="sub">${sub}</div>`:`<div class="empty">Drop a player here</div>`}</div>
-    ${p?`<button class="x" type="button" data-clear="${k}" aria-label="Remove from slot">×</button>`:'<span></span>'}
+    ${p?`<button class="x" type="button" data-clear="${k}" aria-label="${on26Key(k)?'Move to depth':'Remove from depth'}" title="${on26Key(k)?'Move to depth':'Remove from depth'}">×</button>`:'<span></span>'}
   </div>`;
 }
-function on26Key(k){return !(k[0]==='R'&&+k.slice(1)>=6)}
-function renderDepth(){
+function on26Key(k){const t=k[0];return t==='L'||t==='B'||t==='P'||(t==='R'&&+k.slice(1)<6)}
+function shortPos(id){return String((P[id]&&P[id].pos)||'DEP').split('/')[0]}
+function renderDepth(){ensureDep();
   const LPOS=['C','1B','2B','3B','SS','LF','CF','RF','DH'],BPOS=['C','CI','MI','INF','UT','OF','1B','DH'],PROLE=['CL','SU','MD','LG','LR','RP'];
   const a=active26();const pp=a.filter(id=>!isP(id)).length,pi=a.filter(isP).length;
   const warns=[];
@@ -525,6 +540,8 @@ function renderDepth(){
     <div class="slots">${S.lineup.map((x,i)=>slotHTML('L'+i,x[0],LPOS)).join('')}</div>
     <div class="depthnote">Bench</div>
     <div class="slots">${S.bench.map((x,i)=>slotHTML('B'+i,x[0],BPOS)).join('')}</div>
+    <div class="depthnote">Depth (not on 26-man) · tap × on a starter to send him here</div>
+    <div class="slots">${S.hdep.map((id,i)=>slotHTML('H'+i,shortPos(id))).join('')}${slotHTML('H'+S.hdep.length,'DEP')}</div>
     <ul class="warnlist">${warns.length?warns.map(w=>`<li>⚠ ${esc(w)}</li>`).join(''):'<li class="ok">✓ 13 position players + 13 pitchers, all on the 40-man</li>'}</ul>
   </div>
   <div class="card c-rot">
@@ -536,6 +553,8 @@ function renderDepth(){
   <div class="card c-pen">
     <div class="cardhead"><h2>Bullpen</h2><span class="cnt">${warP.toFixed(1)} WAR</span></div>
     <div class="slots">${S.pen.map((x,i)=>slotHTML('P'+i,x[0],PROLE)).join('')}</div>
+    <div class="depthnote">Depth (not on 26-man)</div>
+    <div class="slots">${S.pdep.map((id,i)=>slotHTML('D'+i,'RP')).join('')}${slotHTML('D'+S.pdep.length,'DEP')}</div>
   </div>`;
 }
 function prow(id,extra){
