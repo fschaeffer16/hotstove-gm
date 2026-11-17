@@ -1,0 +1,41 @@
+name: Player data for Rule 5
+
+# Birth dates, draft years and countries for every player in all 30 organizations (MLB Stats API).
+on:
+  schedule:
+    - cron: '17 9 * * 1'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/fetch_player_meta.py', '.github/workflows/player-meta.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-feed
+  cancel-in-progress: false
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/fetch_player_meta.py
+      - name: Commit and publish
+        run: |
+          git config user.name "hotstove-feed[bot]"
+          git config user.email "fschaeffer16@users.noreply.github.com"
+          git add player_meta.json
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Player data for Rule 5 $(date -u +'%Y-%m-%d')"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && git push --force origin HEAD:gh-pages && break
+            sleep 5
+          done
