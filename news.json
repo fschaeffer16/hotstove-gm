@@ -1,6 +1,1291 @@
 {
  "items": [
   {
+   "title": "Washington Nationals designated RHP Gus Varland for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Boston Red Sox signed free agent 1B Jake Bauers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BOS"
+   ]
+  },
+  {
+   "title": "Washington Nationals designated LHP Carson Palmquist for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Detroit Tigers signed free agent RHP Emilio Pagán.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "San Francisco Giants designated RHP Rowan Wick for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "San Francisco Giants designated SS Christian Koss for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "St. Louis Cardinals designated RHP Max Rajcic for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "STL"
+   ]
+  },
+  {
+   "title": "Kansas City Royals designated RHP Nick Mears for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Minnesota Twins signed free agent C Ryan Jeffers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
+   "title": "New York Mets designated RHP Dylan Ross for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
+   "title": "New York Yankees signed free agent RHP David Bednar.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Detroit Tigers designated 3B Jace Jung for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Detroit Tigers designated LHP Jake Miller for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Detroit Tigers designated SS Trey Sweeney for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Detroit Tigers designated CF Matt Vierling for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Washington Nationals designated RHP Josiah Gray for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Athletics designated RHP Hayden Juenger for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Athletics designated RHP Yunior Tur for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Los Angeles Dodgers designated SS Christian Cairo for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Los Angeles Dodgers designated RHP Jake Cousins for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Chicago White Sox designated C Joey Bart for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHW"
+   ]
+  },
+  {
+   "title": "Athletics designated RHP Braden Nett for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Washington Nationals designated RHP Braxton Roxby for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Boston Red Sox traded RHP Angel Bastardo to Kansas City Royals for SS Jack Pineda.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BOS",
+    "KCR"
+   ]
+  },
+  {
+   "title": "Colorado Rockies selected the contract of RHP Jack Mahoney from Albuquerque Isotopes.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Colorado Rockies selected the contract of RHP Jackson Cox from Hartford Yard Goats.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Los Angeles Dodgers selected the contract of RHP Christian Zazueta from Tulsa Drillers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Los Angeles Dodgers selected the contract of LHP Jackson Ferris from Oklahoma City Comets.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Los Angeles Dodgers selected the contract of LHP Adam Serwinowski from Tulsa Drillers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Los Angeles Dodgers selected the contract of LHP Luke Fox from Tulsa Drillers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Detroit Tigers selected the contract of SS Peyton Graham from Erie SeaWolves.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles sent C Zach Morgan outright to Norfolk Tides.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of RHP Braxton Bragg from Chesapeake Baysox.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Los Angeles Angels selected the contract of CF Nelson Rada from Salt Lake Bees.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAA"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks selected the contract of SS Demetrio Crisantes from Reno Aces.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Atlanta Braves selected the contract of RHP Davis Polo from Gwinnett Stripers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATL"
+   ]
+  },
+  {
+   "title": "Atlanta Braves selected the contract of RHP Cedric De Grandpre from Gwinnett Stripers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATL"
+   ]
+  },
+  {
+   "title": "Miami Marlins selected the contract of SS Juan Matheus from Jacksonville Jumbo Shrimp.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Chicago Cubs selected the contract of RHP Jaxon Wiggins from Iowa Cubs.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers selected the contract of 3B Luke Adams from Nashville Sounds.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "San Diego Padres selected the contract of RHP Ian Koenig from El Paso Chihuahuas.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "Detroit Tigers selected the contract of 2B Max Anderson from Toledo Mud Hens.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Detroit Tigers selected the contract of C Josue Briceño from Toledo Mud Hens.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Atlanta Braves claimed RHP Cameron Foster off waivers from Baltimore Orioles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL",
+    "ATL"
+   ]
+  },
+  {
+   "title": "New York Yankees claimed RHP Chase Hampton off waivers from Baltimore Orioles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL",
+    "NYY"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of 2B Aron Estrada from Norfolk Tides.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of RHP Michael Forret from Norfolk Tides.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Athletics selected the contract of C Cole Conn from Las Vegas Aviators.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of RHP Nestor German from Norfolk Tides.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of RHP Levi Wells from Norfolk Tides.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Texas Rangers claimed RHP Josh White off waivers from Baltimore Orioles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL",
+    "TEX"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles traded RHP Yaqui Rivera to Athletics.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL",
+    "ATH"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of CF Enrique Bradfield Jr. from Norfolk Tides.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "New York Mets selected the contract of SS Jefferson Rojas from Syracuse Mets.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
+   "title": "Washington Nationals selected the contract of RHP Jarlin Susana from Rochester Red Wings.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Washington Nationals selected the contract of RHP Travis Sykora from Harrisburg Senators.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Houston Astros sent LF Joey Loperfido outright to Sugar Land Space Cowboys.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "HOU"
+   ]
+  },
+  {
+   "title": "Houston Astros selected the contract of RHP Jackson Nezuh from Sugar Land Space Cowboys.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "HOU"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays selected the contract of 1B Xavier Isaac from Durham Bulls.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks selected the contract of LHP Spencer Giesting from Reno Aces.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks selected the contract of RHP Ashton Izzi from Reno Aces.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks selected the contract of CF Druw Jones from Amarillo Sod Poodles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks selected the contract of 2B Cristofer Torin from Amarillo Sod Poodles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles selected the contract of RHP Patrick Reilly from Chesapeake Baysox.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks selected the contract of RHP Wellington Aracena from Amarillo Sod Poodles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "San Francisco Giants selected the contract of LHP Henry Lalane from Richmond Flying Squirrels.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "Chicago Cubs selected the contract of RHP Brody McCullough from Knoxville Smokies.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
+   "title": "Miami Marlins selected the contract of RHP Eliazar Dishmey from Pensacola Blue Wahoos.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Miami Marlins selected the contract of RHP Jace Beck from Jacksonville Jumbo Shrimp.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Miami Marlins selected the contract of RHP Brandon White from Jacksonville Jumbo Shrimp.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers selected the contract of C Matthew Wood from Biloxi Shuckers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "San Diego Padres selected the contract of RHP Tucker Musgrove from San Antonio Missions.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers selected the contract of CF Dylan O'Rae from Biloxi Shuckers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers selected the contract of SS Jett Williams from Nashville Sounds.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers selected the contract of RHP Cameron Wagoner from Nashville Sounds.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "Pittsburgh Pirates selected the contract of LF Mitch Jebb from Indianapolis Indians.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PIT"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers selected the contract of LHP Tate Kuehner from Nashville Sounds.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "San Francisco Giants selected the contract of RHP Marty Gair from Richmond Flying Squirrels.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "San Francisco Giants selected the contract of RHP Josh Bostick from Eugene Emeralds.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "Pittsburgh Pirates selected the contract of C Axiel Plaz from Greensboro Grasshoppers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PIT"
+   ]
+  },
+  {
+   "title": "Washington Nationals selected the contract of RHP Alejandro Rosario from Harrisburg Senators.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Los Angeles Angels selected the contract of CF Raudi Rodriguez from Salt Lake Bees.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAA"
+   ]
+  },
+  {
+   "title": "New York Yankees selected the contract of LHP Kyle Carr from Scranton/Wilkes-Barre Highlanders.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Chicago White Sox selected the contract of 2B William Bergolla Jr. from Charlotte Knights.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHW"
+   ]
+  },
+  {
+   "title": "New York Yankees selected the contract of RHP Carlos Lagrange from Scranton/Wilkes-Barre Highlanders.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Washington Nationals claimed LHP Philip Abner off waivers from Baltimore Orioles.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL",
+    "WSN"
+   ]
+  },
+  {
+   "title": "Boston Red Sox traded LHP Raymond Burgos to Athletics for RHP Kenya Huggins.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BOS",
+    "ATH"
+   ]
+  },
+  {
+   "title": "New York Yankees selected the contract of RF Garrett Martin from Scranton/Wilkes-Barre Highlanders.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays selected the contract of RHP Daniel Guerra from Buffalo Bisons.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays selected the contract of RHP Nolan Perry from New Hampshire Fisher Cats.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays selected the contract of LF RJ Schreck from Buffalo Bisons.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Cleveland Guardians selected the contract of CF Jaison Chourio from Akron RubberDucks.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
+   "title": "Cleveland Guardians selected the contract of RHP Justin Campbell from Columbus Clippers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
+   "title": "Chicago White Sox selected the contract of LHP Jaden Woods from Charlotte Knights.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHW"
+   ]
+  },
+  {
+   "title": "Philadelphia Phillies selected the contract of SS Bryan Rincon from Reading Fightin Phils.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
+   "title": "Cleveland Guardians selected the contract of C Kody Huff from Columbus Clippers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
+   "title": "Kansas City Royals selected the contract of CF Carson Roccaforte from Omaha Storm Chasers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Kansas City Royals selected the contract of RHP Lucas Braun from Omaha Storm Chasers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Cincinnati Reds selected the contract of 1B Carter Graham from Louisville Bats.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CIN"
+   ]
+  },
+  {
+   "title": "Colorado Rockies selected the contract of C Bryant Betancourt from Albuquerque Isotopes.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-17T23:53:48Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Athletics Acquire Yaqui Rivera From Orioles",
+   "blurb": "The Athletics announced they&#8217;ve acquired right-hander Yaqui Rivera from the Orioles for minor league righty Josiah Romeo. They added Rivera to their 40-man roster to keep him out of the Rule 5 draft. The A&#8217;s also selected catcher Cole Conn onto the roster and designated righties Yunior T",
+   "link": "https://www.mlbtraderumors.com/2026/11/athletics-acquire-yaqui-rivera-from-orioles.html",
+   "time": "2026-11-17T23:52:02Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "ATH",
+    "BAL"
+   ]
+  },
+  {
+   "title": "Dodgers Designate Jake Cousins, Christian Cairo For Assignment",
+   "blurb": "The Dodgers announced they&#8217;ve designated reliever Jake Cousins and infielder Christian Cairo for assignment. They needed to open two spots on the 40-man roster to select four pitchers: righty Christian Zazueta and left-handers Jackson Ferris, Adam Serwinowski and Luke Fox. The four prospects a",
+   "link": "https://www.mlbtraderumors.com/2026/11/dodgers-designate-jake-cousins-christian-cairo-for-assignment.html",
+   "time": "2026-11-17T23:34:45Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Brewers Select Six Players",
+   "blurb": "The Brewers announced that they have selected six players to the 40-man roster. They are infielders Luke Adams and Dylan O&#8217;Rae, catcher Matt Wood, left-hander Tate Kuehner, right-hander Cameron Wagoner and infielder/outfielder Jett Williams. Those players are now protected from being selected ",
+   "link": "https://www.mlbtraderumors.com/2026/11/brewers-select-six-players.html",
+   "time": "2026-11-17T23:31:46Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "Cardinals Designate Max Rajcic For Assignment",
+   "blurb": "The Cardinals announced they&#8217;ve designated right-hander Max Rajcic for assignment. They had one opening on the 40-man roster but needed a second to select infielder Jesús Báez and right-hander Jacob Odle, both of whom are now protected from the Rule 5 draft. It&#8217;s a tough break for Rajcic",
+   "link": "https://www.mlbtraderumors.com/2026/11/cardinals-designate-max-rajcic-for-assignment.html",
+   "time": "2026-11-17T23:29:14Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "STL"
+   ]
+  },
+  {
+   "title": "Rockies Select Three Players",
+   "blurb": "The Rockies selected the contracts of catcher Bryant Betancourt and right-handers Jackson Cox and Jack Mahoney, per a team announcement. Colorado&#8217;s 40-man roster is now at 39 players. More to come&#8230;",
+   "link": "https://www.mlbtraderumors.com/2026/11/rockies-select-three-players.html",
+   "time": "2026-11-17T23:27:28Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Reds Select Carter Graham",
+   "blurb": "The Reds announced that infielder/outfielder Carter Graham has been selected to the 40-man roster. That protects him from being exposed in the Rule 5 draft, if it takes place this offseason. Cincinnati had multiple 40-man vacancies, so no corresponding move was required. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/reds-select-carter-graham.html",
+   "time": "2026-11-17T23:24:35Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "CIN"
+   ]
+  },
+  {
+   "title": "Marlins Select Four Players",
+   "blurb": "The Marlins announced that they have selected right-handers Jace Beck, Eliazar Dishmey and Brandon White as well as infielder Juan Matheus to the 40-man roster. Those players are now protected from being selected in the Rule 5 draft, if it takes place this offseason. Miami had five 40-man vacancies ",
+   "link": "https://www.mlbtraderumors.com/2026/11/marlins-select-four-players.html",
+   "time": "2026-11-17T23:19:16Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Tigers Designate Four Players For Assignment",
+   "blurb": "The Tigers announced they&#8217;ve designated four players for assignment: infielders Jace Jung and Trey Sweeney, outfielder Matt Vierling, and left-handed pitcher Jake Miller. That clears 40-man roster space for them to finalize the Emilio Pagán signing and select Josue Briceño, Max Anderson and Pe",
+   "link": "https://www.mlbtraderumors.com/2026/11/tigers-designate-four-players-for-assignment.html",
+   "time": "2026-11-17T23:17:09Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Guardians Make Multiple Roster Moves",
+   "blurb": "The Guardians announced that right-hander Justin Campbell, catcher Kody Huff, and outfielder Jaison Chourio were selected to the 40-man roster. Chourio is the most well-regarded prospect of the group. MLB Pipeline had him at No. 5 in Cleveland&#8217;s system. Chourio slashed .274/.376/.408 in 114 ga",
+   "link": "https://www.mlbtraderumors.com/2026/11/guardians-make-multiple-roster-moves.html",
+   "time": "2026-11-17T23:11:15Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
+   "title": "Blue Jays Select Three Players",
+   "blurb": "The Blue Jays announced that they selected outfielder RJ Schreck as well as right-handers Nolan Perry and Daniel Guerra to the 40-man roster. That protects those players from being selected in the Rule 5 draft, if it actually takes place this offseason. Toronto had three 40-man vacancies, so no corr",
+   "link": "https://www.mlbtraderumors.com/2026/11/blue-jays-select-three-players.html",
+   "time": "2026-11-17T23:11:10Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Diamondbacks Select Six Players",
+   "blurb": "The Diamondbacks have selected six players to their 40-man roster, reports Nick Piecoro of The Arizona Republic. The six are infielders Demetrio Crisantes and Cristofer Torin, outfielder Druw Jones, left-hander Spencer Giesting, as well as right-handers Ashton Izzi and Wellington Aracena. Those play",
+   "link": "https://www.mlbtraderumors.com/2026/11/diamondbacks-select-six-players.html",
+   "time": "2026-11-17T22:56:18Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Rays Select Xavier Isaac",
+   "blurb": "The Rays selected first base prospect Xavier Isaac onto the 40-man roster. They already had a roster opening, so they won&#8217;t need any further moves if he&#8217;s the only player they&#8217;re protecting from the Rule 5 draft. Isaac, 23 next month, was Tampa Bay&#8217;s first-round pick back in ",
+   "link": "https://www.mlbtraderumors.com/2026/11/rays-select-xavier-isaac.html",
+   "time": "2026-11-17T22:50:47Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "Rays Exploring Nick Fortes Trade",
+   "blurb": "The Rays are exploring trades involving backup catcher Nick Fortes, reports Marc Topkin of The Tampa Bay Times. Topin subsequently added that talks are ongoing with multiple clubs and it&#8217;s unlikely an agreement will be reached tonight. If a deal is ultimately completed, it&#8217;ll end Fortes&",
+   "link": "https://www.mlbtraderumors.com/2026/11/rays-working-on-nick-fortes-trade.html",
+   "time": "2026-11-17T22:45:51Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "Yankees Select Carlos Lagrange",
+   "blurb": "4:45 pm: The Yankees have officially announced the move. The club also announced that left-hander Kyle Carr and outfielder Garrett Martin were added to the 40-man roster. 4:06 pm: The Yankees are expected to select the contract of right-hander Carlos Lagrange, per Francys Romero of BeisbolFR. Adding",
+   "link": "https://www.mlbtraderumors.com/2026/11/yankees-to-select-carlos-lagrange.html",
+   "time": "2026-11-17T22:45:21Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Yankees' Bednar, Twins' Jeffers accept $23.15M qualifying offer",
+   "blurb": "Yankees closer David Bednar and Twins catcher Ryan Jeffers accepted the qualifying offer, returning to their respective teams on a one-year deal worth $23.15M.",
+   "link": "https://www.espn.com/mlb/story/_/id/50513467/sources-yankees-bednar-twins-jeffers-accept-2315m-offer",
+   "time": "2026-11-17T22:44:27Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "MIN",
+    "NYY"
+   ]
+  },
+  {
+   "title": "Pirates Select Mitch Jebb, Axiel Plaz",
+   "blurb": "The Pirates announced are keeping two players out of the Rule 5 draft in the event it takes place. Pittsburgh selected catcher/first baseman Axiel Plaz and outfielder Mitch Jebb with their two open spots on the 40-man roster. Plaz was one of the easier calls for any team to keep out of the draft. Fa",
+   "link": "https://www.mlbtraderumors.com/2026/11/pirates-select-mitch-jebb-axiel-paz.html",
+   "time": "2026-11-17T22:37:41Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "PIT"
+   ]
+  },
+  {
    "title": "Buffalo Bisons released 1B Peyton Williams.",
    "blurb": "",
    "link": "",
@@ -688,5 +1973,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-17T17:18:09Z"
+ "updated": "2026-11-17T23:53:48Z"
 }
