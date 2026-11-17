@@ -1062,8 +1062,29 @@ function renderTop(){
   </tbody></table></div>`;
 }
 
+/* ---------- move every team's save to another device with one link ---------- */
+const SAVEPFX='nym-gm-sandbox-v1';
+async function packSaves(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith(SAVEPFX)||k==='gm-last-team'))o[k]=localStorage.getItem(k)}
+  if(S)o[skey()]=JSON.stringify(S);o['gm-last-team']=ME;
+  let bytes=new TextEncoder().encode(JSON.stringify(o)),tag='j';
+  if(typeof CompressionStream!=='undefined'){bytes=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer());tag='z'}
+  let bin='';for(let i=0;i<bytes.length;i+=8192)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));
+  return {code:tag+btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),teams:Object.keys(o).filter(k=>k.startsWith(SAVEPFX)).length}}
+async function unpackSaves(code){const tag=code[0];const b64=code.slice(1).replace(/-/g,'+').replace(/_/g,'/');const bin=atob(b64);const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+  const txt=tag==='z'?await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text():new TextDecoder().decode(bytes);return JSON.parse(txt)}
+async function sendSaves(){try{const {code,teams}=await packSaves();const url=location.origin+location.pathname+'#save='+code;
+  if(navigator.share){try{await navigator.share({title:'Hot Stove GM save',text:`My Hot Stove GM saves (${teams} team${teams===1?'':'s'}). Open this link on the other device.`,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  copy(url,`Link copied (${teams} team${teams===1?'':'s'}). Open it on the other device.`)}catch(e){toast('Could not build the link on this browser')}}
+window.addEventListener('hashchange',()=>{if(/^#save=/.test(location.hash))location.reload()});
+async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!m)return false;
+  let o;try{o=await unpackSaves(m[1])}catch(e){toast('That save link is damaged');history.replaceState(null,'',location.pathname);return false}
+  const n=Object.keys(o).filter(k=>k.startsWith(SAVEPFX)).length;
+  history.replaceState(null,'',location.pathname);
+  if(!confirm(`Load ${n} team save${n===1?'':'s'} from your other device? Saves for those teams on this device will be replaced.`))return false;
+  for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
+  return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261117184013';
+const BUILD='20261117184137';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1116,8 +1137,8 @@ function updateText(){
   return L.join('\n');
 }
 function renderExport(){
-  return `<div class="dact" style="margin-top:0"><button class="btn primary" type="button" data-act="copyupd">Copy update text</button><button class="btn" type="button" data-act="copysave">Copy save code</button><button class="btn" type="button" data-act="loadsave">Load save code</button></div>
-  <p class="hint">The update follows your roster-update layout, so you can paste it into chat. A save code carries this sandbox to another device.</p>
+  return `<div class="dact" style="margin-top:0"><button class="btn primary" type="button" data-act="copyupd">Copy update text</button><button class="btn primary" type="button" data-act="sendsave">Send to another device</button><button class="btn" type="button" data-act="copysave">Copy save code</button><button class="btn" type="button" data-act="loadsave">Load save code</button></div>
+  <p class="hint">The update follows your roster-update layout, so you can paste it into chat. <b>Send to another device</b> makes one link with every team you've run; text or AirDrop it to yourself and open it there. A save code carries just this team.</p>
   <textarea class="out" id="outTxt" readonly aria-label="Update text">${esc(updateText())}</textarea>`;
 }
 
@@ -1203,6 +1224,7 @@ document.addEventListener('click',e=>{
     case 'texec':execTrade(false);break;
     case 'tforce':confirmBox('Force this trade through?','The other GM has not agreed. Forcing it records the trade as forced in your transaction log.','Force approve',()=>execTrade(true));break;
     case 'copyupd':copy(updateText(),'Update copied');break;
+    case 'sendsave':sendSaves();break;
     case 'copysave':{const code=btoa(unescape(encodeURIComponent(JSON.stringify(S))));copy(code,'Save code copied')}break;
     case 'loadsave':
       $('#modal').innerHTML=`<h2>Load save code</h2><label class="field">Paste a save code<textarea id="ldTxt" class="out" style="min-height:140px"></textarea></label><div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="closemodal">Cancel</button><button class="btn primary" type="button" id="ldGo">Load</button></div>`;
@@ -1291,12 +1313,14 @@ function switchTeam(code){
 fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
   D=d;P=d.players;
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
+  const imported=await importFromHash();
   let last='NYM';try{last=localStorage.getItem('gm-last-team')||'NYM'}catch(e){}
   const codes=Object.keys(d.teams).sort((a,b)=>d.teams[a].name.localeCompare(d.teams[b].name));
   $('#teamPick').innerHTML=codes.map(c=>`<option value="${c}">${esc(d.teams[c].name)}</option>`).join('');
   $('#teamPick').onchange=e=>switchTeam(e.target.value);
   switchTeam(d.teams[last]?last:'NYM');
   loadNews();setInterval(loadNews,5*60*1000);
+  if(imported)toast('Saves loaded from your other device');
 }).catch(err=>{$('#app').innerHTML=`<div class="loading">The roster data didn't load (${esc(err.message)}). Reload the page to try again.</div>`});
 </script>
 </body>
