@@ -163,6 +163,9 @@ select.lbl{appearance:none;cursor:pointer;text-align-last:center}
 .tag{display:inline-block;font-size:10.5px;font-weight:600;padding:0 5px;border-radius:3px;background:var(--chip);color:var(--muted);margin-left:4px;vertical-align:1px;text-transform:uppercase;letter-spacing:.03em}
 .tag.inj{background:transparent;color:var(--bad);border:1px solid var(--bad)}
 .tag.new{background:var(--accent);color:var(--accent-ink)}
+.tag.rep{background:transparent;color:var(--accent-text);border:1px solid var(--accent);margin:0 6px 0 0}
+.tag.off{background:#1f7a3a;color:#fff;margin:0 6px 0 0}
+.news{list-style:none;margin:0;padding:0}.news li{padding:9px 0;border-bottom:1px solid var(--line)}.news .nh{font-weight:600;line-height:1.35}.news a{color:inherit;text-decoration:none}.news a:hover{text-decoration:underline}
 .tag.qo{color:var(--warn);border:1px solid var(--warn);background:transparent}
 
 /* CBT */
@@ -472,9 +475,9 @@ function render(){
   </div>
   <div class="desk">
     <div class="tabs" role="tablist">
-      ${[['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['log','Transactions ('+S.log.length+')'],['export','Copy update']].map(([k,l])=>`<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${UI.tab===k}">${l}</button>`).join('')}
+      ${[['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['news','News'+(newNew()?' •':'')],['log','Transactions ('+S.log.length+')'],['export','Copy update']].map(([k,l])=>`<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${UI.tab===k}">${l}</button>`).join('')}
     </div>
-    <div class="panel">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,log:renderLog,export:renderExport})[UI.tab]()}</div>
+    <div class="panel">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,news:renderNews,log:renderLog,export:renderExport})[UI.tab]()}</div>
   </div>`;
   renderBanner();
 }
@@ -1039,8 +1042,25 @@ function renderTop(){
   ${live.map((id,i)=>{const p=P[id];return `<tr><td class="r">${i+1}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${p.team!==ME?'<span class="tag new">new</span>':''}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td>${esc(p.lvl)}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="hint">${stTxt(id)}</td><td>${status(id)==='40'?'<span class="tag">40-man</span>':''}</td></tr>`}).join('')}
   </tbody></table></div>`;
 }
+
+/* ---------- live news feed (news.json, refreshed by the site's feed robot every 10 min) ---------- */
+let NEWS=null,NEWS_SEEN=(()=>{try{return localStorage.getItem('hs-news-seen')||''}catch(e){return ''}})();
+function newNew(){return NEWS&&NEWS.items&&NEWS.items.length&&UI.tab!=='news'&&(NEWS.items[0].time||'')>NEWS_SEEN}
+function ago(t){if(!t)return '';const m=Math.round((Date.now()-Date.parse(t))/60000);if(isNaN(m))return '';if(m<1)return 'just now';if(m<60)return m+'m ago';const h=Math.round(m/60);if(h<24)return h+'h ago';const d=Math.round(h/24);return d+'d ago'}
+function loadNews(){return fetch('news.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(n=>{if(n){const had=NEWS&&NEWS.items[0]&&NEWS.items[0].time;NEWS=n;if(D&&(!had||had!==(n.items[0]||{}).time))render()}}).catch(()=>{})}
+function renderNews(){
+  if(!NEWS||!NEWS.items||!NEWS.items.length)return '<p class="hint" style="margin:0">The news feed fills in as stories break. It updates about every 10 minutes from ESPN, MLB Trade Rumors and MLB\'s official transactions.</p>';
+  if(NEWS.items[0].time>NEWS_SEEN){NEWS_SEEN=NEWS.items[0].time;try{localStorage.setItem('hs-news-seen',NEWS_SEEN)}catch(e){}}
+  const f=UI.newsF||'all',mine=x=>(x.teams||[]).includes(ME);
+  const list=NEWS.items.filter(x=>f==='all'||(f==='mine'&&mine(x))||(f==='moves'&&x.kind!=='news')).slice(0,120);
+  const badge=k=>k==='official'?'<span class="tag off">official</span>':k==='report'?'<span class="tag rep">reported</span>':'';
+  const btn=(k,l)=>`<button class="tab" type="button" data-newsf="${k}" aria-selected="${f===k}">${l}</button>`;
+  return `<div class="tabs" style="margin:0 0 10px">${btn('all','All')}${btn('moves','Moves only')}${btn('mine',esc(MEN()))}</div>
+  <p class="hint" style="margin:0 0 8px">Live from ESPN, MLB Trade Rumors and MLB's official transactions · last new story ${esc(ago(NEWS.updated))}. <b>Reported</b> deals are applied right away; they turn <b>official</b> when MLB processes them.</p>
+  ${list.length?`<ul class="news">${list.map(x=>`<li><div class="nh">${badge(x.kind)}${x.link?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)}</a>`:esc(x.title)}</div><div class="hint">${esc(x.source)} · ${esc(ago(x.time))}${(x.teams||[]).length?' · '+x.teams.map(esc).join(', '):''}</div></li>`).join('')}</ul>`:'<p class="hint">Nothing here yet.</p>'}`;
+}
 function wireHTML(){const m=(D.tx&&D.tx.moves)||[];if(!m.length)return '';
-  return `<h3 style="margin-top:16px">Real-world moves applied (updated ${esc(D.tx.updated||'')})</h3><table class="list"><tbody>${m.slice().sort((a,b)=>a.date<b.date?1:-1).map(t=>`<tr><td class="r">${esc(t.date.slice(5))}</td><td style="white-space:normal">${esc(t.summary||'')}</td></tr>`).join('')}</tbody></table>`}
+  return `<h3 style="margin-top:16px">Real-world moves applied (updated ${esc(D.tx.updated||'')})</h3><table class="list"><tbody>${m.slice().sort((a,b)=>a.date<b.date?1:-1).map(t=>`<tr><td class="r">${esc(t.date.slice(5))}</td><td style="white-space:normal">${t.status==='reported'?'<span class="tag rep">reported</span> ':t.status==='official'?'<span class="tag off">official</span> ':''}${esc(t.summary||'')}</td></tr>`).join('')}</tbody></table>`}
 function renderLog(){
   if(!S.log.length)return '<p class="hint" style="margin:0">No moves yet. Sign a free agent, make a trade, or open a player to release, outright or extend him.</p>'+wireHTML();
   return wireHTML().replace('margin-top:16px','margin-top:0')+`<h3 style="margin-top:16px">Your moves</h3><ol class="loglist">${S.log.map(l=>`<li><span class="ty">${esc(l.type)}</span><span>${esc(l.text)}</span><span class="cb">${l.inc?'<span class="plus">+'+M1(l.inc)+'</span> ':''}${l.out?'<span class="minus">−'+M1(l.out)+'</span>':''}</span></li>`).join('')}</ol>`;
@@ -1123,10 +1143,11 @@ async function copy(txt,msg){
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  const t=e.target.closest('[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){UI.tab=t.dataset.tab;render();return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
+  if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
   if(t.dataset.clear){e.stopPropagation();clearSlot(t.dataset.clear);return}
   if(t.dataset.sign){contractModal(t.dataset.sign,'sign');return}
   if(t.dataset.sort){const k=t.dataset.sort;if(UI.faSort===k)UI.faDir*=-1;else{UI.faSort=k;UI.faDir=k==='n'?1:-1}render();return}
@@ -1250,6 +1271,7 @@ fetch('data.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
   $('#teamPick').innerHTML=codes.map(c=>`<option value="${c}">${esc(d.teams[c].name)}</option>`).join('');
   $('#teamPick').onchange=e=>switchTeam(e.target.value);
   switchTeam(d.teams[last]?last:'NYM');
+  loadNews();setInterval(loadNews,5*60*1000);
 }).catch(err=>{$('#app').innerHTML=`<div class="loading">The roster data didn't load (${esc(err.message)}). Reload the page to try again.</div>`});
 </script>
 </body>
