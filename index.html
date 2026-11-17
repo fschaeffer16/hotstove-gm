@@ -210,10 +210,12 @@ table.list{width:100%;border-collapse:collapse;font-size:13px}
 .list tr:hover td{background:var(--chip)}
 .list td .nmb{font-weight:600}
 .list tr.gone td{opacity:.45}
+.list td.wrap{white-space:normal;min-width:118px}
 
 .tradegrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:860px){.tradegrid{grid-template-columns:1fr}}
 .tside{border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0}
+.tradegrid>div{min-width:0}
 .tside .tl{max-height:440px;overflow:auto;margin-top:6px}
 .trow{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:6px;align-items:center;padding:3px 4px;border-radius:4px;font-size:13px}
 .trow:hover{background:var(--chip)}
@@ -304,7 +306,7 @@ const RATE_DEFAULT=4.5;
 let ME='NYM',BASE_T=0,IL60=new Set();
 const MEN=()=>D.teams[ME].name;
 const skey=()=>ME==='NYM'?KEY:KEY+'-'+ME;
-let D,P,S,HIST=[],UI={tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
+let D,P,S,HIST=[],UI={tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=v=>'$'+(v/1e6).toFixed(2)+'M';
@@ -334,7 +336,7 @@ function initTop(){
 function save(){try{localStorage.setItem(skey(),JSON.stringify(S));localStorage.setItem('gm-last-team',ME)}catch(e){}}
 function load(){try{const s=localStorage.getItem(skey());if(s){const o=JSON.parse(s);if(o&&o.lineup)return o}}catch(e){}return null}
 function snap(){HIST.push(JSON.stringify(S));if(HIST.length>80)HIST.shift()}
-function commit(){if(S&&S.rot)tidyDepth();save();render()}
+function commit(){R5AUTO={};if(S&&S.rot)tidyDepth();save();render()}
 
 /* ---------- player helpers ---------- */
 const fvn=f=>{if(!f)return 0;const n=parseFloat(f);return n+(String(f).includes('+')?.5:0)};
@@ -386,13 +388,7 @@ function cbt(){
   const total=guar+arb+acq+dead+fixed+S.cash;
   return {total,guar,arb,acq,dead,fixed,cash:S.cash,guarL:guarL.sort((a,b)=>b[1]-a[1]),arbL:arbL.sort((a,b)=>b[1]-a[1]),acqL:acqL.sort((a,b)=>b[1]-a[1])};
 }
-function tax(total){
-  const t=D.threshold;if(total<=t)return 0;
-  let x=(total-t)*0.5;
-  const band=(lo,hi,r)=>Math.max(0,Math.min(total,hi)-lo)*r;
-  x+=band(278e6,298e6,.12)+band(298e6,318e6,.45)+band(318e6,1e12,.60);
-  return x;
-}
+function tax(total){return taxFor(total,ME)}
 function tierName(total){
   if(total<=258e6)return ['Under threshold','good'];
   if(total<=278e6)return ['1st tier ($258M–$278M)','warn'];
@@ -489,9 +485,9 @@ function render(){
   </div>
   <div class="desk">
     <div class="tabs" role="tablist">
-      ${[['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['news','News'+(newNew()?' •':'')],['log','Transactions ('+S.log.length+')'],['export','Copy update']].map(([k,l])=>`<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${UI.tab===k}">${l}</button>`).join('')}
+      ${[['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'+(newNew()?' •':'')],['log','Transactions ('+S.log.length+')'],['export','Copy update']].map(([k,l])=>`<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${UI.tab===k}">${l}</button>`).join('')}
     </div>
-    <div class="panel">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,news:renderNews,log:renderLog,export:renderExport})[UI.tab]()}</div>
+    <div class="panel">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,news:renderNews,log:renderLog,export:renderExport})[UI.tab]()}</div>
   </div>`;
   renderBanner();
 }
@@ -533,6 +529,8 @@ function renderDepth(){ensureDep();
   if(pi!==13)warns.push(`${pi} pitchers (target 13)`);
   const not40=a.filter(id=>status(id)!=='40');if(not40.length)warns.push(`Not on 40-man: ${not40.map(id=>P[id].n).join(', ')}`);
   const pl=S.lineup.filter(x=>x[1]&&isP(x[1]));if(pl.length)warns.push('Pitcher in the lineup');
+  if(META_IX&&!(S.r5&&S.r5.mlbDone)){const ex=metsIds().filter(id=>P[id].fv&&r5Exposed(id)&&hsGrade(id)>=45).sort((a,b)=>hsValue(b)-hsValue(a));if(ex.length)warns.push(`Rule 5: ${ex.length} ranked prospect${ex.length>1?'s are':' is'} eligible and not on the 40-man (${ex.slice(0,3).map(id=>P[id].n).join(', ')}${ex.length>3?'…':''}). Protect them in Draft › Rule 5.`)}
+  for(const rid of Object.keys(S.r5mlb||{}))if(S.r5mlb[rid].code===ME&&owner(rid)===ME&&!on26(rid))warns.push(`Rule 5 pick ${P[rid].n} must stay on the 26-man all season or be offered back to the ${D.teams[S.r5mlb[rid].from].name} for $50K`);
   const dup={};S.lineup.forEach(x=>{dup[x[0]]=(dup[x[0]]||0)+1});const dd=Object.keys(dup).filter(k=>dup[k]>1);if(dd.length)warns.push(`Position listed twice: ${dd.join(', ')}`);
   const war9=S.lineup.reduce((s,x)=>s+(x[1]?pwar(x[1]):0),0),warR=S.rot.slice(0,6).reduce((s,id)=>s+(id?pwar(id):0),0),warP=S.pen.reduce((s,x)=>s+(x[1]?pwar(x[1]):0),0);
   return `<div class="card">
@@ -604,6 +602,9 @@ function renderCBT(c){
       <span class="pill">Est. tax ${M(tx)}</span>
       <span class="pill ${room<0?'bad':'good'}">${room>=0?M(room)+' to pick-drop line':'Over $298M: top pick drops 10 spots'}</span>
     </div>
+    <p class="hint" style="margin:6px 0 0">Tax rate: ${esc(cbtRateLabel(ME))}${RULES.cbt.payors2026Est?' (2026 payors are estimated until MLB finalizes them in December)':''}.${room<0?` $40M+ over: the ${esc(MEN())}' highest 2028 pick moves back 10 spots; a top-6 pick is protected and the next pick moves instead.`:''}</p>
+    ${(()=>{const q=qoSignings().filter(x=>x.to===ME);return q.length?`<p class="hint" style="margin:4px 0 0">Qualifying-offer signings: ${q.map(x=>`${esc(P[x.id].n)} (lose ${x.forfeit.picks.map(ordN).join(' + ')} pick${x.forfeit.ifa?', '+M1(x.forfeit.ifa)+' intl pool':''})`).join('; ')}.</p>`:''})()}
+    <p class="hint" style="margin:4px 0 0">International bonus pool (est.): ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · hard cap, $250K trade steps.</p>
     <div class="bar" aria-label="CBT payroll against tax tiers">${bands}${ticks}<div class="base" style="left:${pct(BASE_TOTAL())}%" title="Baseline $289.28M"></div><div class="marker" style="left:${pct(t)}%"><span>${M1(t)}</span></div></div>
     <table class="ledger">
       <tr class="hd"><td>Since baseline</td><td></td></tr>
@@ -644,7 +645,7 @@ function renderFA(){
   <div class="scroll"><table class="list">
     <thead><tr>${th('n','Player')}<th>Pos</th><th>B/T</th>${th('age','Age',1)}<th>2026</th>${th('w26','26 WAR',1)}${th('pwar','27 proj',1)}<th>Proj line</th>${th('mt','Market',1)}${th('maav','Mkt AAV',1)}<th></th></tr></thead>
     <tbody>${l.map(id=>{const p=P[id];return `<tr>
-      <td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${p.qo?'<span class="tag qo">QO</span>':''}</td>
+      <td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}${p.qo?'<span class="tag qo">QO</span>':''}</td>
       <td>${esc(p.pos)}</td><td>${esc(p.hand)}</td><td class="r">${p.age}</td><td>${esc(p.prev||'')}</td>
       <td class="r">${p.war26.toFixed(1)}</td><td class="r">${warB(p.pwar)}</td>
       <td class="hint">${p.proj?(p.proj.t==='b'?`${p.proj.wrc} wRC+`:`${p.proj.era.toFixed(2)} ERA · ${p.proj.kbb}% K-BB`):''}</td>
@@ -653,6 +654,8 @@ function renderFA(){
   </table></div>
   ${signed.length?`<p class="hint">Signed in this sandbox: ${signed.map(id=>esc(P[id].n)).join(', ')}</p>`:''}`;
 }
+function qoNote(id,total){const p=P[id],nth=((S.qo||[]).filter(q=>q.to===ME)).length,f=qoForfeit(ME,nth),cp=qoComp(p.prev,total),prev=D.teams[p.prev]?D.teams[p.prev].name:p.prev;
+  return `<div class="verdict warn">Qualifying offer attached (${M1(RULES.qo.amount)}, declined). Signing him costs the ${esc(MEN())} their ${f.picks.map(ordN).join(' and ')}-highest 2027 draft pick${f.picks.length>1?'s':''}${f.ifa?' and '+M1(f.ifa)+' of international bonus pool':''} (${esc(f.why)}${nth?', and this is QO signing #'+(nth+1):''}). The ${esc(prev)} get a ${esc(cp.label)}.</div>`}
 function contractModal(id,mode){
   const p=P[id];const yrs=p.my||(mode==='ext'?3:1),tot=p.mt?p.mt/1e6:(mode==='ext'?30:5);
   $('#modal').innerHTML=`
@@ -696,6 +699,7 @@ function contractModal(id,mode){
       <div class="kv"><span>${esc(MEN())} CBT after</span><b>${M(after)} (${sgn(delta)})</b></div>
       <div class="kv"><span>Tax after</span><b>${M(tax(after))} · ${tierName(after)[0]}</b></div>
       ${mode!=='ext'&&!need40(1)?`<div class="verdict bad">${esc(fortyMsg(1))}</div>`:''}
+      ${mode!=='ext'&&p.qo?qoNote(id,c.total*1e6):''}
       ${verdict?`<div class="verdict ${vc}">${esc(verdict)}</div><div class="hint">${esc(A.notes.join(' · '))}</div>`:''}`;
   };
   $('#modal').querySelectorAll('input').forEach(i=>i.addEventListener('input',upd));upd();
@@ -711,7 +715,9 @@ function contractModal(id,mode){
     const old=aav(id);
     S.contract[id]={aav:r.aav,desc,yrs:yrsMap,terms:c};
     if(mode==='ext'){addLog(force?'EXTENSION (forced)':'EXTENSION',`Extended ${p.n}: ${desc} — CBT AAV ${M(r.aav)} (was ${M(old)})`,r.aav,old)}
-    else{S.team[id]=ME;S.status[id]='40';addLog(force?'SIGNED (forced)':'SIGNED',`Signed FA ${p.n}: ${desc} — CBT AAV ${M(r.aav)}${p.qo?' (QO attached: forfeits draft pick)':''}`,r.aav,0)}
+    else{let qt='';if(p.qo){const nth=((S.qo||[]).filter(q=>q.to===ME)).length,f=qoForfeit(ME,nth),cp=qoComp(p.prev,c.total*1e6);S.qo=(S.qo||[]).concat([{id,from:p.prev,to:ME,total:c.total*1e6}]);
+        qt=` (QO: forfeit ${f.picks.map(ordN).join(' and ')}-highest 2027 pick${f.picks.length>1?'s':''}${f.ifa?' + '+M1(f.ifa)+' international pool':''}; ${D.teams[p.prev]?D.teams[p.prev].name:p.prev} get a ${cp.label})`}
+      S.team[id]=ME;S.status[id]='40';addLog(force?'SIGNED (forced)':'SIGNED',`Signed FA ${p.n}: ${desc} — CBT AAV ${M(r.aav)}${qt}`,r.aav,0)}
     closeModal();commit();toast(`${p.n} ${mode==='ext'?'extended':'signed'} · CBT AAV ${M(r.aav)}`);
   };
   $('#cGo').onclick=()=>doSign(false);
@@ -869,6 +875,35 @@ function valueTo(id,code,incoming){
 function lockedFA(id){const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&isMets(id))}
 function sumW(vals){const pos=vals.filter(x=>x>0).sort((a,b)=>b-a),neg=vals.filter(x=>x<=0);const w=[1,.85,.7,.55,.45,.4];return pos.reduce((s,x,i)=>s+x*(w[i]??.35),0)+neg.reduce((s,x)=>s+x,0)}
 function hashN(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))%9973;return h}
+/* ---- picks + international pool space as trade assets ---- */
+function tradeExtras(code,outSel,inSel,cashM){const X={recvV:0,giveV:0,lines:[],errs:[],picksOut:[],picksIn:[],ifa:UI.tIfa||0};
+  const cb=cbPicks();
+  for(const key of UI.tPk||[]){const p=cb.find(x=>x.key===key);if(!p)continue;const own=p.owner;if(own!==ME&&own!==code)continue;
+    const lab=`#${p.no} ${RDN[p.rd]} (${p.team})`;
+    if(!p.tradeable)X.errs.push(`${lab} was already traded once; a Competitive Balance pick can be traded only by the club it was awarded to`);
+    if(own===ME){X.picksOut.push(p);const v=pickTradeValue(p.no,code);X.recvV+=v;X.lines.push({n:'Pick '+lab,v,notes:['slot value x2.4, weighted for their window'],side:'rec'})}
+    else{X.picksIn.push(p);const v=pickTradeValue(p.no,code);X.giveV+=v;X.lines.push({n:'Pick '+lab,v,notes:['slot value x2.4'],side:'giv'})}}
+  const a=Math.abs(X.ifa);if(a){const I=RULES.ifa,from=X.ifa>0?ME:code,to=X.ifa>0?code:ME,fac=prof(code).pros==='hoard'?1:.8;
+    if(a%I.step)X.errs.push('International pool money moves only in $250K steps');
+    if(ifaPool(from)<a)X.errs.push(`${D.teams[from].name} have only ${M1(ifaPool(from))} of pool space`);
+    if(ifaAcquired(to)+a>ifaOriginal(to)*I.acquireMax+1)X.errs.push(`${D.teams[to].name} can acquire at most 60% of their original ${M1(ifaOriginal(to))} pool (${M1(ifaOriginal(to)*I.acquireMax)})`);
+    const v=a/1e6*fac;if(X.ifa>0){X.recvV+=v;X.lines.push({n:`International pool ${M1(a)}`,v,notes:['hard-capped bonus money'],side:'rec'})}else{X.giveV+=v;X.lines.push({n:`International pool ${M1(a)}`,v,notes:[],side:'giv'})}}
+  /* a CB pick can't be traded for cash alone */
+  const onlyCash=(players,picks,ifaThisSide)=>!players.length&&!picks.length&&!ifaThisSide;
+  if(X.picksOut.length&&onlyCash(inSel,X.picksIn,X.ifa<0)&&cashM<0)X.errs.push('A Competitive Balance pick cannot be traded for cash alone');
+  if(X.picksIn.length&&onlyCash(outSel,X.picksOut,X.ifa>0)&&cashM>0)X.errs.push('A Competitive Balance pick cannot be traded for cash alone');
+  /* Rule 5 freeze: unprotected Rule 5-eligible minor leaguers can't be traded from the reserve-list deadline to the Rule 5 draft */
+  if(r5Frozen())for(const id of [...outSel,...inSel])if(r5Exposed(id))X.errs.push(`${P[id].n} is Rule 5-eligible and unprotected: he can't be traded between the ${RULES.r5.deadline} reserve-list deadline and the Rule 5 draft`);
+  return X}
+const hasExtras=()=>(UI.tPk&&UI.tPk.size)||UI.tIfa;
+function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owner===code);const I=RULES.ifa;
+  const opts=[];for(let v=-2e6;v<=2e6;v+=I.step)opts.push(v);
+  const row=p=>`<label class="trow"><input type="checkbox" data-tpk="${p.key}"${UI.tPk.has(p.key)?' checked':''}${p.tradeable?'':' disabled'}><span>Pick #${p.no} <span class="meta">${RDN[p.rd]} · ${p.owner===ME?esc(MEN())+' send':esc(D.teams[code].name)+' send'}${p.tradeable?'':' · already traded once'}</span></span><span class="r">$${pickVal(p.no).toFixed(1)}M slot</span></label>`;
+  return `<div class="tside" style="margin-top:10px"><h3>Draft picks and international pool</h3>
+    <p class="hint" style="margin:4px 0">MLB rules: only Competitive Balance picks can be traded, only by the club they were awarded to (once), and never for cash alone. International bonus money moves in $250K steps; a club can add at most 60% of its original pool.</p>
+    ${cb.length?cb.map(row).join(''):'<p class="hint">Neither club holds a Competitive Balance pick.</p>'}
+    <label class="field" style="max-width:320px;margin-top:6px">International pool money<select id="tIfa">${opts.map(v=>`<option value="${v}"${v===(UI.tIfa||0)?' selected':''}>${v===0?'None':v>0?esc(MEN())+' send '+M1(v):esc(MEN())+' receive '+M1(-v)}</option>`).join('')}</select></label>
+    <p class="hint" style="margin:4px 0 0">Pools (est.): ${esc(MEN())} ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · ${esc(D.teams[code].name)} ${M1(ifaPool(code))} of ${M1(ifaOriginal(code))}</p></div>`}
 function evalTrade(code,outSel,inSel,cashM){
   const c=ctx(code),R={code,ctx:c,lines:[],reasons:[],locked:[]};
   for(const id of [...outSel,...inSel])if(lockedFA(id))R.locked.push(P[id].n);
@@ -876,6 +911,7 @@ function evalTrade(code,outSel,inSel,cashM){
   const cashV=cashM*({small:1.25,mid:1,big:.7}[c.mkt]);
   R.recv=sumW(rec.map(x=>x.v))+Math.max(0,cashV);R.give=sumW(giv.map(x=>x.v))+Math.max(0,-cashV);
   R.rec=rec;R.giv=giv;
+  const X=tradeExtras(code,outSel,inSel,cashM);R.X=X;R.recv+=X.recvV;R.give+=X.giveV;R.ruleErrs=X.errs;
   let core=0;for(const g of giv){const p=P[g.id];if(established(g.id)&&(((p.age||30)<=28&&p.proj.war>=4&&ctrl(g.id).length>=2)||(p.proj.war>=4.5&&(c.win==='allin'||c.win==='contend')))){core+=Math.max(0,g.v)*(c.win==='allin'&&p.proj.war>=4.5?.5:.25);R.reasons.push(`${p.n} is a core piece: they need to be overwhelmed`)}}
   R.margin=Math.max(2,.07*R.give)+core;R.gain=R.recv-R.give;
   const t=D.teams[code],base=teamCBTbase(code),after=teamCBT(code)+outSel.reduce((s,id)=>s+partnerCount(id),0)-inSel.reduce((s,id)=>s+partnerCount(id),0)-cashM*1e6;
@@ -883,7 +919,7 @@ function evalTrade(code,outSel,inSel,cashM){
   R.after=after;R.cap=cap;R.budget=after>cap&&after>teamCBT(code);
   // Mets-side view for reference
   R.metsGive=sumW(outSel.map(id=>valueTo(id,ME,false).v));R.metsGet=sumW(inSel.map(id=>valueTo(id,ME,true).v));
-  if(R.locked.length)R.verdict='locked';
+  if(R.locked.length||X.errs.length)R.verdict='locked';
   else if(R.budget)R.verdict='reject';
   else if(R.gain>=R.margin)R.verdict='accept';
   else if(R.gain>=R.margin-Math.max(10,.3*R.give))R.verdict='counter';
@@ -974,6 +1010,7 @@ function renderTrade(){
     <div class="tside"><h3>${esc(MEN())} send</h3><input type="search" id="tQout" placeholder="Search your org…" value="${esc(UI.tQout)}" aria-label="Search your players" style="width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--paper)"><div class="tl">${outL.map(id=>tradeRow(id,'out')).join('')}</div></div>
     <div class="tside"><h3>${esc(D.teams[code].name)} send</h3><input type="search" id="tQin" placeholder="Search ${esc(D.teams[code].name)}…" value="${esc(UI.tQin)}" aria-label="Search partner players" style="width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--paper)"><div class="tl">${inL.map(id=>tradeRow(id,'in')).join('')}</div></div>
   </div>
+  ${tradeExtrasHTML(code)}
   <div class="tsum">
     <div class="cols">
       <div><div class="subh">${esc(MEN())} send</div>${outSel.map(id=>`<div class="kv"><span>${esc(P[id].n)}</span><b>${cbtOf(id)?M(cbtOf(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
@@ -989,15 +1026,16 @@ function renderTrade(){
       <div><div class="subh">${esc(code)} CBT (est.)</div>
         <div class="kv"><span>Before</span><b>${M(pB)}</b></div><div class="kv"><span>After</span><b>${M(pA)}</b></div></div>
     </div>
-    ${(outSel.length||inSel.length)?verdictHTML(evalTrade(code,outSel,inSel,UI.tCash)):''}
-    <div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="tclear">Clear</button>${(outSel.length||inSel.length)?`<button class="btn danger" type="button" data-act="tforce">Force approve</button>`:''}<button class="btn primary" type="button" data-act="texec"${(!outSel.length&&!inSel.length)||evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
+    ${(outSel.length||inSel.length||hasExtras())?verdictHTML(evalTrade(code,outSel,inSel,UI.tCash)):''}
+    <div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="tclear">Clear</button>${(outSel.length||inSel.length||hasExtras())?`<button class="btn danger" type="button" data-act="tforce">Force approve</button>`:''}<button class="btn primary" type="button" data-act="texec"${(!outSel.length&&!inSel.length&&!hasExtras())||evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
   </div>`;
 }
+const xl=(E,side)=>((E.X&&E.X.lines)||[]).filter(l=>l.side===side).map(l=>`<div class="kv"><span>${esc(l.n)} <span class="hint">${esc(l.notes.join(' · '))}</span></span><b>$${l.v.toFixed(1)}M</b></div>`).join('');
 function verdictHTML(E){
   const T=D.teams[E.code],V={accept:['ACCEPTED','good'],counter:['CLOSE: THEY WANT MORE','warn'],reject:['REJECTED','bad'],locked:['NOT ALLOWED','bad']}[E.verdict];
   const line=x=>`<div class="kv"><span>${esc(P[x.id].n)} <span class="hint">${esc(x.notes.join(' · '))}</span></span><b class="${x.v<0?'plus':''}">${x.v<0?'−':''}$${Math.abs(x.v).toFixed(1)}M</b></div>`;
   let msg='';
-  if(E.verdict==='locked')msg=`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`;
+  if(E.verdict==='locked')msg=[E.locked.length?`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`:'',...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
   else if(E.budget)msg=`This takes them to ${M(E.after)} CBT, past the ${M(E.cap)} their ownership will spend. Take salary back or add cash.`;
   else if(E.verdict==='accept')msg=`"${esc(E.quote)} We can do this."`;
   else if(E.verdict==='counter')msg=`"${esc(E.quote)}" They're about <b>$${E.short.toFixed(1)}M</b> short in value.`+(E.add?` Add <b>${esc(P[E.add.id].n)}</b> ($${E.add.v.toFixed(1)}M to them) and it gets done.`:'')+(E.drop?` Or take <b>${esc(P[E.drop.id].n)}</b> out of their side.`:'');
@@ -1008,8 +1046,8 @@ function verdictHTML(E){
     <p style="margin:6px 0">${msg}</p>
     ${E.reasons.length?`<p class="hint" style="margin:0 0 6px">${esc(E.reasons.join(' · '))}</p>`:''}
     <details><summary>How ${esc(T.name)} value it: get $${E.recv.toFixed(1)}M, give $${E.give.toFixed(1)}M, need +$${E.margin.toFixed(1)}M to win the deal</summary>
-      <div class="subh">They get</div>${E.rec.map(line).join('')||'<span class="hint">nothing</span>'}
-      <div class="subh">They give</div>${E.giv.map(line).join('')||'<span class="hint">nothing</span>'}
+      <div class="subh">They get</div>${E.rec.map(line).join('')}${xl(E,'rec')}${E.rec.length||xl(E,'rec')?'':'<span class="hint">nothing</span>'}
+      <div class="subh">They give</div>${E.giv.map(line).join('')}${xl(E,'giv')}${E.giv.length||xl(E,'giv')?'':'<span class="hint">nothing</span>'}
       <div class="subh">Your side, by the same model</div><div class="kv"><span>You give / you get (to the ${esc(MEN())})</span><b>$${E.metsGive.toFixed(1)}M / $${E.metsGet.toFixed(1)}M</b></div>
       <p class="hint">Values are surplus value in $M: projected WAR with aging, times $9.5M per WAR, minus salary, over the years of control. Each team weights it by its window, market size, who is already ahead of a player, positional logjams, 2026 stats, MLB Pipeline vs Fangraphs, and age for level. Extra pieces in a package count for less.</p>
     </details>
@@ -1019,7 +1057,9 @@ function execTrade(force){
   const code=UI.tTeam;const outSel=[...UI.tOut].filter(isMets),inSel=[...UI.tIn].filter(id=>owner(id)===code);
   const add40=inSel.filter(id=>defaultAdd40(id)||UI.tAdd40.has(id));
   const out40=outSel.filter(id=>status(id)==='40').length;
-  if(!force&&evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'){toast('They have not agreed. Use Force approve to push it through.');return}
+  const E0=evalTrade(code,outSel,inSel,UI.tCash);
+  if(E0.ruleErrs&&E0.ruleErrs.length){toast('MLB rules block this: '+E0.ruleErrs[0]+'.');return}
+  if(!force&&E0.verdict!=='accept'){toast('They have not agreed. Use Force approve to push it through.');return}
   if(count40()-out40+add40.length>40){toast(`That puts the 40-man at ${count40()-out40+add40.length}/40. DFA, release or outright someone first.`);return}
   snap();
   const outV=outSel.reduce((s,id)=>s+cbtOf(id),0),inV=inSel.reduce((s,id)=>s+partnerCount(id),0),cash=UI.tCash*1e6;
@@ -1027,9 +1067,13 @@ function execTrade(force){
   for(const id of outSel){unslot(id);S.team[id]=code;delete S.status[id];S.top=S.top.filter(x=>x!==id)}
   for(const id of inSel){S.team[id]=ME;S.status[id]=add40.includes(id)?'40':'MiLB';insertProspect(id)}
   S.cash+=cash;S.teamAdj[code]=(S.teamAdj[code]||0)+pOut-inV-cash;
-  const txt=`${MEN()} get ${inSel.map(id=>P[id].n).join(', ')||'nothing'} from ${D.teams[code].name} for ${outSel.map(id=>P[id].n).join(', ')||'nothing'}`+(cash?` (${cash>0?MEN()+' send':MEN()+' receive'} $${Math.abs(UI.tCash)}M cash)`:'');
+  const X=E0.X;S.cbOwn=S.cbOwn||{};S.ifaAdj=S.ifaAdj||{};
+  for(const p of X.picksOut)S.cbOwn[p.key]=code;for(const p of X.picksIn)S.cbOwn[p.key]=ME;
+  if(X.ifa){S.ifaAdj[ME]=(S.ifaAdj[ME]||0)-X.ifa;S.ifaAdj[code]=(S.ifaAdj[code]||0)+X.ifa}
+  const xt=[...X.picksIn.map(p=>`pick #${p.no} (${RDN[p.rd]})`),...(X.ifa<0?[M1(-X.ifa)+' international pool']:[])],xo=[...X.picksOut.map(p=>`pick #${p.no} (${RDN[p.rd]})`),...(X.ifa>0?[M1(X.ifa)+' international pool']:[])];
+  const txt=`${MEN()} get ${[...inSel.map(id=>P[id].n),...xt].join(', ')||'nothing'} from ${D.teams[code].name} for ${[...outSel.map(id=>P[id].n),...xo].join(', ')||'nothing'}`+(cash?` (${cash>0?MEN()+' send':MEN()+' receive'} $${Math.abs(UI.tCash)}M cash)`:'');
   addLog(force?'TRADE (forced)':'TRADE',txt,inV+Math.max(0,cash),outV+Math.max(0,-cash));
-  UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
+  UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;
   commit();toast('Trade done. New players are under Players to assign.');
 }
 
@@ -1052,15 +1096,323 @@ function renderPros(){
     <select id="prPos" aria-label="Position">${['All','Hitters','Pitchers','C','1B','2B','3B','SS','OF','SP','RP'].map(t=>`<option${t===UI.prPos?' selected':''}>${t}</option>`).join('')}</select>
     <span class="hint">${ids.length} prospects · Hot Stove grade on the 20-80 scale · sort by wRC+ (150+ PA) or K-BB% (40+ IP)</span></div>
   <div class="scroll"><table class="list"><thead><tr>${th('rank','HS #','r')}<th>Prospect</th><th>Team</th><th>Pos</th>${th('age','Age','r')}<th class="r">HS grade</th><th class="r">FG FV</th><th class="r">FG T100</th><th class="r">Pipeline</th>${th('wrc','wRC+')}${th('kbb','K-BB%')}<th>2026 line</th></tr></thead><tbody>
-  ${ids.slice(0,250).map(id=>{const p=P[id],s=p.st||{};return `<tr><td class="r">${r[id]}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span></td><td>${esc(D.teams[p.team]?p.team:p.team)}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="r">${s.pa>=150?s.wrc:''}</td><td class="r">${s.ip>=40?s.kbb:''}</td><td class="hint">${stTxt(id)}</td></tr>`}).join('')}
+  ${ids.slice(0,250).map(id=>{const p=P[id],s=p.st||{};return `<tr><td class="r">${r[id]}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}</td><td>${esc(D.teams[p.team]?p.team:p.team)}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="r">${s.pa>=150?s.wrc:''}</td><td class="r">${s.ip>=40?s.kbb:''}</td><td class="hint">${stTxt(id)}</td></tr>`}).join('')}
   </tbody></table></div>${ids.length>250?'<p class="hint">Showing the top 250. Filter by team or position to see more.</p>':''}`}
 function renderTop(){
   const live=S.top.filter(isMets).slice(0,50);
   return `<p class="hint" style="margin-top:0">Hot Stove rankings: one grade built from Fangraphs FV and Top 100 rank, MLB Pipeline's post-2026 rank, 2026 stats, age for level and pitcher risk. Traded prospects drop off; incoming ones slot in by grade.</p>
   <div class="scroll"><table class="list"><thead><tr><th class="r">#</th><th>Prospect</th><th>Pos</th><th class="r">Age</th><th>Level</th><th class="r">HS grade</th><th class="r">FG FV</th><th class="r">FG T100</th><th class="r">Pipeline</th><th>2026</th><th>Status</th></tr></thead><tbody>
-  ${live.map((id,i)=>{const p=P[id];return `<tr><td class="r">${i+1}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${p.team!==ME?'<span class="tag new">new</span>':''}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td>${esc(p.lvl)}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="hint">${stTxt(id)}</td><td>${status(id)==='40'?'<span class="tag">40-man</span>':''}</td></tr>`}).join('')}
+  ${live.map((id,i)=>{const p=P[id];return `<tr><td class="r">${i+1}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}${p.team!==ME?'<span class="tag new">new</span>':''}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td>${esc(p.lvl)}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="hint">${stTxt(id)}</td><td>${status(id)==='40'?'<span class="tag">40-man</span>':''}</td></tr>`}).join('')}
   </tbody></table></div>`;
 }
+
+/* ---------- MLB rules engine: 2022-26 CBA (expires Dec 1, 2026). Spec + sources: docs/mlb-rules.md ---------- */
+const RULES={
+  cba:'2022-26 CBA (expires Dec 1, 2026)',
+  cbt:{rates:[.20,.30,.50],s1:.12,s2first:.425,s2rep:.45,s3:.60,dropOver:40e6,
+    payors2025:['LAD','NYM','NYY','PHI','TEX','TOR','SDP','HOU','BOS'],
+    /* 2026 payors are finalized in December; estimate (clubs well over the $244M 2026 line). Drives 2027 rates and QO penalties. */
+    payors2026:['LAD','NYM','NYY','PHI','TOR'],payors2026Est:true},
+  /* revenue-sharing payees (estimate: the 15 Competitive Balance clubs); everyone else is a payor */
+  payees:['ARI','BAL','CLE','COL','KCR','PIT','STL','ATH','CIN','DET','MIA','MIL','MIN','SEA','TBR'],
+  qo:{amount:23.15e6},
+  ifa:{tierB:['ARI','BAL','CLE','COL','KCR','PIT','STL'],tierA:['ATH','CIN','DET','MIA','MIL','MIN','SEA','TBR'],B:8034900,A:7357100,base:6679200,step:250000,acquireMax:.6},
+  r5:{mlbFee:100000,backFee:50000,milbFee:24000,aaaReserve:38,deadline:'Tue Nov 17, 2026, 6 PM ET',draftDate:'Dec 9, 2026 (expected to be postponed by a lockout)'},
+  lotteryOdds:[16.5,16.5,16.5,13.2,10.0,7.5,5.5,3.9,2.7,1.8,1.4,1.1,0.9,0.76,0.62,0.47,0.36,0.23]
+};
+const rsStatus=code=>RULES.cbt.payors2026.includes(code)?'cbt':RULES.payees.includes(code)?'payee':'other';
+/* consecutive years over the line, counting 2027 if over */
+function cbtYears(code){const p6=RULES.cbt.payors2026.includes(code),p5=RULES.cbt.payors2025.includes(code);return p6?(p5?3:2):1}
+function taxFor(total,code){
+  const t=D.threshold,over=total-t;if(over<=0)return 0;const R=RULES.cbt,n=cbtYears(code||ME);
+  const band=(lo,hi)=>Math.max(0,Math.min(over,hi)-lo);
+  return over*R.rates[Math.min(n,3)-1]+band(20e6,40e6)*R.s1+band(40e6,60e6)*(n===1?R.s2first:R.s2rep)+band(60e6,1e12)*R.s3}
+function cbtRateLabel(code){const n=cbtYears(code||ME);return n===1?'first-time payor: 20% + 12% / 42.5% / 60% surcharges':n===2?'2nd straight year: 30% + 12% / 45% / 60%':'3rd+ straight year: 50% + 12% / 45% / 60%'}
+/* ---- qualifying offers ---- */
+function qoForfeit(code,nth){const s=rsStatus(code);
+  if(s==='cbt')return {picks:[2+nth,5+nth],ifa:1e6,why:'CBT payor in 2026'};
+  if(s==='payee')return {picks:[3+nth],ifa:0,why:'revenue-sharing payee'};
+  return {picks:[2+nth],ifa:5e5,why:'not a payee and under the tax in 2026'}}
+function qoComp(from,total){const s=rsStatus(from);
+  if(s==='cbt')return {slot:'R4',label:'pick after Round 4'};
+  if(s==='payee'&&total>=50e6)return {slot:'R1',label:'pick after Round 1'};
+  return {slot:'CBB',label:'pick after Comp Balance Round B'}}
+const ordN=n=>n+(n===1?'st':n===2?'nd':n===3?'rd':'th');
+/* every QO free agent who has signed somewhere: the user's signings (S.qo) + real-world signings in transactions.json */
+function qoSignings(){const out=[];
+  for(const q of (S&&S.qo)||[])out.push({...q});
+  const mv=(D.tx&&D.tx.moves)||[];
+  for(const t of mv){if(t.type!=='sign')continue;const id=findP(t.name,t.team);if(!id||!P[id].qo)continue;if(out.some(o=>o.id===id))continue;
+    const yrs=t.contract&&t.contract.yrs?Object.values(t.contract.yrs).filter(v=>typeof v==='number'):[];
+    out.push({id,from:P[id].prev,to:t.team,total:yrs.reduce((a,b)=>a+b,0)||((t.contract&&t.contract.aav)||0)})}
+  const cnt={};for(const o of out){o.nth=cnt[o.to]||0;cnt[o.to]=o.nth+1;o.forfeit=qoForfeit(o.to,o.nth);o.comp=qoComp(o.from,o.total)}
+  return out}
+/* ---- international pools ---- */
+function ifaOriginal(code){const I=RULES.ifa;return I.tierB.includes(code)?I.B:I.tierA.includes(code)?I.A:I.base}
+function ifaPool(code){let v=ifaOriginal(code);for(const q of qoSignings())if(q.to===code)v-=q.forfeit.ifa;return v+((S.ifaAdj||{})[code]||0)}
+function ifaAcquired(code){return Math.max(0,(S.ifaAdj||{})[code]||0)}
+/* ---- Competitive Balance picks ---- */
+function cbPicks(){/* [{key,rd,team(awarded),owner,no,tradeable,why}] */
+  if(!DR)return [];const ps=drBuildPicks(2);S.cbOwn=S.cbOwn||{};
+  return ps.filter(p=>(p.rd==='CBA'||p.rd==='CBB')&&!p.pen&&!p.comp).map(p=>{const key=p.rd+':'+p.o,own=S.cbOwn[key]||p.o;
+    return {key,rd:p.rd,team:p.o,owner:own,no:p.no,tradeable:own===p.o,why:own===p.o?'':'already traded once'}})}
+const cbOwnerOf=key=>(S.cbOwn&&S.cbOwn[key])||key.split(':')[1];
+function pickTradeValue(no,code){const w=(D.teams[code]||{}).win;const f=w==='rebuild'||w==='ascend'?1.15:w==='allin'?.8:1;return pickVal(no)*2.4*f}
+/* ---- team control ---- */
+function controlInfo(id){const p=P[id],y=(S.contract[id]&&S.contract[id].yrs)||p.yrs||{};const ks=Object.keys(y).map(Number).sort((a,b)=>a-b);
+  let fa=null,arb=[],pre=[],guar=[];for(const yr of ks){const v=y[yr],s=String(v).toUpperCase();if(typeof v==='number')guar.push(yr);else if(s.startsWith('FREE')){fa=yr;break}else if(s.startsWith('ARB'))arb.push(yr);else pre.push(yr)}
+  const svc=parseFloat(p.svc)||0;
+  if(!fa&&!ks.length&&p.lvl!=='MLB'&&p.kind==='min')return {txt:'Minor leaguer: six years of control start once he reaches the majors',svc};
+  if(fa)return {txt:`Free agent after ${fa-1}`+(arb.length?` · arbitration ${arb[0]}${arb.length>1?'-'+String(arb[arb.length-1]).slice(2):''}${arb.length>=4?' (Super Two)':''}`:'')+(pre.length?` · pre-arb ${pre.join(', ')}`:''),svc,fa};
+  return {txt:svc?`${svc.toFixed(3)} years of service`:'',svc}}
+/* ---- Rule 5 eligibility (needs player_meta.json: birth date, draft year, country from MLB Stats API) ---- */
+let META=null,META_IX=null;
+function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}if(D)render();return META}).catch(()=>{META=false})}
+function metaOf(id){if(!META_IX)return null;const p=P[id];return META_IX[nmz(p.n)+'|'+owner(id)]||META_IX[nmz(p.n)+'|'+p.team]||META_IX[nmz(p.n)]||null}
+function r5Info(id){const m=metaOf(id);if(!m||!m.b)return null;const b=new Date(m.b+'T12:00:00');
+  let sy=m.sy||m.dy,est=false;
+  if(!sy){/* international: first eligible signing period (born Sep 1 of Y-18 .. Aug 31 of Y-17) */sy=b.getUTCMonth()>=8?b.getUTCFullYear()+18:b.getUTCFullYear()+17;est=true}
+  const j5=new Date(Date.UTC(sy,5,5));let age=j5.getUTCFullYear()-b.getUTCFullYear();if(j5<new Date(Date.UTC(j5.getUTCFullYear(),b.getUTCMonth(),b.getUTCDate())))age--;
+  const first=sy+(age<=18?4:3);return {first,sy,young:age<=18,est,eligibleNow:first<=2026}}
+/* AI clubs protect like real ones before the November deadline: every eligible prospect graded 48+, then the next best 44+ while 40-man room lasts */
+let R5AUTO={};
+function r5AutoProt(code){if(R5AUTO[code])return R5AUTO[code];const f40=new Set(D.fortyBy[code]||[]);
+  const el=(D.teams[code].players||[]).filter(id=>owner(id)===code&&!f40.has(id)&&P[id].lvl!=='MLB'&&(r5Info(id)||{}).eligibleNow).sort((a,b)=>hsValue(b)-hsValue(a));
+  const set=new Set();let room=40-[...f40].filter(id=>owner(id)===code).length;
+  for(const id of el){const g=hsGrade(id);if(g>=48){set.add(id);room--}else if(g>=44&&room>0){set.add(id);room--}}
+  return R5AUTO[code]=set}
+function r5Exposed(id){const p=P[id];if(p.lvl==='MLB'||p.team==='FA')return false;const o=owner(id);
+  if(o===ME?status(id)==='40':(D.fortyBy[o]||[]).includes(id))return false;const r=r5Info(id);if(!(r&&r.eligibleNow))return false;
+  if(o!==ME&&D.teams[o]&&r5AutoProt(o).has(id))return false;return true}
+const r5Frozen=()=>!(S.r5&&S.r5.done);
+/* ---------- Rule 5 draft: protection list, Major League phase, Minor League (Triple-A) phase ---------- */
+function r5Order(){if(!DR)return Object.keys(D.teams);const L=DR.order.lottery.slots.map(s=>s[0]),po=DR.order.playoff.order;return [...L,...po].filter((t,i,a)=>a.indexOf(t)===i)}
+function r5Count40(code){return code===ME?count40():(D.fortyBy[code]||[]).filter(id=>owner(id)===code).length+Object.keys(S.team).filter(id=>S.team[id]===code&&(S.r5mlb||{})[id]).length}
+function r5Pool(){return Object.keys(P).filter(id=>D.teams[owner(id)]&&P[id].lvl!=='MLB'&&r5Exposed(id))}
+const R5T={min:44,b0:.55,b1:.9};
+const r5Val=id=>{const g=hsGrade(id);const lv={AAA:1.15,AA:1,'A+':.75,A:.55}[P[id].lvl]||.4;return g*lv*(P[id].p?1.08:.95)}
+function r5Run(phase){if(!META){toast('Rule 5 data has not loaded yet.');return}snap();S.r5=S.r5||{};S.r5mlb=S.r5mlb||{};const res=[],taken=new Set(),order=r5Order();
+  let pool=r5Pool().sort((a,b)=>r5Val(b)-r5Val(a));
+  if(phase==='milb'){/* each org keeps its best exposed players on its 38-man Triple-A reserve list (estimate: top 12 by grade) */
+    const keep=new Set();for(const c of Object.keys(D.teams)){pool.filter(id=>owner(id)===c).slice(0,12).forEach(id=>keep.add(id))}pool=pool.filter(id=>!keep.has(id))}
+  const wants=(UI.r5Want&&UI.r5Want[phase])||[];
+  for(let round=0;round<(phase==='mlb'?2:3);round++)for(const code of order){
+    let id=null;
+    if(code===ME){id=wants.find(x=>!taken.has(x)&&owner(x)!==ME&&pool.includes(x))||null;if(phase==='mlb'&&id&&count40()>=40){toast('Your 40-man is full, so you could not pick in the Major League phase.');id=null}}
+    else{if(phase==='mlb'&&r5Count40(code)>=40)continue;
+      const cand=pool.filter(x=>!taken.has(x)&&owner(x)!==code);const top=cand[0];if(!top)continue;
+      const v=r5Val(top),roll=(hashN(code+top+phase+round)%100)/100,bar=phase==='mlb'?(round?R5T.b1:R5T.b0):(round>1?.8:.5);
+      if(phase==='mlb'&&(v<R5T.min||!['AA','AAA'].includes(P[top].lvl)))continue;if(roll<bar)continue;id=top}
+    if(!id)continue;taken.add(id);const from=owner(id);res.push({code,id,from});
+    if(from===ME){unslot(id);S.top=S.top.filter(x=>x!==id);delete S.status[id];S.team[id]=code;addLog('RULE 5',`Lost ${P[id].n} to the ${D.teams[code].name} in the ${phase==='mlb'?'Major League':'Minor League'} phase (+${phase==='mlb'?'$100K':'$24K'})`,0,0)}
+    else if(code===ME){S.team[id]=ME;S.status[id]=phase==='mlb'?'40':'MiLB';if(phase==='mlb')S.r5mlb[id]={from,code:ME};insertProspect(id);
+      addLog('RULE 5',phase==='mlb'?`Selected ${P[id].n} from the ${D.teams[from].name} ($100K). He must stay on the active roster all 2027 or be offered back for $50K.`:`Selected ${P[id].n} from the ${D.teams[from].name} in the Minor League phase ($24K, no roster restrictions).`,0,0)}
+    else{S.team[id]=code;if(phase==='mlb')S.r5mlb[id]={from,code}}}
+  S.r5[phase]=res.map(r=>[r.code,r.id,r.from]);if(phase==='mlb')S.r5.mlbDone=true;else S.r5.done=true;
+  commit();toast(`${phase==='mlb'?'Major League':'Minor League'} phase done: ${res.length} picks`)}
+function r5OfferBack(id){const r=(S.r5mlb||{})[id];if(!r)return;snap();unslot(id);delete S.status[id];S.team[id]=r.from;delete S.r5mlb[id];S.top=S.top.filter(x=>x!==id);
+  addLog('RULE 5',`Offered ${P[id].n} back to the ${D.teams[r.from].name} for $50K`,0,0);commit();closeDrawer()}
+function renderR5(){
+  const rules=`<p class="hint" style="margin-top:0">Rule 5 (${esc(RULES.cba)}): a player not on the 40-man becomes eligible in his 5th Rule 5 draft if he signed at 18 or younger, or his 4th if he signed at 19+. This December that means 2022 international and high school signees and 2023 college draftees, plus anyone eligible before. Protection deadline: ${esc(RULES.r5.deadline)}; from then until the draft, unprotected eligible players can't be traded. <b>Major League phase</b>: $100K, the player goes on the picking club's 40-man and must stay on the active roster all season or be offered back for $50K; only clubs with 40-man room pick, worst record first. <b>Minor League phase</b>: $24K for anyone not on a 40-man or 38-man Triple-A reserve list, no roster rules after. A lockout is expected to postpone the Major League phase (Rule 5 draft set for ${esc(RULES.r5.draftDate)}); the Minor League phase isn't frozen by an MLB lockout.</p>`;
+  if(META===null){loadMeta();return rules+'<p class="hint">Loading Rule 5 data…</p>'}
+  if(!META)return rules+`<p class="hint">Rule 5 eligibility needs each player's birth date and signing year from MLB's data. The site's robot hasn't published that file yet; it runs automatically, so check back shortly.</p>`;
+  const S5=S.r5||{},mine=Object.keys(P).filter(id=>owner(id)===ME&&P[id].lvl!=='MLB'&&r5Info(id)).filter(id=>r5Info(id).eligibleNow);
+  const exposed=mine.filter(r5Exposed).sort((a,b)=>hsValue(b)-hsValue(a)),prot=mine.filter(id=>!r5Exposed(id));
+  const others=r5Pool().filter(id=>owner(id)!==ME).sort((a,b)=>r5Val(b)-r5Val(a)).slice(0,60);
+  UI.r5Want=UI.r5Want||{mlb:[],milb:[]};
+  const row=(id,btn)=>{const r=r5Info(id),p=P[id];return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span><br><span class="hint">${esc(p.pos)} · ${esc(p.lvl)} · age ${p.age??'?'} · signed ${r.sy}${r.est?' (est.)':''} at ${r.young?'18 or younger':'19+'}${owner(id)!==ME?' · '+owner(id):''}</span></td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td>${btn}</td></tr>`};
+  const res=ph=>(S5[ph]||[]).length?`<div class="scroll"><table class="list"><tbody>${S5[ph].map(([c,id,f],i)=>`<tr${c===ME||f===ME?' style="font-weight:600"':''}><td class="r">${i+1}</td><td>${esc(D.teams[c].name)}</td><td class="wrap">${esc(P[id].n)} <span class="hint">${esc(P[id].pos)} · from ${f}</span></td></tr>`).join('')}</tbody></table></div>`:'<p class="hint">No selections.</p>';
+  return rules+`<div class="tradegrid">
+   <div><h3>Your eligible players not on the 40-man (${exposed.length})</h3>
+    ${S5.done?'':`<p class="hint">Add a player to the 40-man to protect him. Your 40-man: ${count40()}/40.</p>`}
+    ${exposed.length?`<div class="scroll"><table class="list"><thead><tr><th>Player</th><th class="r">HS grade</th><th></th></tr></thead><tbody>${exposed.map(id=>row(id,S5.mlbDone?'':`<button class="btn sm primary" type="button" data-act="r5protect" data-id="${id}">Protect</button>`)).join('')}</tbody></table></div>`:'<p class="hint">None: everyone eligible is protected.</p>'}
+    ${prot.length?`<p class="hint">Protected on the 40-man: ${prot.map(id=>esc(P[id].n)).join(', ')}.</p>`:''}</div>
+   <div><h3>Other clubs' unprotected players</h3><p class="hint">Mark who you'd take; you pick in your turn if he's still there.</p>
+    <div class="scroll" style="max-height:420px;overflow-y:auto"><table class="list"><tbody>${others.map(id=>{const m=UI.r5Want.mlb.includes(id),n=UI.r5Want.milb.includes(id);return row(id,S5.done?'':`<button class="btn sm${m?' primary':''}" type="button" data-act="r5want" data-id="mlb:${id}">${m?'MLB phase ✓':'MLB phase'}</button> <button class="btn sm${n?' primary':''}" type="button" data-act="r5want" data-id="milb:${id}">${n?'MiLB ✓':'MiLB'}</button>`)}).join('')}</tbody></table></div></div></div>
+  <div class="dact">${S5.mlbDone?'':`<button class="btn primary" type="button" data-act="r5run" data-id="mlb">Run Major League phase</button>`}${S5.mlbDone&&!S5.done?`<button class="btn primary" type="button" data-act="r5run" data-id="milb">Run Minor League phase</button>`:''}${S5.mlbDone||S5.done?`<button class="btn" type="button" data-act="r5reset">Undo Rule 5</button>`:''}</div>
+  ${S5.mlbDone?`<h3>Major League phase</h3>${res('mlb')}`:''}${S5.done?`<h3>Minor League phase</h3>${res('milb')}`:''}`}
+/* ---------- 2027 draft: Hot Stove board, lottery and order, mock draft ---------- */
+let DR=null,DP={},DS=null;
+const DKEY='hs-draft-v1';
+const SLOTV=[[1,11.4],[2,10.6],[3,9.8],[4,9.1],[5,8.4],[6,7.8],[8,6.9],[10,6.2],[12,5.6],[15,4.9],[20,4.1],[25,3.5],[30,3],[35,2.6],[40,2.3],[50,1.85],[60,1.5],[75,1.08],[90,.85],[110,.68],[150,.45],[220,.28]];
+function pickVal(n){n=Math.max(1,n);for(let i=1;i<SLOTV.length;i++){const [a,va]=SLOTV[i-1],[b,vb]=SLOTV[i];if(n<=b){const t=(Math.log(n)-Math.log(a))/(Math.log(b)-Math.log(a));return va+(vb-va)*t}}return .28}
+const RDN={'1':'Round 1',CR1:'QO comp (after Rd 1)',CBA:'Comp Balance A','2':'Round 2',CBB:'Comp Balance B',CCBB:'QO comp (after CB-B)'};
+const tnm=c=>(D.teams[c]&&D.teams[c].name)||c;
+const dgB=g=>`<span class="fv ${g>=55?'f55':g>=50?'f50':g>=45?'f45':g>=40?'f40':''}">${Math.round(g)}</span>`;
+function drSave(){try{localStorage.setItem(DKEY,JSON.stringify(DS))}catch(e){}}
+function drInit(d){DR=d;DP={};d.players.forEach(p=>DP[p.id]=p);let s=null;try{s=JSON.parse(localStorage.getItem(DKEY)||'null')}catch(e){}
+  DS=(s&&s.v===d.asof+':'+d.players.length)?s:{v:d.asof+':'+d.players.length,phase:'setup',lot:null}}
+function drRnd(){let t=DS.rs=(DS.rs+0x6D2B79F5)|0;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296}
+/* lottery: six picks drawn among eligible non-playoff clubs; ineligible clubs can't pick above 10th */
+function lotOdds(){const L=DR.order.lottery,inel=new Set(L.ineligible),od=(x,i)=>RULES.lotteryOdds[i]||0,tot=L.slots.reduce((s,x,i)=>s+(inel.has(x[0])?0:od(x,i)),0);const o={};L.slots.forEach((x,i)=>o[x[0]]=inel.has(x[0])?0:od(x,i)/tot*100);return o}
+function lotOrder(top6){const L=DR.order.lottery,inel=new Set(L.ineligible),rest=L.slots.map(s=>s[0]).filter(t=>!top6.includes(t)),out=[...top6],el=rest.filter(t=>!inel.has(t));
+  while(out.length<9&&el.length)out.push(el.shift());return out.concat(rest.filter(t=>!out.includes(t)))}
+function lotRun(random){const o=lotOdds(),pool=Object.keys(o).filter(t=>o[t]>0),top=[];
+  while(top.length<6){if(!random){top.push(pool.shift());continue}
+    let r=Math.random()*pool.reduce((s,t)=>s+o[t],0),i=0;for(;i<pool.length-1;i++){r-=o[pool[i]];if(r<=0)break}top.push(pool.splice(i,1)[0])}
+  return lotOrder(top)}
+const lotNow=()=>DS.lot||lotRun(false);
+let DRF={};
+function drBuildPicks(rounds){const O=DR.order,lot=lotNow(),rec=O.lottery.slots.map(s=>s[0]),po=O.playoff.order,Q=qoSignings();
+  const order1=[...lot,...po],order2=[...rec,...po],rank=t=>order2.indexOf(t);
+  /* compensation picks for losing a qualifying-offer free agent, worst record first */
+  const comps=slot=>Q.filter(q=>q.comp.slot===slot&&D.teams[q.from]).sort((a,b)=>rank(a.from)-rank(b.from)).map(q=>({rd:'C'+slot,t:q.from,comp:1,note:'for losing '+P[q.id].n}));
+  let seq=order1.map(t=>({rd:'1',t})).concat(comps('R1'),O.cb.A.map(t=>({rd:'CBA',t})));
+  if(rounds>1)seq=seq.concat(order2.map(t=>({rd:'2',t})),O.cb.B.map(t=>({rd:'CBB',t})),comps('CBB'));
+  /* forfeits for signing a QO free agent: Nth-highest regular-round pick (CB and comp picks can't be forfeited) */
+  DRF={};for(const q of Q)for(const n of q.forfeit.picks)(DRF[q.to]=DRF[q.to]||[]).push({n,who:P[q.id].n});
+  seq=seq.filter(p=>!((p.rd==='1'||p.rd==='2')&&(DRF[p.t]||[]).some(f=>f.n===+p.rd)));
+  /* CBT: $40M+ over in 2026 -> highest pick moves back 10; a top-6 pick is protected and the second-highest moves instead */
+  for(const t of O.cbt_drop.teams){const idx=seq.map((p,i)=>p.t===t?i:-1).filter(i=>i>=0);if(!idx.length)continue;let i=idx[0];if(i<6){if(idx.length<2)continue;i=idx[1]}
+    const [p]=seq.splice(i,1);p.pen=1;seq.splice(Math.min(i+10,seq.length),0,p)}
+  seq.forEach((p,i)=>{p.no=i+1;p.o=p.t});return seq}
+/* AI clubs: best player available with some disagreement, a house lean, and a nudge toward thin spots in the farm system */
+const _dneed={};
+function drNeed(team){if(_dneed[team])return _dneed[team];const c={P:0,C:0,IF:0,OF:0};
+  for(const id of D.teams[team].players){const p=P[id];if(!p||fvn(p.fv)<45)continue;const g=pgrp(id);c[g==='SP'||g==='RP'||p.p?'P':g==='C'?'C':g==='OF'?'OF':'IF']++}
+  c.P/=2.2;const mx=Math.max(1,c.P,c.C*2.5,c.IF,c.OF*1.3);return _dneed[team]={P:1+.05*(1-c.P/mx),C:1+.05*(1-c.C*2.5/mx),IF:1+.05*(1-c.IF/mx),OF:1+.05*(1-c.OF*1.3/mx)}}
+const DLEAN=['college bats','college arms','prep upside','best available','best available','up-the-middle bats'];
+const drLean=t=>DLEAN[hashN(t+'draft')%DLEAN.length];
+function drFit(team,p){const l=drLean(team),bat=p.grp!=='P';let f=drNeed(team)[p.grp]||1;
+  if(l==='college bats'&&bat&&p.cls==='COL')f*=1.05;if(l==='college arms'&&!bat&&p.cls==='COL')f*=1.05;if(l==='prep upside'&&p.cls==='HS')f*=1.06;
+  if(l==='up-the-middle bats'&&/^(SS|C|OF)/.test(p.pos))f*=1.04;return f}
+function drAvail(){const tk=new Set(DS.made);return DR.players.filter(p=>!tk.has(p.id))}
+function drAiPick(pk){const av=drAvail().slice(0,pk.no<=10?7:pk.no<=30?10:14);let best=null,bs=-1;
+  for(const p of av){const s=pickVal(p.rk)*(1+(drRnd()+drRnd()+drRnd()-1.5)*.16)*drFit(pk.t,p);if(s>bs){bs=s;best=p}}return best.id}
+function drStart(team,rounds,tr){DS={v:DS.v,lot:DS.lot,phase:'live',team,rounds,tr,made:[],cur:0,log:[],offers:[],rs:(Date.now()^hashN(team)*7919)|0};
+  DS.picks=drBuildPicks(rounds);DS.base={};DS.picks.forEach(p=>DS.base[p.t]=(DS.base[p.t]||0)+pickVal(p.no));drSave()}
+const drOn=()=>DS.picks[DS.cur];
+const drMine=()=>DS.phase==='live'&&drOn()&&drOn().t===DS.team;
+function drMake(pid){DS.made[DS.cur]=pid;DS.cur++;DS.offers=[];if(DS.cur>=DS.picks.length)DS.phase='done';else if(drMine())drOffers()}
+function drStep(all){if(DS.phase!=='live')return;do{if(drMine())break;drMake(drAiPick(drOn()))}while(all&&DS.phase==='live');drSave()}
+const drCanTrade=p=>p.no>DS.cur&&DS.tr==='any';
+const drLeft=t=>DS.picks.filter(p=>p.t===t&&drCanTrade(p));
+const sumV=ps=>ps.reduce((s,p)=>s+pickVal(p.no),0);
+/* an AI club that wants to move up pays between 0.92x and 1.06x of chart value, fixed per club and pick */
+const drEager=(t,no)=>.92+(hashN(t+'up'+no+DS.rs%97)%15)/100;
+function drOffers(){DS.offers=[];const me=drOn();if(DS.tr!=='any'||!drCanTrade(me))return;const v=pickVal(me.no),seen=new Set();
+  for(const p of DS.picks.slice(DS.cur+2,DS.cur+18)){if(p.t===DS.team||seen.has(p.t))continue;seen.add(p.t);if(drRnd()>.3)continue;
+    const mine=drLeft(p.t);if(mine.length<2||mine[0].no!==p.no)continue;const want=v*drEager(p.t,me.no),give=[mine[0]];
+    for(const x of mine.slice(1).reverse()){if(sumV(give)>=want)break;give.push(x)}
+    if(sumV(give)<want){const alt=[mine[0],...mine.slice(1)].slice(0,3);if(sumV(alt)<want)continue;give.splice(0,give.length,...alt)}
+    if(sumV(give)>v*1.12)continue;DS.offers.push({t:p.t,give:give.map(x=>x.no).sort((a,b)=>a-b),get:[me.no]});if(DS.offers.length>=2)break}}
+function drSwap(t,giveNos,getNos,how){/* user gives giveNos to t, gets getNos */
+  const lab=n=>'#'+n;DS.picks.forEach(p=>{if(giveNos.includes(p.no))p.t=t;else if(getNos.includes(p.no))p.t=DS.team});
+  DS.log.push(`${tnm(DS.team)} get ${getNos.map(lab).join(', ')} · ${tnm(t)} get ${giveNos.map(lab).join(', ')}${how?' ('+how+')':''}`);
+  DS.offers=[];if(drMine())drOffers();drSave()}
+function drTradeEval(){const g=[...UI.drGive],r=[...UI.drGet],vg=g.reduce((s,n)=>s+pickVal(n),0),vr=r.reduce((s,n)=>s+pickVal(n),0);
+  if(!g.length||!r.length)return {vg,vr,ok:false,msg:'Pick at least one selection on each side.'};
+  const top=Math.min(...r),up=top<Math.min(...g);let need;
+  if(up)need=vr*(1.06+(top<=5?.12:top<=10?.06:0));else need=vr/drEager(UI.drTP,Math.min(...g));
+  const ok=vg>=need;return {vg,vr,ok,msg:ok?`${tnm(UI.drTP)} say yes.`:`${tnm(UI.drTP)} say no. They want about $${(need-vg).toFixed(1)}M more pick value${up?' to move down':''}.`}}
+function drTradeModal(partner){const teams=[...new Set(DS.picks.filter(p=>p.t!==DS.team&&drCanTrade(p)).map(p=>p.t))];
+  if(!teams.length||!drLeft(DS.team).length){toast(DS.tr!=='any'?'Real MLB rules: no picks can be traded once the draft starts. Competitive Balance picks can be traded before it, in the Trade tab.':'No tradeable picks left.');return}
+  if(partner!==UI.drTP||!UI.drGive){UI.drGive=new Set();UI.drGet=new Set()}
+  UI.drTP=teams.includes(partner)?partner:teams[0];drTradeDraw(teams);openModal()}
+function drTradeDraw(teams){teams=teams||[...new Set(DS.picks.filter(p=>p.t!==DS.team&&drCanTrade(p)).map(p=>p.t))];
+  const row=(p,k,set)=>`<label class="trow"><input type="checkbox" data-${k}="${p.no}"${set.has(p.no)?' checked':''}><span>Pick #${p.no} <span class="meta">${RDN[p.rd]}</span></span><span class="r">$${pickVal(p.no).toFixed(1)}M</span></label>`;
+  const E=drTradeEval();
+  $('#modal').innerHTML=`<h2>Propose a pick trade</h2>
+  <p class="hint">Values are approximate slot money for each pick. Fantasy mode (NFL-style). In real MLB drafts no picks are traded once the draft starts; only Competitive Balance picks can be traded, and only beforehand.</p>
+  <label class="field">Trade with<select id="drTP">${teams.map(t=>`<option value="${t}"${t===UI.drTP?' selected':''}>${esc(tnm(t))}</option>`).join('')}</select></label>
+  <div class="tradegrid" style="margin-top:10px"><div class="tside"><h3>You give</h3>${drLeft(DS.team).map(p=>row(p,'drg',UI.drGive)).join('')}</div>
+  <div class="tside"><h3>You get from the ${esc(tnm(UI.drTP))}</h3>${drLeft(UI.drTP).map(p=>row(p,'drr',UI.drGet)).join('')}</div></div>
+  <div class="verdictbox ${E.ok?'good':UI.drGive.size&&UI.drGet.size?'bad':''}"><div class="kv"><span>You give</span><b>$${E.vg.toFixed(1)}M</b></div><div class="kv"><span>You get</span><b>$${E.vr.toFixed(1)}M</b></div><div class="verdict ${E.ok?'good':'bad'}">${esc(E.msg)}</div></div>
+  <div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="closemodal">Cancel</button><button class="btn primary" type="button" data-act="dr-tgo"${E.ok?'':' disabled'}>Make the trade</button></div>`}
+/* grades: value of the players a club drafted vs the value of the picks it started with */
+const DGR=[[1.16,'A+'],[1.1,'A'],[1.05,'A-'],[1.01,'B+'],[.97,'B'],[.94,'B-'],[.9,'C+'],[.86,'C'],[.82,'C-'],[.75,'D']];
+function drGrade(t){let got=0;DS.picks.forEach((p,i)=>{if(p.t===t&&DS.made[i])got+=pickVal(DP[DS.made[i]].rk)});const r=got/(DS.base[t]||1);return {r,got,l:(DGR.find(x=>r>=x[0])||[0,'F'])[1]}}
+function drTag(p,pl){return pl.rk<=p.no*.75-1?'<span class="tag off">Steal</span>':pl.rk>=p.no*1.35+3?'<span class="tag inj">Reach</span>':'<span class="tag">Value</span>'}
+function drResultsText(){const g=drGrade(DS.team),L=[`Hot Stove GM · 2027 mock draft · ${tnm(DS.team)}`,`Draft grade: ${g.l}`,''];
+  DS.picks.forEach((p,i)=>{if(p.t===DS.team&&DS.made[i]){const x=DP[DS.made[i]];L.push(`#${p.no} (${RDN[p.rd]}): ${x.n}, ${x.pos}, ${x.sch} · Hot Stove #${x.rk}`)}});
+  if(DS.log.length){L.push('','Trades:');DS.log.forEach(t=>L.push('- '+t))}
+  L.push('','Round 1:');DS.picks.forEach((p,i)=>{if(p.rd==='1'&&DS.made[i])L.push(`${p.no}. ${tnm(p.t)}: ${DP[DS.made[i]].n}, ${DP[DS.made[i]].pos}, ${DP[DS.made[i]].sch}`)});
+  L.push('','https://fschaeffer16.github.io/hotstove-gm/');return L.join('\n')}
+function drAct(a,id){
+  switch(a){
+    case 'dr-view':UI.drView=id;if(id==='r5')loadMeta();break;
+    case 'r5protect':{if(count40()>=40){toast('Your 40-man is full. DFA, release or outright someone first.');return}doSelect(id);return}
+    case 'r5want':{const [ph,pid]=id.split(':');const L=UI.r5Want[ph];const i=L.indexOf(pid);i>=0?L.splice(i,1):L.push(pid);break}
+    case 'r5run':r5Run(id);return;
+    case 'r5reset':confirmBox('Undo the Rule 5 draft?','Puts every Rule 5 move back. Your other moves stay.','Undo Rule 5',()=>{const R=S.r5||{};snap();for(const ph of ['mlb','milb'])for(const [c,pid,f] of (R[ph]||[])){S.team[pid]=f;if(f===ME){S.status[pid]='MiLB';insertProspect(pid)}else{unslot(pid);delete S.status[pid];S.top=S.top.filter(x=>x!==pid)}}S.r5=null;S.r5mlb={};commit()});return;
+    case 'dr-lot':DS.lot=lotRun(true);drSave();toast(`${tnm(DS.lot[0])} win the lottery`);break;
+    case 'dr-chalk':DS.lot=null;drSave();break;
+    case 'dr-start':drStart($('#drTeam').value,+$('#drRounds').value,$('#drTr').value);break;
+    case 'dr-next':drStep(false);break;
+    case 'dr-sim':drStep(true);break;
+    case 'dr-pick':if(drMine()){drMake(id);drSave()}break;
+    case 'dr-auto':if(drMine()){drMake(drAvail()[0].id);drSave()}break;
+    case 'dr-offer':{const o=DS.offers[+id];if(o)drSwap(o.t,o.get,o.give,'their offer')}break;
+    case 'dr-trade':drTradeModal(id||(drOn()&&drOn().t!==DS.team?drOn().t:UI.drTP));return;
+    case 'dr-tgo':if(drTradeEval().ok){drSwap(UI.drTP,[...UI.drGive],[...UI.drGet]);UI.drGive=null;closeModal();toast('Trade made')}break;
+    case 'dr-new':DS={v:DS.v,lot:DS.lot,phase:'setup'};drSave();break;
+    case 'dr-quit':confirmBox('End this mock draft?','Your picks so far are thrown away.','End mock',()=>{DS={v:DS.v,lot:DS.lot,phase:'setup'};drSave();drRender()});return;
+    case 'dr-copy':copy(drResultsText(),'Draft results copied');return;
+  }
+  drRender()}
+function drRender(){const p=document.querySelector('.panel');if(p&&UI.tab==='draft')p.innerHTML=renderDraft();else render()}
+function renderDraft(){
+  if(!DR&&UI.drView!=='r5')return '<p class="hint">The draft board did not load. Reload the page to try again.</p>';
+  const v=UI.drView||'board';
+  return `<div class="filters">${[['board','Draft board'],['order','Order & lottery'],['mock','Mock draft'],['r5','Rule 5']].map(([k,l])=>`<button class="btn sm${v===k?' primary':''}" type="button" data-act="dr-view" data-id="${k}" aria-pressed="${v===k}">${l}</button>`).join('')}</div>`+({board:drBoardHTML,order:drOrderHTML,mock:drMockHTML,r5:renderR5})[v]()}
+function drFilter(list){const q=(UI.drQ||'').toLowerCase(),ps=UI.drPos||'All',cl=UI.drCls||'All';
+  return list.filter(p=>(!q||(p.n+' '+p.sch).toLowerCase().includes(q))&&(cl==='All'||(cl==='College')===(p.cls==='COL'))&&(ps==='All'||(ps==='Hitters'?p.grp!=='P':ps==='Pitchers'?p.grp==='P':ps==='C'?p.grp==='C':ps==='IF'?p.grp==='IF':p.grp==='OF')))}
+function drFilterHTML(n){return `<div class="filters"><input type="search" id="drQ" placeholder="Search name or school…" value="${esc(UI.drQ||'')}" aria-label="Search draft prospects">
+  <select id="drPos" aria-label="Position">${['All','Hitters','Pitchers','C','IF','OF'].map(t=>`<option${t===(UI.drPos||'All')?' selected':''}>${t}</option>`).join('')}</select>
+  <select id="drCls" aria-label="Class">${['All','College','High school'].map(t=>`<option${t===(UI.drCls||'All')?' selected':''}>${t}</option>`).join('')}</select><span class="hint">${n}</span></div>`}
+function drRow(p,btn,taken){return `<tr${taken?' class="gone"':''}><td class="r">${p.rk}</td><td class="wrap"><span class="nmb">${esc(p.n)}</span>${p.tag==='inj'?'<span class="tag inj" title="'+esc(p.note)+'">inj</span>':''}<br><span class="hint">${esc(p.sch)}${p.cls==='COL'?' · College':/HS/.test(p.sch)?'':' · HS'}${p.bt?' · '+p.bt:''}${taken?' · '+taken:''}</span></td><td>${esc(p.pos)}</td><td class="r">${dgB(p.g)}</td>${btn!=null?`<td class="r">${btn}</td>`:''}</tr>`}
+function drBoardHTML(){const tk={};if(DS.phase!=='setup')DS.picks.forEach((p,i)=>{if(DS.made[i])tk[DS.made[i]]='#'+p.no+' '+p.t});
+  const ps=drFilter(DR.players),inj=ps.filter(p=>p.note);
+  return `<p class="hint" style="margin-top:0">Hot Stove's own 2027 draft board, version 1: ${DR.players.filter(p=>p.cls==='COL').length} college players and the top ${DR.players.filter(p=>p.cls==='HS').length} high schoolers so far. Grades are on the 20-80 scale and come from a blend of public rankings, adjusted for position, handedness and injuries. The board grows toward 750 as more lists are added.</p>
+  ${drFilterHTML(ps.length+' players')}
+  <div class="scroll"><table class="list"><thead><tr><th class="r">HS #</th><th>Player</th><th>Pos</th><th class="r">Grade</th></tr></thead><tbody>${ps.map(p=>drRow(p,null,tk[p.id])).join('')}</tbody></table></div>
+  ${inj.map(p=>`<p class="hint">${esc(p.n)}: ${esc(p.note)}.</p>`).join('')}`}
+function drOrderHTML(){const O=DR.order,L=O.lottery,od=lotOdds(),lot=lotNow(),inel=new Set(L.ineligible),est=new Set(L.estimated||[]),picks=drBuildPicks(2),sim=!!DS.lot;
+  const prow=p=>`<tr${p.t===ME?' style="font-weight:600"':''}><td class="r">${p.no}</td><td>${esc(tnm(p.t))}${p.pen?' <span class="tag inj">tax −10</span>':''}${p.t===ME?' <span class="tag new">you</span>':''}</td><td class="hint">${RDN[p.rd]}</td></tr>`;
+  return `<p class="hint" style="margin-top:0">The real lottery is drawn at the Winter Meetings in December. Until then this shows the projected order (best odds pick first). Run the lottery to see how it could shake out; the mock draft uses whatever order is showing here.</p>
+  <div class="filters"><button class="btn primary" type="button" data-act="dr-lot">Run the lottery</button><button class="btn" type="button" data-act="dr-chalk"${sim?'':' disabled'}>Back to projected order</button><span class="pill ${sim?'warn':''}">${sim?'Simulated lottery':'Projected order'}</span></div>
+  <div class="tradegrid"><div><h3>Lottery (18 non-playoff clubs)</h3><div class="scroll"><table class="list"><thead><tr><th>Club (best odds first)</th><th class="r">No. 1</th><th class="r">Pick</th><th class="r">Move</th></tr></thead><tbody>
+  ${L.slots.map(([t],i)=>{const pk=lot.indexOf(t)+1,mv=i+1-pk;return `<tr${t===ME?' style="font-weight:600"':''}><td>${esc(tnm(t))}${inel.has(t)?' <span class="tag inj" title="Cannot pick higher than 10th">no lottery</span>':''}${est.has(t)?' <span class="tag" title="Final 2026 record not confirmed">est.</span>':''}</td><td class="r">${od[t]?od[t].toFixed(od[t]<1?2:1)+'%':'—'}</td><td class="r"><b>${pk}</b></td><td class="r ${mv>0?'minus':mv<0?'plus':''}">${mv>0?'▲'+mv:mv<0?'▼'+(-mv):''}</td></tr>`}).join('')}
+  </tbody></table></div>
+  <p class="hint">${esc(L.ineligible.map(tnm).join(' and '))} cannot land a lottery pick this year (revenue-sharing rule), so they are tagged "no lottery", pick no higher than 10th, and everyone else's odds go up. Clubs tagged "est." are placed by an estimated 2026 record.</p></div>
+  <div><h3>Round 1 and Comp Balance A</h3><div class="scroll"><table class="list"><tbody>${picks.filter(p=>p.rd==='1'||p.rd==='CBA').map(prow).join('')}</tbody></table></div>
+  <details><summary>Round 2 and Comp Balance B</summary><div class="scroll"><table class="list"><tbody>${picks.filter(p=>p.rd==='2'||p.rd==='CBB').map(prow).join('')}</tbody></table></div></details></div></div>
+  <p class="hint">Picks 19-30 go by how far each club got in the 2026 playoffs. "Tax −10": a club that was $40M or more over the 2026 tax line has its first pick moved back 10 spots unless it is a top-6 lottery pick (${esc(O.cbt_drop.teams.map(tnm).join(', '))}). Competitive Balance rounds are projected from last year's groups. ${esc(O.missing)}</p>`}
+function drMockHTML(){
+  if(DS.phase==='setup'){const codes=Object.keys(D.teams).sort((a,b)=>tnm(a).localeCompare(tnm(b)));
+    return `<p class="hint" style="margin-top:0">Run a club's 2027 draft. The other 29 front offices pick off the Hot Stove board with their own leans and farm-system needs. You get a grade at the end.</p>
+    <div class="form" style="max-width:560px"><label class="field">Your club<select id="drTeam">${codes.map(c=>`<option value="${c}"${c===ME?' selected':''}>${esc(tnm(c))}</option>`).join('')}</select></label>
+    <label class="field">Length<select id="drRounds"><option value="2">Rounds 1-2 with Comp Balance picks (75 picks)</option><option value="1">Round 1 + Comp Balance A (38 picks)</option></select></label>
+    <label class="field full">Pick trades<select id="drTr"><option value="real">Real MLB rules: no trades once the draft starts</option><option value="any">Fantasy (NFL-style): trade any pick</option></select></label></div>
+    <p class="hint">Order: ${DS.lot?'your simulated lottery':'projected (no lottery run)'}. ${esc(tnm(lotNow()[0]))} pick first. Change it under Order &amp; lottery.</p>
+    <div class="dact"><button class="btn primary" type="button" data-act="dr-start">Start the mock draft</button></div>`}
+  const mineIdx=DS.picks.map((p,i)=>p.t===DS.team?i:-1).filter(i=>i>=0);
+  const mychips=mineIdx.map(i=>{const p=DS.picks[i],x=DS.made[i]&&DP[DS.made[i]];return `<span class="pill${x?' good':''}">#${p.no}${x?' '+esc(x.n):''}</span>`}).join('')||'<span class="hint">no picks left</span>';
+  const pickLine=(p,i)=>{const x=DP[DS.made[i]];return `<tr${p.t===DS.team?' style="font-weight:600"':''}><td class="r">${p.no}</td><td>${esc(tnm(p.t))}${p.t!==p.o?' <span class="hint">(from '+p.o+')</span>':''}</td><td class="wrap"><span class="nmb">${esc(x.n)}</span><br><span class="hint">${esc(x.pos)} · ${esc(x.sch)}</span></td><td class="r">${dgB(x.g)}</td><td>${drTag(p,x)}</td></tr>`};
+  const made=DS.picks.map((p,i)=>[p,i]).filter(([p,i])=>DS.made[i]);
+  const trades=DS.log.length?`<div class="subh">Trades</div>${DS.log.map(t=>`<div class="hint">${esc(t)}</div>`).join('')}`:'';
+  if(DS.phase==='done'){const g=drGrade(DS.team),all=Object.keys(D.teams).map(t=>[t,drGrade(t)]).sort((a,b)=>b[1].r-a[1].r),rk=all.findIndex(x=>x[0]===DS.team)+1;
+    return `<div class="verdictbox ${g.r>=1.01?'good':g.r>=.9?'warn':'bad'}"><div class="vhead"><span class="vtag ${g.r>=1.01?'good':g.r>=.9?'warn':'bad'}">Draft grade ${g.l}</span><b>${esc(tnm(DS.team))} 2027 class</b><span class="hint">${rk?'Ranked '+rk+' of 30 clubs':''} · you turned $${(DS.base[DS.team]||0).toFixed(1)}M of pick value into $${g.got.toFixed(1)}M of talent</span></div>
+    <div class="scroll" style="margin-top:8px"><table class="list"><tbody>${made.filter(([p])=>p.t===DS.team).map(([p,i])=>pickLine(p,i)).join('')||'<tr><td class="hint">You made no picks.</td></tr>'}</tbody></table></div>${trades}</div>
+    <div class="dact"><button class="btn primary" type="button" data-act="dr-new">New mock draft</button><button class="btn" type="button" data-act="dr-copy">Copy results</button></div>
+    <div class="tradegrid" style="margin-top:12px"><div><h3>Every pick</h3><div class="scroll"><table class="list"><tbody>${made.map(([p,i])=>pickLine(p,i)).join('')}</tbody></table></div></div>
+    <div><h3>Club grades</h3><div class="scroll"><table class="list"><thead><tr><th class="r">#</th><th>Club</th><th>Grade</th><th>Picks</th></tr></thead><tbody>${all.map(([t,x],i)=>`<tr${t===DS.team?' style="font-weight:600"':''}><td class="r">${i+1}</td><td>${esc(tnm(t))}</td><td><b>${x.l}</b></td><td class="hint wrap">${made.filter(([p])=>p.t===t).map(([p,j])=>esc(DP[DS.made[j]].n)).join(', ')}</td></tr>`).join('')}</tbody></table></div></div></div>
+    <textarea id="outTxt" class="out" style="min-height:0;height:1px;opacity:0;border:0;padding:0" aria-hidden="true" tabindex="-1"></textarea>`}
+  const on=drOn(),mine=drMine(),next=DS.picks.slice(DS.cur+1,DS.cur+7),myNext=DS.picks.find((p,i)=>i>=DS.cur&&p.t===DS.team);
+  const recent=made.slice(-8).reverse();
+  let body;
+  if(mine){const av=drFilter(drAvail());
+    body=`${DS.offers.map((o,i)=>`<div class="tsum" style="margin:0 0 10px"><b>Trade offer from the ${esc(tnm(o.t))}:</b> they send ${o.give.map(n=>'#'+n).join(' and ')} ($${o.give.reduce((s,n)=>s+pickVal(n),0).toFixed(1)}M) for your #${on.no} ($${pickVal(on.no).toFixed(1)}M). <span class="dact" style="display:inline-flex;margin:0 0 0 6px"><button class="btn sm primary" type="button" data-act="dr-offer" data-id="${i}">Accept</button></span></div>`).join('')}
+    ${drFilterHTML('Best available · '+av.length)}
+    <div class="scroll" style="max-height:520px;overflow-y:auto"><table class="list"><thead><tr><th class="r">HS #</th><th>Player</th><th>Pos</th><th class="r">Grade</th><th></th></tr></thead><tbody>${av.slice(0,60).map(p=>drRow(p,`<button class="btn sm primary" type="button" data-act="dr-pick" data-id="${p.id}">Draft</button>`)).join('')}</tbody></table></div>`}
+  else body=`<p class="hint">${myNext?`Your next pick is #${myNext.no}, ${myNext.no-on.no} pick${myNext.no-on.no===1?'':'s'} away.`:'You have no picks left. Sim to the end to see your grade.'} The ${esc(tnm(on.t))} lean toward ${drLean(on.t)}.</p>`;
+  return `<div class="verdictbox ${mine?'good':''}" style="margin-top:0"><div class="vhead"><span class="vtag ${mine?'good':''}">Pick ${on.no}</span><b>${mine?'You are on the clock':esc(tnm(on.t))+' are on the clock'}</b><span class="hint">${RDN[on.rd]} · ${DS.picks.length-DS.cur} picks left</span></div>
+    <div class="dact">${mine?'<button class="btn" type="button" data-act="dr-auto">Auto-pick best available</button>':`<button class="btn primary" type="button" data-act="dr-next">Next pick</button><button class="btn" type="button" data-act="dr-sim">${myNext?'Sim to my pick':'Sim to the end'}</button>`}${DS.tr==='any'?'<button class="btn" type="button" data-act="dr-trade">Propose a trade</button>':''}<button class="btn danger" type="button" data-act="dr-quit">End mock</button></div>
+    <div class="statline" style="margin-bottom:0"><span class="hint" style="align-self:center">Your picks:</span>${mychips}</div></div>
+  <div style="margin-top:12px">${body}</div>
+  <div class="tradegrid" style="margin-top:12px"><div><h3>Latest picks</h3>${recent.length?`<div class="scroll"><table class="list"><tbody>${recent.map(([p,i])=>pickLine(p,i)).join('')}</tbody></table></div>`:'<p class="hint">No picks yet.</p>'}
+  ${made.length>8?`<details><summary>All ${made.length} picks so far</summary><div class="scroll"><table class="list"><tbody>${made.map(([p,i])=>pickLine(p,i)).join('')}</tbody></table></div></details>`:''}${trades}</div>
+  <div><h3>Up next</h3><div class="scroll"><table class="list"><tbody>${next.map(p=>`<tr${p.t===DS.team?' style="font-weight:600"':''}><td class="r">${p.no}</td><td>${esc(tnm(p.t))}${p.t!==p.o?' <span class="hint">(from '+p.o+')</span>':''}</td><td class="hint">${RDN[p.rd]}</td></tr>`).join('')||'<tr><td class="hint">Last pick.</td></tr>'}</tbody></table></div></div></div>`}
 
 /* ---------- move every team's save to another device with one link ---------- */
 const SAVEPFX='nym-gm-sandbox-v1';
@@ -1084,7 +1436,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261117184137';
+const BUILD='20261117202135';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1156,6 +1508,7 @@ function openDrawer(id){
     if(st==='MiLB')acts.push(`<button class="btn primary" data-act="select" data-id="${id}">Add to 40-man</button>`);
     acts.push(`<button class="btn" data-act="place" data-id="${id}">Place in a slot</button>`);
     if(k!=='min')acts.push(`<button class="btn" data-act="extend" data-id="${id}">Extend</button>`);
+    if((S.r5mlb||{})[id]&&S.r5mlb[id].code===ME)acts.push(`<button class="btn danger" data-act="r5back" data-id="${id}">Offer back ($50K)</button>`);
     if(k==='arb')acts.push(`<button class="btn danger" data-act="nontender" data-id="${id}">Non-tender</button>`);
     acts.push(`<button class="btn danger" data-act="release" data-id="${id}">${k==='guar'?'Release (eat salary)':'DFA / release'}</button>`);
   } else if(owner(id)==='FA'){acts.push(`<button class="btn primary" data-act="sign" data-id="${id}">Sign</button>`)}
@@ -1165,6 +1518,7 @@ function openDrawer(id){
     <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
     <div class="dsec"><h3>Contract</h3><p style="margin:4px 0">${esc(c?c.desc:(p.contract||(p.team==='FA'?'Free agent':'Minor-league / pre-arb')))}</p>
       <div class="kv"><span>CBT figure (2027)</span><b>${mets?M(cbtOf(id)):M(partnerCount(id))}</b></div>
+      ${(()=>{const ci=controlInfo(id),r=r5Info(id);return (ci.txt?`<div class="kv"><span>Team control</span><b style="text-align:right">${esc(ci.txt)}</b></div>`:'')+(p.opt&&p.opt!=='n/a'?`<div class="kv"><span>Options</span><b>${esc(String(p.opt))}</b></div>`:'')+(r&&p.lvl!=='MLB'?`<div class="kv"><span>Rule 5</span><b style="text-align:right">${r5Exposed(id)?'<span style="color:var(--bad)">Eligible and unprotected</span>':r.eligibleNow?'Eligible (protected on the 40-man)':'First eligible Dec '+r.first}${r.est?' (est.)':''}</b></div>`:'')+(p.qo&&p.team==='FA'?`<div class="kv"><span>Qualifying offer</span><b>Declined (${M1(RULES.qo.amount)})</b></div>`:'')})()}
       ${p.mt?`<div class="kv"><span>Market (median)</span><b>${p.my} yr / ${M1(p.mt)}</b></div>`:''}
       ${yrRows?`<table class="yrtable">${yrRows}</table>`:''}</div>
     <div class="dsec"><h3>2027 projection</h3>${pj?(pj.t==='b'?`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>wRC+</span><b>${pj.wrc}</b></div><div class="kv"><span>PA / HR</span><b>${pj.pa} / ${pj.hr}</b></div><div class="kv"><span>OPS</span><b>${pj.ops}</b></div>`:`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>ERA / FIP</span><b>${pj.era} / ${pj.fip}</b></div><div class="kv"><span>IP / GS</span><b>${pj.ip} / ${pj.gs}</b></div><div class="kv"><span>K-BB%</span><b>${pj.kbb}%</b></div>`):'<p class="hint">No 2027 projection.</p>'}</div>
@@ -1217,10 +1571,11 @@ document.addEventListener('click',e=>{
     case 'place':UI.sel=id;closeDrawer();render();window.scrollTo({top:0,behavior:'smooth'});break;
     case 'extend':closeDrawer();contractModal(id,'ext');break;
     case 'sign':closeDrawer();contractModal(id,'sign');break;
+    case 'r5back':r5OfferBack(id);break;
     case 'nontender':confirmBox('Non-tender '+P[id].n+'?',`He becomes a free agent and his ${M(aav(id))} arbitration estimate comes off the CBT payroll.`,'Non-tender',()=>doRelease(id,'Non-tendered'));break;
     case 'release':confirmBox('Release '+P[id].n+'?',kind(id)==='guar'?`His ${M(aav(id))} AAV stays on the CBT payroll as dead money.`:'He comes off the roster.',kind(id)==='guar'?'Release':'DFA / release',()=>doRelease(id,kind(id)==='guar'?'Released':'DFA'));break;
     case 'totrade':UI.tTeam=owner(id);UI.tIn.add(id);UI.tab='trade';closeDrawer();render();break;
-    case 'tclear':UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;render();break;
+    case 'tclear':UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;render();break;
     case 'texec':execTrade(false);break;
     case 'tforce':confirmBox('Force this trade through?','The other GM has not agreed. Forcing it records the trade as forced in your transaction log.','Force approve',()=>execTrade(true));break;
     case 'copyupd':copy(updateText(),'Update copied');break;
@@ -1230,6 +1585,7 @@ document.addEventListener('click',e=>{
       $('#modal').innerHTML=`<h2>Load save code</h2><label class="field">Paste a save code<textarea id="ldTxt" class="out" style="min-height:140px"></textarea></label><div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="closemodal">Cancel</button><button class="btn primary" type="button" id="ldGo">Load</button></div>`;
       openModal();$('#ldGo').onclick=()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob($('#ldTxt').value.trim()))));if(!o.lineup)throw 0;snap();S=o;closeModal();commit();toast('Save loaded')}catch(err){toast('That save code could not be read. Paste the whole code and try again.')}};
       break;
+    default:if(a&&a.indexOf('dr-')===0)drAct(a,id);
   }
 });
 document.addEventListener('change',e=>{
@@ -1238,16 +1594,23 @@ document.addEventListener('change',e=>{
   if(t.id==='faPos'){UI.faPos=t.value;render();return}
   if(t.id==='prTeam'){UI.prTeam=t.value;render();return}
   if(t.id==='prPos'){UI.prPos=t.value;render();return}
-  if(t.id==='tTeam'){UI.tTeam=t.value;UI.tIn.clear();UI.tAdd40.clear();UI.tQin='';render();return}
+  if(t.id==='tTeam'){UI.tTeam=t.value;UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tQin='';render();return}
+  if(t.dataset.tpk){t.checked?UI.tPk.add(t.dataset.tpk):UI.tPk.delete(t.dataset.tpk);render();return}
+  if(t.id==='tIfa'){UI.tIfa=+t.value;render();return}
   if(t.dataset.tout){t.checked?UI.tOut.add(t.dataset.tout):UI.tOut.delete(t.dataset.tout);keepScroll();return}
   if(t.dataset.tin){t.checked?UI.tIn.add(t.dataset.tin):UI.tIn.delete(t.dataset.tin);keepScroll();return}
   if(t.dataset.add40){t.checked?UI.tAdd40.add(t.dataset.add40):UI.tAdd40.delete(t.dataset.add40);keepScroll();return}
+  if(t.id==='drPos'){UI.drPos=t.value;drRender();return}
+  if(t.id==='drCls'){UI.drCls=t.value;drRender();return}
+  if(t.id==='drTP'){UI.drTP=t.value;UI.drGive=new Set();UI.drGet=new Set();drTradeDraw();return}
+  if(t.dataset.drg){t.checked?UI.drGive.add(+t.dataset.drg):UI.drGive.delete(+t.dataset.drg);drTradeDraw();return}
+  if(t.dataset.drr){t.checked?UI.drGet.add(+t.dataset.drr):UI.drGet.delete(+t.dataset.drr);drTradeDraw();return}
   if(t.id==='tCash'){UI.tCash=+t.value||0;keepScroll();return}
 });
 function keepScroll(){const ls=[...document.querySelectorAll('.tl')].map(x=>x.scrollTop);render();document.querySelectorAll('.tl').forEach((x,i)=>x.scrollTop=ls[i]||0)}
 let qT;
 document.addEventListener('input',e=>{
-  const t=e.target,map={faQ:'faQ',tQout:'tQout',tQin:'tQin',pQ:'pQ',prQ:'prQ'};
+  const t=e.target,map={faQ:'faQ',tQout:'tQout',tQin:'tQin',pQ:'pQ',prQ:'prQ',drQ:'drQ'};
   if(!map[t.id])return;
   UI[map[t.id]]=t.value;clearTimeout(qT);
   qT=setTimeout(()=>{const id=t.id,pos=t.selectionStart;keepScroll();const n=document.getElementById(id);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}},180);
@@ -1313,13 +1676,14 @@ function switchTeam(code){
 fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
   D=d;P=d.players;
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
+  try{const r=await fetch('draft.json',{cache:'no-cache'});if(r.ok)drInit(await r.json())}catch(e){DR=null}
   const imported=await importFromHash();
   let last='NYM';try{last=localStorage.getItem('gm-last-team')||'NYM'}catch(e){}
   const codes=Object.keys(d.teams).sort((a,b)=>d.teams[a].name.localeCompare(d.teams[b].name));
   $('#teamPick').innerHTML=codes.map(c=>`<option value="${c}">${esc(d.teams[c].name)}</option>`).join('');
   $('#teamPick').onchange=e=>switchTeam(e.target.value);
   switchTeam(d.teams[last]?last:'NYM');
-  loadNews();setInterval(loadNews,5*60*1000);
+  loadNews();setInterval(loadNews,5*60*1000);loadMeta();
   if(imported)toast('Saves loaded from your other device');
 }).catch(err=>{$('#app').innerHTML=`<div class="loading">The roster data didn't load (${esc(err.message)}). Reload the page to try again.</div>`});
 </script>
