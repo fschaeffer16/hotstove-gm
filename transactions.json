@@ -65,72 +65,6 @@
    "src": "MLB Trade Rumors"
   },
   {
-   "date": "2026-11-13",
-   "type": "sign_minor",
-   "summary": "Phillies sign RHP Geoff Hartlieb to a minor league deal",
-   "name": "Geoff Hartlieb",
-   "team": "PHI",
-   "pos": "RP",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950195
-  },
-  {
-   "date": "2026-11-13",
-   "type": "sign_minor",
-   "summary": "Phillies sign Bryan Ramos to a minor league deal",
-   "name": "Bryan Ramos",
-   "team": "PHI",
-   "pos": "3B",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950197
-  },
-  {
-   "date": "2026-11-13",
-   "type": "sign_minor",
-   "summary": "Braves sign Tyler Freeman to a minor league deal",
-   "name": "Tyler Freeman",
-   "team": "ATL",
-   "pos": "INF",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950191
-  },
-  {
-   "date": "2026-11-13",
-   "type": "sign_minor",
-   "summary": "Athletics sign LHP Ben Bowden to a minor league deal",
-   "name": "Ben Bowden",
-   "team": "ATH",
-   "pos": "RP",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950188
-  },
-  {
-   "date": "2026-11-13",
-   "type": "sign_minor",
-   "summary": "Marlins sign Luis Palacios to a minor league deal",
-   "name": "Luis Palacios",
-   "team": "MIA",
-   "pos": "?",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950193
-  },
-  {
-   "date": "2026-11-13",
-   "type": "sign_minor",
-   "summary": "Rangers sign John Armstrong to a minor league deal",
-   "name": "John Armstrong",
-   "team": "TEX",
-   "pos": "?",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950208
-  },
-  {
    "date": "2026-11-14",
    "type": "sign_minor",
    "summary": "Brewers sign Stiven Cruz to a minor league deal with a spring training invite",
@@ -149,17 +83,6 @@
    "team": "PHI",
    "pos": "RP",
    "src": "MLB Trade Rumors"
-  },
-  {
-   "date": "2026-11-16",
-   "type": "sign_minor",
-   "summary": "Orioles re-sign infielder José Barrero to a minor league deal",
-   "name": "José Barrero",
-   "team": "BAL",
-   "pos": "SS",
-   "src": "MLB transactions / MLB Trade Rumors",
-   "status": "official",
-   "sid": 950298
   },
   {
    "date": "2026-11-16",
@@ -211,119 +134,6 @@
    "sid": 950321
   },
   {
-   "type": "sign_minor",
-   "name": "Angel Hernandez",
-   "team": "SDP",
-   "pos": "?",
-   "date": "2026-11-13",
-   "summary": "San Diego Padres signed free agent RHP Angel Hernandez to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950204,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Max Viera",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "Vancouver Canadians released SS Max Viera.",
-   "src": "MLB Stats API",
-   "sid": 950218,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Sann Omosako",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "Dunedin Blue Jays released RHP Sann Omosako.",
-   "src": "MLB Stats API",
-   "sid": 950216,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Yorman Licourt",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "Dunedin Blue Jays released OF Yorman Licourt.",
-   "src": "MLB Stats API",
-   "sid": 950215,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Yohn Melendez",
-   "team": "SDP",
-   "date": "2026-11-13",
-   "summary": "DSL Padres Brown released RHP Yohn Melendez.",
-   "src": "MLB Stats API",
-   "sid": 950201,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Raimundo De Los Santos",
-   "team": "SDP",
-   "pos": "?",
-   "date": "2026-11-13",
-   "summary": "San Diego Padres signed free agent SS Raimundo De Los Santos to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950206,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Euri Montero",
-   "team": "WSN",
-   "date": "2026-11-13",
-   "summary": "Wilmington Blue Rocks released RHP Euri Montero.",
-   "src": "MLB Stats API",
-   "sid": 950210,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Victor Espiritu",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "Dunedin Blue Jays released RHP Victor Espiritu.",
-   "src": "MLB Stats API",
-   "sid": 950214,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Ramon Suarez",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "FCL Blue Jays released LHP Ramon Suarez.",
-   "src": "MLB Stats API",
-   "sid": 950217,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Esmerlin Vinicio",
-   "team": "SFG",
-   "pos": "?",
-   "date": "2026-11-13",
-   "summary": "San Francisco Giants signed free agent LHP Esmerlin Vinicio to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950199,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Freigher Barco",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "FCL Blue Jays released RHP Freigher Barco.",
-   "src": "MLB Stats API",
-   "sid": 950211,
-   "status": "official"
-  },
-  {
    "type": "release",
    "name": "Peyton Williams",
    "team": "TOR",
@@ -343,82 +153,13 @@
    "src": "MLB Stats API",
    "sid": 950119,
    "status": "official"
-  },
-  {
-   "type": "trade",
-   "players": [
-    {
-     "name": "Juan Arnaud",
-     "from": "NYM",
-     "to": "TEX",
-     "forty": false,
-     "pos": "?"
-    }
-   ],
-   "date": "2026-11-14",
-   "summary": "New York Mets traded RHP Juan Arnaud to Texas Rangers.",
-   "src": "MLB Stats API",
-   "sid": 950296,
-   "status": "official"
-  },
-  {
-   "type": "trade",
-   "players": [
-    {
-     "name": "Blake Holub",
-     "from": "MIL",
-     "to": "SFG",
-     "forty": false,
-     "pos": "?"
-    }
-   ],
-   "date": "2026-11-15",
-   "summary": "San Francisco Giants traded RHP Ryan Walker to Milwaukee Brewers for RHP Blake Holub and RHP Gavin Perry.",
-   "src": "MLB Stats API",
-   "sid": 950283,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Stharling De Los Santos",
-   "team": "CHC",
-   "date": "2026-11-16",
-   "summary": "DSL Cubs Blue released SS Stharling De Los Santos.",
-   "src": "MLB Stats API",
-   "sid": 950331,
-   "status": "official"
-  },
-  {
-   "type": "retire",
-   "name": "Robier Hernandez",
-   "team": "HOU",
-   "date": "2026-11-16",
-   "summary": "RHP Robier Hernandez retired.",
-   "src": "MLB Stats API",
-   "sid": 950302,
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Geuri Lubo",
-   "team": "CHC",
-   "date": "2026-11-16",
-   "summary": "South Bend Cubs released OF Geuri Lubo.",
-   "src": "MLB Stats API",
-   "sid": 950332,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Ismael Munguia",
-   "team": "ARI",
-   "pos": "?",
-   "date": "2026-11-16",
-   "summary": "Arizona Diamondbacks signed free agent OF Ismael Munguia to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950329,
-   "status": "official"
   }
  ],
- "live": "2026-11-17T17:18:09Z"
+ "live": "2026-11-17T17:18:09Z",
+ "seen_sids": [
+  950119,
+  950220,
+  950300,
+  950321
+ ]
 }

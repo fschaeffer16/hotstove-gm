@@ -136,8 +136,9 @@ def main():
     fa_names = {nmz(P[i]['n']): P[i] for i in D.get('fa', []) if i in P}
     forty = {c: {nmz(P[i]['n']) for i in ids if i in P} for c, ids in D.get('fortyBy', {}).items()}
     forty['NYM'] = forty.get('NYM', set()) | {nmz(P[i]['n']) for i in D.get('forty', []) if i in P}
+    known = {nmz(p['n']) for p in P.values()}
     moves = T.setdefault('moves', [])
-    have_sid = {m.get('sid') for m in moves if m.get('sid')}
+    have_sid = set(T.get('seen_sids', [])) | {m.get('sid') for m in moves if m.get('sid')}
     have_np = {(nmz(m.get('name', '')), m.get('type')) for m in moves if m.get('name')}
     for m in moves:
         for p in m.get('players', []) or []:
@@ -180,10 +181,16 @@ def main():
                 mv = {'type': 'retire', 'name': name, 'team': to or fr}
             if not mv:
                 continue
+            # only moves that touch our database: a tracked player, or an MLB club at the MLB level
+            mlb_level = to_mlb or fr_id in MLB_IDS
+            if nmz(name) not in known and not (mlb_level and mv['type'] in ('trade', 'claim', 'sign', 'select')) \
+                    and not (mlb_level and mv['type'] == 'sign_minor' and re.search(r'spring training', desc, re.I)):
+                have_sid.add(sid)
+                continue
             key = (nmz(name), mv['type'])
             mv.update({'date': date, 'summary': desc, 'src': 'MLB Stats API', 'sid': sid, 'status': 'official'})
             have_sid.add(sid)
-            if key in have_np and mv['type'] != 'trade':
+            if key in have_np:
                 # already reported: mark the earlier entry official instead of adding a duplicate
                 for m in moves:
                     if (nmz(m.get('name', '')), m.get('type')) == key:
@@ -248,6 +255,7 @@ def main():
     if len(seen) != n_before or added or 'updated' not in N:
         N['updated'] = now  # only touch the file when something is new, so quiet runs make no commit
 
+    T['seen_sids'] = sorted(x for x in have_sid if isinstance(x, int))[-4000:]  # remember skipped MLB ids so they're not re-checked
     if added:
         T['updated'] = datetime.now(timezone(timedelta(hours=-5))).strftime('%Y-%m-%d')
         T['live'] = now
