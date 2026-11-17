@@ -1062,6 +1062,12 @@ function renderTop(){
   </tbody></table></div>`;
 }
 
+/* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
+const BUILD='20261117184013';
+function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
+  if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
+checkVersion();
 /* ---------- live news feed (news.json, refreshed by the site's feed robot every 10 min) ---------- */
 let NEWS=null,NEWS_SEEN=(()=>{try{return localStorage.getItem('hs-news-seen')||''}catch(e){return ''}})();
 function newNew(){return NEWS&&NEWS.items&&NEWS.items.length&&UI.tab!=='news'&&(NEWS.items[0].time||'')>NEWS_SEEN}
@@ -1282,7 +1288,7 @@ function switchTeam(code){
   render();
 }
 /* ---------- boot ---------- */
-fetch('data.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
+fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
   D=d;P=d.players;
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
   let last='NYM';try{last=localStorage.getItem('gm-last-team')||'NYM'}catch(e){}
