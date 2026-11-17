@@ -1,0 +1,18 @@
+{
+  "updated": "2026-11-17",
+  "baseline": "2026-11-14",
+  "moves": [
+    {"date": "2026-11-14", "type": "trade", "summary": "Mets trade RHP Juan Arnaud to the Rangers for $250K in international bonus pool space", "players": [{"name": "Juan Arnaud", "from": "NYM", "to": "TEX", "forty": false, "pos": "RHP"}], "src": "MLB transactions / MLB Trade Rumors"},
+    {"date": "2026-11-15", "type": "trade", "summary": "Brewers acquire RHP Ryan Walker from the Giants for RHP Blake Holub and RHP Gavin Perry", "players": [{"name": "Ryan Walker", "from": "SFG", "to": "MIL", "forty": true, "pos": "RHP"}, {"name": "Blake Holub", "from": "MIL", "to": "SFG", "forty": false, "pos": "RHP"}, {"name": "Gavin Perry", "from": "MIL", "to": "SFG", "forty": false, "pos": "RHP"}], "src": "MLB transactions / MLB Trade Rumors"},
+    {"date": "2026-11-15", "type": "sign", "summary": "Yankees re-sign LHP Tim Hill: 1 yr, $2.25M, $2.5M club option for 2028", "name": "Tim Hill", "team": "NYY", "pos": "RP", "forty": true, "contract": {"aav": 2250000, "desc": "1 yr, $2.25M (2027), $2.5M club option for 2028", "yrs": {"2027": 2250000, "2028": "CLUB OPTION"}}, "src": "MLB Trade Rumors"},
+    {"date": "2026-11-13", "type": "sign_minor", "summary": "Phillies sign RHP Geoff Hartlieb to a minor league deal", "name": "Geoff Hartlieb", "team": "PHI", "pos": "RP", "src": "MLB transactions"},
+    {"date": "2026-11-13", "type": "sign_minor", "summary": "Phillies sign Bryan Ramos to a minor league deal", "name": "Bryan Ramos", "team": "PHI", "pos": "3B", "src": "MLB transactions"},
+    {"date": "2026-11-13", "type": "sign_minor", "summary": "Braves sign Tyler Freeman to a minor league deal", "name": "Tyler Freeman", "team": "ATL", "pos": "INF", "src": "MLB transactions"},
+    {"date": "2026-11-13", "type": "sign_minor", "summary": "Athletics sign LHP Ben Bowden to a minor league deal", "name": "Ben Bowden", "team": "ATH", "pos": "RP", "src": "MLB transactions"},
+    {"date": "2026-11-13", "type": "sign_minor", "summary": "Marlins sign Luis Palacios to a minor league deal", "name": "Luis Palacios", "team": "MIA", "pos": "?", "src": "MLB transactions"},
+    {"date": "2026-11-13", "type": "sign_minor", "summary": "Rangers sign John Armstrong to a minor league deal", "name": "John Armstrong", "team": "TEX", "pos": "?", "src": "MLB transactions"},
+    {"date": "2026-11-14", "type": "sign_minor", "summary": "Brewers sign Stiven Cruz to a minor league deal with a spring training invite", "name": "Stiven Cruz", "team": "MIL", "pos": "?", "src": "MLB transactions"},
+    {"date": "2026-11-15", "type": "sign_minor", "summary": "Phillies sign Max Kranick to a non-roster minor league deal", "name": "Max Kranick", "team": "PHI", "pos": "RP", "src": "MLB Trade Rumors"},
+    {"date": "2026-11-16", "type": "sign_minor", "summary": "Orioles re-sign infielder José Barrero to a minor league deal", "name": "José Barrero", "team": "BAL", "pos": "SS", "src": "MLB transactions / MLB Trade Rumors"}
+  ]
+}
