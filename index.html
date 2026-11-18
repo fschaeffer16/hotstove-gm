@@ -239,7 +239,8 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .tbadge .seam.l{left:-78%}.tbadge .seam.r{right:-78%}
 .tbadge .code{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:0;color:color-mix(in srgb,var(--tc1) 80%,#000)}
 .tbadge .dd{position:absolute;bottom:-3px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--tc2);color:var(--tc2ink);border:2px solid #fff;font-size:10px;display:grid;place-items:center;line-height:1}
-.tbadge select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
+.tbadge select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px;color:#14100c;background:#fff;color-scheme:light}
+.tbadge select option{color:#14100c;background:#fff}
 .tside .thead.wb{padding-right:76px;min-height:74px}
 .tside .thead h3 .fch{font-size:13px;opacity:.8;margin-left:6px}
 .ttry{display:flex;gap:8px;margin-top:12px}.ttry .btn{padding:12px 14px;font-size:15px}.ttry .btn.primary{flex:1;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
@@ -1536,7 +1537,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118005907';
+const BUILD='20261118041519';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
