@@ -113,7 +113,9 @@
      "2030": "FREE AGENT"
     }
    },
-   "src": "FanGraphs Roster Resource / MLB Trade Rumors"
+   "src": "FanGraphs Roster Resource / MLB Trade Rumors",
+   "status": "official",
+   "sid": 950619
   },
   {
    "date": "2026-11-17",
@@ -1671,9 +1673,20 @@
    "src": "MLB Stats API",
    "sid": 950616,
    "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Jordan Leasure",
+   "team": "CHW",
+   "pos": "RHP",
+   "date": "2026-11-18",
+   "summary": "Chicago White Sox designated RHP Jordan Leasure for assignment.",
+   "src": "MLB Stats API",
+   "sid": 950620,
+   "status": "official"
   }
  ],
- "live": "2026-11-18T22:06:00Z",
+ "live": "2026-11-18T22:56:12Z",
  "seen_sids": [
   950119,
   950220,
@@ -1830,6 +1843,8 @@
   950612,
   950613,
   950614,
-  950616
+  950616,
+  950619,
+  950620
  ]
 }

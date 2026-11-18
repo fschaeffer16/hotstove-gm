@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Chicago White Sox designated RHP Jordan Leasure for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:56:12Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHW"
+   ]
+  },
+  {
+   "title": "White Sox Designate Jordan Leasure For Assignment",
+   "blurb": "The White Sox officially announced their signing of right-hander Dustin May. Fellow righty Jordan Leasure has been designated for assignment as the corresponding 40-man roster move. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/white-sox-designate-jordan-leasure-for-assignment.html",
+   "time": "2026-11-18T22:48:02Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "CHW"
+   ]
+  },
+  {
    "title": "MLB expects $4B Angels sale to Kroenke to close in January",
    "blurb": "Major League Baseball expects the proposed sale of the Los Angeles Angels to Kroenke Sports and Entertainment at a $4 billion evaluation to take place in January.",
    "link": "https://www.espn.com/mlb/story/_/id/50524552/mlb-expects-4b-angels-sale-kroenke-close-january",
@@ -2688,5 +2710,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-18T22:36:07Z"
+ "updated": "2026-11-18T22:56:12Z"
 }
