@@ -233,6 +233,9 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .tmhead .t{font-family:var(--display);font-weight:800;font-size:38px;line-height:.95;letter-spacing:.03em;margin-top:2px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
 .tmhead .vs{margin-top:8px;font-size:13px;color:rgba(255,255,255,.85)}
 .tmhead .seams{position:absolute;right:-38px;top:-38px;width:150px;height:150px;border-radius:50%;border:2px dashed rgba(255,255,255,.14)}
+.hand{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;line-height:1;padding:3px 5px;border-radius:4px;margin-left:6px;vertical-align:2px;background:var(--chip);color:var(--muted);border:1px solid var(--line)}
+.hand.lefty{background:color-mix(in srgb,#c8102e 14%,transparent);color:#c8102e;border-color:color-mix(in srgb,#c8102e 40%,transparent)}
+.hand.sw{background:color-mix(in srgb,#1e7b4d 14%,transparent);color:#1e7b4d;border-color:color-mix(in srgb,#1e7b4d 40%,transparent)}
 .tbadge{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:56px;height:56px;display:block;cursor:pointer}
 .tbadge .ball{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff 0%,#f6f1e6 55%,#ddd4c2 100%);box-shadow:0 3px 8px rgba(0,0,0,.45),inset -3px -4px 6px rgba(0,0,0,.12)}
 .tbadge .seam{position:absolute;top:-8%;width:100%;height:116%;border-radius:50%;border:2.5px dashed #c8102e}
@@ -1066,10 +1069,11 @@ function tradeRow(id,side){
   const set=side==='out'?UI.tOut:UI.tIn;const p=P[id];
   const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',p.t100?('#'+p.t100+' T100'):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
   const v=side==='out'?cbtOf(id):partnerCount(id);
-  return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span><div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
+  return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}<div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
 const tSig=()=>JSON.stringify([UI.tTeam,[...UI.tOut].sort(),[...UI.tIn].sort(),UI.tCash,[...(UI.tPk||[])].sort(),UI.tIfa||0]);
 function renderTrade(){
+  if(META===null)loadMeta();
   const codes=Object.keys(D.teams).filter(c=>c!==ME).sort((a,b)=>D.teams[a].name.localeCompare(D.teams[b].name));
   const code=UI.tTeam;
   const sortT=(a,b)=>{const pa=P[a],pb=P[b];const ma=(pa.lvl==='MLB'||pa.lvl==='IL'||pa.kind!=='min')?1:0,mb=(pb.lvl==='MLB'||pb.lvl==='IL'||pb.kind!=='min')?1:0;if(ma!==mb)return mb-ma;if(ma)return pwar(b)-pwar(a);return fvn(pb.fv)-fvn(pa.fv)};
@@ -1094,7 +1098,7 @@ function renderTrade(){
   const selN=side=>side==='out'?outSel.length:inSel.length;
   const list=(side,L,q,qid,ph)=>UI.tGrp[side]?`<input type="search" id="${qid}" placeholder="${ph}" value="${esc(q)}" style="width:100%;margin-top:8px;border:1px solid var(--line);border-radius:6px;padding:7px 8px;background:var(--paper)"><div class="tl">${L.map(id=>tradeRow(id,side)).join('')||'<p class="hint" style="padding:8px">Nobody here.</p>'}</div>`:`<p class="hint" style="margin:8px 2px 0">Tap 40-man or Prospects to pick players${selN(side)?` · ${selN(side)} selected`:''}.</p>`;
   const recv=side=>side==='out'?D.teams[code].name:MEN();
-  const fold=(side,sel)=>`<div class="tfold"><div class="subh">${esc(recv(side))} receive</div>${sel.map(id=>{const p=P[id],v=side==='out'?cbtOf(id):partnerCount(id);return `<div class="kv"><span>${esc(p.n)} <span class="hint">${esc([p.pos,p.lvl!=='MLB'?p.lvl:'',p.fv?'FV '+p.fv:''].filter(Boolean).join(' · '))}</span></span><b>${v?M1(v):''}</b></div>`}).join('')||'<span class="hint">Nobody picked yet. Tap the header to open.</span>'}</div>`;
+  const fold=(side,sel)=>`<div class="tfold"><div class="subh">${esc(recv(side))} receive</div>${sel.map(id=>{const p=P[id],v=side==='out'?cbtOf(id):partnerCount(id);return `<div class="kv"><span>${esc(p.n)}${handTag(id)} <span class="hint">${esc([p.pos,p.lvl!=='MLB'?p.lvl:'',p.fv?'FV '+p.fv:''].filter(Boolean).join(' · '))}</span></span><b>${v?M1(v):''}</b></div>`}).join('')||'<span class="hint">Nobody picked yet. Tap the header to open.</span>'}</div>`;
   const body=(side,sel,inner)=>UI.tFold[side]?fold(side,sel):`<div class="tbody">${inner}</div>`;
   const allC=Object.keys(D.teams).sort((a,b)=>D.teams[a].name.localeCompare(D.teams[b].name));
   const badge=(side,cur)=>`<label class="tbadge" aria-label="${side==='out'?'Team you run':'Trade partner'}"><span class="ball"><span class="seam l"></span><span class="seam r"></span><span class="code">${esc(cur)}</span></span><span class="dd">▼</span><select id="${side==='out'?'tMe':'tTeam'}">${(side==='out'?allC:codes).map(c=>`<option value="${c}"${c===cur?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label>`;
@@ -1113,8 +1117,8 @@ function renderTrade(){
   <div class="ttry"><button class="btn" type="button" data-act="tclear">Clear</button><button class="btn primary" type="button" data-act="ttry"${any?'':' disabled'}>Try trade</button></div>
   ${tried?`<div class="tsum" id="tsum">
     <div class="cols">
-      <div><div class="subh">${esc(MEN())} send</div>${outSel.map(id=>`<div class="kv"><span>${esc(P[id].n)}</span><b>${cbtOf(id)?M(cbtOf(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
-      <div><div class="subh">${esc(MEN())} receive</div>${inSel.map(id=>`<div class="kv"><span>${esc(P[id].n)} ${P[id].lvl==='MLB'||P[id].kind!=='min'?'':`<label class="hint"><input type="checkbox" data-add40="${id}"${UI.tAdd40.has(id)?' checked':''}> add to 40</label>`}</span><b>${partnerCount(id)?M(partnerCount(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
+      <div><div class="subh">${esc(MEN())} send</div>${outSel.map(id=>`<div class="kv"><span>${esc(P[id].n)}${handTag(id)}</span><b>${cbtOf(id)?M(cbtOf(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
+      <div><div class="subh">${esc(MEN())} receive</div>${inSel.map(id=>`<div class="kv"><span>${esc(P[id].n)}${handTag(id)} ${P[id].lvl==='MLB'||P[id].kind!=='min'?'':`<label class="hint"><input type="checkbox" data-add40="${id}"${UI.tAdd40.has(id)?' checked':''}> add to 40</label>`}</span><b>${partnerCount(id)?M(partnerCount(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
       <div><div class="subh">${esc(MEN())} CBT</div>
         <div class="kv"><span>Before</span><b>${M(before)}</b></div>
         <div class="kv"><span>Incoming</span><b class="plus">${sgn(inV)}</b></div>
@@ -1270,6 +1274,11 @@ function controlInfo(id){const p=P[id],y=(S.contract[id]&&S.contract[id].yrs)||p
 let META=null,META_IX=null;
 function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}if(D)render();return META}).catch(()=>{META=false})}
 function metaOf(id){if(!META_IX)return null;const p=P[id];return META_IX[nmz(p.n)+'|'+owner(id)]||META_IX[nmz(p.n)+'|'+p.team]||META_IX[nmz(p.n)]||null}
+/* handedness: hitters bat L/R/S, pitchers throw LHP/RHP (roster data first, MLB Stats API meta to fill gaps) */
+function handOf(id){const p=P[id];if(!p)return '';const m=metaOf(id);
+  if(p.p){const t=p.hand||(m&&m.th)||'';return t==='L'?'LHP':t==='R'?'RHP':''}
+  const b=p.hand||(m&&m.bs)||'';return b==='B'?'S':b}
+const handTag=id=>{const h=handOf(id);return h?`<span class="hand${/^L/.test(h)?' lefty':h==='S'?' sw':''}" title="${h.length>1?(h==='LHP'?'Left-handed pitcher':'Right-handed pitcher'):(h==='L'?'Bats left':h==='R'?'Bats right':'Switch hitter')}">${h}</span>`:''};
 function r5Info(id){const m=metaOf(id);if(!m||!m.b)return null;const b=new Date(m.b+'T12:00:00');
   let sy=m.sy||m.dy,est=false;
   if(!sy){/* international: first eligible signing period (born Sep 1 of Y-18 .. Aug 31 of Y-17) */sy=b.getUTCMonth()>=8?b.getUTCFullYear()+18:b.getUTCFullYear()+17;est=true}
@@ -1537,7 +1546,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118041519';
+const BUILD='20261118042803';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
