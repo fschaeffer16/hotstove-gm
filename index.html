@@ -85,6 +85,21 @@ header.top{background:linear-gradient(115deg,var(--team-deep) 0%,var(--team1) 60
 .tile span{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.8}
 .tile.cbt{background:color-mix(in srgb,var(--team2) 35%,transparent);border-color:color-mix(in srgb,var(--team2) 70%,#fff)}
 .tile.alert{border-color:#ffb38a;background:rgba(232,96,28,.25)}
+.tile.sm{padding:4px 8px;min-width:0}
+.tile.sm b{font-size:14px}
+.tile.sm span{font-size:9.5px}
+@media (max-width:560px){.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}.tile{min-width:0}.tile.sm{display:flex;align-items:baseline;gap:5px;padding:4px 7px}.tile.sm b{display:inline;font-size:13px}.tile.sm span{font-size:9px;letter-spacing:.03em}}
+.topnav{position:sticky;top:0;z-index:30;background:var(--team-deep);border-bottom:2px solid var(--team2);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.topnav-in{max-width:1500px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:6px 10px;-webkit-overflow-scrolling:touch}
+.topnav-in::-webkit-scrollbar{display:none}
+.topnav button{flex:0 0 auto;border:0;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;font-family:var(--display);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.03em;padding:7px 13px;white-space:nowrap}
+.topnav button[aria-selected="true"]{background:var(--team2);color:var(--team2-ink)}
+.desk,.grid,.cbtcol{scroll-margin-top:58px}
+.cardhead{cursor:pointer;user-select:none}
+.cardhead h2::after{content:"▾";display:inline-block;margin-left:8px;font-size:.7em;opacity:.55;transition:transform .15s}
+.card.collapsed .cardhead h2::after{transform:rotate(-90deg)}
+.card.collapsed>:not(.cardhead){display:none!important}
+.card.collapsed .cardhead{margin-bottom:0}
 .actions{display:flex;flex-wrap:wrap;gap:6px}
 .btn{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:6px 12px;font-weight:500}
 .btn:hover{border-color:var(--accent)}
@@ -303,6 +318,7 @@ textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px so
     </div>
   </div>
 </header>
+<nav class="topnav" id="topnav" aria-label="Sections"><div class="topnav-in" id="topnavIn"></div></nav>
 <div class="banner" id="selBanner" hidden></div>
 <div class="wrap" id="app"><div class="loading">Loading roster data…</div></div>
 <div class="scrim" id="scrim"></div>
@@ -495,13 +511,21 @@ function render(){
     <section class="cbtcol">${renderCBT(c)}</section>
   </div>
   <div class="desk">
-    <div class="tabs" role="tablist">
-      ${[['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'+(newNew()?' •':'')],['log','Transactions ('+S.log.length+')'],['export','Copy update']].map(([k,l])=>`<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${UI.tab===k}">${l}</button>`).join('')}
-    </div>
-    <div class="panel">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,news:renderNews,log:renderLog,export:renderExport})[UI.tab]()}</div>
+
+    <div class="panel" style="border-top:1px solid var(--line);border-radius:8px">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,news:renderNews,log:renderLog,export:renderExport})[UI.tab]()}</div>
   </div>`;
-  renderBanner();
+  renderBanner();renderNav();applyCollapse();
 }
+const NAV=[['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['log','Transactions'],['export','Copy update']];
+function renderNav(){const el=$('#topnavIn');if(!el)return;const cur=UI.navAt||UI.tab;
+  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}${k==='log'&&S.log.length?' ('+S.log.length+')':''}</button>`).join('');
+  const b=el.querySelector('[aria-selected="true"]');if(b&&b.scrollIntoView&&!UI.navNoScroll)b.scrollIntoView({block:'nearest',inline:'nearest'})}
+function goTo(k){const t=k==='roster'?$('.grid'):k==='cbt'?$('.cbtcol'):$('.desk');if(t)t.scrollIntoView({block:'start'})}
+/* collapsible cards: tap a card's title bar to fold it; remembered per device */
+let COLL=(()=>{try{return new Set(JSON.parse(localStorage.getItem('hs-collapsed')||'[]'))}catch(e){return new Set()}})();
+function cardKey(c){const h=c.querySelector('.cardhead h2');return h?h.textContent.trim().toLowerCase():null}
+function applyCollapse(){document.querySelectorAll('.card').forEach(c=>{const k=cardKey(c);if(k)c.classList.toggle('collapsed',COLL.has(k))})}
+function toggleCard(c){const k=cardKey(c);if(!k)return;COLL.has(k)?COLL.delete(k):COLL.add(k);try{localStorage.setItem('hs-collapsed',JSON.stringify([...COLL]))}catch(e){}c.classList.toggle('collapsed',COLL.has(k))}
 function renderTiles(){
   const c=cbt(),t=c.total,ov=t-D.threshold,tx=tax(t),n40=count40(),a=active26();
   const war=a.reduce((s,id)=>s+pwar(id),0);
@@ -509,9 +533,9 @@ function renderTiles(){
    <div class="tile cbt ${t>298e6?'alert':''}"><b>${M(t)}</b><span>CBT payroll</span></div>
    <div class="tile"><b>${ov>0?'+'+M(ov):M(-ov)}</b><span>${ov>0?'over':'under'} $258M</span></div>
    <div class="tile"><b>${M1(tx)}</b><span>Est. tax</span></div>
-   <div class="tile ${n40>40?'alert':''}"><b>${n40}/40</b><span>40-man</span></div>
-   <div class="tile"><b>${a.length}/26</b><span>Active roster</span></div>
-   <div class="tile"><b>${war.toFixed(1)}</b><span>26-man proj WAR</span></div>`;
+   <div class="tile sm ${n40>40?'alert':''}"><b>${n40}/40</b><span>40-man</span></div>
+   <div class="tile sm"><b>${a.length}/26</b><span>Active</span></div>
+   <div class="tile sm"><b>${war.toFixed(1)}</b><span>Proj WAR</span></div>`;
   $('#bUndo').disabled=!HIST.length;
 }
 function renderBanner(){
@@ -1459,7 +1483,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118002733';
+const BUILD='20261118003414';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1566,9 +1590,11 @@ async function copy(txt,msg){
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
+  const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
-  if(t.dataset.tab){UI.tab=t.dataset.tab;render();return}
+  if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(fromNav)goTo('desk');return}
+  if(t.dataset.goto){UI.navAt=t.dataset.goto;renderNav();goTo(t.dataset.goto);return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
   if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
   if(t.dataset.g40){UI.g40=t.dataset.g40;render();return}
