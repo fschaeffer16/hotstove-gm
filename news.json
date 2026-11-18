@@ -1,6 +1,35 @@
 {
  "items": [
   {
+   "title": "Athletics signed free agent RHP Wilkin Ramos to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T15:17:03Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Passan: 2026-27 MLB offseason preview, free agent updates",
+   "blurb": "The hot stove is about to get blazing hot. Here's what will shape the coming weeks of offseason moves.",
+   "link": "https://www.espn.com/mlb/story/_/id/50512111/passan-offseason-preview-2026-27-free-agent-updates",
+   "time": "2026-11-18T15:08:13Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "The Opener: Silver Sluggers, Qualifying Offers, May",
+   "blurb": "Tuesday was a wild one for transactions with the Rule 5 deadline in the evening. Virtually every team shuffled players on and off its 40-man roster. 1. Silver Sluggers announced The Silver Slugger Awards for both leagues were handed out last night. The crop included a pair of rookies (Kevin McGonigl",
+   "link": "https://www.mlbtraderumors.com/2026/11/the-opener-silver-sluggers-qualifying-offers-may.html",
+   "time": "2026-11-18T14:42:30Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "St. Louis Cardinals selected the contract of RHP Jacob Odle from Peoria Chiefs.",
    "blurb": "",
    "link": "",
@@ -2090,5 +2119,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-18T05:56:24Z"
+ "updated": "2026-11-18T15:17:03Z"
 }

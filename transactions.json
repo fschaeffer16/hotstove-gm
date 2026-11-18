@@ -1316,9 +1316,20 @@
    "src": "MLB Stats API",
    "sid": 950511,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Wilkin Ramos",
+   "team": "ATH",
+   "pos": "?",
+   "date": "2026-11-17",
+   "summary": "Athletics signed free agent RHP Wilkin Ramos to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950560,
+   "status": "official"
   }
  ],
- "live": "2026-11-18T05:56:24Z",
+ "live": "2026-11-18T15:17:03Z",
  "seen_sids": [
   950119,
   950188,
@@ -1453,6 +1464,20 @@
   950509,
   950510,
   950511,
-  950512
+  950512,
+  950553,
+  950554,
+  950557,
+  950560,
+  950562,
+  950563,
+  950564,
+  950565,
+  950566,
+  950567,
+  950568,
+  950569,
+  950570,
+  950571
  ]
 }
