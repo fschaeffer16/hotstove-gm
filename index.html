@@ -526,6 +526,13 @@ let COLL=(()=>{try{return new Set(JSON.parse(localStorage.getItem('hs-collapsed'
 function cardKey(c){const h=c.querySelector('.cardhead h2');return h?h.textContent.trim().toLowerCase():null}
 function applyCollapse(){document.querySelectorAll('.card').forEach(c=>{const k=cardKey(c);if(k)c.classList.toggle('collapsed',COLL.has(k))})}
 function toggleCard(c){const k=cardKey(c);if(!k)return;COLL.has(k)?COLL.delete(k):COLL.add(k);try{localStorage.setItem('hs-collapsed',JSON.stringify([...COLL]))}catch(e){}c.classList.toggle('collapsed',COLL.has(k))}
+const NL=['ARI','ATL','CHC','CIN','COL','LAD','MIA','MIL','NYM','PHI','PIT','SDP','SFG','STL','WSN'];
+/* other clubs: best 13 hitters + 13 pitchers they own now (after real moves and your trades) */
+function liveWAR(code){const ids=teamIds(code).filter(id=>{const p=P[id];return p.lvl==='MLB'||p.lvl==='IL'||(D.fortyBy[code]||[]).includes(id)});
+  const w=id=>pwar(id)||0,h=ids.filter(id=>!P[id].p).map(w).sort((a,b)=>b-a).slice(0,13),pi=ids.filter(id=>P[id].p).map(w).sort((a,b)=>b-a).slice(0,13);
+  return [...h,...pi].reduce((a,b)=>a+b,0)}
+function warRank(myWar){const lg=NL.includes(ME)?NL:Object.keys(D.teams).filter(c=>!NL.includes(c));
+  const v=lg.map(c=>c===ME?myWar:liveWAR(c));const r=v.filter(x=>x>myWar).length+1;return {r,lg:NL.includes(ME)?'NL':'AL',n:lg.length}}
 function renderTiles(){
   const c=cbt(),t=c.total,ov=t-D.threshold,tx=tax(t),n40=count40(),a=active26();
   const war=a.reduce((s,id)=>s+pwar(id),0);
@@ -535,7 +542,7 @@ function renderTiles(){
    <div class="tile"><b>${M1(tx)}</b><span>Est. tax</span></div>
    <div class="tile sm ${n40>40?'alert':''}"><b>${n40}/40</b><span>40-man</span></div>
    <div class="tile sm"><b>${a.length}/26</b><span>Active</span></div>
-   <div class="tile sm"><b>${war.toFixed(1)}</b><span>Proj WAR</span></div>`;
+   <div class="tile sm" title="Rank among ${(()=>{const k=warRank(war);return k.n+' '+k.lg})()} clubs (others: best 26 they own now)"><b>${war.toFixed(1)}</b><span>Proj WAR <b style="display:inline;font-size:inherit;color:var(--team2-hi,#ffb38a)">${(()=>{const k=warRank(war);return ordN(k.r)+' '+k.lg})()}</b></span></div>`;
   $('#bUndo').disabled=!HIST.length;
 }
 function renderBanner(){
@@ -1483,7 +1490,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118003414';
+const BUILD='20261118003735';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
