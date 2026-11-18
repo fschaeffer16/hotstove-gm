@@ -180,9 +180,8 @@ select.lbl{appearance:none;cursor:pointer;text-align-last:center}
 .tag.new{background:var(--accent);color:var(--accent-ink)}
 .tag.rep{background:transparent;color:var(--accent-text);border:1px solid var(--accent);margin:0 6px 0 0}
 .tag.off{background:#1f7a3a;color:#fff;margin:0 6px 0 0}
-.todaycol{margin-top:16px}.card.c-today{border-top-color:var(--hs-fire,#e8562a)}.card.c-today h2{color:var(--accent-text)}
-.card.c-today .chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;font-weight:700;color:var(--muted)}.card.c-today .chips button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
-.tdgrp{margin-top:12px}.tdmore{margin-top:8px;border:1px solid var(--line);background:var(--paper);color:var(--blue);font-weight:700;font-size:13.5px;border-radius:999px;padding:6px 14px;cursor:pointer}.tdlist{list-style:none;margin:4px 0 0;padding:0}.tdlist li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line);line-height:1.35}.tdlist li.mine{background:var(--chip);margin:0 -6px;padding:7px 6px;border-radius:4px}
+.tdwrap .chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;font-weight:700;color:var(--muted)}.tdwrap .chips button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
+.tdday{margin-top:18px;padding-top:12px;border-top:3px solid var(--blue)}.tdday h3{margin:0}.tdday h3 .hint{font-weight:400;font-size:13px;margin-left:6px}.tdgrp{margin-top:10px}.tdmore{margin-top:8px;border:1px solid var(--line);background:var(--paper);color:var(--blue);font-weight:700;font-size:13.5px;border-radius:999px;padding:6px 14px;cursor:pointer}.tdlist{list-style:none;margin:4px 0 0;padding:0}.tdlist li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line);line-height:1.35}.tdlist li.mine{background:var(--chip);margin:0 -6px;padding:7px 6px;border-radius:4px}
 .tdt{display:flex;gap:3px;flex:none;width:76px;flex-wrap:wrap}.tdteam{display:inline-block;min-width:34px;text-align:center;font:700 11px/18px var(--display,inherit);color:#fff;border-radius:3px;letter-spacing:.03em}
 .seg.tview{margin:0 0 12px}.txhist{margin-top:16px}.txhist summary{cursor:pointer;font-weight:700;color:var(--muted)}
 .news{list-style:none;margin:0;padding:0}.news li{padding:9px 0;border-bottom:1px solid var(--line)}.news .nh{font-weight:600;line-height:1.35}.news a{color:inherit;text-decoration:none}.news a:hover{text-decoration:underline}
@@ -573,7 +572,6 @@ function render(){
   const c=cbt();
   if(UI.tab==='log'){UI.tab='trade';UI.tView='log'}
   $('#app').innerHTML=`
-  <section class="todaycol">${renderToday()}</section>
   <div class="grid">
     <section>${renderDepth()}</section>
     <section>${render40()}</section>
@@ -581,13 +579,13 @@ function render(){
   </div>
   <div class="desk">
 
-    <div class="panel" style="border-top:1px solid var(--line);border-radius:8px">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,news:renderNews,log:renderLog,export:renderExport})[UI.tab]()}</div>
+    <div class="panel" style="border-top:1px solid var(--line);border-radius:8px">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,news:renderNews,moves:renderMoves,log:renderLog,export:renderExport})[UI.tab]()}</div>
   </div>`;
   renderBanner();renderNav();applyCollapse();
 }
-const NAV=[['home','⌂ Home'],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['export','Copy update']];
+const NAV=[['home','⌂ Home'],['moves',"Today's Moves"],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['export','Copy update']];
 function renderNav(){const el=$('#topnavIn');if(!el)return;const cur=UI.navAt||UI.tab;
-  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'||k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}</button>`).join('');
+  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'||k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}${k==='moves'&&todayCount()?' ('+todayCount()+')':''}</button>`).join('');
   const b=el.querySelector('[aria-selected="true"]');if(b&&b.scrollIntoView&&!UI.navNoScroll)b.scrollIntoView({block:'nearest',inline:'nearest'})}
 function goTo(k){if(k==='home'){window.scrollTo({top:0});return}const t=k==='roster'?$('.grid'):k==='cbt'?$('.cbtcol'):$('.desk');if(t)t.scrollIntoView({block:'start'})}
 /* collapsible cards: tap a card's title bar to fold it; remembered per device */
@@ -1764,7 +1762,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118210519';
+const BUILD='20261118211544';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1800,27 +1798,29 @@ const dayName=ymd=>new Date(ymd+'T12:00:00').toLocaleDateString('en-US',{weekday
 function txTeams(t){const s=new Set();if(t.team)s.add(t.team);(t.players||[]).forEach(m=>{m.from&&s.add(m.from);m.to&&s.add(m.to)});return [...s].filter(c=>D.teams[c])}
 const TDGRP=[['trades','Trades',['trade']],['sign','Signings',['sign','sign_minor','extend','extension']],['roster','Roster moves',null]];
 function tdGroup(t){for(const [k,,ty] of TDGRP)if(ty&&ty.includes(t.type))return k;return 'roster'}
-function renderToday(){
-  const moves=((TXL||D.tx||{}).moves)||[];const td=etDay(Date.now());
-  const days=[...new Set(moves.map(m=>m.date).filter(d=>d&&d<=td))].sort();
-  const day=days.includes(td)?td:days[days.length-1];
+function todayCount(){const td=etDay(Date.now());return (((TXL||(D&&D.tx)||{}).moves)||[]).filter(m=>m.date===td).length}
+function renderMoves(){
+  const moves=((TXL||D.tx||{}).moves)||[];const td=etDay(Date.now()),yd=etDay(Date.now()-864e5);
   const f=UI.tdF||'all',mine=m=>txTeams(m).includes(ME);
-  const all=day?moves.filter(m=>m.date===day):[];const list=all.filter(m=>f==='all'||mine(m));
-  const sub=!day?'':day===td?dayName(td):`Nothing yet today · latest: ${dayName(day)}`;
+  const days=[...new Set(moves.map(m=>m.date).filter(Boolean))].sort().reverse();
   const chip=c=>{const [a,b]=COLORS[c]||['#555','#999'];return `<span class="tdteam" style="background:${a};box-shadow:inset 0 -2px 0 ${b}" title="${esc(D.teams[c].name)}">${esc(c)}</span>`};
   const stat=m=>m.status==='official'?'<span class="tag off">official</span>':'<span class="tag rep">reported</span>';
   const row=m=>`<li class="${mine(m)?'mine':''}"><div class="tdt">${txTeams(m).map(chip).join('')}</div><div>${stat(m)}${esc((m.summary||'').replace(/\s+/g,' '))}</div></li>`;
-  const grp=([k,label])=>{const g=list.filter(m=>tdGroup(m)===k).sort((a,b)=>mine(b)-mine(a));if(!g.length)return '';
-    const open=UI.tdAll&&UI.tdAll.has(k),N=5;
-    return `<div class="tdgrp"><div class="subh">${label} <span class="hint">${g.length}</span></div><ul class="tdlist">${(open?g:g.slice(0,N)).map(row).join('')}</ul>${g.length>N?`<button type="button" class="tdmore" data-tdall="${k}">${open?'Show fewer':'Show all '+g.length}</button>`:''}</div>`};
-  const heads=((NEWS&&NEWS.items)||[]).filter(x=>x.kind==='news'&&x.time&&etDay(x.time)===td).slice(0,3);
+  const grp=(day,list,[k,label])=>{const g=list.filter(m=>tdGroup(m)===k).sort((a,b)=>mine(b)-mine(a));if(!g.length)return '';
+    const key=day+':'+k,open=UI.tdAll&&UI.tdAll.has(key),N=5;
+    return `<div class="tdgrp"><div class="subh">${label} <span class="hint">${g.length}</span></div><ul class="tdlist">${(open?g:g.slice(0,N)).map(row).join('')}</ul>${g.length>N?`<button type="button" class="tdmore" data-tdall="${key}">${open?'Show fewer':'Show all '+g.length}</button>`:''}</div>`};
+  const label=d=>(d===td?'Today · ':d===yd?'Yesterday · ':'')+dayName(d);
+  const dayHTML=d=>{const all=moves.filter(m=>m.date===d),list=all.filter(m=>f==='all'||mine(m));if(!list.length)return '';
+    return `<section class="tdday"><h3>${esc(label(d))} <span class="hint">${list.length} move${list.length>1?'s':''}</span></h3>${TDGRP.map(x=>grp(d,list,x)).join('')}</section>`};
+  const nAll=moves.length,nMine=moves.filter(mine).length;
   const btn=(k,l)=>`<button type="button" data-tdf="${k}" aria-pressed="${f===k}">${l}</button>`;
-  return `<div class="card c-today">
-    <div class="cardhead"><h2>Today's Moves</h2><span class="cnt">${esc(sub)}</span></div>
-    ${all.length?`<div class="chips" role="group" aria-label="Filter">${btn('all','All MLB ('+all.length+')')}${btn('mine',esc(MEN())+' ('+all.filter(mine).length+')')}</div>`:''}
-    ${list.length?TDGRP.map(grp).join(''):`<p class="hint" style="margin:8px 0 0">${all.length?'No '+esc(MEN())+' moves '+(day===td?'today':'that day')+'.':'No real-world moves yet. They show up here as MLB and the news report them.'}</p>`}
-    ${heads.length?`<div class="tdgrp"><div class="subh">Top stories</div><ul class="news">${heads.map(x=>`<li><div class="nh">${x.link?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)}</a>`:esc(x.title)}</div><div class="hint">${esc(x.source)} · ${esc(ago(x.time))}</div></li>`).join('')}</ul><button type="button" class="tdmore" data-tab="news">All news ›</button></div>`:''}
-    <p class="hint" style="margin:10px 0 0">Real MLB moves from MLB's official transactions, ESPN and MLB Trade Rumors, updated about every 10 minutes. <b>Reported</b> = agreed, not yet official.</p>
+  const body=days.map(dayHTML).join('');
+  return `<div class="tdwrap">
+    <h2 style="margin:0 0 4px">Today's Moves</h2>
+    <p class="hint" style="margin:0 0 10px">Real MLB trades, signings and roster moves, newest day first. From MLB's official transactions, ESPN and MLB Trade Rumors, updated about every 10 minutes. <b>Reported</b> = agreed, not yet official.</p>
+    ${nAll?`<div class="chips" role="group" aria-label="Filter">${btn('all','All MLB ('+nAll+')')}${btn('mine',esc(MEN())+' ('+nMine+')')}</div>`:''}
+    ${days.length&&days[0]!==td?`<p class="hint" style="margin:12px 0 0">No moves yet today.</p>`:''}
+    ${body||`<p class="hint" style="margin:12px 0 0">${nAll?'No '+esc(MEN())+' moves yet this offseason.':'No real-world moves yet. They show up here as MLB and the news report them.'}</p>`}
   </div>`;
 }
 
