@@ -1493,17 +1493,6 @@
    "src": "MLB Stats API",
    "sid": 950609,
    "status": "official"
-  },
-  {
-   "date": "2026-11-18",
-   "type": "sign",
-   "summary": "Sources: Mets favorite to sign Tarik Skubal as teams ramp up pursuit of FA ace",
-   "name": "Tarik Skubal",
-   "team": "NYM",
-   "pos": "SP",
-   "src": "ESPN https://www.espn.com/mlb/story/_/id/50521652/sources-mets-final-teams-bidding-tarik-skubal",
-   "status": "reported",
-   "forty": true
   }
  ],
  "live": "2026-11-18T21:54:07Z",

@@ -38,7 +38,7 @@ NICK = [('White Sox', 'CHW'), ('Red Sox', 'BOS'), ('Blue Jays', 'TOR'), ('Diamon
 NUM = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
        'eleven': 11, 'twelve': 12, 'thirteen': 13, 'fourteen': 14, 'fifteen': 15}
 AGREE = re.compile(r'\b(reach|reaches|agree|agrees|agreed|sign|signs|signed|land|lands|finalize|finalized|deal|contract|re-sign|re-signs)\b', re.I)
-RUMOR = re.compile(r'\b(interest|interested|linked|eye|eyes|eyeing|among|could|would|should|fits?|best|rumou?rs?|pursu|target|meet|met|talks?|considering|checked in|in on|predict|mailbag|chat|tracker|notes|candidates|ranking|top \d+|why|how|what|which|chance)\b|\?', re.I)
+RUMOR = re.compile(r'\b(interest\w*|linked|links?|eye\w*|among|could|would|should|might|may sign|fits?|best|rumou?rs?|pursu\w*|target\w*|meet|met|talks?|consider\w*|checked in|in on|predict\w*|mailbag|chat|tracker|notes|candidates?|ranking\w*|top \d+|why|how|what|which|chances?|favou?rites?|front-?runners?|finalists?|final (two|three|four|teams)|suitors?|bid\w*|offers?|offered|expect\w*|likely|near\w*|ramp\w*|mystery|market|sweepstakes|push\w*|court\w*|want\w*|hope\w*|plan\w*|potential|possible|intrigu\w*|monitor\w*|watch\w*|scout\w*|preview|outlook|odds|projection\w*|predictions?|if|whether|not|won\'t|unlikely|declin\w*|reject\w*|turn\w* down)\b|\?', re.I)
 
 
 def nmz(s):
