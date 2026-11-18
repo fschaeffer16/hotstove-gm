@@ -1319,9 +1319,13 @@ function controlInfo(id){const p=P[id],y=(S.contract[id]&&S.contract[id].yrs)||p
   return {txt:svc?`${svc.toFixed(3)} years of service`:'',svc}}
 /* ---- Rule 5 eligibility (needs player_meta.json: birth date, draft year, country from MLB Stats API) ---- */
 let META=null,META_IX=null;
-function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}if(D)render();return META}).catch(()=>{META=false})}
+function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}if(D){fillFromMeta();render()}return META}).catch(()=>{META=false})}
 function metaOf(id){if(!META_IX)return null;const p=P[id];return META_IX[nmz(p.n)+'|'+owner(id)]||META_IX[nmz(p.n)+'|'+p.team]||META_IX[nmz(p.n)]||null}
 /* handedness: hitters bat L/R/S, pitchers throw LHP/RHP (roster data first, MLB Stats API meta to fill gaps) */
+/* players added by real-world moves (or missing a position in the source data) get position and age from MLB's rosters */
+function fillFromMeta(){if(!META_IX)return;for(const id in P){const p=P[id];if(p.pos&&p.pos!=='?'&&p.age)continue;const m=metaOf(id);if(!m)continue;
+  if(!p.pos||p.pos==='?'){p.pos=m.pos==='P'?(p.p?'RP':'P'):m.pos||p.pos;if(m.pos==='P')p.p=true}
+  if(!p.age&&m.b){const b=new Date(m.b+'T12:00:00');p.age=+((Date.UTC(2027,3,1)-b)/31557600000).toFixed(1)}}}
 function handOf(id){const p=P[id];if(!p)return '';const m=metaOf(id);
   if(p.p){const t=p.hand||(m&&m.th)||'';return t==='L'?'LHP':t==='R'?'RHP':''}
   const b=p.hand||(m&&m.bs)||'';return b==='B'?'S':b}
@@ -1593,7 +1597,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118044432';
+const BUILD='20261118051035';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
