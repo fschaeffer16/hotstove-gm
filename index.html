@@ -1143,6 +1143,7 @@ function qoSignings(){const out=[];
   for(const q of (S&&S.qo)||[])out.push({...q});
   const mv=(D.tx&&D.tx.moves)||[];
   for(const t of mv){if(t.type!=='sign')continue;const id=findP(t.name,t.team);if(!id||!P[id].qo)continue;if(out.some(o=>o.id===id))continue;
+    if(t.team===P[id].prev||/qualifying offer/i.test(t.summary||''))continue; /* accepted the QO / re-signed: no forfeit, no comp */
     const yrs=t.contract&&t.contract.yrs?Object.values(t.contract.yrs).filter(v=>typeof v==='number'):[];
     out.push({id,from:P[id].prev,to:t.team,total:yrs.reduce((a,b)=>a+b,0)||((t.contract&&t.contract.aav)||0)})}
   const cnt={};for(const o of out){o.nth=cnt[o.to]||0;cnt[o.to]=o.nth+1;o.forfeit=qoForfeit(o.to,o.nth);o.comp=qoComp(o.from,o.total)}
@@ -1436,7 +1437,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261117202135';
+const BUILD='20261118000229';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
