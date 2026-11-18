@@ -1327,9 +1327,186 @@
    "src": "MLB Stats API",
    "sid": 950560,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Cal Stevenson",
+   "team": "SDP",
+   "pos": "?",
+   "date": "2026-11-17",
+   "summary": "San Diego Padres signed free agent OF Cal Stevenson to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950596,
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Griffin Lockwood-Powell",
+   "team": "LAD",
+   "date": "2026-11-17",
+   "summary": "Tulsa Drillers released C Griffin Lockwood-Powell.",
+   "src": "MLB Stats API",
+   "sid": 950583,
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Tyler Santana",
+   "team": "CHC",
+   "date": "2026-11-17",
+   "summary": "Iowa Cubs released RHP Tyler Santana.",
+   "src": "MLB Stats API",
+   "sid": 950573,
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Frankie Scalzo Jr.",
+   "team": "CHC",
+   "date": "2026-11-17",
+   "summary": "Knoxville Smokies released RHP Frankie Scalzo Jr..",
+   "src": "MLB Stats API",
+   "sid": 950574,
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Adam Stone",
+   "team": "CHC",
+   "date": "2026-11-17",
+   "summary": "South Bend Cubs released RHP Adam Stone.",
+   "src": "MLB Stats API",
+   "sid": 950575,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Levi Stoudt",
+   "team": "TBR",
+   "pos": "?",
+   "date": "2026-11-17",
+   "summary": "Tampa Bay Rays signed free agent RHP Levi Stoudt to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950604,
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Austin Gauthier",
+   "team": "LAD",
+   "date": "2026-11-17",
+   "summary": "Oklahoma City Comets released 2B Austin Gauthier.",
+   "src": "MLB Stats API",
+   "sid": 950582,
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Taylor Young",
+   "team": "LAD",
+   "date": "2026-11-17",
+   "summary": "Tulsa Drillers released 2B Taylor Young.",
+   "src": "MLB Stats API",
+   "sid": 950584,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Junior Perez",
+   "team": "BAL",
+   "pos": "?",
+   "date": "2026-11-18",
+   "summary": "Baltimore Orioles signed free agent OF Junior Perez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950614,
+   "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Connor Wong",
+   "team": "BOS",
+   "date": "2026-11-18",
+   "summary": "Boston Red Sox designated C Connor Wong for assignment.",
+   "src": "MLB Stats API",
+   "sid": 950611,
+   "status": "official"
+  },
+  {
+   "type": "sign",
+   "name": "Sonny Gray",
+   "team": "MIN",
+   "pos": "?",
+   "forty": true,
+   "date": "2026-11-18",
+   "summary": "Minnesota Twins signed free agent RHP Sonny Gray.",
+   "src": "MLB Stats API",
+   "sid": 950613,
+   "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Nick Fortes",
+     "from": "TBR",
+     "to": "BOS",
+     "forty": true,
+     "pos": "?"
+    }
+   ],
+   "date": "2026-11-18",
+   "summary": "Tampa Bay Rays traded C Nick Fortes to Boston Red Sox for RHP Angel Roa.",
+   "src": "MLB Stats API",
+   "sid": 950612,
+   "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "L.P. Langevin",
+     "from": "KCR",
+     "to": "SEA",
+     "forty": false,
+     "pos": "?"
+    }
+   ],
+   "date": "2026-11-18",
+   "summary": "Seattle Mariners traded RHP Bryce Miller, RHP Logan Evans and LHP José A. Ferrer to Kansas City Royals for 3B Maikel Garcia, RHP L.P. Langevin and RHP James McArthur.",
+   "src": "MLB Stats API",
+   "sid": 950608,
+   "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Jace Jung",
+     "from": "DET",
+     "to": "LAA",
+     "forty": true,
+     "pos": "?"
+    }
+   ],
+   "date": "2026-11-18",
+   "summary": "Detroit Tigers traded 3B Jace Jung to Los Angeles Angels for cash.",
+   "src": "MLB Stats API",
+   "sid": 950609,
+   "status": "official"
+  },
+  {
+   "date": "2026-11-18",
+   "type": "sign",
+   "summary": "Sources: Mets favorite to sign Tarik Skubal as teams ramp up pursuit of FA ace",
+   "name": "Tarik Skubal",
+   "team": "NYM",
+   "pos": "SP",
+   "src": "ESPN https://www.espn.com/mlb/story/_/id/50521652/sources-mets-final-teams-bidding-tarik-skubal",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-18T15:17:03Z",
+ "live": "2026-11-18T21:54:07Z",
  "seen_sids": [
   950119,
   950188,
@@ -1478,6 +1655,31 @@
   950568,
   950569,
   950570,
-  950571
+  950571,
+  950572,
+  950573,
+  950574,
+  950575,
+  950579,
+  950582,
+  950583,
+  950584,
+  950586,
+  950589,
+  950592,
+  950594,
+  950596,
+  950598,
+  950599,
+  950602,
+  950604,
+  950606,
+  950608,
+  950609,
+  950611,
+  950612,
+  950613,
+  950614,
+  950616
  ]
 }

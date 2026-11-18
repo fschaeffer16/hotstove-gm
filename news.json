@@ -1,6 +1,368 @@
 {
  "items": [
   {
+   "title": "San Diego Padres signed free agent OF Cal Stevenson to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "Tulsa Drillers released C Griffin Lockwood-Powell.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Iowa Cubs released RHP Tyler Santana.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
+   "title": "Knoxville Smokies released RHP Frankie Scalzo Jr..",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
+   "title": "South Bend Cubs released RHP Adam Stone.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays signed free agent RHP Levi Stoudt to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "Oklahoma City Comets released 2B Austin Gauthier.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Tulsa Drillers released 2B Taylor Young.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles signed free agent OF Junior Perez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Boston Red Sox designated C Connor Wong for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BOS"
+   ]
+  },
+  {
+   "title": "Minnesota Twins signed free agent RHP Sonny Gray.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays traded C Nick Fortes to Boston Red Sox for RHP Angel Roa.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BOS",
+    "TBR"
+   ]
+  },
+  {
+   "title": "Seattle Mariners traded RHP Bryce Miller, RHP Logan Evans and LHP José A. Ferrer to Kansas City Royals for 3B Maikel Garcia, RHP L.P. Langevin and RHP James McArthur.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SEA",
+    "KCR"
+   ]
+  },
+  {
+   "title": "Detroit Tigers traded 3B Jace Jung to Los Angeles Angels for cash.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T21:54:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAA",
+    "DET"
+   ]
+  },
+  {
+   "title": "Rockies Re-Sign TJ Shook To Minor League Deal",
+   "blurb": "The Rockies announced that they have re-signed right-hander TJ Shook to a minor league deal. Prior to the official announcement, it was reported by Thomas Harding of MLB.com, who noted that Shook has been assigned to Triple-A Albuquerque. Shook, 29 in May, played minor league ball for the Brewers an",
+   "link": "https://www.mlbtraderumors.com/2026/11/rockies-re-sign-tj-shook-to-minor-league-deal.html",
+   "time": "2026-11-18T21:52:27Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Twins reunite with veteran right-hander Sonny Gray on two-year deal",
+   "blurb": "The Twins have signed free agent right-hander Sonny Gray to a two-year contract, the team announced. The deal is for $55 million and includes an opt-out after the first season, sources told ESPN's Jeff Passan.",
+   "link": "https://www.espn.com/mlb/story/_/id/50523817/twins-sign-veteran-right-hander-sonny-gray-two-year-deal",
+   "time": "2026-11-18T21:27:14Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
+   "title": "Rob Manfred says MLB owners won't compromise on salary cap",
+   "blurb": "Commissioner Rob Manfred said owners will not accept any deal without a salary cap, leaving MLB on track for a lockout that could threaten the 2027 season.",
+   "link": "https://www.espn.com/mlb/story/_/id/50523785/rob-manfred-says-mlb-owners-compromise-salary-cap",
+   "time": "2026-11-18T21:11:17Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Rob Manfred: MLB will not compromise on salary cap and floor",
+   "blurb": "Rob Manfred: MLB will not compromise on salary cap and floor",
+   "link": "https://www.espn.com/video/clip/_/id/50523891/mlb-not-compromise-salary-cap-floor",
+   "time": "2026-11-18T21:10:55Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Royals Designate Kyle Isbel For Assignment",
+   "blurb": "The Royals announced their six-player trade with the Mariners, which was reported earlier today. It was a three-for-three swap but all three players heading to Kansas City had 40-man roster spots, compared to just two of the players going to Seattle. The Royals therefore needed to open a 40-man spot",
+   "link": "https://www.mlbtraderumors.com/2026/11/royals-designate-kyle-isbel-for-assignment.html",
+   "time": "2026-11-18T21:05:50Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Red Sox acquire catcher Nick Fortes in trade with Rays",
+   "blurb": "The Red Sox traded for catcher Nick Fortes, who started 78 games behind the plate for the Rays last season, while sending a minor league pitcher to Tampa Bay.",
+   "link": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
+   "time": "2026-11-18T20:38:46Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "BOS",
+    "TBR"
+   ]
+  },
+  {
+   "title": "Twins Sign Sonny Gray",
+   "blurb": "Sonny Gray is headed back to Minnesota. The Twins announced Wednesday that they&#8217;ve signed the free-agent righty to a two-year contract that&#8217;ll reportedly guarantee him $55MM and contains an opt-out opportunity following the 2027 season. Gray, a client of McKinnis Sports, starred for Minn",
+   "link": "https://www.mlbtraderumors.com/2026/11/twins-sign-sonny-gray.html",
+   "time": "2026-11-18T20:38:30Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
+   "title": "Athletics Add Trevor Amicone, Casey Weathers To Coaching Staff",
+   "blurb": "The Athletics announced a pair of new additions to their coaching staff Wednesday. Trevor Amicone has been hired as the team&#8217;s new hitting coach. He&#8217;d previously been an assistant hitting coach with the Twins. The A&#8217;s also named Casey Weathers their new pitching coach. He&#8217;d p",
+   "link": "https://www.mlbtraderumors.com/2026/11/athletics-hire-trevor-amicone-twins-casey-weathers-phillies-coaches.html",
+   "time": "2026-11-18T20:35:59Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Angels acquire infielder Jace Jung from Tigers for cash",
+   "blurb": "The Angels acquired infielder Jace Jung from the Tigers for cash on Wednesday, giving the 2022 first-round draft pick a fresh start.",
+   "link": "https://www.espn.com/mlb/story/_/id/50523537/angels-acquire-infielder-jace-jung-tigers-cash",
+   "time": "2026-11-18T20:32:04Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "DET",
+    "LAA"
+   ]
+  },
+  {
+   "title": "Red Sox Acquire Nick Fortes",
+   "blurb": "The Red Sox have acquired catcher Nick Fortes from the Rays, according to announcements from both clubs. Tampa gets minor league right-hander Angel Roa in return. The Sox designated catcher Connor Wong to open a 40-man spot for Fortes. It&#8217;s probably not a coincidence that this deal came togeth",
+   "link": "https://www.mlbtraderumors.com/2026/11/red-sox-to-acquire-nick-fortes.html",
+   "time": "2026-11-18T20:20:15Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "BOS"
+   ]
+  },
+  {
+   "title": "Reds Receiving Trade Interest In Nick Lodolo",
+   "blurb": "As clubs around the league scour the market for rotation help, the Reds have been receiving trade interest in left-hander Nick Lodolo, per Ken Rosenthal of The Athletic. There&#8217;s no indication any kind of deal is close at the moment. Lodolo, 29 in February, is down to one final year of club con",
+   "link": "https://www.mlbtraderumors.com/2026/11/reds-trade-rumors-nick-lodolo.html",
+   "time": "2026-11-18T20:18:20Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "CIN"
+   ]
+  },
+  {
+   "title": "Royals send Maikel Garcia to Mariners in six-player trade",
+   "blurb": "The Royals have traded third baseman Maikel Garcia to the Mariners in exchange for right-hander Bryce Miller as part of a six-player trade.",
+   "link": "https://www.espn.com/mlb/story/_/id/50521866/sources-royals-trade-maikel-garcia-mariners-miller",
+   "time": "2026-11-18T20:00:05Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "KCR",
+    "SEA"
+   ]
+  },
+  {
+   "title": "Latest On Corey Seager",
+   "blurb": "It&#8217;s no big secret that the Rangers are putting out feelers, trying to line up a Corey Seager trade. Even if they can agree to a framework with another club, Seager would have to give his consent. As a 10-and-5 guy, Seager has full no-trade rights. Jeff Passan of ESPN reports that Seager is op",
+   "link": "https://www.mlbtraderumors.com/2026/11/latest-on-corey-seager-2.html",
+   "time": "2026-11-18T19:44:02Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Angels Acquire Jace Jung",
+   "blurb": "The Angels announced Wednesday that they&#8217;ve acquired infielder Jace Jung from the Tigers in exchange for cash. Detroit designated Jung, a former No. 12 overall pick (2022) and top prospect, for assignment yesterday. The younger brother of Rangers third baseman Josh Jung, Jace has appeared in p",
+   "link": "https://www.mlbtraderumors.com/2026/11/tigers-trade-jace-jung-angels.html",
+   "time": "2026-11-18T19:34:28Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "LAA"
+   ]
+  },
+  {
+   "title": "The Best Fits For Trevor Rogers",
+   "blurb": "MLBTR&#8217;s series of examining the market for the best free agents continues. We&#8217;re on to Trevor Rogers, the only starting pitcher who declined the qualifying offer and arguably the #2 pitcher in the class. Rogers&#8217; first couple seasons were up and down, with his career reaching a nadi",
+   "link": "https://www.mlbtraderumors.com/2026/11/the-best-fits-for-trevor-rogers.html",
+   "time": "2026-11-18T18:36:33Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Giants Open To Offers On Casey Schmitt In Search For Pitching Help",
+   "blurb": "As the Giants scour the market for pitching help, they&#8217;ve floated the possibility of trading infielder/outfielder Casey Schmitt, reports Jeff Passan of ESPN. There&#8217;s no indication any sort of deal is close, but Schmitt is the type of controllable infielder who could net them some needed ",
+   "link": "https://www.mlbtraderumors.com/2026/11/giants-trade-rumors-casey-schmitt-pitching-help.html",
+   "time": "2026-11-18T17:51:46Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "Royals, Mariners Swap Maikel Garcia For Bryce Miller In Six-Player Deal",
+   "blurb": "The Mariners and Royals have lined up on a six-player blockbuster, announcing Wednesday that infielder Maikel Garcia, reliever James McArthur and left-handed pitching prospect L.P. Langevin are going from Kansas City to Seattle in exchange for right-handed starters Bryce Miller and Logan Evans as we",
+   "link": "https://www.mlbtraderumors.com/2026/11/mariners-to-acquire-maikel-garcia.html",
+   "time": "2026-11-18T17:30:22Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "KCR",
+    "SEA"
+   ]
+  },
+  {
+   "title": "Sources: Mets favorite to sign Tarik Skubal as teams ramp up pursuit of FA ace",
+   "blurb": "Tarik Skubal has met with multiple teams that are expected to pursue him, but the Mets are considered the favorite to land the star pitcher, sources told ESPN.",
+   "link": "https://www.espn.com/mlb/story/_/id/50521652/sources-mets-final-teams-bidding-tarik-skubal",
+   "time": "2026-11-18T15:40:15Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
+   "title": "Nationals To Sign Hagen Danner To Minor League Deal",
+   "blurb": "The Nationals are adding right-hander Hagen Danner on a minor league agreement, reports Spencer Nusbaum of The Athletic. He spent last season in the minors with the Reds and Angels. The 28-year-old Danner posted a 6.35 ERA in 37 appearances at Triple-A in 2026. He had a middling 22.1% strikeout rate",
+   "link": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-hagen-danner-to-minor-league-deal.html",
+   "time": "2026-11-18T15:32:43Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
    "title": "Athletics signed free agent RHP Wilkin Ramos to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -2119,5 +2481,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-18T15:17:03Z"
+ "updated": "2026-11-18T21:54:07Z"
 }
