@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "MLB expects $4B Angels sale to Kroenke to close in January",
+   "blurb": "Major League Baseball expects the proposed sale of the Los Angeles Angels to Kroenke Sports and Entertainment at a $4 billion evaluation to take place in January.",
+   "link": "https://www.espn.com/mlb/story/_/id/50524552/mlb-expects-4b-angels-sale-kroenke-close-january",
+   "time": "2026-11-18T22:28:39Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "LAA"
+   ]
+  },
+  {
    "title": "Dipoto: “Zero” Chance Mariners Trade Another Starter",
    "blurb": "The Mariners&#8217; blockbuster acquisition of third baseman Maikel Garcia earlier today subtracted righties Bryce Miller and Logan Evans from their rotation outlook. It&#8217;s been known for some time that Seattle was much, much more open to dealing from its rotation supply this winter than in off",
    "link": "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html",
@@ -2677,5 +2688,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-18T22:26:04Z"
+ "updated": "2026-11-18T22:36:07Z"
 }
