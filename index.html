@@ -180,6 +180,11 @@ select.lbl{appearance:none;cursor:pointer;text-align-last:center}
 .tag.new{background:var(--accent);color:var(--accent-ink)}
 .tag.rep{background:transparent;color:var(--accent-text);border:1px solid var(--accent);margin:0 6px 0 0}
 .tag.off{background:#1f7a3a;color:#fff;margin:0 6px 0 0}
+.todaycol{margin-top:16px}.card.c-today{border-top-color:var(--hs-fire,#e8562a)}.card.c-today h2{color:var(--accent-text)}
+.card.c-today .chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;font-weight:700;color:var(--muted)}.card.c-today .chips button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
+.tdgrp{margin-top:12px}.tdmore{margin-top:8px;border:1px solid var(--line);background:var(--paper);color:var(--blue);font-weight:700;font-size:13.5px;border-radius:999px;padding:6px 14px;cursor:pointer}.tdlist{list-style:none;margin:4px 0 0;padding:0}.tdlist li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line);line-height:1.35}.tdlist li.mine{background:var(--chip);margin:0 -6px;padding:7px 6px;border-radius:4px}
+.tdt{display:flex;gap:3px;flex:none;width:76px;flex-wrap:wrap}.tdteam{display:inline-block;min-width:34px;text-align:center;font:700 11px/18px var(--display,inherit);color:#fff;border-radius:3px;letter-spacing:.03em}
+.seg.tview{margin:0 0 12px}.txhist{margin-top:16px}.txhist summary{cursor:pointer;font-weight:700;color:var(--muted)}
 .news{list-style:none;margin:0;padding:0}.news li{padding:9px 0;border-bottom:1px solid var(--line)}.news .nh{font-weight:600;line-height:1.35}.news a{color:inherit;text-decoration:none}.news a:hover{text-decoration:underline}
 .tag.qo{color:var(--warn);border:1px solid var(--warn);background:transparent}
 
@@ -566,7 +571,9 @@ function insertProspect(id){
 function render(){
   renderTiles();
   const c=cbt();
+  if(UI.tab==='log'){UI.tab='trade';UI.tView='log'}
   $('#app').innerHTML=`
+  <section class="todaycol">${renderToday()}</section>
   <div class="grid">
     <section>${renderDepth()}</section>
     <section>${render40()}</section>
@@ -578,9 +585,9 @@ function render(){
   </div>`;
   renderBanner();renderNav();applyCollapse();
 }
-const NAV=[['home','⌂ Home'],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['log','Transactions'],['export','Copy update']];
+const NAV=[['home','⌂ Home'],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['export','Copy update']];
 function renderNav(){const el=$('#topnavIn');if(!el)return;const cur=UI.navAt||UI.tab;
-  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'||k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}${k==='log'&&S.log.length?' ('+S.log.length+')':''}</button>`).join('');
+  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'||k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}</button>`).join('');
   const b=el.querySelector('[aria-selected="true"]');if(b&&b.scrollIntoView&&!UI.navNoScroll)b.scrollIntoView({block:'nearest',inline:'nearest'})}
 function goTo(k){if(k==='home'){window.scrollTo({top:0});return}const t=k==='roster'?$('.grid'):k==='cbt'?$('.cbtcol'):$('.desk');if(t)t.scrollIntoView({block:'start'})}
 /* collapsible cards: tap a card's title bar to fold it; remembered per device */
@@ -1253,7 +1260,9 @@ function tradeRow(id,side){
   return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
 const tSig=()=>JSON.stringify([UI.tTeam,[...UI.tOut].sort(),[...UI.tIn].sort(),UI.tCash,[...(UI.tPk||[])].sort(),UI.tIfa||0]);
+function tViewSeg(){return `<div class="seg tview" role="group" aria-label="Trade machine view"><button type="button" data-tview="mach" aria-pressed="${UI.tView!=='log'}">Make a trade</button><button type="button" data-tview="log" aria-pressed="${UI.tView==='log'}">Transactions${S.log.length?' ('+S.log.length+')':''}</button></div>`}
 function renderTrade(){
+  if(UI.tView==='log')return `<div class="tmhead"><span class="seams"></span><div class="k">HOT STOVE</div><div class="t">TRADE MACHINE</div><div class="vs">Every move you've made as the ${esc(MEN())} GM</div></div>${tViewSeg()}<div style="margin-top:12px">${renderLog()}</div>`;
   if(META===null)loadMeta();
   const codes=Object.keys(D.teams).filter(c=>c!==ME).sort((a,b)=>D.teams[a].name.localeCompare(D.teams[b].name));
   const code=UI.tTeam;
@@ -1300,6 +1309,7 @@ function renderTrade(){
   const tried=any&&UI.tTried===tSig();
   const pc=c=>{const [a,b]=COLORS[c]||COLORS.NYM;return `--pc1:${a};--pc2:${b}`};
   return `<div class="tmhead"><span class="seams"></span><div class="k">HOT STOVE</div><div class="t">TRADE MACHINE</div><div class="vs">${esc(MEN())} ⇄ ${esc(D.teams[code].name)} · tap a baseball to change teams</div></div>
+  ${tViewSeg()}
   <div class="tradegrid">
     <div class="tside team" style="${tcol(ME)}">${head('out',esc(MEN())+' send','')}${body('out',outSel,ctl('out')+list('out',outL,UI.tQout,'tQout','Search your org…'))}</div>
     <div class="tside team" style="${tcol(code)}">${head('in',esc(D.teams[code].name)+' send',esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')+(D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':'')+(intelLine(code)?'<br><span class="intel">'+esc(intelLine(code))+'</span>':''))}${body('in',inSel,ctl('in')+list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…'))}</div>
@@ -1754,7 +1764,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118080333';
+const BUILD='20261118210519';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1763,7 +1773,8 @@ checkVersion();
 let NEWS=null,NEWS_SEEN=(()=>{try{return localStorage.getItem('hs-news-seen')||''}catch(e){return ''}})();
 function newNew(){return NEWS&&NEWS.items&&NEWS.items.length&&UI.tab!=='news'&&(NEWS.items[0].time||'')>NEWS_SEEN}
 function ago(t){if(!t)return '';const m=Math.round((Date.now()-Date.parse(t))/60000);if(isNaN(m))return '';if(m<1)return 'just now';if(m<60)return m+'m ago';const h=Math.round(m/60);if(h<24)return h+'h ago';const d=Math.round(h/24);return d+'d ago'}
-function loadNews(){return fetch('news.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(n=>{if(n){const had=NEWS&&NEWS.items[0]&&NEWS.items[0].time;NEWS=n;if(D&&(!had||had!==(n.items[0]||{}).time))render()}}).catch(()=>{})}
+function loadTxl(){return fetch('transactions.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(t=>{if(t&&JSON.stringify(t.moves)!==JSON.stringify((TXL||D.tx||{}).moves)){const had=!!TXL;TXL=t;if(D&&had)render()}else if(t&&!TXL)TXL=t}).catch(()=>{})}
+function loadNews(){loadTxl();return fetch('news.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(n=>{if(n){const had=NEWS&&NEWS.items[0]&&NEWS.items[0].time;NEWS=n;if(D&&(!had||had!==(n.items[0]||{}).time))render()}}).catch(()=>{})}
 function renderNews(){
   if(!NEWS||!NEWS.items||!NEWS.items.length)return '<p class="hint" style="margin:0">The news feed fills in as stories break. It updates about every 10 minutes from ESPN, MLB Trade Rumors and MLB\'s official transactions.</p>';
   if(NEWS.items[0].time>NEWS_SEEN){NEWS_SEEN=NEWS.items[0].time;try{localStorage.setItem('hs-news-seen',NEWS_SEEN)}catch(e){}}
@@ -1778,8 +1789,39 @@ function renderNews(){
 function wireHTML(){const m=(D.tx&&D.tx.moves)||[];if(!m.length)return '';
   return `<h3 style="margin-top:16px">Real-world moves applied (updated ${esc(D.tx.updated||'')})</h3><table class="list"><tbody>${m.slice().sort((a,b)=>a.date<b.date?1:-1).map(t=>`<tr><td class="r">${esc(t.date.slice(5))}</td><td style="white-space:normal">${t.status==='reported'?'<span class="tag rep">reported</span> ':t.status==='official'?'<span class="tag off">official</span> ':''}${esc(t.summary||'')}</td></tr>`).join('')}</tbody></table>`}
 function renderLog(){
-  if(!S.log.length)return '<p class="hint" style="margin:0">No moves yet. Sign a free agent, make a trade, or open a player to release, outright or extend him.</p>'+wireHTML();
-  return wireHTML().replace('margin-top:16px','margin-top:0')+`<h3 style="margin-top:16px">Your moves</h3><ol class="loglist">${S.log.map(l=>`<li><span class="ty">${esc(l.type)}</span><span>${esc(l.text)}</span><span class="cb">${l.inc?'<span class="plus">+'+M1(l.inc)+'</span> ':''}${l.out?'<span class="minus">−'+M1(l.out)+'</span>':''}</span></li>`).join('')}</ol>`;
+  const wire=wireHTML();const hist=wire?`<details class="txhist"><summary>Real-world moves already applied this offseason (${(D.tx.moves||[]).length})</summary>${wire.replace(/<h3[^>]*>.*?<\/h3>/,'')}</details>`:'';
+  if(!S.log.length)return '<h3 style="margin-top:0">Your moves</h3><p class="hint" style="margin:0">No moves yet. Sign a free agent, make a trade, or open a player to release, outright or extend him.</p>'+hist;
+  return `<h3 style="margin-top:0">Your moves</h3><ol class="loglist">${S.log.map(l=>`<li><span class="ty">${esc(l.type)}</span><span>${esc(l.text)}</span><span class="cb">${l.inc?'<span class="plus">+'+M1(l.inc)+'</span> ':''}${l.out?'<span class="minus">−'+M1(l.out)+'</span>':''}</span></li>`).join('')}</ol>`+hist;
+}
+/* ---------- Today's Moves (home screen): the day's real signings, trades and roster moves ---------- */
+let TXL=null; /* latest transactions.json for display (refreshed with the news feed; the roster overlay D.tx is applied once at load) */
+const etDay=d=>new Date(d).toLocaleDateString('en-CA',{timeZone:'America/New_York'});
+const dayName=ymd=>new Date(ymd+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+function txTeams(t){const s=new Set();if(t.team)s.add(t.team);(t.players||[]).forEach(m=>{m.from&&s.add(m.from);m.to&&s.add(m.to)});return [...s].filter(c=>D.teams[c])}
+const TDGRP=[['trades','Trades',['trade']],['sign','Signings',['sign','sign_minor','extend','extension']],['roster','Roster moves',null]];
+function tdGroup(t){for(const [k,,ty] of TDGRP)if(ty&&ty.includes(t.type))return k;return 'roster'}
+function renderToday(){
+  const moves=((TXL||D.tx||{}).moves)||[];const td=etDay(Date.now());
+  const days=[...new Set(moves.map(m=>m.date).filter(d=>d&&d<=td))].sort();
+  const day=days.includes(td)?td:days[days.length-1];
+  const f=UI.tdF||'all',mine=m=>txTeams(m).includes(ME);
+  const all=day?moves.filter(m=>m.date===day):[];const list=all.filter(m=>f==='all'||mine(m));
+  const sub=!day?'':day===td?dayName(td):`Nothing yet today · latest: ${dayName(day)}`;
+  const chip=c=>{const [a,b]=COLORS[c]||['#555','#999'];return `<span class="tdteam" style="background:${a};box-shadow:inset 0 -2px 0 ${b}" title="${esc(D.teams[c].name)}">${esc(c)}</span>`};
+  const stat=m=>m.status==='official'?'<span class="tag off">official</span>':'<span class="tag rep">reported</span>';
+  const row=m=>`<li class="${mine(m)?'mine':''}"><div class="tdt">${txTeams(m).map(chip).join('')}</div><div>${stat(m)}${esc((m.summary||'').replace(/\s+/g,' '))}</div></li>`;
+  const grp=([k,label])=>{const g=list.filter(m=>tdGroup(m)===k).sort((a,b)=>mine(b)-mine(a));if(!g.length)return '';
+    const open=UI.tdAll&&UI.tdAll.has(k),N=5;
+    return `<div class="tdgrp"><div class="subh">${label} <span class="hint">${g.length}</span></div><ul class="tdlist">${(open?g:g.slice(0,N)).map(row).join('')}</ul>${g.length>N?`<button type="button" class="tdmore" data-tdall="${k}">${open?'Show fewer':'Show all '+g.length}</button>`:''}</div>`};
+  const heads=((NEWS&&NEWS.items)||[]).filter(x=>x.kind==='news'&&x.time&&etDay(x.time)===td).slice(0,3);
+  const btn=(k,l)=>`<button type="button" data-tdf="${k}" aria-pressed="${f===k}">${l}</button>`;
+  return `<div class="card c-today">
+    <div class="cardhead"><h2>Today's Moves</h2><span class="cnt">${esc(sub)}</span></div>
+    ${all.length?`<div class="chips" role="group" aria-label="Filter">${btn('all','All MLB ('+all.length+')')}${btn('mine',esc(MEN())+' ('+all.filter(mine).length+')')}</div>`:''}
+    ${list.length?TDGRP.map(grp).join(''):`<p class="hint" style="margin:8px 0 0">${all.length?'No '+esc(MEN())+' moves '+(day===td?'today':'that day')+'.':'No real-world moves yet. They show up here as MLB and the news report them.'}</p>`}
+    ${heads.length?`<div class="tdgrp"><div class="subh">Top stories</div><ul class="news">${heads.map(x=>`<li><div class="nh">${x.link?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)}</a>`:esc(x.title)}</div><div class="hint">${esc(x.source)} · ${esc(ago(x.time))}</div></li>`).join('')}</ul><button type="button" class="tdmore" data-tab="news">All news ›</button></div>`:''}
+    <p class="hint" style="margin:10px 0 0">Real MLB moves from MLB's official transactions, ESPN and MLB Trade Rumors, updated about every 10 minutes. <b>Reported</b> = agreed, not yet official.</p>
+  </div>`;
 }
 
 /* ---------- export (user's code-block format) ---------- */
@@ -1864,12 +1906,15 @@ document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
   {const h=!e.target.closest('.tbadge')&&e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
   {const fp=e.target.closest('[data-fapos]');if(fp){UI.faPos=fp.dataset.fapos;render();return}}
-  const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-tview],[data-tdf],[data-tdall],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(fromNav)goTo('desk');return}
   if(t.dataset.goto){UI.navAt=t.dataset.goto;renderNav();goTo(t.dataset.goto);return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
   if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
+  if(t.dataset.tview){UI.tView=t.dataset.tview;render();return}
+  if(t.dataset.tdf){UI.tdF=t.dataset.tdf;render();return}
+  if(t.dataset.tdall){const g=t.dataset.tdall;UI.tdAll=UI.tdAll||new Set();UI.tdAll.has(g)?UI.tdAll.delete(g):UI.tdAll.add(g);render();return}
   if(t.dataset.g40){UI.g40=t.dataset.g40;render();return}
   if(t.dataset.gmin){UI.gMin=t.dataset.gmin;render();return}
   if(t.dataset.tgrp){const [sd,k]=t.dataset.tgrp.split(':');UI.tGrp[sd]=UI.tGrp[sd]===k?null:k;render();return}
