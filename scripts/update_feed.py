@@ -183,10 +183,15 @@ def main():
                 continue
             # only moves that touch our database: a tracked player, or an MLB club at the MLB level
             mlb_level = to_mlb or fr_id in MLB_IDS
-            if nmz(name) not in known and not (mlb_level and mv['type'] in ('trade', 'claim', 'sign', 'select')) \
-                    and not (mlb_level and mv['type'] == 'sign_minor' and re.search(r'spring training', desc, re.I)):
+            # keep every move an MLB club makes (what MLB.com lists); skip affiliate-only moves of untracked players
+            if nmz(name) not in known and not mlb_level:
                 have_sid.add(sid)
                 continue
+            pm = re.search(r'\b(RHP|LHP|C|1B|2B|3B|SS|LF|CF|RF|OF|DH|P)\s+' + re.escape(name), desc)
+            if pm:
+                for x in (mv.get('players') or [mv]):
+                    if x.get('pos', '?') == '?':
+                        x['pos'] = pm.group(1)
             key = (nmz(name), mv['type'])
             mv.update({'date': date, 'summary': desc, 'src': 'MLB Stats API', 'sid': sid, 'status': 'official'})
             have_sid.add(sid)
