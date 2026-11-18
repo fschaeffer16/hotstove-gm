@@ -300,17 +300,25 @@ table.list{width:100%;border-collapse:collapse;font-size:13px}
 textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:10px}
 
 /* drawer & modal */
-.scrim{position:fixed;inset:0;background:rgba(5,10,25,.45);display:none;z-index:20}
+.scrim{position:fixed;inset:0;background:rgba(5,10,25,.45);display:none;z-index:40}
 .scrim.on{display:block}
-.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--card);border-left:1px solid var(--line);z-index:21;transform:translateX(100%);transition:transform .2s;overflow:auto;padding:18px}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--card);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .2s;overflow:auto;padding:18px;z-index:41}
 .drawer.on{transform:none}
 @media (prefers-reduced-motion: reduce){.drawer{transition:none}}
-.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;z-index:22;padding:18px;display:none}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;z-index:42;padding:18px;display:none}
 .modal.on{display:block}
 .field{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
 .field input,.field select{color:var(--ink);font-size:14px;width:100%}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .form .full{grid-column:1 / -1}
+.btn.offer{display:block;width:100%;margin-top:12px;padding:14px;border:0;border-radius:8px;background:#1d7f47;color:#fff;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 3px 0 #11552f}
+.btn.offer:active{transform:translateY(2px);box-shadow:0 1px 0 #11552f}
+.decision{margin-top:12px;border:2px solid var(--line);border-radius:8px;padding:12px;background:var(--card)}
+.decision.good{border-color:var(--good)}.decision.warn{border-color:var(--warn)}.decision.bad{border-color:var(--bad)}
+.decision .dtag{display:inline-block;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.06em;padding:3px 10px;border-radius:5px;color:#fff}
+.decision.good .dtag{background:var(--good)}.decision.warn .dtag{background:var(--warn)}.decision.bad .dtag{background:var(--bad)}
+.decision .say{font-size:16px;margin:8px 0 4px}
+.decision .dact{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;margin-top:10px}
 .calc{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--paper);display:grid;gap:4px}
 .verdict{font-weight:600;margin-top:6px}
 .verdict.good{color:var(--good)} .verdict.warn{color:var(--warn)} .verdict.bad{color:var(--bad)}
@@ -333,7 +341,7 @@ textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px so
   .form{grid-template-columns:1fr}.big{font-size:28px}
   .loglist li{grid-template-columns:24px minmax(0,1fr);}.loglist .ty{grid-column:2}.loglist li>span:nth-child(3),.loglist .cb{grid-column:2}
 }
-.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:6px;font-size:13px;z-index:30;display:none;max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:6px;font-size:13px;z-index:50;display:none;max-width:calc(100% - 32px)}
 .toast.on{display:block}
 .loading{padding:60px 16px;text-align:center;color:var(--muted)}
 </style>
@@ -734,7 +742,7 @@ function renderFA(){
       <td class="r">${p.war26.toFixed(1)}</td><td class="r">${warB(p.pwar)}</td>
       <td class="hint">${p.proj?(p.proj.t==='b'?`${p.proj.wrc} wRC+`:`${p.proj.era.toFixed(2)} ERA · ${p.proj.kbb}% K-BB`):''}</td>
       <td class="r">${p.mt?`${p.my} yr / ${M1(p.mt)}`:'—'}</td><td class="r">${p.maav?M1(p.maav):'—'}</td>
-      <td><button class="btn sm primary" type="button" data-sign="${id}">Sign</button></td></tr>`}).join('')}</tbody>
+      <td><button class="btn sm primary" type="button" data-sign="${id}">Make offer</button></td></tr>`}).join('')}</tbody>
   </table></div>
   ${signed.length?`<p class="hint">Signed in this sandbox: ${signed.map(id=>esc(P[id].n)).join(', ')}</p>`:''}`;
 }
@@ -743,7 +751,7 @@ function qoNote(id,total){const p=P[id],nth=((S.qo||[]).filter(q=>q.to===ME)).le
 function contractModal(id,mode){
   const p=P[id];const yrs=p.my||(mode==='ext'?3:1),tot=p.mt?p.mt/1e6:(mode==='ext'?30:5);
   $('#modal').innerHTML=`
-    <h2>${mode==='ext'?'Extend':'Sign'} ${esc(p.n)}</h2>
+    <h2>${mode==='ext'?'Extension offer:':'Offer:'} ${esc(p.n)}</h2>
     <p class="hint" style="margin:4px 0 0">${esc(p.pos)} · age ${p.age} · ${projTxt(id)}${p.mt?` · market ${p.my} yr / ${M1(p.mt)} (${M1(p.maav)} AAV)`:''}${mode==='ext'?` · current 2027 CBT ${M(aav(id))}`:''}</p>
     <div class="form">
       <label class="field">Years<input id="cY" type="number" min="1" max="15" step="1" value="${yrs}"></label>
@@ -757,25 +765,16 @@ function contractModal(id,mode){
       <label class="field full">Opt-outs / notes<input id="cN" type="text" placeholder="e.g. opt out after 2029, full NTC"></label>
     </div>
     <div class="calc" id="cOut"></div>
-    <div class="dact" style="justify-content:flex-end;margin-top:14px">
-      <button class="btn" type="button" data-act="closemodal">Cancel</button>
-      <button class="btn danger" type="button" id="cForce">Force sign</button>
-      <button class="btn" type="button" id="cCounter" hidden>Use their counter</button>
-      <button class="btn primary" type="button" id="cGo">${mode==='ext'?'Sign extension':'Sign player'}</button>
-    </div>`;
+    <button class="btn offer" type="button" id="cOffer">Make offer</button>
+    <div class="decision" id="cDec" hidden></div>
+    <div class="dact" style="justify-content:flex-end;margin-top:12px"><button class="btn" type="button" data-act="closemodal">Cancel</button></div>`;
   openModal();
   const read=()=>{const Y=+$('#cY').value||1,S0=+$('#cS').value||2027;return {years:Y,total:+$('#cT').value||0,bonus:+$('#cB').value||0,start:S0,deferred:+$('#cD').value||0,rate:+$('#cR').value,payStart:+$('#cPS').value||(S0+Y),payYears:+$('#cPN').value||1,notes:$('#cN').value}};
   const upd=()=>{
     const c=read(),r=contractCalc(c);const before=cbt().total;
     const delta=mode==='ext'?r.aav-aav(id):r.aav;
     const after=before+delta;
-    const A=agentEval(id,c,mode);UI.agent=A;
-    let verdict='',vc='good';
-    if(A.verdict==='accept')verdict=`Agent: "We have a deal."`;
-    else if(A.verdict==='counter'){verdict=`Agent: "Close, but no. We'd sign at ${A.counter.years} yr / $${A.counter.total}M."`;vc='warn'}
-    else {verdict=`Agent: "That doesn't work for us. We're looking for ${A.counter.years} yr / $${A.counter.total}M."`;vc='bad'}
-    if(c.deferred>c.total)verdict='Deferred money cannot exceed the total.',vc='bad';
-    $('#cGo').disabled=A.verdict!=='accept';$('#cCounter').hidden=A.verdict==='accept';
+    $('#cDec').hidden=true;$('#cDec').innerHTML='';
     $('#cOut').innerHTML=`
       <div class="kv"><span>Nominal AAV</span><b>${M(r.nominal)}</b></div>
       ${c.deferred?`<div class="kv"><span>Present value of deal (${c.rate}%)</span><b>${M(r.pv)}</b></div><div class="kv"><span>AAV reduction from deferrals</span><b class="minus">−${M(r.saved)}</b></div>`:''}
@@ -783,14 +782,25 @@ function contractModal(id,mode){
       <div class="kv"><span>${esc(MEN())} CBT after</span><b>${M(after)} (${sgn(delta)})</b></div>
       <div class="kv"><span>Tax after</span><b>${M(tax(after))} · ${tierName(after)[0]}</b></div>
       ${mode!=='ext'&&!need40(1)?`<div class="verdict bad">${esc(fortyMsg(1))}</div>`:''}
-      ${mode!=='ext'&&p.qo?qoNote(id,c.total*1e6):''}
-      ${verdict?`<div class="verdict ${vc}">${esc(verdict)}</div><div class="hint">${esc(A.notes.join(' · '))}</div>`:''}`;
+      ${mode!=='ext'&&p.qo?qoNote(id,c.total*1e6):''}`;
+  };
+  const offer=()=>{
+    const c=read();const N=negotiate(id,c,mode),A=N.A;UI.agent=A;UI.negOK=N.verdict==='accept'?JSON.stringify(c):null;
+    const {tag,vc,say}=N;const ok=N.verdict==='accept';
+    const d=$('#cDec');d.className='decision '+vc;d.hidden=false;
+    d.innerHTML=`<span class="dtag">${tag}</span><span class="hint" style="margin-left:8px">${esc(p.n)}'s agent</span>
+      <p class="say">${esc(say)}</p>${N.st.rounds>1&&!ok?`<p class="hint" style="margin:0 0 4px">Round ${N.st.rounds}. Serious offers move him a lot, lowballs barely, and going backwards not at all.</p>`:''}${A.notes.length?`<p class="hint" style="margin:0">${esc(A.notes.join(' · '))}</p>`:''}
+      <div class="dact">${ok||!N.counter?'':`<button class="btn" type="button" id="cCounter">Take their counter</button>`}${ok?'':`<button class="btn danger" type="button" id="cForce">Force sign</button>`}<button class="btn primary" type="button" id="cGo"${ok?'':' hidden disabled'}>${mode==='ext'?'Sign the extension':'Sign '+esc(p.n)}</button></div>`;
+    if(!ok){if(N.counter)$('#cCounter').onclick=()=>{$('#cY').value=N.counter.years;$('#cT').value=N.counter.total;upd();offer()};
+      $('#cForce').onclick=()=>{const c2=read();confirmBox('Force this signing?','His agent has not agreed. Forcing it records the signing as forced in your transaction log.','Force sign',()=>doSign(true,c2))}}
+    $('#cGo').onclick=()=>doSign(false);
+    d.scrollIntoView({block:'nearest'});
   };
   $('#modal').querySelectorAll('input').forEach(i=>i.addEventListener('input',upd));upd();
-  $('#cCounter').onclick=()=>{const A=UI.agent;$('#cY').value=A.counter.years;$('#cT').value=A.counter.total;upd()};
+  $('#cOffer').onclick=offer;
   const doSign=(force,pre)=>{
     const c=pre||read(),r=contractCalc(c);
-    if(!force&&agentEval(id,c,mode).verdict!=='accept'){toast('His agent has not agreed. Use their counter or Force sign.');return}
+    if(!force&&UI.negOK!==JSON.stringify(c)){toast('His agent has not agreed. Use their counter or Force sign.');return}
     if(c.deferred>c.total){toast('Deferred money cannot exceed the total.');return}
     if(mode!=='ext'&&!need40(1)){toast(fortyMsg(1));return}
     snap();
@@ -804,8 +814,6 @@ function contractModal(id,mode){
       S.team[id]=ME;S.status[id]='40';addLog(force?'SIGNED (forced)':'SIGNED',`Signed FA ${p.n}: ${desc} — CBT AAV ${M(r.aav)}${qt}`,r.aav,0)}
     closeModal();commit();toast(`${p.n} ${mode==='ext'?'extended':'signed'} · CBT AAV ${M(r.aav)}`);
   };
-  $('#cGo').onclick=()=>doSign(false);
-  $('#cForce').onclick=()=>{const c=read();confirmBox('Force this signing?','His agent has not agreed. Forcing it records the signing as forced in your transaction log.','Force sign',()=>doSign(true,c))};
 }
 
 /* ---------- front-office profiles ---------- */
@@ -1053,6 +1061,32 @@ function agentEval(id,c,mode){
   if(defShare>.5){verdict='reject';notes.unshift('Will not take more than half of the money deferred')}
   else if(ratio>=.99)verdict='accept';else if(ratio>=.85)verdict='counter';else verdict='reject';
   return {verdict,ratio,need,counter:{years:Math.max(Y,my),total:Math.ceil(need/1e6*2)/2},notes,my,askAAV}}
+
+/* Agent negotiation: opens a little above his number, has a walk-away floor that depends on how many other clubs want him,
+   and moves toward you each round (a lot for serious offers, a little for lowballs, not at all if you go backwards). */
+UI.neg={};
+function negotiate(id,c,mode){
+  const A=agentEval(id,c,mode),key=ME+'|'+mode+'|'+id;
+  const n=mode==='ext'?-1:faSuitors(id).length;
+  const fl=mode==='ext'?.88:n>=5?.93:n>=3?.91:n>=1?.88:.84;
+  const st=UI.neg[key]||(UI.neg[key]={f:mode==='ext'?1.03:1.05,f0:mode==='ext'?1.03:1.05,fl,rounds:0,last:0});
+  st.rounds++;const r=A.ratio,defBad=c.total&&c.deferred/c.total>.5;
+  const opts=Math.min(2,((c.notes||'').match(/opt/gi)||[]).length);
+  const quote=f=>{const Yc=Math.max(c.years,A.my);const need=agentEval(id,{...c,years:Yc,total:0},mode).need;
+    return {years:Yc,total:Math.ceil(need*f/(1+.04*opts)/1e6*2)/2}};
+  if(c.deferred>c.total)return {A,verdict:'invalid',tag:'NOT VALID',vc:'bad',say:'Deferred money cannot exceed the total.',st};
+  if(!defBad&&(r>=st.f*.995||(r>=st.fl&&st.f-r<.03))){const meet=r<st.f*.995;st.f=Math.min(st.f,r);return {A,verdict:'accept',tag:'ACCEPTED',vc:'good',say:meet?'"We can meet you there. Deal."':'"We have a deal."',st}}
+  let k=r>=st.fl?.5:r>=st.fl*.88?.35:r>=st.fl*.75?.2:.08,back=false;
+  if(defBad)k=0;if(st.last&&r<st.last-.005){k=0;back=true}
+  st.f=Math.max(st.fl,st.f-(st.f-r)*k);st.last=Math.max(st.last,r);
+  const q=quote(st.f),t=`${q.years} yr / $${q.total}M`;let tag,vc,say;
+  if(defBad){tag='COUNTER';vc='warn';say=`"He won't take more than half of it deferred. Same money, less deferred, and we can talk. We're at ${t}."`}
+  else if(back){tag='COUNTER';vc='warn';say=`"You went down from your last offer. Our number stays at ${t}."`}
+  else if(st.f<=st.fl+.001&&r>=st.fl*.85){tag='FINAL OFFER';vc='warn';say=`"That's as low as we go. ${t}, or he signs somewhere else."`}
+  else if(r>=st.fl*.95||st.f-r<.08){tag='CLOSE';vc='warn';say=`"We're close. Get to ${t} and we're done."`}
+  else if(r>=st.fl*.78){tag='COUNTER';vc='warn';say=st.rounds>1?`"We came down, but you're still light. We'd do ${t}."`:`"You're light. We'd do ${t}."`}
+  else{tag='NOT INTERESTED';vc='bad';say=`"We're not interested at that number. If you're serious, it's ${t}."`}
+  return {A,verdict:'counter',tag,vc,say,counter:q,st}}
 
 /* ---------- trade ---------- */
 function teamIds(code){const s=new Set(D.teams[code].players);for(const k in S.team)if(S.team[k]===code)s.add(k);return [...s].filter(id=>owner(id)===code)}
@@ -1546,7 +1580,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118042803';
+const BUILD='20261118043623';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1621,7 +1655,7 @@ function openDrawer(id){
     if((S.r5mlb||{})[id]&&S.r5mlb[id].code===ME)acts.push(`<button class="btn danger" data-act="r5back" data-id="${id}">Offer back ($50K)</button>`);
     if(k==='arb')acts.push(`<button class="btn danger" data-act="nontender" data-id="${id}">Non-tender</button>`);
     acts.push(`<button class="btn danger" data-act="release" data-id="${id}">${k==='guar'?'Release (eat salary)':'DFA / release'}</button>`);
-  } else if(owner(id)==='FA'){acts.push(`<button class="btn primary" data-act="sign" data-id="${id}">Sign</button>`)}
+  } else if(owner(id)==='FA'){acts.push(`<button class="btn primary" data-act="sign" data-id="${id}">Make offer</button>`)}
   else if(D.teams[owner(id)]){acts.push(`<button class="btn" data-act="totrade" data-id="${id}">Add to trade</button>`)}
   $('#drawer').innerHTML=`
     <div class="cardhead"><h2>${esc(p.n)}</h2><button class="x" type="button" data-act="closedrawer" aria-label="Close">×</button></div>
