@@ -310,8 +310,9 @@ textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px so
 .form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .form .full{grid-column:1 / -1}
 :root{--hs-navy:#081634;--hs-navy2:#12295c;--hs-fire:#ff5a12;--hs-gold:#f7b32b;--hs-gold2:#ffd76a;--hs-blue:#2f8cff}
-.btn.offer,.ttry .btn.primary{background:linear-gradient(180deg,var(--hs-gold2) 0%,var(--hs-gold) 55%,#e39a0c 100%);color:#1a1206;border:1px solid #c98a0a;box-shadow:0 3px 0 #9a6a06,inset 0 1px 0 rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(255,255,255,.35)}
+.btn.gold,.btn.offer,.ttry .btn.primary{background:linear-gradient(180deg,var(--hs-gold2) 0%,var(--hs-gold) 55%,#e39a0c 100%);color:#1a1206;border:1px solid #c98a0a;box-shadow:0 3px 0 #9a6a06,inset 0 1px 0 rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(255,255,255,.35)}
 .ttry .btn.primary:disabled{opacity:.45}
+.btn.gold{font-weight:800;white-space:nowrap}
 .btn.offer{display:block;width:100%;margin-top:12px;padding:14px;border-radius:8px;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
 .btn.offer:active,.ttry .btn.primary:active{transform:translateY(2px);box-shadow:0 1px 0 #9a6a06}
 .decision{margin-top:12px;border:2px solid var(--line);border-radius:8px;padding:12px;background:var(--card)}
@@ -743,7 +744,7 @@ function renderFA(){
       <td class="r">${p.war26.toFixed(1)}</td><td class="r">${warB(p.pwar)}</td>
       <td class="hint">${p.proj?(p.proj.t==='b'?`${p.proj.wrc} wRC+`:`${p.proj.era.toFixed(2)} ERA · ${p.proj.kbb}% K-BB`):''}</td>
       <td class="r">${p.mt?`${p.my} yr / ${M1(p.mt)}`:'—'}</td><td class="r">${p.maav?M1(p.maav):'—'}</td>
-      <td><button class="btn sm primary" type="button" data-sign="${id}">Make offer</button></td></tr>`}).join('')}</tbody>
+      <td><button class="btn sm gold" type="button" data-sign="${id}">Make offer</button></td></tr>`}).join('')}</tbody>
   </table></div>
   ${signed.length?`<p class="hint">Signed in this sandbox: ${signed.map(id=>esc(P[id].n)).join(', ')}</p>`:''}`;
 }
@@ -1586,7 +1587,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118043950';
+const BUILD='20261118044158';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1661,7 +1662,7 @@ function openDrawer(id){
     if((S.r5mlb||{})[id]&&S.r5mlb[id].code===ME)acts.push(`<button class="btn danger" data-act="r5back" data-id="${id}">Offer back ($50K)</button>`);
     if(k==='arb')acts.push(`<button class="btn danger" data-act="nontender" data-id="${id}">Non-tender</button>`);
     acts.push(`<button class="btn danger" data-act="release" data-id="${id}">${k==='guar'?'Release (eat salary)':'DFA / release'}</button>`);
-  } else if(owner(id)==='FA'){acts.push(`<button class="btn primary" data-act="sign" data-id="${id}">Make offer</button>`)}
+  } else if(owner(id)==='FA'){acts.push(`<button class="btn gold" data-act="sign" data-id="${id}">Make offer</button>`)}
   else if(D.teams[owner(id)]){acts.push(`<button class="btn" data-act="totrade" data-id="${id}">Add to trade</button>`)}
   $('#drawer').innerHTML=`
     <div class="cardhead"><h2>${esc(p.n)}</h2><button class="x" type="button" data-act="closedrawer" aria-label="Close">×</button></div>
