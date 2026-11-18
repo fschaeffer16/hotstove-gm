@@ -964,11 +964,13 @@ function hsRanks(){if(_rank)return _rank;const ids=Object.keys(P).filter(id=>P[i
 /* ===== Trade intel: news a real GM knows (who is on the block, what clubs need, who is shedding salary) ===== */
 let INTEL=null,INTEL_P={};
 function applyIntel(){INTEL_P={};if(!INTEL)return;
+  for(const [c,t] of Object.entries(INTEL.teams||{}))if(t.win&&D.teams[c]&&['allin','contend','ascend','retool','rebuild'].includes(t.win))D.teams[c].win=t.win;
   for(const x of INTEL.players||[]){const id=findP(x.name,x.team);if(!id)continue;INTEL_P[id]=x;if(x.pos)P[id].pos=x.pos}}
 const intelOf=id=>INTEL_P[id]||null;
-const blockTag=id=>{const it=intelOf(id);if(!it||isMets(id))return '';return it.status==='available'?`<span class="tag blk" title="${esc(it.note||'Reported available')}">ON THE BLOCK</span>`:it.status==='listening'?`<span class="tag lst" title="${esc(it.note||'Club is listening')}">LISTENING</span>`:''};
-function intelLine(code){const t=teamIntel(code),on=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status!=='untouchable').sort((a,b)=>(INTEL_P[a].status==='available'?0:1)-(INTEL_P[b].status==='available'?0:1)).map(id=>P[id].n);
-  const bits=[];if(on.length)bits.push('On the block: '+on.slice(0,4).join(', '));if((t.wants||[]).length)bits.push('Looking for: '+t.wants.map(w=>WANT_TXT[w]||w).join(', '));if(t.shedding)bits.push('Shedding salary');
+const blockTag=id=>{const it=intelOf(id);if(!it||isMets(id))return '';if(it.status==='untouchable')return `<span class="tag lst" title="${esc(it.note||'Not available')}">NOT AVAILABLE</span>`;return it.status==='available'?`<span class="tag blk" title="${esc(it.note||'Reported available')}">ON THE BLOCK</span>`:it.status==='listening'?`<span class="tag lst" title="${esc(it.note||'Club is listening')}">LISTENING</span>`:''};
+function intelLine(code){const t=teamIntel(code),on=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status==='available').sort((a,b)=>(INTEL_P[a].status==='available'?0:1)-(INTEL_P[b].status==='available'?0:1)).map(id=>P[id].n);
+  const lis=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status==='listening').map(id=>P[id].n);
+  const bits=[];if(on.length)bits.push('On the block: '+on.slice(0,4).join(', '));if(lis.length)bits.push('Listening on: '+lis.slice(0,3).join(', '));if((t.wants||[]).length)bits.push('Looking for: '+t.wants.map(w=>WANT_TXT[w]||w).join(', '));if(t.shedding)bits.push('Shedding salary');
   return bits.join(' · ')}
 const teamIntel=code=>(INTEL&&INTEL.teams&&INTEL.teams[code])||{};
 function wantsGrp(code,gp){const w=teamIntel(code).wants||[];return w.includes(gp)||(gp==='2B'&&w.includes('INF'))||((gp==='SP'||gp==='RP')&&w.includes('P'))}
@@ -1022,6 +1024,7 @@ function gradeTo(id,code,incoming){
       if(cy<=1&&win!=='allin'){const sl=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);if(sl>0){g-=2*sl;notes.push('they would rather get something now than lose him for nothing')}}
       const it=intelOf(id);
       if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
+      else if(it&&it.status==='listening'&&it.price==='high'){g+=2;notes.push('they will listen, but the price is high'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'){g-=.5;notes.push('reported: they are listening on him'+(it.note?` (${it.note})`:''))}
       if(win==='rebuild'&&age>=29){g-=3;notes.push('rebuilding: veterans are available')}
       else if(win==='retool'&&age>=31&&cy<=2){g-=2;notes.push('retooling: listening on veterans')}
@@ -1124,7 +1127,7 @@ function evalTrade(code,outSel,inSel,cashM){
   const cap=Math.max(capOf(code)*1e6,base);R.after=after;R.cap=cap;R.budget=after>cap&&after>teamCBT(code);
   /* the club's questions, in order */
   const untouch=giv.map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
-  R.untouch=untouch.filter(u=>hIn.g<u.x.g+4);/* only overwhelming offers pry them loose */
+  R.untouch=untouch.filter(u=>u.why==='reported untouchable'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
   const winNow=(c.win==='allin'||c.win==='contend');
   const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
   const mlbBack=rec.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5);
@@ -1334,7 +1337,7 @@ function verdictHTML(E){
   let msg='';
   if(E.verdict==='locked')msg=[E.locked.length?`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`:'',...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
   else if(E.budget)msg=`"That takes us past what ownership will spend." This puts them at ${M(E.after)}, over their ${M(E.cap)} limit. Take salary back or add cash.`;
-  else if(E.untouch&&E.untouch.length){const u=E.untouch[0];msg=`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
+  else if(E.untouch&&E.untouch.length){const u=E.untouch[0],it=intelOf(u.x.id);msg=u.why==='reported untouchable'?`"${esc(P[u.x.id].n)} isn't available." ${it&&it.note?esc(it.note)+'.':''} That's not a conversation right now.`:`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
   else if(E.verdict==='accept')msg=`"${esc(E.quote)} We can do this."`;
   else{
     const lead=E.verdict==='counter'?`"${esc(E.quote)}" Close.`:`"${esc(E.quote)}" Not close.`;
@@ -1751,7 +1754,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118075627';
+const BUILD='20261118080333';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
