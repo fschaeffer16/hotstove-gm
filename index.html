@@ -222,10 +222,22 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .tside.team .seg button[aria-pressed="true"]{background:var(--tc1);color:#fff;box-shadow:inset 0 -3px 0 var(--tc2)}
 .tside.team .chips button[aria-pressed="true"]{background:var(--tc2);border-color:var(--tc2);color:var(--tc2ink)}
 .tside .thead{cursor:pointer;position:relative;padding-right:34px}
+.tside .thead .chev{display:none}
 .tside .thead .chev{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px;color:#fff;opacity:.85}
 .tside .tfold{padding:8px 12px 10px}.tside .tfold .subh{font-size:11px;margin:0 0 4px;letter-spacing:.06em}
 .tside .tfold .kv{font-size:13px;padding:2px 0}.tside .tfold .kv .hint{font-size:11.5px}
 #tsum{scroll-margin-top:72px}
+.tmhead{position:relative;overflow:hidden;border-radius:10px;margin-bottom:12px;padding:16px 14px 14px;color:#fff;background:linear-gradient(120deg,color-mix(in srgb,var(--tc1) 75%,#000) 0%,color-mix(in srgb,var(--tc1) 55%,#000) 48%,color-mix(in srgb,var(--pc1) 55%,#000) 52%,color-mix(in srgb,var(--pc1) 75%,#000) 100%)}
+.tmhead::after{content:"";position:absolute;inset:auto 0 0 0;height:5px;background:linear-gradient(90deg,var(--tc2) 0 50%,var(--pc2) 50% 100%)}
+.tmhead .k{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.32em;color:var(--accent-text,#ff9a3c);opacity:.95}
+.tmhead .t{font-family:var(--display);font-weight:800;font-size:38px;line-height:.95;letter-spacing:.03em;margin-top:2px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.tmhead .vs{margin-top:8px;font-size:13px;color:rgba(255,255,255,.85)}
+.tmhead .seams{position:absolute;right:-38px;top:-38px;width:150px;height:150px;border-radius:50%;border:2px dashed rgba(255,255,255,.14)}
+.tbadge{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--tc1);border:3px solid var(--tc2);box-shadow:0 2px 6px rgba(0,0,0,.35);font-family:var(--display);font-weight:800;font-size:16px;color:#fff;letter-spacing:.02em}
+.tbadge::after{content:"▾";position:absolute;bottom:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:#fff;color:#14100c;font-size:11px;display:grid;place-items:center;line-height:1}
+.tbadge select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
+.tside .thead.wb{padding-right:76px;min-height:74px}
+.tside .thead h3 .fch{font-size:13px;opacity:.8;margin-left:6px}
 .ttry{display:flex;gap:8px;margin-top:12px}.ttry .btn{padding:12px 14px;font-size:15px}.ttry .btn.primary{flex:1;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 details.textras{margin-top:10px}details.textras>summary{cursor:pointer;font-weight:600;padding:8px 2px;color:var(--muted)}
 .tpartner{border-radius:8px;padding:10px 12px;margin-bottom:12px;background:linear-gradient(110deg,color-mix(in srgb,var(--tc1) 70%,#000),var(--tc1));border-bottom:4px solid var(--tc2);color:#fff}
@@ -1079,10 +1091,13 @@ function renderTrade(){
   const recv=side=>side==='out'?D.teams[code].name:MEN();
   const fold=(side,sel)=>`<div class="tfold"><div class="subh">${esc(recv(side))} receive</div>${sel.map(id=>{const p=P[id],v=side==='out'?cbtOf(id):partnerCount(id);return `<div class="kv"><span>${esc(p.n)} <span class="hint">${esc([p.pos,p.lvl!=='MLB'?p.lvl:'',p.fv?'FV '+p.fv:''].filter(Boolean).join(' · '))}</span></span><b>${v?M1(v):''}</b></div>`}).join('')||'<span class="hint">Nobody picked yet. Tap the header to open.</span>'}</div>`;
   const body=(side,sel,inner)=>UI.tFold[side]?fold(side,sel):`<div class="tbody">${inner}</div>`;
-  const head=(side,title,sub)=>`<div class="thead" data-tfold="${side}" role="button" aria-expanded="${!UI.tFold[side]}"><h3>${title}</h3>${sub?`<p class="hint">${sub}</p>`:''}<span class="chev">${UI.tFold[side]?'▸':'▾'}</span></div>`;
+  const allC=Object.keys(D.teams).sort((a,b)=>D.teams[a].name.localeCompare(D.teams[b].name));
+  const badge=(side,cur)=>`<label class="tbadge" aria-label="${side==='out'?'Team you run':'Trade partner'}">${esc(cur)}<select id="${side==='out'?'tMe':'tTeam'}">${(side==='out'?allC:codes).map(c=>`<option value="${c}"${c===cur?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label>`;
+  const head=(side,title,sub)=>`<div class="thead wb" data-tfold="${side}" role="button" aria-expanded="${!UI.tFold[side]}"><h3>${title}<span class="fch">${UI.tFold[side]?'▸':'▾'}</span></h3>${sub?`<p class="hint">${sub}</p>`:''}${badge(side,side==='out'?ME:code)}</div>`;
   const any=outSel.length||inSel.length||hasExtras()||UI.tCash;
   const tried=any&&UI.tTried===tSig();
-  return `<div class="tpartner" style="${tcol(code)}"><label class="field" style="margin:0">Trade partner<select id="tTeam">${codes.map(c=>`<option value="${c}"${c===code?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label></div>
+  const pc=c=>{const [a,b]=COLORS[c]||COLORS.NYM;return `--pc1:${a};--pc2:${b}`};
+  return `<div class="tmhead" style="${tcol(ME)};${pc(code)}"><span class="seams"></span><div class="k">HOT STOVE</div><div class="t">TRADE MACHINE</div><div class="vs">${esc(MEN())} ⇄ ${esc(D.teams[code].name)} · tap a team circle to change clubs</div></div>
   <div class="tradegrid">
     <div class="tside team" style="${tcol(ME)}">${head('out',esc(MEN())+' send','')}${body('out',outSel,ctl('out')+list('out',outL,UI.tQout,'tQout','Search your org…'))}</div>
     <div class="tside team" style="${tcol(code)}">${head('in',esc(D.teams[code].name)+' send',esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')+(D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':''))}${body('in',inSel,ctl('in')+list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…'))}</div>
@@ -1517,7 +1532,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118005521';
+const BUILD='20261118005706';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1625,7 +1640,7 @@ async function copy(txt,msg){
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
-  {const h=e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
+  {const h=!e.target.closest('.tbadge')&&e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
   const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(fromNav)goTo('desk');return}
@@ -1683,6 +1698,7 @@ document.addEventListener('change',e=>{
   if(t.id==='faPos'){UI.faPos=t.value;render();return}
   if(t.id==='prTeam'){UI.prTeam=t.value;render();return}
   if(t.id==='prPos'){UI.prPos=t.value;render();return}
+  if(t.id==='tMe'){switchTeam(t.value);return}
   if(t.id==='tTeam'){UI.tTeam=t.value;UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tQin='';render();return}
   if(t.dataset.tpk){t.checked?UI.tPk.add(t.dataset.tpk):UI.tPk.delete(t.dataset.tpk);render();return}
   if(t.id==='tIfa'){UI.tIfa=+t.value;render();return}
