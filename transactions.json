@@ -1684,9 +1684,20 @@
    "src": "MLB Stats API",
    "sid": 950620,
    "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Kyle Isbel",
+   "team": "KCR",
+   "pos": "CF",
+   "date": "2026-11-18",
+   "summary": "Kansas City Royals designated CF Kyle Isbel for assignment.",
+   "src": "MLB Stats API",
+   "sid": 950622,
+   "status": "official"
   }
  ],
- "live": "2026-11-18T22:56:12Z",
+ "live": "2026-11-18T23:26:17Z",
  "seen_sids": [
   950119,
   950220,
@@ -1845,6 +1856,7 @@
   950614,
   950616,
   950619,
-  950620
+  950620,
+  950622
  ]
 }

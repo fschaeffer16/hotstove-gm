@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Kansas City Royals designated CF Kyle Isbel for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T23:26:17Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Orioles Sign Junior Pérez, Alex Carrillo To Minor League Deals",
+   "blurb": "The Orioles announced that they have signed outfielder Junior Peérez and right-hander Alex Carrillo to minor league deals. Presumably, each player will receive an invite to big league camp in spring training, though that wasn&#8217;t specified in the announcement. Pérez, 25, seemed to have a breakou",
+   "link": "https://www.mlbtraderumors.com/2026/11/orioles-sign-junior-perez-alex-carrillo-to-minor-league-deals.html",
+   "time": "2026-11-18T23:19:33Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
    "title": "Chicago White Sox designated RHP Jordan Leasure for assignment.",
    "blurb": "",
    "link": "",
@@ -2710,5 +2732,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-18T22:56:12Z"
+ "updated": "2026-11-18T23:26:17Z"
 }
