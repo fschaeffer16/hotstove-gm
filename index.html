@@ -193,6 +193,13 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 /* tabs desk */
 .desk{margin-top:16px}
 .tabs{display:flex;gap:2px;border-bottom:2px solid var(--accent);flex-wrap:wrap}
+.seg{display:flex;margin-top:8px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;border:0;background:var(--paper);padding:8px 6px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue)}
+.chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;font-weight:700;font-size:13px;color:var(--muted)}
+.chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .tab{border:0;background:transparent;padding:8px 14px;font-family:var(--display);font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
 .tab{border-radius:6px 6px 0 0}
 .tab:hover{color:var(--blue)}
@@ -306,7 +313,7 @@ const RATE_DEFAULT=4.5;
 let ME='NYM',BASE_T=0,IL60=new Set();
 const MEN=()=>D.teams[ME].name;
 const skey=()=>ME==='NYM'?KEY:KEY+'-'+ME;
-let D,P,S,HIST=[],UI={tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
+let D,P,S,HIST=[],UI={tGrp:{out:'40',in:'40'},tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=v=>'$'+(v/1e6).toFixed(2)+'M';
@@ -992,7 +999,14 @@ function renderTrade(){
   const code=UI.tTeam;
   const sortT=(a,b)=>{const pa=P[a],pb=P[b];const ma=(pa.lvl==='MLB'||pa.lvl==='IL'||pa.kind!=='min')?1:0,mb=(pb.lvl==='MLB'||pb.lvl==='IL'||pb.kind!=='min')?1:0;if(ma!==mb)return mb-ma;if(ma)return pwar(b)-pwar(a);return fvn(pb.fv)-fvn(pa.fv)};
   const qf=q=>id=>!q||P[id].n.toLowerCase().includes(q.toLowerCase());
-  const outL=metsIds().filter(qf(UI.tQout)).sort(sortT),inL=teamIds(code).filter(qf(UI.tQin)).sort(sortT);
+  /* 40-man vs prospects, then position group */
+  const on40=id=>owner(id)===ME?status(id)==='40':((D.fortyBy[owner(id)]||[]).includes(id)||P[id].lvl==='MLB'||P[id].lvl==='IL'||P[id].kind!=='min');
+  const grpOf=id=>{const p=P[id];if(p.p)return /SP/.test(p.pos||'')||pgrp(id)==='SP'?'SP':'RP';const g=pgrp(id);return g==='C'?'C':g==='OF'||/^(LF|CF|RF|OF)/.test(p.pos||'')?'OF':'INF'};
+  const fside=side=>id=>(UI.tGrp[side]==='40'?on40(id):!on40(id))&&(UI.tPF[side]==='All'||grpOf(id)===UI.tPF[side]);
+  const sortP=(a,b)=>hsValue(b)-hsValue(a);
+  const outL=metsIds().filter(qf(UI.tQout)).filter(fside('out')).sort(UI.tGrp.out==='40'?sortT:sortP),inL=teamIds(code).filter(qf(UI.tQin)).filter(fside('in')).sort(UI.tGrp.in==='40'?sortT:sortP);
+  const ctl=side=>`<div class="seg" role="group" aria-label="Roster">${[['40','40-man'],['pros','Prospects']].map(([k,l])=>`<button type="button" data-tgrp="${side}:${k}" aria-pressed="${UI.tGrp[side]===k}">${l}</button>`).join('')}</div>
+    <div class="chips" role="group" aria-label="Position">${['All','SP','RP','C','INF','OF'].map(k=>`<button type="button" data-tpf="${side}:${k}" aria-pressed="${UI.tPF[side]===k}">${k}</button>`).join('')}</div>`;
   const outSel=[...UI.tOut].filter(isMets),inSel=[...UI.tIn].filter(id=>owner(id)===code);
   const outV=outSel.reduce((s,id)=>s+cbtOf(id),0),inV=inSel.reduce((s,id)=>s+partnerCount(id),0);
   const cash=UI.tCash*1e6;
@@ -1002,13 +1016,12 @@ function renderTrade(){
   const new40=count40()-out40+add40.length;
   const pB=teamCBT(code),pA=pB+outSel.reduce((s,id)=>s+partnerCount(id),0)-inV-cash;
   return `<div class="filters">
-    <label class="field" style="min-width:220px">Trade partner<select id="tTeam">${codes.map(c=>`<option value="${c}"${c===code?' selected':''}>${esc(D.teams[c].name)} (${c})</option>`).join('')}</select></label>
     <label class="field" style="max-width:220px">Cash (${esc(MEN())} pay +, receive −) $M<input id="tCash" type="number" step="0.5" value="${UI.tCash}"></label>
     <span class="hint">You play both sides here. Bring the deal to chat to make it official.</span>
   </div>
   <div class="tradegrid">
-    <div class="tside"><h3>${esc(MEN())} send</h3><input type="search" id="tQout" placeholder="Search your org…" value="${esc(UI.tQout)}" aria-label="Search your players" style="width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--paper)"><div class="tl">${outL.map(id=>tradeRow(id,'out')).join('')}</div></div>
-    <div class="tside"><h3>${esc(D.teams[code].name)} send</h3><input type="search" id="tQin" placeholder="Search ${esc(D.teams[code].name)}…" value="${esc(UI.tQin)}" aria-label="Search partner players" style="width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--paper)"><div class="tl">${inL.map(id=>tradeRow(id,'in')).join('')}</div></div>
+    <div class="tside"><h3>${esc(MEN())} send</h3>${ctl('out')}<input type="search" id="tQout" placeholder="Search your org…" value="${esc(UI.tQout)}" aria-label="Search your players" style="width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--paper)"><div class="tl">${outL.map(id=>tradeRow(id,'out')).join('')||'<p class="hint" style="padding:8px">Nobody here.</p>'}</div></div>
+    <div class="tside"><label class="field" style="margin:0">Trade partner<select id="tTeam">${codes.map(c=>`<option value="${c}"${c===code?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label><h3 style="margin-top:8px">${esc(D.teams[code].name)} send</h3>${ctl('in')}<input type="search" id="tQin" placeholder="Search ${esc(D.teams[code].name)}…" value="${esc(UI.tQin)}" aria-label="Search partner players" style="width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--paper)"><div class="tl">${inL.map(id=>tradeRow(id,'in')).join('')||'<p class="hint" style="padding:8px">Nobody here.</p>'}</div></div>
   </div>
   ${tradeExtrasHTML(code)}
   <div class="tsum">
@@ -1437,7 +1450,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118001409';
+const BUILD='20261118002019';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1544,11 +1557,13 @@ async function copy(txt,msg){
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  const t=e.target.closest('[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){UI.tab=t.dataset.tab;render();return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
   if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
+  if(t.dataset.tgrp){const [sd,k]=t.dataset.tgrp.split(':');UI.tGrp[sd]=k;render();return}
+  if(t.dataset.tpf){const [sd,k]=t.dataset.tpf.split(':');UI.tPF[sd]=k;render();return}
   if(t.dataset.clear){e.stopPropagation();clearSlot(t.dataset.clear);return}
   if(t.dataset.sign){contractModal(t.dataset.sign,'sign');return}
   if(t.dataset.sort){const k=t.dataset.sort;if(UI.faSort===k)UI.faDir*=-1;else{UI.faSort=k;UI.faDir=k==='n'?1:-1}render();return}
