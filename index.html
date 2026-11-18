@@ -233,8 +233,12 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .tmhead .t{font-family:var(--display);font-weight:800;font-size:38px;line-height:.95;letter-spacing:.03em;margin-top:2px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
 .tmhead .vs{margin-top:8px;font-size:13px;color:rgba(255,255,255,.85)}
 .tmhead .seams{position:absolute;right:-38px;top:-38px;width:150px;height:150px;border-radius:50%;border:2px dashed rgba(255,255,255,.14)}
-.tbadge{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--tc1);border:3px solid var(--tc2);box-shadow:0 2px 6px rgba(0,0,0,.35);font-family:var(--display);font-weight:800;font-size:16px;color:#fff;letter-spacing:.02em}
-.tbadge::after{content:"▾";position:absolute;bottom:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:#fff;color:#14100c;font-size:11px;display:grid;place-items:center;line-height:1}
+.tbadge{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:56px;height:56px;display:block;cursor:pointer}
+.tbadge .ball{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff 0%,#f6f1e6 55%,#ddd4c2 100%);box-shadow:0 3px 8px rgba(0,0,0,.45),inset -3px -4px 6px rgba(0,0,0,.12)}
+.tbadge .seam{position:absolute;top:-8%;width:100%;height:116%;border-radius:50%;border:2.5px dashed #c8102e}
+.tbadge .seam.l{left:-78%}.tbadge .seam.r{right:-78%}
+.tbadge .code{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:0;color:color-mix(in srgb,var(--tc1) 80%,#000)}
+.tbadge .dd{position:absolute;bottom:-3px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--tc2);color:var(--tc2ink);border:2px solid #fff;font-size:10px;display:grid;place-items:center;line-height:1}
 .tbadge select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
 .tside .thead.wb{padding-right:76px;min-height:74px}
 .tside .thead h3 .fch{font-size:13px;opacity:.8;margin-left:6px}
@@ -1092,12 +1096,12 @@ function renderTrade(){
   const fold=(side,sel)=>`<div class="tfold"><div class="subh">${esc(recv(side))} receive</div>${sel.map(id=>{const p=P[id],v=side==='out'?cbtOf(id):partnerCount(id);return `<div class="kv"><span>${esc(p.n)} <span class="hint">${esc([p.pos,p.lvl!=='MLB'?p.lvl:'',p.fv?'FV '+p.fv:''].filter(Boolean).join(' · '))}</span></span><b>${v?M1(v):''}</b></div>`}).join('')||'<span class="hint">Nobody picked yet. Tap the header to open.</span>'}</div>`;
   const body=(side,sel,inner)=>UI.tFold[side]?fold(side,sel):`<div class="tbody">${inner}</div>`;
   const allC=Object.keys(D.teams).sort((a,b)=>D.teams[a].name.localeCompare(D.teams[b].name));
-  const badge=(side,cur)=>`<label class="tbadge" aria-label="${side==='out'?'Team you run':'Trade partner'}">${esc(cur)}<select id="${side==='out'?'tMe':'tTeam'}">${(side==='out'?allC:codes).map(c=>`<option value="${c}"${c===cur?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label>`;
+  const badge=(side,cur)=>`<label class="tbadge" aria-label="${side==='out'?'Team you run':'Trade partner'}"><span class="ball"><span class="seam l"></span><span class="seam r"></span><span class="code">${esc(cur)}</span></span><span class="dd">▼</span><select id="${side==='out'?'tMe':'tTeam'}">${(side==='out'?allC:codes).map(c=>`<option value="${c}"${c===cur?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label>`;
   const head=(side,title,sub)=>`<div class="thead wb" data-tfold="${side}" role="button" aria-expanded="${!UI.tFold[side]}"><h3>${title}<span class="fch">${UI.tFold[side]?'▸':'▾'}</span></h3>${sub?`<p class="hint">${sub}</p>`:''}${badge(side,side==='out'?ME:code)}</div>`;
   const any=outSel.length||inSel.length||hasExtras()||UI.tCash;
   const tried=any&&UI.tTried===tSig();
   const pc=c=>{const [a,b]=COLORS[c]||COLORS.NYM;return `--pc1:${a};--pc2:${b}`};
-  return `<div class="tmhead" style="${tcol(ME)};${pc(code)}"><span class="seams"></span><div class="k">HOT STOVE</div><div class="t">TRADE MACHINE</div><div class="vs">${esc(MEN())} ⇄ ${esc(D.teams[code].name)} · tap a team circle to change clubs</div></div>
+  return `<div class="tmhead" style="${tcol(ME)};${pc(code)}"><span class="seams"></span><div class="k">HOT STOVE</div><div class="t">TRADE MACHINE</div><div class="vs">${esc(MEN())} ⇄ ${esc(D.teams[code].name)} · tap a baseball to change teams</div></div>
   <div class="tradegrid">
     <div class="tside team" style="${tcol(ME)}">${head('out',esc(MEN())+' send','')}${body('out',outSel,ctl('out')+list('out',outL,UI.tQout,'tQout','Search your org…'))}</div>
     <div class="tside team" style="${tcol(code)}">${head('in',esc(D.teams[code].name)+' send',esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')+(D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':''))}${body('in',inSel,ctl('in')+list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…'))}</div>
@@ -1532,7 +1536,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118005706';
+const BUILD='20261118005907';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
