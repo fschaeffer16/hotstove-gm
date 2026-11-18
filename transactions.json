@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17",
+ "updated": "2026-11-18",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -1294,9 +1294,31 @@
    "src": "MLB Stats API",
    "sid": 950421,
    "status": "official"
+  },
+  {
+   "type": "select",
+   "name": "Jacob Odle",
+   "team": "STL",
+   "pos": "?",
+   "date": "2026-11-17",
+   "summary": "St. Louis Cardinals selected the contract of RHP Jacob Odle from Peoria Chiefs.",
+   "src": "MLB Stats API",
+   "sid": 950512,
+   "status": "official"
+  },
+  {
+   "type": "select",
+   "name": "Jesús  Báez",
+   "team": "STL",
+   "pos": "?",
+   "date": "2026-11-17",
+   "summary": "St. Louis Cardinals selected the contract of SS Jesús  Báez from Ozarks Springbirds.",
+   "src": "MLB Stats API",
+   "sid": 950511,
+   "status": "official"
   }
  ],
- "live": "2026-11-17T23:53:48Z",
+ "live": "2026-11-18T05:56:24Z",
  "seen_sids": [
   950119,
   950188,
@@ -1429,6 +1451,8 @@
   950507,
   950508,
   950509,
-  950510
+  950510,
+  950511,
+  950512
  ]
 }
