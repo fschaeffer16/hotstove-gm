@@ -1,52 +1,611 @@
 {
  "updated": "2026-11-18",
- "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary. status: available = actively shopped; listening = open to offers; untouchable = reported off-limits. Master copy lives in the public repo; a daily task refreshes it from MLB Trade Rumors, MLB.com and The Athletic reporting.",
+ "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it.",
  "teams": {
-  "WSN": {"wants": ["SP", "RP"], "note": "Rebuilding under Paul Toboni; pitching is the need"},
-  "KCR": {"wants": ["SP", "OF"], "note": "Wants starting pitching or a right-handed-hitting outfielder; Pasquantino move opens 1B for Caglianone"},
-  "MIN": {"wants": ["C", "1B", "DH", "RP"], "note": "Listening on Joe Ryan for catching, 1B/DH and bullpen help"},
-  "CHW": {"wants": ["SP", "RP"], "note": "Cholowsky coming at SS; wants pitching"},
-  "ATH": {"wants": ["SP", "RP"], "note": "Wants pitching"},
-  "COL": {"wants": ["SP", "RP"], "note": "Wants pitching"},
-  "CHC": {"wants": ["SP"], "note": "Would move Matt Shaw to get pitching"},
-  "SDP": {"wants": ["SP"], "note": "Looking for a back-end starter"},
-  "BAL": {"wants": ["2B"], "note": "Pursuing Ketel Marte; Holliday is the value in that conversation"},
-  "TEX": {"shedding": true, "note": "Shedding salary"},
-  "SFG": {"shedding": true, "note": "Looking for payroll relief"},
-  "SEA": {"wants": ["2B", "3B"], "note": "Kirby talks are about filling lineup holes"}
+  "LAD": {
+   "wants": [
+    "2B",
+    "RP",
+    "SP"
+   ],
+   "note": "Second base, bullpen and rotation depth (MLB.com, Nov. 7)"
+  },
+  "NYY": {
+   "wants": [
+    "3B",
+    "2B",
+    "RP",
+    "OF"
+   ],
+   "note": "Third base, second base, bullpen, center field; have talked with Texas about Seager"
+  },
+  "SEA": {
+   "win": "contend",
+   "wants": [
+    "OF",
+    "SS",
+    "RP"
+   ],
+   "note": "Bounce-back contender with an elite rotation; would trade a starter to upgrade the offense (Arozarena and Crawford are free agents)"
+  },
+  "BOS": {
+   "wants": [
+    "SS",
+    "OF",
+    "RP"
+   ],
+   "note": "Shortstop, left field, power, bullpen; outfield logjam after signing Jake Bauers"
+  },
+  "MIL": {
+   "wants": [
+    "1B",
+    "SP",
+    "OF"
+   ],
+   "note": "Reigning champions; first base, rotation depth, right field; trade players before free agency"
+  },
+  "CLE": {
+   "wants": [
+    "1B",
+    "SP",
+    "RP"
+   ],
+   "note": "First base, rotation depth, backup catcher, bullpen"
+  },
+  "TBR": {
+   "wants": [
+    "2B",
+    "SP"
+   ],
+   "note": "Second base and rotation; flip rising-salary pitchers for flexibility"
+  },
+  "MIN": {
+   "wants": [
+    "SP",
+    "RP",
+    "DH"
+   ],
+   "note": "Rotation, bullpen and power; re-signed Ryan Jeffers, so catcher is covered"
+  },
+  "TOR": {
+   "wants": [
+    "OF",
+    "2B",
+    "SP"
+   ],
+   "note": "Working hard to find offense and willing to spend; interested in Ketel Marte"
+  },
+  "DET": {
+   "wants": [
+    "OF",
+    "RP",
+    "SP"
+   ],
+   "note": "Right-handed outfielders, defense, bullpen; rotation rebuilt after the Skubal trade; 'will listen to everything'"
+  },
+  "PHI": {
+   "wants": [
+    "OF",
+    "3B",
+    "SP",
+    "RP"
+   ],
+   "note": "Two outfielders, third base, rotation depth, bullpen; already the highest payroll"
+  },
+  "ATL": {
+   "wants": [
+    "SS",
+    "SP",
+    "OF",
+    "RP"
+   ],
+   "note": "Shortstop, rotation, left field, bullpen; catching surplus with Drake Baldwin"
+  },
+  "PIT": {
+   "wants": [
+    "3B",
+    "SP",
+    "RP",
+    "OF",
+    "DH"
+   ],
+   "note": "Third base, rotation depth, bullpen, outfield/DH; Skenes not being traded"
+  },
+  "CHC": {
+   "wants": [
+    "SP",
+    "RP",
+    "OF"
+   ],
+   "note": "All five end-of-season starters are free agents; rotation, bullpen, corner outfield"
+  },
+  "HOU": {
+   "wants": [
+    "SP",
+    "RP",
+    "OF"
+   ],
+   "note": "Pitching, outfield, more pitching; new GM Randy Flores; could flip an infielder for pitching"
+  },
+  "ATH": {
+   "wants": [
+    "SP",
+    "RP",
+    "2B"
+   ],
+   "note": "Pitching, second base, more pitching; final year before Las Vegas"
+  },
+  "BAL": {
+   "wants": [
+    "SP",
+    "OF",
+    "2B"
+   ],
+   "note": "Want a right-handed outfield bat and a left-handed starter; discussing Ketel Marte"
+  },
+  "TEX": {
+   "wants": [
+    "RP",
+    "SP",
+    "OF"
+   ],
+   "shedding": true,
+   "note": "Payroll to stay near $190M; listening on Seager, deGrom, Eovaldi and fielding interest on Gore to create room"
+  },
+  "CHW": {
+   "wants": [
+    "SP",
+    "RP",
+    "OF"
+   ],
+   "note": "Big 2026 rebound; pitching staff needs outside help; middle-infield surplus"
+  },
+  "ARI": {
+   "wants": [
+    "1B",
+    "RP",
+    "OF"
+   ],
+   "note": "First base, bullpen, left field; open to reshaping the roster, including Ketel Marte"
+  },
+  "MIA": {
+   "wants": [
+    "SP",
+    "RP",
+    "OF"
+   ],
+   "note": "Bullpen arms are the top priority; fielding offers on Lopez, Edwards and Stowers but want a lot"
+  },
+  "KCR": {
+   "wants": [
+    "RP",
+    "OF",
+    "SP"
+   ],
+   "note": "Historically weak bullpen; outfield and rotation"
+  },
+  "STL": {
+   "wants": [
+    "SP",
+    "RP",
+    "3B",
+    "OF"
+   ],
+   "note": "Pitching, third base, center field; deep catching"
+  },
+  "WSN": {
+   "wants": [
+    "SP",
+    "RP",
+    "1B",
+    "3B"
+   ],
+   "note": "Rotation, bullpen, corner infield; bullish on its group and believes it can contend in 2027"
+  },
+  "SDP": {
+   "wants": [
+    "SP",
+    "1B",
+    "OF"
+   ],
+   "note": "Losing most of the rotation to free agency; looking everywhere for starting pitching; catching depth"
+  },
+  "SFG": {
+   "wants": [
+    "SP",
+    "RP",
+    "C"
+   ],
+   "shedding": true,
+   "note": "Scaling back; want to shed at least one big contract (Chapman most likely)"
+  },
+  "LAA": {
+   "note": "No permanent GM or manager while ownership changes; long rebuild expected; open to moving controllable pieces"
+  },
+  "CIN": {
+   "wants": [
+    "SP",
+    "RP",
+    "C",
+    "3B"
+   ],
+   "note": "Pitching is the clear need; Hunter Greene likely out for 2027"
+  },
+  "COL": {
+   "wants": [
+    "SP",
+    "RP"
+   ],
+   "note": "Pitching; more willing to deal Hunter Goodman than before the deadline"
+  }
  },
  "players": [
-  {"name": "CJ Abrams", "team": "WSN", "status": "available", "pos": "2B", "note": "Shopped since last offseason; moved from SS to 2B in Aug. 2026; Yankees, Red Sox and Brewers have shown interest"},
-  {"name": "Jacob Young", "team": "WSN", "status": "available", "note": "Shopped along with Abrams"},
-  {"name": "Vinnie Pasquantino", "team": "KCR", "status": "available", "note": "Final year of control"},
-  {"name": "Joe Ryan", "team": "MIN", "status": "listening", "note": "Free agent after 2027"},
-  {"name": "Colson Montgomery", "team": "CHW", "status": "available", "note": "Cholowsky is coming at SS"},
-  {"name": "Denzel Clarke", "team": "ATH", "status": "available"},
-  {"name": "Jake McCarthy", "team": "COL", "status": "available"},
-  {"name": "Matt Shaw", "team": "CHC", "status": "available", "note": "Chip for pitching"},
-  {"name": "Freddy Fermin", "team": "SDP", "status": "available"},
-  {"name": "Jackson Holliday", "team": "BAL", "status": "listening", "note": "Value in a Ketel Marte deal"},
-  {"name": "Shane McClanahan", "team": "TBR", "status": "available", "note": "Final arbitration year, injury history"},
-  {"name": "Jarren Duran", "team": "BOS", "status": "available", "note": "Crowded outfield"},
-  {"name": "Jasson Domínguez", "team": "NYY", "status": "available", "note": "Blocked"},
-  {"name": "Steven Kwan", "team": "CLE", "status": "available", "note": "Small market, sells before free agency"},
-  {"name": "Max Anderson", "team": "DET", "status": "available", "note": "Infield glut"},
-  {"name": "Reid Detmers", "team": "LAA", "status": "available", "note": "Selling high"},
-  {"name": "Jeremy Peña", "team": "HOU", "status": "listening", "note": "Correa moving to SS"},
-  {"name": "Isaac Paredes", "team": "HOU", "status": "listening"},
-  {"name": "George Kirby", "team": "SEA", "status": "listening", "note": "Would move him to fill holes"},
-  {"name": "Corey Seager", "team": "TEX", "status": "available", "note": "Texas is shedding salary"},
-  {"name": "Sean Murphy", "team": "ATL", "status": "available", "note": "Drake Baldwin makes him a surplus catcher"},
-  {"name": "Xavier Edwards", "team": "MIA", "status": "listening"},
-  {"name": "Brandon Marsh", "team": "PHI", "status": "available", "note": "No longer an everyday player"},
-  {"name": "Trevor Megill", "team": "MIL", "status": "available", "note": "Final year before free agency"},
-  {"name": "Jimmy Crooks", "team": "STL", "status": "available", "note": "Catching depth"},
-  {"name": "Spencer Horwitz", "team": "PIT", "status": "available", "note": "O'Hearn taking 1B time"},
-  {"name": "Elly De La Cruz", "team": "CIN", "status": "listening", "note": "Turned down an extension"},
-  {"name": "Ketel Marte", "team": "ARI", "status": "available", "note": "Talking to BAL and TOR; has 10-and-5 rights (can veto)"},
-  {"name": "Teoscar Hernández", "team": "LAD", "status": "available", "note": "Opens a path for De Paula"},
-  {"name": "Matt Chapman", "team": "SFG", "status": "available", "note": "Payroll relief; has a no-trade clause"},
-  {"name": "Charles McAdoo", "team": "TOR", "status": "available"}
+  {
+   "name": "CJ Abrams",
+   "team": "WSN",
+   "status": "listening",
+   "note": "Not being shopped; Washington believes it can contend in 2027 and its bar is high (moved to 2B in Aug. 2026)",
+   "pos": "2B",
+   "price": "high"
+  },
+  {
+   "name": "Dylan Crews",
+   "team": "WSN",
+   "status": "listening",
+   "note": "Reportedly in trade talks (The Athletic); controlled through 2031",
+   "price": "high"
+  },
+  {
+   "name": "Jacob Young",
+   "team": "WSN",
+   "status": "available",
+   "note": "Shopped last offseason"
+  },
+  {
+   "name": "Jarren Duran",
+   "team": "BOS",
+   "status": "available",
+   "note": "'Clearly available'; no everyday spot after the Bauers signing; Padres, Mariners, Phillies doing work"
+  },
+  {
+   "name": "Masataka Yoshida",
+   "team": "BOS",
+   "status": "available",
+   "note": "No current spot in Boston"
+  },
+  {
+   "name": "Tanner Houck",
+   "team": "BOS",
+   "status": "listening",
+   "note": "Red Sox exploring trade interest"
+  },
+  {
+   "name": "Corey Seager",
+   "team": "TEX",
+   "status": "listening",
+   "note": "Texas listening to manage payroll; Yankees have talked; owed about $155M over five years"
+  },
+  {
+   "name": "Jacob deGrom",
+   "team": "TEX",
+   "status": "listening",
+   "note": "In Texas trade talks; full no-trade clause"
+  },
+  {
+   "name": "Nathan Eovaldi",
+   "team": "TEX",
+   "status": "listening",
+   "note": "In Texas trade talks"
+  },
+  {
+   "name": "MacKenzie Gore",
+   "team": "TEX",
+   "status": "available",
+   "note": "Fielding interest from multiple teams; final arbitration year"
+  },
+  {
+   "name": "Logan Gilbert",
+   "team": "SEA",
+   "status": "listening",
+   "note": "Drawing interest; Dipoto prefers to keep his pitchers; free agent after 2027"
+  },
+  {
+   "name": "George Kirby",
+   "team": "SEA",
+   "status": "listening",
+   "note": "Seattle would move a starter for offense, but prefers to keep its pitchers"
+  },
+  {
+   "name": "Emerson Hancock",
+   "team": "SEA",
+   "status": "listening",
+   "note": "A suitor would have to overwhelm Seattle",
+   "price": "high"
+  },
+  {
+   "name": "Nick Lodolo",
+   "team": "CIN",
+   "status": "listening",
+   "note": "Drawing interest; one year of control left"
+  },
+  {
+   "name": "Elly De La Cruz",
+   "team": "CIN",
+   "status": "listening",
+   "note": "'Never going to say never,' but no talks; would take a significant overpay",
+   "price": "high"
+  },
+  {
+   "name": "William Contreras",
+   "team": "MIL",
+   "status": "listening",
+   "note": "Drawing interest, but likely kept for his final year"
+  },
+  {
+   "name": "Trevor Megill",
+   "team": "MIL",
+   "status": "available",
+   "note": "Final year before free agency; Ryan Walker acquisition makes him more expendable"
+  },
+  {
+   "name": "Hunter Goodman",
+   "team": "COL",
+   "status": "available",
+   "note": "Colorado open to dealing him; controlled through 2029"
+  },
+  {
+   "name": "Jake McCarthy",
+   "team": "COL",
+   "status": "available",
+   "note": "One of Colorado's best chips to get pitching"
+  },
+  {
+   "name": "Shea Langeliers",
+   "team": "ATH",
+   "status": "available",
+   "note": "Could be made available; controlled through 2028"
+  },
+  {
+   "name": "Denzel Clarke",
+   "team": "ATH",
+   "status": "available",
+   "note": "Henry Bolte slated for center field"
+  },
+  {
+   "name": "Jacob Wilson",
+   "team": "ATH",
+   "status": "listening",
+   "note": "Teams have called about him; signed through 2032",
+   "price": "high"
+  },
+  {
+   "name": "Ketel Marte",
+   "team": "ARI",
+   "status": "listening",
+   "note": "Arizona open to moving him; Orioles and Blue Jays interested; 10-and-5 rights (can veto)"
+  },
+  {
+   "name": "Otto Lopez",
+   "team": "MIA",
+   "status": "listening",
+   "note": "Fielding offers but want a lot",
+   "price": "high"
+  },
+  {
+   "name": "Xavier Edwards",
+   "team": "MIA",
+   "status": "listening",
+   "note": "Fielding offers but want a lot",
+   "price": "high"
+  },
+  {
+   "name": "Kyle Stowers",
+   "team": "MIA",
+   "status": "listening",
+   "note": "Not shopping him, but open to offers"
+  },
+  {
+   "name": "Sandy Alcantara",
+   "team": "MIA",
+   "status": "untouchable",
+   "note": "Team signaled he won't be dealt"
+  },
+  {
+   "name": "Shane McClanahan",
+   "team": "TBR",
+   "status": "available",
+   "note": "Trade is a possibility; final arbitration year, forearm tightness late in 2026"
+  },
+  {
+   "name": "Ryan Pepiot",
+   "team": "TBR",
+   "status": "available",
+   "note": "Trade is a possibility; missed 2026 after hip surgery"
+  },
+  {
+   "name": "Nick Fortes",
+   "team": "TBR",
+   "status": "available",
+   "note": "Being shopped to multiple teams before the tender deadline"
+  },
+  {
+   "name": "Griffin Jax",
+   "team": "TBR",
+   "status": "listening",
+   "note": "Tampa Bay shops pitchers with rising salaries"
+  },
+  {
+   "name": "Drew Rasmussen",
+   "team": "TBR",
+   "status": "untouchable",
+   "note": "Neander: 'every intention' of keeping him; extension talks"
+  },
+  {
+   "name": "Joe Ryan",
+   "team": "MIN",
+   "status": "untouchable",
+   "note": "Team signaled he won't be dealt"
+  },
+  {
+   "name": "Riley Greene",
+   "team": "DET",
+   "status": "listening",
+   "note": "Executives mention him; Harris will 'listen to everything'"
+  },
+  {
+   "name": "Max Anderson",
+   "team": "DET",
+   "status": "available",
+   "note": "Infield glut"
+  },
+  {
+   "name": "Ronald Acuña Jr.",
+   "team": "ATL",
+   "status": "untouchable",
+   "note": "Anthopoulos shut down a trade"
+  },
+  {
+   "name": "Sean Murphy",
+   "team": "ATL",
+   "status": "available",
+   "note": "Drake Baldwin makes him a surplus catcher"
+  },
+  {
+   "name": "Ozzie Albies",
+   "team": "ATL",
+   "status": "listening",
+   "note": "Could move in a larger retool"
+  },
+  {
+   "name": "Paul Skenes",
+   "team": "PIT",
+   "status": "untouchable",
+   "note": "Not being traded this winter"
+  },
+  {
+   "name": "Spencer Horwitz",
+   "team": "PIT",
+   "status": "available",
+   "note": "O'Hearn taking first-base time"
+  },
+  {
+   "name": "Jeremy Peña",
+   "team": "HOU",
+   "status": "listening",
+   "note": "New GM could flip him for pitching; free agent after 2027"
+  },
+  {
+   "name": "Isaac Paredes",
+   "team": "HOU",
+   "status": "listening",
+   "note": "Infield logjam; one year of control"
+  },
+  {
+   "name": "Brandon Marsh",
+   "team": "PHI",
+   "status": "available",
+   "note": "No longer an everyday player"
+  },
+  {
+   "name": "Orion Kerkering",
+   "team": "PHI",
+   "status": "listening",
+   "note": "Several teams have shown interest"
+  },
+  {
+   "name": "Jimmy Crooks",
+   "team": "STL",
+   "status": "available",
+   "note": "Deep catching in St. Louis"
+  },
+  {
+   "name": "Matt Shaw",
+   "team": "CHC",
+   "status": "listening",
+   "note": "Not necessarily moving him; chip for teams needing 2B or 3B"
+  },
+  {
+   "name": "Freddy Fermin",
+   "team": "SDP",
+   "status": "available",
+   "note": "Catching depth; chip for a back-end starter"
+  },
+  {
+   "name": "Jackson Holliday",
+   "team": "BAL",
+   "status": "listening",
+   "note": "Value in a Ketel Marte deal; won't be given away",
+   "price": "high"
+  },
+  {
+   "name": "Jordan Westburg",
+   "team": "BAL",
+   "status": "listening",
+   "note": "Other teams have called; missed 2026 after Tommy John surgery"
+  },
+  {
+   "name": "Vinnie Pasquantino",
+   "team": "KCR",
+   "status": "available",
+   "note": "Would open first base for Caglianone; want pitching or a right-handed outfield bat"
+  },
+  {
+   "name": "Michael Wacha",
+   "team": "KCR",
+   "status": "listening",
+   "note": "Nobody met Kansas City's price at the deadline"
+  },
+  {
+   "name": "Colson Montgomery",
+   "team": "CHW",
+   "status": "available",
+   "note": "Middle-infield surplus with Cholowsky coming; want pitching"
+  },
+  {
+   "name": "Reid Detmers",
+   "team": "LAA",
+   "status": "available",
+   "note": "Rebuilding club, value may peak now"
+  },
+  {
+   "name": "Zach Neto",
+   "team": "LAA",
+   "status": "listening",
+   "note": "Angels open to moving controllable pieces in a long rebuild",
+   "price": "high"
+  },
+  {
+   "name": "Teoscar Hernández",
+   "team": "LAD",
+   "status": "available",
+   "note": "Clears a path for Josue De Paula"
+  },
+  {
+   "name": "Matt Chapman",
+   "team": "SFG",
+   "status": "available",
+   "note": "Giants want to shed a big contract; has a no-trade clause"
+  },
+  {
+   "name": "Steven Kwan",
+   "team": "CLE",
+   "status": "listening",
+   "note": "Cleveland expects him to contribute, but he's a year from free agency"
+  },
+  {
+   "name": "Charles McAdoo",
+   "team": "TOR",
+   "status": "available",
+   "note": "Fringe of the 40-man"
+  }
  ],
- "sources": ["MLB.com trade candidates for every team (Nov. 2026)", "MLB Trade Rumors: Nationals have shopped CJ Abrams, Jacob Young", "MLB.com: Nationals willing to listen on Abrams; Yankees, Red Sox, Brewers interest (July 2026)", "MLB.com / The Athletic: Abrams moved to second base (Aug. 2026)"]
+ "sources": [
+  "MLB.com, 'Ranking all 30 MLB rosters as the offseason gets going' (Nov. 7, 2026): biggest needs for every team",
+  "MLB.com, 'Here is 1 trade candidate for all 30 teams' (Nov. 16, 2026)",
+  "MLB.com Hot Stove rumor roundups, Nov. 11-17, 2026",
+  "Bleacher Report, 'Ranking the Top 25 MLB Trade Chips' (Oct. 12, 2026) and 'Most likely trade for all 30 teams' (Oct. 19, 2026)",
+  "MLB Trade Rumors: Rays shopping Nick Fortes (Nov. 17, 2026)",
+  "The Athletic via FOX19 / Bleacher Report: Krall on Elly De La Cruz (Nov. 10-11, 2026)",
+  "FanSided / Robert Murray: Pirates will not trade Paul Skenes this winter"
+ ]
 }
