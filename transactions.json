@@ -245,10 +245,18 @@
    "pos": "?",
    "forty": true,
    "date": "2026-11-17",
-   "summary": "Minnesota Twins signed free agent C Ryan Jeffers.",
+   "summary": "Minnesota Twins signed free agent C Ryan Jeffers. Accepted the $23.15M qualifying offer.",
    "src": "MLB Stats API",
    "sid": 950380,
-   "status": "official"
+   "status": "official",
+   "contract": {
+    "aav": 23150000,
+    "desc": "1 yr, $23.15M (2027): accepted qualifying offer",
+    "yrs": {
+     "2027": 23150000,
+     "2028": "FREE AGENT"
+    }
+   }
   },
   {
    "type": "dfa",
@@ -267,10 +275,18 @@
    "pos": "?",
    "forty": true,
    "date": "2026-11-17",
-   "summary": "New York Yankees signed free agent RHP David Bednar.",
+   "summary": "New York Yankees signed free agent RHP David Bednar. Accepted the $23.15M qualifying offer.",
    "src": "MLB Stats API",
    "sid": 950408,
-   "status": "official"
+   "status": "official",
+   "contract": {
+    "aav": 23150000,
+    "desc": "1 yr, $23.15M (2027): accepted qualifying offer",
+    "yrs": {
+     "2027": 23150000,
+     "2028": "FREE AGENT"
+    }
+   }
   },
   {
    "type": "dfa",
