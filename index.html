@@ -240,6 +240,9 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .hand.sw{background:color-mix(in srgb,#1e7b4d 14%,transparent);color:#1e7b4d;border-color:color-mix(in srgb,#1e7b4d 40%,transparent)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hand.lefty{color:#ff7a8a}:root:not([data-theme="light"]) .hand.sw{color:#4cc27f}}
 :root[data-theme="dark"] .hand.lefty{color:#ff7a8a}:root[data-theme="dark"] .hand.sw{color:#4cc27f}
+.tag.blk{background:color-mix(in srgb,var(--hs-gold,#f7b32b) 22%,transparent);color:#8a5a00;border:1px solid color-mix(in srgb,var(--hs-gold,#f7b32b) 60%,transparent);font-size:10px;margin-left:6px;vertical-align:1px}
+.tag.lst{background:var(--chip);color:var(--muted);border:1px solid var(--line);font-size:10px;margin-left:6px;vertical-align:1px}
+.tside .thead .intel{display:inline-block;margin-top:4px;font-size:12px;color:#ffe2a0;line-height:1.35}
 .tbadge{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:56px;height:56px;display:block;cursor:pointer}
 .tbadge .ball{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff 0%,#f6f1e6 55%,#ddd4c2 100%);box-shadow:0 3px 8px rgba(0,0,0,.45),inset -3px -4px 6px rgba(0,0,0,.12)}
 .tbadge .seam{position:absolute;top:-8%;width:100%;height:116%;border-radius:50%;border:2.5px dashed #c8102e}
@@ -958,6 +961,19 @@ function hsGrade(id){const v=hsValue(id);if(v<=GRADEPTS[0][1])return 35;
 let _rank=null;
 function hsRanks(){if(_rank)return _rank;const ids=Object.keys(P).filter(id=>P[id].fv&&P[id].team!=='DUP'&&P[id].team!=='REL'&&P[id].team!=='FA');
   ids.sort((a,b)=>hsValue(b)-hsValue(a));_rank={};ids.forEach((id,i)=>_rank[id]=i+1);_rank.__ids=ids;return _rank}
+/* ===== Trade intel: news a real GM knows (who is on the block, what clubs need, who is shedding salary) ===== */
+let INTEL=null,INTEL_P={};
+function applyIntel(){INTEL_P={};if(!INTEL)return;
+  for(const x of INTEL.players||[]){const id=findP(x.name,x.team);if(!id)continue;INTEL_P[id]=x;if(x.pos)P[id].pos=x.pos}}
+const intelOf=id=>INTEL_P[id]||null;
+const blockTag=id=>{const it=intelOf(id);if(!it||isMets(id))return '';return it.status==='available'?`<span class="tag blk" title="${esc(it.note||'Reported available')}">ON THE BLOCK</span>`:it.status==='listening'?`<span class="tag lst" title="${esc(it.note||'Club is listening')}">LISTENING</span>`:''};
+function intelLine(code){const t=teamIntel(code),on=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status!=='untouchable').sort((a,b)=>(INTEL_P[a].status==='available'?0:1)-(INTEL_P[b].status==='available'?0:1)).map(id=>P[id].n);
+  const bits=[];if(on.length)bits.push('On the block: '+on.slice(0,4).join(', '));if((t.wants||[]).length)bits.push('Looking for: '+t.wants.map(w=>WANT_TXT[w]||w).join(', '));if(t.shedding)bits.push('Shedding salary');
+  return bits.join(' · ')}
+const teamIntel=code=>(INTEL&&INTEL.teams&&INTEL.teams[code])||{};
+function wantsGrp(code,gp){const w=teamIntel(code).wants||[];return w.includes(gp)||(gp==='2B'&&w.includes('INF'))||((gp==='SP'||gp==='RP')&&w.includes('P'))}
+const WANT_TXT={SP:'starting pitching',RP:'bullpen help',C:'a catcher','1B':'a first baseman',DH:'a DH',OF:'an outfielder','2B':'a second baseman','3B':'a third baseman',SS:'a shortstop'};
+
 /* ===== Front-office trade logic (no dollar math) =====
    Every player gets a trade grade on the 20-80 scouting scale from the point of view of the club holding or receiving him:
    big leaguers by projected WAR, years of control, age and contract; prospects by the Hot Stove grade.
@@ -991,10 +1007,11 @@ function gradeTo(id,code,incoming){
     else if(age>=35)g-=3;
     /* money as a club sees it: overpaid years are dead weight, worse for a small budget */
     const sal=salYr(id),over=sal/1e6-Math.max(.8,w*8);
-    if(over>5){const yrs=Math.min(cy,6);burden=(over-5)*yrs/12*({small:1.4,mid:1,big:.6}[c.mkt])*(incoming?1:({allin:.2,contend:.6}[win]??1));if(incoming&&burden>.5)notes.push(`${M1(sal)} a year for ${yrs} more year${yrs===1?'':'s'}: more salary than production`)}
+    if(over>5){const yrs=Math.min(cy,6);burden=(over-5)*yrs/12*({small:1.4,mid:1,big:.6}[c.mkt])*(incoming?1:({allin:.2,contend:.6}[win]??1))*(teamIntel(code).shedding?(incoming?1.6:1.5):1);if(incoming&&burden>.5)notes.push(`${M1(sal)} a year for ${yrs} more year${yrs===1?'':'s'}: more salary than production`)}
     if(incoming){
       const need=needAt(code,gp,id);
-      if(gp!=='DH'&&w>=need+1.5&&w>=1){g+=3;notes.push(`fills a need at ${gp}`)}
+      if(wantsGrp(code,gp)&&w>=.8){g+=3;notes.push(`they're looking for ${WANT_TXT[gp]||gp}`)}
+      else if(gp!=='DH'&&w>=need+1.5&&w>=1){g+=3;notes.push(`fills a need at ${gp}`)}
       else if(gp!=='RP'&&w<=need-.5){g-=3;const top=groupDepth(code,gp,id)[0];if(top)notes.push(`they already have ${P[top].n} at ${gp}`)}
     }else{
       /* losing him: does it open a hole, or is someone ready to take his job? */
@@ -1002,6 +1019,9 @@ function gradeTo(id,code,incoming){
       if(ready){g-=2;notes.push(`${P[ready].n} is close to ready at ${gp}`)}
       else if((win==='allin'||win==='contend')&&w>=2&&needAt(code,gp,id)<w-2){g+=3;notes.push(`trading him opens a hole at ${gp} they can't fill`)}
       if(cy<=1&&win!=='allin'){const sl=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);if(sl>0){g-=2*sl;notes.push('they would rather get something now than lose him for nothing')}}
+      const it=intelOf(id);
+      if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
+      else if(it&&it.status==='listening'){g-=.5;notes.push('reported: they are listening on him'+(it.note?` (${it.note})`:''))}
       if(win==='rebuild'&&age>=29){g-=3;notes.push('rebuilding: veterans are available')}
       else if(win==='retool'&&age>=31&&cy<=2){g-=2;notes.push('retooling: listening on veterans')}
     }
@@ -1014,11 +1034,14 @@ function gradeTo(id,code,incoming){
       if(win==='rebuild'||win==='ascend'){g+=2;notes.push('young talent is what they want')}
       else if(win==='allin'){g-=2;notes.push('they want big-league help more than prospects')}
       if(pr.pros==='currency')g-=1;
+      if(wantsGrp(code,gp)&&g>=45){g+=1.5;notes.push(`they're looking for ${WANT_TXT[gp]||gp}`)}
       if(ahead){g-=3;notes.push(`would be blocked by ${P[ahead].n}`)}
       if(jam>=3){g-=2;notes.push(`they already have ${jam} good ${gp} prospects`)}
     }else{
       const rk=orgPros(code).indexOf(id)+1;
-      if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
+      const it=intelOf(id);
+      if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him')}
+      else if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
       if(pr.pros==='hoard'){g+=1.5;notes.push('this front office hoards prospects')}
       if(ahead){g-=3;notes.push(`blocked by ${P[ahead].n} at ${gp}`)}
       if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
@@ -1027,8 +1050,10 @@ function gradeTo(id,code,incoming){
   g=Math.max(20,Math.min(80,g));
   return {g,pts:gpts(g)-burden,burden,label:ROLE(id,established(id)?Math.max(raw,p.fv&&age<=25?hsGrade(id):0):(p.fv?hsGrade(id):g)),notes}}
 /* untouchable to the club that holds him */
-function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id);
-  if(established(id)){const w=p.proj.war,cy=ctrl(id).length,age=p.age||28;
+function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(id);
+  if(it&&it.status==='untouchable')return 'reported untouchable';
+  if(it&&it.status==='available')return '';
+  if(established(id)){if(it&&it.status==='listening')return (p.proj.war>=5.5&&ctrl(id).length>=2)?'franchise player':'';const w=p.proj.war,cy=ctrl(id).length,age=p.age||28;
     if(w>=5.5&&cy>=2)return 'franchise player';
     if(age<=27&&cy>=3&&w>=3.5)return 'young core player';
     if((c.win==='rebuild'||c.win==='ascend')&&age<=26&&cy>=4&&w>=2.5)return 'part of their young core';
@@ -1219,7 +1244,7 @@ function tradeRow(id,side){
   const set=side==='out'?UI.tOut:UI.tIn;const p=P[id];
   const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',p.t100?('#'+p.t100+' T100'):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
   const v=side==='out'?cbtOf(id):partnerCount(id);
-  return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}<div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
+  return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
 const tSig=()=>JSON.stringify([UI.tTeam,[...UI.tOut].sort(),[...UI.tIn].sort(),UI.tCash,[...(UI.tPk||[])].sort(),UI.tIfa||0]);
 function renderTrade(){
@@ -1271,7 +1296,7 @@ function renderTrade(){
   return `<div class="tmhead"><span class="seams"></span><div class="k">HOT STOVE</div><div class="t">TRADE MACHINE</div><div class="vs">${esc(MEN())} ⇄ ${esc(D.teams[code].name)} · tap a baseball to change teams</div></div>
   <div class="tradegrid">
     <div class="tside team" style="${tcol(ME)}">${head('out',esc(MEN())+' send','')}${body('out',outSel,ctl('out')+list('out',outL,UI.tQout,'tQout','Search your org…'))}</div>
-    <div class="tside team" style="${tcol(code)}">${head('in',esc(D.teams[code].name)+' send',esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')+(D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':''))}${body('in',inSel,ctl('in')+list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…'))}</div>
+    <div class="tside team" style="${tcol(code)}">${head('in',esc(D.teams[code].name)+' send',esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')+(D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':'')+(intelLine(code)?'<br><span class="intel">'+esc(intelLine(code))+'</span>':''))}${body('in',inSel,ctl('in')+list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…'))}</div>
   </div>
   <details class="textras"${hasExtras()||UI.tCash?' open':''}><summary>Add draft picks, pool money or cash${hasExtras()||UI.tCash?' ✓':''}</summary>
   ${tradeExtrasHTML(code)}
@@ -1723,7 +1748,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118073645';
+const BUILD='20261118075423';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1973,6 +1998,7 @@ function switchTeam(code){
 fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
   D=d;P=d.players;
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
+  try{const r=await fetch('intel.json',{cache:'no-store'});if(r.ok){INTEL=await r.json();applyIntel()}}catch(e){INTEL=null}
   try{const r=await fetch('draft.json',{cache:'no-cache'});if(r.ok)drInit(await r.json())}catch(e){DR=null}
   const imported=await importFromHash();
   let last='NYM';try{last=localStorage.getItem('gm-last-team')||'NYM'}catch(e){}
