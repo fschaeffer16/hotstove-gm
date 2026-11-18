@@ -1,6 +1,182 @@
 {
  "items": [
   {
+   "title": "Detroit Tigers signed free agent RHP Sawyer Gipson-Long to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Houston Astros signed free agent RHP Jose Gonzalez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "HOU"
+   ]
+  },
+  {
+   "title": "Detroit Tigers signed free agent LHP Bailey Horn to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Philadelphia Phillies signed free agent C Blake Hunt to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles signed free agent SS José Barrero to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
+   "title": "Arizona Diamondbacks signed free agent OF Ismael Munguia to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Kansas City Royals signed free agent RHP Vince Velasquez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Milwaukee Brewers signed free agent 3B Jheremy Vargas to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
+   "title": "Athletics signed free agent RHP Ryan Murphy to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Seattle Mariners signed free agent RHP Bryce Conley to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SEA"
+   ]
+  },
+  {
+   "title": "Minnesota Twins signed free agent RHP Jose Espada to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
+   "title": "Philadelphia Phillies signed free agent C Brian Navarreto to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
+   "title": "Seattle Mariners signed free agent RHP Johnathan Lavallee to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SEA"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays signed free agent RHP Eric Vasquez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "Athletics signed free agent LHP Luke Little to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
+   "title": "Baltimore Orioles signed free agent RHP Alex Carrillo to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-18T22:06:00Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
    "title": "San Diego Padres signed free agent OF Cal Stevenson to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -2481,5 +2657,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-18T21:54:07Z"
+ "updated": "2026-11-18T22:06:00Z"
 }
