@@ -40,7 +40,9 @@ def main():
                 out.append({'id': pid, 'n': p.get('fullName', ''), 'o': org, 'b': p.get('birthDate'),
                             'dy': p.get('draftYear'), 'c': p.get('birthCountry'),
                             'pos': (p.get('primaryPosition') or {}).get('abbreviation'),
-                            'debut': p.get('mlbDebutDate')})
+                            'debut': p.get('mlbDebutDate'),
+                            'bs': (p.get('batSide') or {}).get('code'),
+                            'th': (p.get('pitchHand') or {}).get('code')})
             time.sleep(0.15)
     if len(out) < 3000:
         print('Too few players fetched (%d); keeping the old file.' % len(out)); return 0
