@@ -198,6 +198,10 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .seg button+button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue)}
 .chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.gbar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;margin:4px 0 10px}
+.gbar button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 2px;font-weight:700;font-size:12.5px;color:var(--muted);line-height:1.15;min-height:44px}
+.gbar button b{display:block;font-family:var(--mono);font-size:13px}
+.gbar button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
 .chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;font-weight:700;font-size:13px;color:var(--muted)}
 .chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .tab{border:0;background:transparent;padding:8px 14px;font-family:var(--display);font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
@@ -313,7 +317,7 @@ const RATE_DEFAULT=4.5;
 let ME='NYM',BASE_T=0,IL60=new Set();
 const MEN=()=>D.teams[ME].name;
 const skey=()=>ME==='NYM'?KEY:KEY+'-'+ME;
-let D,P,S,HIST=[],UI={tGrp:{out:'40',in:'40'},tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
+let D,P,S,HIST=[],UI={g40:'P',gMin:'All',tGrp:{out:'40',in:'40'},tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=v=>'$'+(v/1e6).toFixed(2)+'M';
@@ -574,7 +578,11 @@ function render40(){
   const ids=metsIds();const f40=ids.filter(id=>status(id)==='40'),il=ids.filter(id=>status(id)==='IL60');
   const G={P:'Pitchers',C:'Catchers',IF:'Infielders',OF:'Outfielders',DH:'DH'};
   const ord=id=>-(cbtOf(id))*1e3-pwar(id);
-  const groups=Object.keys(G).map(g=>{const l=f40.filter(id=>grpOf(id)===g).sort((a,b)=>ord(a)-ord(b));return l.length?`<div class="grp g-${g}"><h3><span>${G[g]}</span><span>${l.length}</span></h3>${l.map(id=>prow(id)).join('')}</div>`:''}).join('');
+  const SH={P:'Pitchers',C:'Catchers',IF:'Infield',OF:'Outfield',DH:'DH'};
+  const cnt=g=>f40.filter(id=>grpOf(id)===g).length;
+  if(!cnt(UI.g40))UI.g40=Object.keys(G).find(cnt)||'P';
+  const bar=`<div class="gbar" role="group" aria-label="Position group">${Object.keys(G).map(g=>`<button type="button" data-g40="${g}" aria-pressed="${UI.g40===g}">${SH[g]}<b>${cnt(g)}</b></button>`).join('')}</div>`;
+  const groups=bar+[UI.g40].map(g=>{const l=f40.filter(id=>grpOf(id)===g).sort((a,b)=>ord(a)-ord(b));return `<div class="grp g-${g}"><h3><span>${G[g]}</span><span>${l.length}</span></h3>${l.map(id=>prow(id)).join('')||'<p class="hint">None.</p>'}</div>`}).join('');
   const un=f40.filter(id=>!slotOf(id));
   const minors=ids.filter(id=>status(id)==='MiLB');
   return `<div class="card">
@@ -590,8 +598,9 @@ function render40(){
   </div>
   <div class="card">
     <div class="cardhead"><h2>Minor leaguers</h2><span class="cnt">${minors.length}</span></div>
+    <div class="gbar" role="group" aria-label="Position group">${['All','P','C','IF','OF'].map(g=>`<button type="button" data-gmin="${g}" aria-pressed="${UI.gMin===g}">${g==='All'?'All':({P:'Pitchers',C:'Catchers',IF:'Infield',OF:'Outfield'})[g]}<b>${g==='All'?minors.length:minors.filter(id=>grpOf(id)===g||(g==='IF'&&grpOf(id)==='DH')).length}</b></button>`).join('')}</div>
     <div class="filters"><input type="search" id="pQ" placeholder="Search org players…" value="${esc(UI.pQ)}" aria-label="Search minor leaguers"></div>
-    <div style="max-height:320px;overflow:auto">${minors.filter(id=>!UI.pQ||P[id].n.toLowerCase().includes(UI.pQ.toLowerCase())).sort((a,b)=>fvn(P[b].fv)-fvn(P[a].fv)||(P[a].n>P[b].n?1:-1)).map(id=>prow(id,`<span class="tag">${esc(P[id].lvl)}</span>${P[id].fv?' '+fvB(P[id].fv):''}`)).join('')}</div>
+    <div style="max-height:320px;overflow:auto">${minors.filter(id=>UI.gMin==='All'||grpOf(id)===UI.gMin||(UI.gMin==='IF'&&grpOf(id)==='DH')).filter(id=>!UI.pQ||P[id].n.toLowerCase().includes(UI.pQ.toLowerCase())).sort((a,b)=>fvn(P[b].fv)-fvn(P[a].fv)||(P[a].n>P[b].n?1:-1)).map(id=>prow(id,`<span class="tag">${esc(P[id].lvl)}</span>${P[id].fv?' '+fvB(P[id].fv):''}`)).join('')}</div>
   </div>`;
 }
 function renderCBT(c){
@@ -1450,7 +1459,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118002019';
+const BUILD='20261118002237';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1557,11 +1566,13 @@ async function copy(txt,msg){
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  const t=e.target.closest('[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){UI.tab=t.dataset.tab;render();return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
   if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
+  if(t.dataset.g40){UI.g40=t.dataset.g40;render();return}
+  if(t.dataset.gmin){UI.gMin=t.dataset.gmin;render();return}
   if(t.dataset.tgrp){const [sd,k]=t.dataset.tgrp.split(':');UI.tGrp[sd]=k;render();return}
   if(t.dataset.tpf){const [sd,k]=t.dataset.tpf.split(':');UI.tPF[sd]=k;render();return}
   if(t.dataset.clear){e.stopPropagation();clearSlot(t.dataset.clear);return}
