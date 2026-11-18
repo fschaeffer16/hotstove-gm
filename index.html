@@ -1053,9 +1053,13 @@ function agentEval(id,c,mode){
     if(interest)notes.push(interest>0?`Wants ${Math.round(interest*100)}% more to pick the ${MEN()}`:`Likes the ${MEN()}: will take ${Math.round(-interest*100)}% less`);
     need=ask+Math.max(0,Y-my)*askAAV*.6;
     if(Y>my)notes.push(`Extra years past ${my} need about ${M1(askAAV*.6)} each`);
+    if(Y<my){/* shorter deal (Tucker 4/$240M with LAD, Bichette 3/$126M with NYM): he gets back to free agency sooner, so he takes less guaranteed money but wants a higher AAV.
+       Younger players value the early exit more; a hot market resists short deals (another club will give him the years). */
+      const d=my-Y,age=p.age||30,prem=age<=30?.10:age<=33?.07:.04,gl=n>=4?.12:n>=1?.15:.18;
+      need=Math.max(askAAV*Y*Math.min(1.6,1+prem*d),ask*Math.max(.2,1-gl*d));
+      notes.push(`${Y} yr instead of ${my}: he'd want about ${M1(need/Y)} a year (vs ${M1(askAAV)} over ${my}), less guaranteed money but a higher AAV`)}
   }
   let eff=T;
-  if(Y<my){const pen=(my-Y)*askAAV*((p.age||30)>=34?.2:.35);eff-=pen;notes.push(`Short of the ${my} years he wants: worth ${M1(pen)} less to him`)}
   const opts=((c.notes||'').match(/opt/gi)||[]).length;if(opts){eff+=T*.04*Math.min(2,opts);notes.push('Opt-out adds value for him')}
   const defShare=c.total?c.deferred/c.total:0;
   let verdict;const ratio=eff/need;
@@ -1073,14 +1077,15 @@ function negotiate(id,c,mode){
   const st=UI.neg[key]||(UI.neg[key]={f:mode==='ext'?1.03:1.05,f0:mode==='ext'?1.03:1.05,fl,rounds:0,last:0});
   st.rounds++;const r=A.ratio,defBad=c.total&&c.deferred/c.total>.5;
   const opts=Math.min(2,((c.notes||'').match(/opt/gi)||[]).length);
-  const quote=f=>{const Yc=Math.max(c.years,A.my);const need=agentEval(id,{...c,years:Yc,total:0},mode).need;
+  const quote=f=>{const Yc=c.years;const need=agentEval(id,{...c,years:Yc,total:0},mode).need;
     return {years:Yc,total:Math.ceil(need*f/(1+.04*opts)/1e6*2)/2}};
   if(c.deferred>c.total)return {A,verdict:'invalid',tag:'NOT VALID',vc:'bad',say:'Deferred money cannot exceed the total.',st};
   if(!defBad&&(r>=st.f*.995||(r>=st.fl&&st.f-r<.03))){const meet=r<st.f*.995;st.f=Math.min(st.f,r);return {A,verdict:'accept',tag:'ACCEPTED',vc:'good',say:meet?'"We can meet you there. Deal."':'"We have a deal."',st}}
   let k=r>=st.fl?.5:r>=st.fl*.88?.35:r>=st.fl*.75?.2:.08,back=false;
   if(defBad)k=0;if(st.last&&r<st.last-.005){k=0;back=true}
   st.f=Math.max(st.fl,st.f-(st.f-r)*k);st.last=Math.max(st.last,r);
-  const q=quote(st.f),t=`${q.years} yr / $${q.total}M`;let tag,vc,say;
+  const q=quote(st.f);let t=`${q.years} yr / $${q.total}M`;let tag,vc,say;
+  if(mode!=='ext'&&c.years<A.my){const Yl=A.my,need=agentEval(id,{...c,years:Yl,total:0},mode).need;t+=` (or ${Yl} yr / $${Math.ceil(need*st.f/(1+.04*opts)/1e6*2)/2}M)`}
   if(defBad){tag='COUNTER';vc='warn';say=`"He won't take more than half of it deferred. Same money, less deferred, and we can talk. We're at ${t}."`}
   else if(back){tag='COUNTER';vc='warn';say=`"You went down from your last offer. Our number stays at ${t}."`}
   else if(st.f<=st.fl+.001&&r>=st.fl*.85){tag='FINAL OFFER';vc='warn';say=`"That's as low as we go. ${t}, or he signs somewhere else."`}
@@ -1581,7 +1586,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118043820';
+const BUILD='20261118043950';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
