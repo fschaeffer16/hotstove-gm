@@ -221,6 +221,13 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .tside .thead .hint{color:rgba(255,255,255,.8);margin:2px 0 0}
 .tside.team .seg button[aria-pressed="true"]{background:var(--tc1);color:#fff;box-shadow:inset 0 -3px 0 var(--tc2)}
 .tside.team .chips button[aria-pressed="true"]{background:var(--tc2);border-color:var(--tc2);color:var(--tc2ink)}
+.tside .thead{cursor:pointer;position:relative;padding-right:34px}
+.tside .thead .chev{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px;color:#fff;opacity:.85}
+.tside .tfold{padding:8px 12px 10px}.tside .tfold .subh{font-size:11px;margin:0 0 4px;letter-spacing:.06em}
+.tside .tfold .kv{font-size:13px;padding:2px 0}.tside .tfold .kv .hint{font-size:11.5px}
+#tsum{scroll-margin-top:72px}
+.ttry{display:flex;gap:8px;margin-top:12px}.ttry .btn{padding:12px 14px;font-size:15px}.ttry .btn.primary{flex:1;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+details.textras{margin-top:10px}details.textras>summary{cursor:pointer;font-weight:600;padding:8px 2px;color:var(--muted)}
 .tpartner{border-radius:8px;padding:10px 12px;margin-bottom:12px;background:linear-gradient(110deg,color-mix(in srgb,var(--tc1) 70%,#000),var(--tc1));border-bottom:4px solid var(--tc2);color:#fff}
 .tpartner .field{color:rgba(255,255,255,.85)}.tpartner select{font-weight:700;font-size:17px}
 .gbar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;margin:4px 0 10px}
@@ -343,7 +350,7 @@ const RATE_DEFAULT=4.5;
 let ME='NYM',BASE_T=0,IL60=new Set();
 const MEN=()=>D.teams[ME].name;
 const skey=()=>ME==='NYM'?KEY:KEY+'-'+ME;
-let D,P,S,HIST=[],UI={g40:'P',gMin:'All',tGrp:{out:null,in:null},tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
+let D,P,S,HIST=[],UI={g40:'P',gMin:'All',tGrp:{out:null,in:null},tFold:{out:false,in:false},tTried:'',tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=v=>'$'+(v/1e6).toFixed(2)+'M';
@@ -1044,6 +1051,7 @@ function tradeRow(id,side){
   const v=side==='out'?cbtOf(id):partnerCount(id);
   return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span><div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
+const tSig=()=>JSON.stringify([UI.tTeam,[...UI.tOut].sort(),[...UI.tIn].sort(),UI.tCash,[...(UI.tPk||[])].sort(),UI.tIfa||0]);
 function renderTrade(){
   const codes=Object.keys(D.teams).filter(c=>c!==ME).sort((a,b)=>D.teams[a].name.localeCompare(D.teams[b].name));
   const code=UI.tTeam;
@@ -1068,14 +1076,22 @@ function renderTrade(){
   const pB=teamCBT(code),pA=pB+outSel.reduce((s,id)=>s+partnerCount(id),0)-inV-cash;
   const selN=side=>side==='out'?outSel.length:inSel.length;
   const list=(side,L,q,qid,ph)=>UI.tGrp[side]?`<input type="search" id="${qid}" placeholder="${ph}" value="${esc(q)}" style="width:100%;margin-top:8px;border:1px solid var(--line);border-radius:6px;padding:7px 8px;background:var(--paper)"><div class="tl">${L.map(id=>tradeRow(id,side)).join('')||'<p class="hint" style="padding:8px">Nobody here.</p>'}</div>`:`<p class="hint" style="margin:8px 2px 0">Tap 40-man or Prospects to pick players${selN(side)?` · ${selN(side)} selected`:''}.</p>`;
+  const recv=side=>side==='out'?D.teams[code].name:MEN();
+  const fold=(side,sel)=>`<div class="tfold"><div class="subh">${esc(recv(side))} receive</div>${sel.map(id=>{const p=P[id],v=side==='out'?cbtOf(id):partnerCount(id);return `<div class="kv"><span>${esc(p.n)} <span class="hint">${esc([p.pos,p.lvl!=='MLB'?p.lvl:'',p.fv?'FV '+p.fv:''].filter(Boolean).join(' · '))}</span></span><b>${v?M1(v):''}</b></div>`}).join('')||'<span class="hint">Nobody picked yet. Tap the header to open.</span>'}</div>`;
+  const body=(side,sel,inner)=>UI.tFold[side]?fold(side,sel):`<div class="tbody">${inner}</div>`;
+  const head=(side,title,sub)=>`<div class="thead" data-tfold="${side}" role="button" aria-expanded="${!UI.tFold[side]}"><h3>${title}</h3>${sub?`<p class="hint">${sub}</p>`:''}<span class="chev">${UI.tFold[side]?'▸':'▾'}</span></div>`;
+  const any=outSel.length||inSel.length||hasExtras()||UI.tCash;
+  const tried=any&&UI.tTried===tSig();
   return `<div class="tpartner" style="${tcol(code)}"><label class="field" style="margin:0">Trade partner<select id="tTeam">${codes.map(c=>`<option value="${c}"${c===code?' selected':''}>${esc(D.teams[c].name)}</option>`).join('')}</select></label></div>
   <div class="tradegrid">
-    <div class="tside team" style="${tcol(ME)}"><div class="thead"><h3>${esc(MEN())} send</h3></div><div class="tbody">${ctl('out')}${list('out',outL,UI.tQout,'tQout','Search your org…')}</div></div>
-    <div class="tside team" style="${tcol(code)}"><div class="thead"><h3>${esc(D.teams[code].name)} send</h3><p class="hint">${esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')}${D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':''}</p></div><div class="tbody">${ctl('in')}${list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…')}</div></div>
+    <div class="tside team" style="${tcol(ME)}">${head('out',esc(MEN())+' send','')}${body('out',outSel,ctl('out')+list('out',outL,UI.tQout,'tQout','Search your org…'))}</div>
+    <div class="tside team" style="${tcol(code)}">${head('in',esc(D.teams[code].name)+' send',esc(({allin:'All-in contender',contend:'Contender',ascend:'Rising',retool:'Retooling',rebuild:'Rebuilding'})[D.teams[code].win]||'')+(D.teams[code].mkt?' · '+esc(D.teams[code].mkt)+' market':''))}${body('in',inSel,ctl('in')+list('in',inL,UI.tQin,'tQin','Search '+esc(D.teams[code].name)+'…'))}</div>
   </div>
+  <details class="textras"${hasExtras()||UI.tCash?' open':''}><summary>Add draft picks, pool money or cash${hasExtras()||UI.tCash?' ✓':''}</summary>
   ${tradeExtrasHTML(code)}
-  <div class="filters" style="margin-top:10px"><label class="field" style="max-width:240px">Cash (${esc(MEN())} pay +, receive −) $M<input id="tCash" type="number" step="0.5" value="${UI.tCash}"></label></div>
-  <div class="tsum">
+  <div class="filters" style="margin-top:10px"><label class="field" style="max-width:240px">Cash (${esc(MEN())} pay +, receive −) $M<input id="tCash" type="number" step="0.5" value="${UI.tCash}"></label></div></details>
+  <div class="ttry"><button class="btn" type="button" data-act="tclear">Clear</button><button class="btn primary" type="button" data-act="ttry"${any?'':' disabled'}>Try trade</button></div>
+  ${tried?`<div class="tsum" id="tsum">
     <div class="cols">
       <div><div class="subh">${esc(MEN())} send</div>${outSel.map(id=>`<div class="kv"><span>${esc(P[id].n)}</span><b>${cbtOf(id)?M(cbtOf(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
       <div><div class="subh">${esc(MEN())} receive</div>${inSel.map(id=>`<div class="kv"><span>${esc(P[id].n)} ${P[id].lvl==='MLB'||P[id].kind!=='min'?'':`<label class="hint"><input type="checkbox" data-add40="${id}"${UI.tAdd40.has(id)?' checked':''}> add to 40</label>`}</span><b>${partnerCount(id)?M(partnerCount(id)):'—'}</b></div>`).join('')||'<span class="hint">Nobody yet</span>'}</div>
@@ -1090,9 +1106,9 @@ function renderTrade(){
       <div><div class="subh">${esc(code)} CBT (est.)</div>
         <div class="kv"><span>Before</span><b>${M(pB)}</b></div><div class="kv"><span>After</span><b>${M(pA)}</b></div></div>
     </div>
-    ${(outSel.length||inSel.length||hasExtras())?verdictHTML(evalTrade(code,outSel,inSel,UI.tCash)):''}
-    <div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="tclear">Clear</button>${(outSel.length||inSel.length||hasExtras())?`<button class="btn danger" type="button" data-act="tforce">Force approve</button>`:''}<button class="btn primary" type="button" data-act="texec"${(!outSel.length&&!inSel.length&&!hasExtras())||evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
-  </div>`;
+    ${verdictHTML(evalTrade(code,outSel,inSel,UI.tCash))}
+    <div class="dact" style="justify-content:flex-end"><button class="btn danger" type="button" data-act="tforce">Force approve</button><button class="btn primary" type="button" data-act="texec"${evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
+  </div>`:''}`;
 }
 const xl=(E,side)=>((E.X&&E.X.lines)||[]).filter(l=>l.side===side).map(l=>`<div class="kv"><span>${esc(l.n)} <span class="hint">${esc(l.notes.join(' · '))}</span></span><b>$${l.v.toFixed(1)}M</b></div>`).join('');
 function verdictHTML(E){
@@ -1137,7 +1153,7 @@ function execTrade(force){
   const xt=[...X.picksIn.map(p=>`pick #${p.no} (${RDN[p.rd]})`),...(X.ifa<0?[M1(-X.ifa)+' international pool']:[])],xo=[...X.picksOut.map(p=>`pick #${p.no} (${RDN[p.rd]})`),...(X.ifa>0?[M1(X.ifa)+' international pool']:[])];
   const txt=`${MEN()} get ${[...inSel.map(id=>P[id].n),...xt].join(', ')||'nothing'} from ${D.teams[code].name} for ${[...outSel.map(id=>P[id].n),...xo].join(', ')||'nothing'}`+(cash?` (${cash>0?MEN()+' send':MEN()+' receive'} $${Math.abs(UI.tCash)}M cash)`:'');
   addLog(force?'TRADE (forced)':'TRADE',txt,inV+Math.max(0,cash),outV+Math.max(0,-cash));
-  UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;
+  UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};
   commit();toast('Trade done. New players are under Players to assign.');
 }
 
@@ -1501,7 +1517,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118004349';
+const BUILD='20261118005521';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1609,6 +1625,7 @@ async function copy(txt,msg){
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
+  {const h=e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
   const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(fromNav)goTo('desk');return}
@@ -1646,7 +1663,8 @@ document.addEventListener('click',e=>{
     case 'nontender':confirmBox('Non-tender '+P[id].n+'?',`He becomes a free agent and his ${M(aav(id))} arbitration estimate comes off the CBT payroll.`,'Non-tender',()=>doRelease(id,'Non-tendered'));break;
     case 'release':confirmBox('Release '+P[id].n+'?',kind(id)==='guar'?`His ${M(aav(id))} AAV stays on the CBT payroll as dead money.`:'He comes off the roster.',kind(id)==='guar'?'Release':'DFA / release',()=>doRelease(id,kind(id)==='guar'?'Released':'DFA'));break;
     case 'totrade':UI.tTeam=owner(id);UI.tIn.add(id);UI.tab='trade';closeDrawer();render();break;
-    case 'tclear':UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;render();break;
+    case 'ttry':UI.tTried=tSig();UI.tFold={out:true,in:true};render();{const el=$('#tsum');if(el)el.scrollIntoView({block:'start'})}break;
+    case 'tclear':UI.tFold={out:false,in:false};UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;render();break;
     case 'texec':execTrade(false);break;
     case 'tforce':confirmBox('Force this trade through?','The other GM has not agreed. Forcing it records the trade as forced in your transaction log.','Force approve',()=>execTrade(true));break;
     case 'copyupd':copy(updateText(),'Update copied');break;
