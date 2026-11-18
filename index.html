@@ -305,7 +305,7 @@ textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px so
 <header class="top">
   <div class="top-in">
     <div class="brand">
-      <img class="logo" src="logo.png" alt="Hot Stove GM logo" width="64" height="64">
+      <img class="logo" src="logo.png" alt="Hot Stove GM logo, back to top" width="64" height="64" data-goto="home" style="cursor:pointer">
       <div>
       <h1>Hot Stove GM <span class="tm"><span id="hTeam">Mets</span> <em>2027</em></span></h1>
       <p><label for="teamPick" class="sr">Team</label><select id="teamPick" class="teampick" aria-label="Team you are running"></select> Fangraphs payroll &amp; Roster Resource · 40-man rosters 11/17 · free sandbox</p>
@@ -516,11 +516,11 @@ function render(){
   </div>`;
   renderBanner();renderNav();applyCollapse();
 }
-const NAV=[['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['log','Transactions'],['export','Copy update']];
+const NAV=[['home','⌂ Home'],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['log','Transactions'],['export','Copy update']];
 function renderNav(){const el=$('#topnavIn');if(!el)return;const cur=UI.navAt||UI.tab;
-  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}${k==='log'&&S.log.length?' ('+S.log.length+')':''}</button>`).join('');
+  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'||k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}${k==='log'&&S.log.length?' ('+S.log.length+')':''}</button>`).join('');
   const b=el.querySelector('[aria-selected="true"]');if(b&&b.scrollIntoView&&!UI.navNoScroll)b.scrollIntoView({block:'nearest',inline:'nearest'})}
-function goTo(k){const t=k==='roster'?$('.grid'):k==='cbt'?$('.cbtcol'):$('.desk');if(t)t.scrollIntoView({block:'start'})}
+function goTo(k){if(k==='home'){window.scrollTo({top:0});return}const t=k==='roster'?$('.grid'):k==='cbt'?$('.cbtcol'):$('.desk');if(t)t.scrollIntoView({block:'start'})}
 /* collapsible cards: tap a card's title bar to fold it; remembered per device */
 let COLL=(()=>{try{return new Set(JSON.parse(localStorage.getItem('hs-collapsed')||'[]'))}catch(e){return new Set()}})();
 function cardKey(c){const h=c.querySelector('.cardhead h2');return h?h.textContent.trim().toLowerCase():null}
@@ -1490,7 +1490,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118003735';
+const BUILD='20261118003940';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
