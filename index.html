@@ -981,8 +981,9 @@ const WANT_TXT={SP:'starting pitching',RP:'bullpen help',C:'a catcher','1B':'a f
    Deals are decided headliner first: the best player in the deal sets the price, and depth cannot buy a star. */
 const GRP_SLOTS={C:1,'1B':1,'2B':1,'3B':1,SS:1,OF:3,DH:1,SP:5,RP:3};
 const _need={};
+let _leaving=new Set();/* players the club is trading away in the deal being judged */
 function groupDepth(code,g,except){/* established big leaguers at a group, best first */
-  return roster(code).filter(x=>x!==except&&established(x)&&pgrp(x)===g).sort((a,b)=>P[b].proj.war-P[a].proj.war)}
+  return roster(code).filter(x=>x!==except&&!_leaving.has(x)&&established(x)&&pgrp(x)===g).sort((a,b)=>P[b].proj.war-P[a].proj.war)}
 function needAt(code,g,except){/* how much a club needs help at a group: WAR of the weakest starter slot */
   const d=groupDepth(code,g,except),n=GRP_SLOTS[g]||1,w=d[n-1]?P[d[n-1]].proj.war:-.5;return w}
 function orgPros(code){return roster(code).filter(x=>P[x].fv&&!established(x)).sort((a,b)=>hsValue(b)-hsValue(a))}
@@ -1103,7 +1104,8 @@ function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owne
 function evalTrade(code,outSel,inSel,cashM){
   const c=ctx(code),R={code,ctx:c,reasons:[],locked:[],checks:[]};
   for(const id of [...outSel,...inSel])if(lockedFA(id))R.locked.push(P[id].n);
-  const rec=outSel.map(id=>({id,...gradeTo(id,code,true)})),giv=inSel.map(id=>({id,...gradeTo(id,code,false)}));
+  const giv=inSel.map(id=>({id,...gradeTo(id,code,false)}));
+  _leaving=new Set(inSel);const rec=outSel.map(id=>({id,...gradeTo(id,code,true)}));
   R.rec=rec;R.giv=giv;
   const X=tradeExtras(code,outSel,inSel,cashM);R.X=X;R.ruleErrs=X.errs;
   /* picks and pool money as pieces: a Competitive Balance pick is about a 45-50 prospect; pool money is small change */
@@ -1159,6 +1161,7 @@ function evalTrade(code,outSel,inSel,cashM){
     R.drop=tryDrop||null}
   const q={allin:['We are trying to win a ring this year.','We will pay for certainty, not lottery tickets.'],contend:['We have to be smart with every year of control.','Control matters more to us than the name.'],ascend:['Our window is opening. We are not moving young core for short-term help.','We will add, but we protect the kids who are close.'],retool:['We can go either way here. Make it worth our while.','We are listening on veterans, but not giving them away.'],rebuild:['We want young talent with upside. Veterans do nothing for us.','Take salary off our hands or bring prospects. Ideally both.']}[c.win];
   R.quote=q[hashN(code+outSel.join()+inSel.join())%q.length];
+  _leaving=new Set();
   return R}
 function faSuitors(id){
   const p=P[id],g=pgrp(id),w=p.pwar||(p.proj?p.proj.war:0),ask=(p.maav||Math.max(1e6,w*7e6));const out=[];
@@ -1748,7 +1751,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118075423';
+const BUILD='20261118075627';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
