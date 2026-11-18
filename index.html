@@ -250,6 +250,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8p
 .tbadge select option{color:#14100c;background:#fff}
 .tside .thead.wb{padding-right:76px;min-height:74px}
 .tside .thead h3 .fch{font-size:13px;opacity:.8;margin-left:6px}
+.tchks{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.tchk{font-size:12px;font-weight:600;padding:3px 8px;border-radius:12px;border:1px solid var(--line)}.tchk.ok{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,transparent)}.tchk.no{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
 .tprev{margin-top:12px;border:2px solid var(--hs-gold,#f7b32b);border-radius:10px;padding:12px;background:var(--card)}
 .tprev .tph{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 .tprev .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
@@ -736,15 +737,18 @@ function renderCBT(c){
 /* ---------- FA ---------- */
 function faList(){return D.fa.filter(id=>owner(id)==='FA')}
 function renderFA(){
-  const POS=['All','C','1B','2B','SS','3B','OF','DH','SP','RP'];
-  let l=faList().filter(id=>{const p=P[id];if(UI.faQ&&!p.n.toLowerCase().includes(UI.faQ.toLowerCase()))return false;if(UI.faPos==='All')return true;const ps=p.pos.split('/');if(UI.faPos==='OF')return ps.some(x=>['LF','CF','RF','OF'].includes(x));return ps.includes(UI.faPos)});
+  const FAG=['All','SP','RP','C','INF','OF','DH'];if(!FAG.includes(UI.faPos))UI.faPos='All';
+  const faGrp=id=>{const ps=String(P[id].pos||'').split('/');const f=ps[0];
+    if(P[id].p||['SP','RP','P','RHP','LHP'].includes(f))return /SP/.test(P[id].pos)?'SP':'RP';
+    if(f==='C')return 'C';if(['LF','CF','RF','OF'].includes(f))return 'OF';if(f==='DH')return 'DH';return 'INF'};
+  let l=faList().filter(id=>{const p=P[id];if(UI.faQ&&!p.n.toLowerCase().includes(UI.faQ.toLowerCase()))return false;return UI.faPos==='All'||faGrp(id)===UI.faPos});
   const key={n:id=>P[id].n,age:id=>P[id].age,w26:id=>P[id].war26,pwar:id=>P[id].pwar,maav:id=>P[id].maav||0,mt:id=>P[id].mt||0};
   const kf=key[UI.faSort]||key.pwar;l.sort((a,b)=>{const x=kf(a),y=kf(b);return (x>y?1:x<y?-1:0)*UI.faDir});
   const th=(k,l,r)=>`<th class="${r?'r':''}" data-sort="${k}">${l}${UI.faSort===k?(UI.faDir<0?' ▾':' ▴'):''}</th>`;
   const signed=Object.keys(S.contract).filter(id=>P[id].team==='FA');
   return `<div class="filters">
     <input type="search" id="faQ" placeholder="Search free agents…" value="${esc(UI.faQ)}" aria-label="Search free agents">
-    <select id="faPos" aria-label="Position">${POS.map(p=>`<option${p===UI.faPos?' selected':''}>${p}</option>`).join('')}</select>
+    <div class="chips" role="group" aria-label="Position">${FAG.map(k=>`<button type="button" data-fapos="${k}" aria-pressed="${UI.faPos===k}">${k}</button>`).join('')}</div>
     <span class="hint">${l.length} unsigned · market = Fangraphs median crowdsource · QO = draft-pick cost</span>
   </div>
   <div class="scroll"><table class="list">
@@ -954,29 +958,91 @@ function hsGrade(id){const v=hsValue(id);if(v<=GRADEPTS[0][1])return 35;
 let _rank=null;
 function hsRanks(){if(_rank)return _rank;const ids=Object.keys(P).filter(id=>P[id].fv&&P[id].team!=='DUP'&&P[id].team!=='REL'&&P[id].team!=='FA');
   ids.sort((a,b)=>hsValue(b)-hsValue(a));_rank={};ids.forEach((id,i)=>_rank[id]=i+1);_rank.__ids=ids;return _rank}
-function valueTo(id,code,incoming){
-  const notes=[],p=P[id];let v;
-  if(established(id)){const m=mlbValue(id,code);v=m.v;
-    const pj=p.proj;notes.push(`${pj.war.toFixed(1)} proj WAR, ${m.yrs} yr${m.yrs===1?'':'s'} of control, ${cbtOf(id)||partnerCount(id)?M1(cbtOf(id)||partnerCount(id))+' CBT':'pre-arb salary'}`);
-    if(p.fv){const pv=prospectValue(id,code,[]);if(pv>v)v=pv}
-    if((p.age||0)>=32&&ctx(code).win==='rebuild')notes.push(`age ${p.age}: no use to a rebuilder`);
-    if(!incoming&&owner(id)===code){const fl=pj.war*DPW/1e6*({allin:1,contend:.6,ascend:.35,retool:.25,rebuild:0}[ctx(code).win]||0);
-      if(fl>v){v=fl;notes.push(`they need his ${pj.war.toFixed(1)} WAR this year more than the salary relief`)}
-      const win=ctx(code).win,pr=prof(code),cl=ctrl(id).length,age=p.age||28;
-      if(cl<=1&&v>0&&win!=='allin'){const s=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);
-        if(s>0){v*=1-.3*s;notes.push(`one year from free agency: they would rather get value now than lose him`)}}
-      if(win==='rebuild'&&age>=29&&v>0){v*=.75;notes.push('fire sale: veterans are available')}
-      else if(win==='retool'&&age>=31&&cl<=2&&v>0){v*=.85;notes.push('retooling: willing to sell veterans')}
-      const g=pgrp(id);
-      if(g!=='RP'&&v>0){const ready=roster(code).find(x=>x!==id&&P[x].fv&&fvn(P[x].fv)>=50&&(P[x].lvl==='AAA'||P[x].lvl==='AA')&&pgrp(x)===g);
-        if(ready){v*=.88;notes.push(`${P[ready].n} is close to ready at ${g}`)}}}
-    if(incoming){const g=pgrp(id),R=roster(code).filter(x=>x!==id&&established(x)&&pgrp(x)===g);if(R.length){
-      const best=R.reduce((m,x)=>Math.max(m,P[x].proj.war),-9);
-      if(g!=='RP'){if(best<pj.war-1.5){v*=1.12;notes.push(`fills a hole at ${g}`)}
-        else if(best>=pj.war+1&&pj.war<3){v*=.85;notes.push(`they already have ${P[R.find(x=>P[x].proj.war===best)].n} at ${g}`)}}}}
-  } else if(p.fv){v=prospectValue(id,code,notes)}
-  else{v=p.proj?Math.max(.1,mlbValue(id,code).v*.5):.1;notes.push('organizational depth')}
-  return {v,notes}}
+/* ===== Front-office trade logic (no dollar math) =====
+   Every player gets a trade grade on the 20-80 scouting scale from the point of view of the club holding or receiving him:
+   big leaguers by projected WAR, years of control, age and contract; prospects by the Hot Stove grade.
+   Then each club adjusts for its window, its needs, who is already ahead of a prospect, positional logjams and its untouchables.
+   Deals are decided headliner first: the best player in the deal sets the price, and depth cannot buy a star. */
+const GRP_SLOTS={C:1,'1B':1,'2B':1,'3B':1,SS:1,OF:3,DH:1,SP:5,RP:3};
+const _need={};
+function groupDepth(code,g,except){/* established big leaguers at a group, best first */
+  return roster(code).filter(x=>x!==except&&established(x)&&pgrp(x)===g).sort((a,b)=>P[b].proj.war-P[a].proj.war)}
+function needAt(code,g,except){/* how much a club needs help at a group: WAR of the weakest starter slot */
+  const d=groupDepth(code,g,except),n=GRP_SLOTS[g]||1,w=d[n-1]?P[d[n-1]].proj.war:-.5;return w}
+function orgPros(code){return roster(code).filter(x=>P[x].fv&&!established(x)).sort((a,b)=>hsValue(b)-hsValue(a))}
+function salYr(id){const v=isMets(id)?cbtOf(id):partnerCount(id);return v||.8e6}
+const ROLE=(id,g)=>{const p=P[id],gp=pgrp(id);
+  if(!established(id)&&p.t100)return p.t100<=10?'top-10 prospect in baseball':p.t100<=25?'top-25 prospect':p.t100<=50?'top-50 prospect':'top-100 prospect';
+  if(!established(id))return g>=62?'elite prospect':g>=57?'top-50 prospect':g>=52?'top-100 type prospect':g>=47?'solid prospect':g>=42?'org prospect':'depth prospect';
+  if(gp==='SP')return g>=68?'ace':g>=62?'No. 1-2 starter':g>=56?'No. 2-3 starter':g>=50?'mid-rotation starter':g>=44?'back-end starter':'swingman';
+  if(gp==='RP')return g>=56?'elite closer':g>=50?'closer / top setup man':g>=45?'setup man':'middle reliever';
+  return g>=70?'franchise player':g>=64?'star':g>=58?'All-Star caliber regular':g>=52?'above-average regular':g>=46?'average regular':g>=41?'role player':'bench piece'};
+const gpts=g=>Math.pow(2,(g-40)/5);/* tiers: each 5 grade points doubles the weight, so a 60 is worth four 50s */
+function gradeTo(id,code,incoming){
+  const p=P[id],notes=[],c=ctx(code),win=c.win,pr=prof(code),gp=pgrp(id),age=p.age||28;let g,burden=0;
+  if(established(id)){
+    const w=p.proj.war,cy=ctrl(id).length;
+    g=40+5*w;if(gp==='RP')g=Math.min(g,60);var raw=g;
+    notes.push(`${w.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);
+    if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
+    else if(cy===2)g-=2;else if(cy>=5&&age<=29)g+=2;
+    if(p.fv&&age<=25){const pg=hsGrade(id);if(pg>g)g=pg}
+    if(win==='rebuild'||win==='ascend'){if(age>=33){g-=10;notes.push(`age ${p.age}: no fit for a ${win==='rebuild'?'rebuilding':'young'} club`)}else if(age>=30){g-=5;notes.push(`age ${p.age}: older than their timeline`)}}
+    else if(age>=35)g-=3;
+    /* money as a club sees it: overpaid years are dead weight, worse for a small budget */
+    const sal=salYr(id),over=sal/1e6-Math.max(.8,w*8);
+    if(over>5){const yrs=Math.min(cy,6);burden=(over-5)*yrs/12*({small:1.4,mid:1,big:.6}[c.mkt])*(incoming?1:({allin:.2,contend:.6}[win]??1));if(incoming&&burden>.5)notes.push(`${M1(sal)} a year for ${yrs} more year${yrs===1?'':'s'}: more salary than production`)}
+    if(incoming){
+      const need=needAt(code,gp,id);
+      if(gp!=='DH'&&w>=need+1.5&&w>=1){g+=3;notes.push(`fills a need at ${gp}`)}
+      else if(gp!=='RP'&&w<=need-.5){g-=3;const top=groupDepth(code,gp,id)[0];if(top)notes.push(`they already have ${P[top].n} at ${gp}`)}
+    }else{
+      /* losing him: does it open a hole, or is someone ready to take his job? */
+      const ready=gp!=='RP'&&orgPros(code).find(x=>x!==id&&pgrp(x)===gp&&fvn(P[x].fv)>=50&&(P[x].lvl==='AAA'||P[x].lvl==='AA'));
+      if(ready){g-=2;notes.push(`${P[ready].n} is close to ready at ${gp}`)}
+      else if((win==='allin'||win==='contend')&&w>=2&&needAt(code,gp,id)<w-2){g+=3;notes.push(`trading him opens a hole at ${gp} they can't fill`)}
+      if(cy<=1&&win!=='allin'){const sl=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);if(sl>0){g-=2*sl;notes.push('they would rather get something now than lose him for nothing')}}
+      if(win==='rebuild'&&age>=29){g-=3;notes.push('rebuilding: veterans are available')}
+      else if(win==='retool'&&age>=31&&cy<=2){g-=2;notes.push('retooling: listening on veterans')}
+    }
+  }else if(p.fv){
+    g=hsGrade(id);notes.push(`Hot Stove grade ${Math.round(g)}`+(p.t100?` · FG Top 100 #${p.t100}`:'')+(p.mlbp?` · MLB Pipeline #${p.mlbp} in org`:''));
+    const R=roster(code).filter(x=>x!==id);
+    const ahead=gp!=='SP'&&gp!=='RP'&&R.find(x=>established(x)&&pgrp(x)===gp&&(P[x].age||30)<=29&&P[x].proj.war>=2.5&&ctrl(x).length>=3);
+    const jam=R.filter(x=>P[x].fv&&!established(x)&&fvn(P[x].fv)>=45&&pgrp(x)===gp).length;
+    if(incoming){
+      if(win==='rebuild'||win==='ascend'){g+=2;notes.push('young talent is what they want')}
+      else if(win==='allin'){g-=2;notes.push('they want big-league help more than prospects')}
+      if(pr.pros==='currency')g-=1;
+      if(ahead){g-=3;notes.push(`would be blocked by ${P[ahead].n}`)}
+      if(jam>=3){g-=2;notes.push(`they already have ${jam} good ${gp} prospects`)}
+    }else{
+      const rk=orgPros(code).indexOf(id)+1;
+      if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
+      if(pr.pros==='hoard'){g+=1.5;notes.push('this front office hoards prospects')}
+      if(ahead){g-=3;notes.push(`blocked by ${P[ahead].n} at ${gp}`)}
+      if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
+    }
+  }else{g=p.proj?Math.min(42,38+2*Math.max(0,p.proj.war)):36;notes.push('organizational depth')}
+  g=Math.max(20,Math.min(80,g));
+  return {g,pts:gpts(g)-burden,burden,label:ROLE(id,established(id)?Math.max(raw,p.fv&&age<=25?hsGrade(id):0):(p.fv?hsGrade(id):g)),notes}}
+/* untouchable to the club that holds him */
+function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id);
+  if(established(id)){const w=p.proj.war,cy=ctrl(id).length,age=p.age||28;
+    if(w>=5.5&&cy>=2)return 'franchise player';
+    if(age<=27&&cy>=3&&w>=3.5)return 'young core player';
+    if((c.win==='rebuild'||c.win==='ascend')&&age<=26&&cy>=4&&w>=2.5)return 'part of their young core';
+    if((c.win==='allin'||c.win==='contend')&&w>=4.5)return 'core player on a contender';
+    return ''}
+  const rk=orgPros(code).indexOf(id)+1;
+  if(rk===1&&hsGrade(id)>=58&&(prof(code).pros==='hoard'||c.win==='ascend'||c.win==='rebuild'))return 'their top prospect';
+  return ''}
+/* a weighted package: the best piece counts fully, extra pieces count for less (quantity can't buy quality) */
+function pkg(list){const pos=list.filter(x=>x.pts>0).sort((a,b)=>b.pts-a.pts),neg=list.filter(x=>x.pts<=0);const w=[1,.55,.35,.22,.15,.1];
+  return pos.reduce((s,x,i)=>s+x.pts*(w[i]??.08),0)+neg.reduce((s,x)=>s+x.pts,0)}
+/* kept for older callers: v = package points */
+function valueTo(id,code,incoming){const r=gradeTo(id,code,incoming);return {v:r.pts,notes:r.notes,g:r.g,label:r.label}}
+function sumW(vals){return pkg(vals.map(v=>({pts:v})))}
 function lockedFA(id){const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&isMets(id))}
 function sumW(vals){const pos=vals.filter(x=>x>0).sort((a,b)=>b-a),neg=vals.filter(x=>x<=0);const w=[1,.85,.7,.55,.45,.4];return pos.reduce((s,x,i)=>s+x*(w[i]??.35),0)+neg.reduce((s,x)=>s+x,0)}
 function hashN(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))%9973;return h}
@@ -986,8 +1052,8 @@ function tradeExtras(code,outSel,inSel,cashM){const X={recvV:0,giveV:0,lines:[],
   for(const key of UI.tPk||[]){const p=cb.find(x=>x.key===key);if(!p)continue;const own=p.owner;if(own!==ME&&own!==code)continue;
     const lab=`#${p.no} ${RDN[p.rd]} (${p.team})`;
     if(!p.tradeable)X.errs.push(`${lab} was already traded once; a Competitive Balance pick can be traded only by the club it was awarded to`);
-    if(own===ME){X.picksOut.push(p);const v=pickTradeValue(p.no,code);X.recvV+=v;X.lines.push({n:'Pick '+lab,v,notes:['slot value x2.4, weighted for their window'],side:'rec'})}
-    else{X.picksIn.push(p);const v=pickTradeValue(p.no,code);X.giveV+=v;X.lines.push({n:'Pick '+lab,v,notes:['slot value x2.4'],side:'giv'})}}
+    if(own===ME){X.picksOut.push(p);const v=pickTradeValue(p.no,code);X.recvV+=v;X.lines.push({n:'Pick '+lab,v,notes:['about the price of a solid prospect'],side:'rec'})}
+    else{X.picksIn.push(p);const v=pickTradeValue(p.no,code);X.giveV+=v;X.lines.push({n:'Pick '+lab,v,notes:['about the price of a solid prospect'],side:'giv'})}}
   const a=Math.abs(X.ifa);if(a){const I=RULES.ifa,from=X.ifa>0?ME:code,to=X.ifa>0?code:ME,fac=prof(code).pros==='hoard'?1:.8;
     if(a%I.step)X.errs.push('International pool money moves only in $250K steps');
     if(ifaPool(from)<a)X.errs.push(`${D.teams[from].name} have only ${M1(ifaPool(from))} of pool space`);
@@ -1010,31 +1076,63 @@ function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owne
     <label class="field" style="max-width:320px;margin-top:6px">International pool money<select id="tIfa">${opts.map(v=>`<option value="${v}"${v===(UI.tIfa||0)?' selected':''}>${v===0?'None':v>0?esc(MEN())+' send '+M1(v):esc(MEN())+' receive '+M1(-v)}</option>`).join('')}</select></label>
     <p class="hint" style="margin:4px 0 0">Pools (est.): ${esc(MEN())} ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · ${esc(D.teams[code].name)} ${M1(ifaPool(code))} of ${M1(ifaOriginal(code))}</p></div>`}
 function evalTrade(code,outSel,inSel,cashM){
-  const c=ctx(code),R={code,ctx:c,lines:[],reasons:[],locked:[]};
+  const c=ctx(code),R={code,ctx:c,reasons:[],locked:[],checks:[]};
   for(const id of [...outSel,...inSel])if(lockedFA(id))R.locked.push(P[id].n);
-  const rec=outSel.map(id=>({id,...valueTo(id,code,true)})),giv=inSel.map(id=>({id,...valueTo(id,code,false)}));
-  const cashV=cashM*({small:1.25,mid:1,big:.7}[c.mkt]);
-  R.recv=sumW(rec.map(x=>x.v))+Math.max(0,cashV);R.give=sumW(giv.map(x=>x.v))+Math.max(0,-cashV);
+  const rec=outSel.map(id=>({id,...gradeTo(id,code,true)})),giv=inSel.map(id=>({id,...gradeTo(id,code,false)}));
   R.rec=rec;R.giv=giv;
-  const X=tradeExtras(code,outSel,inSel,cashM);R.X=X;R.recv+=X.recvV;R.give+=X.giveV;R.ruleErrs=X.errs;
-  let core=0;for(const g of giv){const p=P[g.id];if(established(g.id)&&(((p.age||30)<=28&&p.proj.war>=4&&ctrl(g.id).length>=2)||(p.proj.war>=4.5&&(c.win==='allin'||c.win==='contend')))){core+=Math.max(0,g.v)*(c.win==='allin'&&p.proj.war>=4.5?.5:.25);R.reasons.push(`${p.n} is a core piece: they need to be overwhelmed`)}}
-  R.margin=Math.max(2,.07*R.give)+core;R.gain=R.recv-R.give;
-  const t=D.teams[code],base=teamCBTbase(code),after=teamCBT(code)+outSel.reduce((s,id)=>s+partnerCount(id),0)-inSel.reduce((s,id)=>s+partnerCount(id),0)-cashM*1e6;
-  const cap=Math.max(capOf(code)*1e6,base);
-  R.after=after;R.cap=cap;R.budget=after>cap&&after>teamCBT(code);
-  // Mets-side view for reference
-  R.metsGive=sumW(outSel.map(id=>valueTo(id,ME,false).v));R.metsGet=sumW(inSel.map(id=>valueTo(id,ME,true).v));
+  const X=tradeExtras(code,outSel,inSel,cashM);R.X=X;R.ruleErrs=X.errs;
+  /* picks and pool money as pieces: a Competitive Balance pick is about a 45-50 prospect; pool money is small change */
+  const pickPiece=p=>({pts:gpts(p.no<=40?49:p.no<=75?46:43),g:p.no<=40?49:p.no<=75?46:43});
+  const recX=[...X.picksOut.map(pickPiece)],givX=[...X.picksIn.map(pickPiece)];
+  if(X.ifa>0)recX.push({pts:Math.abs(X.ifa)/1e6*.35,g:38});else if(X.ifa<0)givX.push({pts:Math.abs(X.ifa)/1e6*.35,g:38});
+  /* cash pays down salary: it only helps when there is salary to cover, and matters more to small budgets */
+  const cashPts=cashM*({small:.25,mid:.18,big:.1}[c.mkt]);
+  const all=[...rec,...recX];const allG=[...giv,...givX];
+  R.recv=pkg(all)+Math.max(0,cashPts);R.give=pkg(allG)+Math.max(0,-cashPts);
+  /* headliners: the best real asset on each side (a contract they're dumping is not a headliner) */
+  const hIn=rec.concat(recX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0}),hOut=giv.concat(givX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0});
+  R.hIn=hIn;R.hOut=hOut;
+  /* payroll */
+  const base=teamCBTbase(code),after=teamCBT(code)+outSel.reduce((s,id)=>s+partnerCount(id),0)-inSel.reduce((s,id)=>s+partnerCount(id),0)-cashM*1e6;
+  const cap=Math.max(capOf(code)*1e6,base);R.after=after;R.cap=cap;R.budget=after>cap&&after>teamCBT(code);
+  /* the club's questions, in order */
+  const untouch=giv.map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
+  R.untouch=untouch.filter(u=>hIn.g<u.x.g+4);/* only overwhelming offers pry them loose */
+  const winNow=(c.win==='allin'||c.win==='contend');
+  const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
+  const mlbBack=rec.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5);
+  R.needMLB=winNow&&mlbOut.length&&!mlbBack.length&&hIn.g<hOut.g+6;
+  const slack=(c.win==='rebuild'||c.win==='ascend'||c.win==='retool')&&rec.length>=2?6:4;
+  R.headOK=!hOut.g?true:hIn.g>=hOut.g-slack;
+  const prem=prof(code).pros==='hoard'?.12:c.win==='rebuild'?.0:.06;
+  R.ratio=R.give>0?R.recv/R.give:(R.recv>0||R.give<0?9:0);R.need=R.give>0?R.give*(1+prem):R.give;
+  R.pkgOK=R.recv>=R.need&&(R.recv>0||R.give<0);
+  R.checks=[
+    ['Payroll fits',!R.budget],
+    ['Headliner measures up',R.headOK],
+    ...(winNow&&mlbOut.length?[['Big-league help back',!R.needMLB]]:[]),
+    ...(untouch.length?[['No untouchables',!R.untouch.length]]:[]),
+    ['Enough talent overall',R.pkgOK]];
   if(R.locked.length||X.errs.length)R.verdict='locked';
-  else if(R.budget)R.verdict='reject';
-  else if(R.gain>=R.margin)R.verdict='accept';
-  else if(R.gain>=R.margin-Math.max(10,.3*R.give))R.verdict='counter';
+  else if(R.budget||R.untouch.length)R.verdict='reject';
+  else if(R.headOK&&R.pkgOK&&!R.needMLB)R.verdict='accept';
+  else if(R.ratio>=.75&&hIn.g>=hOut.g-slack-4)R.verdict='counter';
   else R.verdict='reject';
-  R.short=R.margin-R.gain;
-  if(R.verdict==='counter'){
-    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!on26(id)).map(id=>({id,v:valueTo(id,code,true).v})).filter(x=>x.v>=R.short).sort((a,b)=>a.v-b.v);
-    R.add=pool[0]||null;
-    const drop=giv.filter(g=>g.v>=R.short).sort((a,b)=>a.v-b.v)[0];R.drop=drop||null}
-  const q={allin:['We are trying to win a ring this year.','We will pay for certainty, not lottery tickets.'],contend:['We have to be smart with every dollar and every year of control.','Control matters more to us than the name.'],ascend:['Our window is opening. We are not moving young core for short-term help.','We will add, but we protect the kids who are close.'],retool:['We can go either way here. Make it worth our while.','We are listening on veterans, but not giving them away.'],rebuild:['We want young talent with upside. Veterans do nothing for us.','Take salary off our hands or bring prospects. Ideally both.']}[c.win];
+  /* what would get it done: name players from your system, the way a GM asks */
+  if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.untouch.length)){
+    const frozen=id=>r5Frozen()&&r5Exposed(id);
+    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
+    const src=R.needMLB?mlbPool:pool;src.sort((a,b)=>a.pts-b.pts);
+    R.add=src.find(x=>works([x])&&(!R.needMLB||true))||null;
+    if(!R.add){const top=src.slice(-14);let best=null;
+      for(let i=0;i<top.length;i++)for(let j=i+1;j<top.length;j++){const e=[top[j],top[i]];if(works(e)){const t=top[j].pts+top[i].pts;if(!best||t<best.t)best={a:top[j],b:top[i],t}}}
+      R.add2=best}
+    /* or take a piece off their side (not their headliner if that's the problem) */
+    const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut||R.headOK).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
+    R.drop=tryDrop||null}
+  const q={allin:['We are trying to win a ring this year.','We will pay for certainty, not lottery tickets.'],contend:['We have to be smart with every year of control.','Control matters more to us than the name.'],ascend:['Our window is opening. We are not moving young core for short-term help.','We will add, but we protect the kids who are close.'],retool:['We can go either way here. Make it worth our while.','We are listening on veterans, but not giving them away.'],rebuild:['We want young talent with upside. Veterans do nothing for us.','Take salary off our hands or bring prospects. Ideally both.']}[c.win];
   R.quote=q[hashN(code+outSel.join()+inSel.join())%q.length];
   return R}
 function faSuitors(id){
@@ -1199,26 +1297,36 @@ function renderTrade(){
     <div class="dact" style="justify-content:flex-end"><button class="btn danger" type="button" data-act="tforce">Force approve</button><button class="btn primary" type="button" data-act="texec"${evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
   </div>`:''}`;
 }
-const xl=(E,side)=>((E.X&&E.X.lines)||[]).filter(l=>l.side===side).map(l=>`<div class="kv"><span>${esc(l.n)} <span class="hint">${esc(l.notes.join(' · '))}</span></span><b>$${l.v.toFixed(1)}M</b></div>`).join('');
+const xl=(E,side)=>((E.X&&E.X.lines)||[]).filter(l=>l.side===side).map(l=>`<div class="kv"><span>${esc(l.n)} <span class="hint">${esc(l.notes.join(' · '))}</span></span></div>`).join('');
 function verdictHTML(E){
   const T=D.teams[E.code],V={accept:['ACCEPTED','good'],counter:['CLOSE: THEY WANT MORE','warn'],reject:['REJECTED','bad'],locked:['NOT ALLOWED','bad']}[E.verdict];
-  const line=x=>`<div class="kv"><span>${esc(P[x.id].n)} <span class="hint">${esc(x.notes.join(' · '))}</span></span><b class="${x.v<0?'plus':''}">${x.v<0?'−':''}$${Math.abs(x.v).toFixed(1)}M</b></div>`;
+  const nm=x=>`<b>${esc(P[x.id].n)}</b>`;
+  const line=x=>`<div class="kv"><span>${esc(P[x.id].n)}${handTag(x.id)} <span class="hint">${esc(x.label)}${x.notes.length?' · '+esc(x.notes.join(' · ')):''}</span></span></div>`;
+  const ask=E.add?nm(E.add):E.add2?`${nm(E.add2.a)} and ${nm(E.add2.b)}`:'';
   let msg='';
   if(E.verdict==='locked')msg=[E.locked.length?`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`:'',...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
-  else if(E.budget)msg=`This takes them to ${M(E.after)} CBT, past the ${M(E.cap)} their ownership will spend. Take salary back or add cash.`;
+  else if(E.budget)msg=`"That takes us past what ownership will spend." This puts them at ${M(E.after)}, over their ${M(E.cap)} limit. Take salary back or add cash.`;
+  else if(E.untouch&&E.untouch.length){const u=E.untouch[0];msg=`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
   else if(E.verdict==='accept')msg=`"${esc(E.quote)} We can do this."`;
-  else if(E.verdict==='counter')msg=`"${esc(E.quote)}" They're about <b>$${E.short.toFixed(1)}M</b> short in value.`+(E.add?` Add <b>${esc(P[E.add.id].n)}</b> ($${E.add.v.toFixed(1)}M to them) and it gets done.`:'')+(E.drop?` Or take <b>${esc(P[E.drop.id].n)}</b> out of their side.`:'');
-  else msg=`"${esc(E.quote)}" Not close: they'd need about $${E.short.toFixed(1)}M more in value.`;
+  else{
+    const lead=E.verdict==='counter'?`"${esc(E.quote)}" Close.`:`"${esc(E.quote)}" Not close.`;
+    let why;
+    if(E.needMLB)why=` They're trying to win. If ${nm(E.hOut)} goes, they need big-league help back, not just prospects.`;
+    else if(!E.headOK&&E.hOut.id)why=` The best player in this deal is ${nm(E.hOut)} (${esc(E.hOut.label)}). ${E.hIn.id?`${nm(E.hIn)} (${esc(E.hIn.label)}) isn't in his class, and depth doesn't make up for it.`:`Nothing coming back is in his class.`}`;
+    else why=` The headliner works, but they want more around him.`;
+    const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
+    const drop=E.drop?` Or take ${nm(E.drop)} out of their side.`:'';
+    msg=lead+why+fix+drop}
+  const chk=(E.checks||[]).map(([t,ok])=>`<span class="tchk ${ok?'ok':'no'}">${ok?'✓':'✗'} ${esc(t)}</span>`).join('');
   return `<div class="verdictbox ${V[1]}">
-    <div class="vhead"><span class="vtag ${V[1]}">${V[0]}</span><span class="hint">${esc(T.name)} · ${WIN_LABEL[E.ctx.win]} · ${MKT_LABEL[E.ctx.mkt]} · ceiling ~$${capOf(E.code)}M${prof(E.code).capReady&&!teamReady(E.code)?` (rises to $${prof(E.code).capReady}M when they're ready to win)`:''}</span></div>
+    <div class="vhead"><span class="vtag ${V[1]}">${V[0]}</span><span class="hint">${esc(T.name)} · ${WIN_LABEL[E.ctx.win]} · ${MKT_LABEL[E.ctx.mkt]} · payroll limit ~$${capOf(E.code)}M${prof(E.code).capReady&&!teamReady(E.code)?` (rises to $${prof(E.code).capReady}M when they're ready to win)`:''}</span></div>
     ${prof(E.code).note?`<p class="hint" style="margin:4px 0 0">Front office: ${esc(prof(E.code).note)}</p>`:''}
     <p style="margin:6px 0">${msg}</p>
-    ${E.reasons.length?`<p class="hint" style="margin:0 0 6px">${esc(E.reasons.join(' · '))}</p>`:''}
-    <details><summary>How ${esc(T.name)} value it: get $${E.recv.toFixed(1)}M, give $${E.give.toFixed(1)}M, need +$${E.margin.toFixed(1)}M to win the deal</summary>
+    ${chk&&E.verdict!=='locked'?`<div class="tchks">${chk}</div>`:''}
+    <details><summary>How the ${esc(T.name)} see each player</summary>
       <div class="subh">They get</div>${E.rec.map(line).join('')}${xl(E,'rec')}${E.rec.length||xl(E,'rec')?'':'<span class="hint">nothing</span>'}
       <div class="subh">They give</div>${E.giv.map(line).join('')}${xl(E,'giv')}${E.giv.length||xl(E,'giv')?'':'<span class="hint">nothing</span>'}
-      <div class="subh">Your side, by the same model</div><div class="kv"><span>You give / you get (to the ${esc(MEN())})</span><b>$${E.metsGive.toFixed(1)}M / $${E.metsGet.toFixed(1)}M</b></div>
-      <p class="hint">Values are surplus value in $M: projected WAR with aging, times $9.5M per WAR, minus salary, over the years of control. Each team weights it by its window, market size, who is already ahead of a player, positional logjams, 2026 stats, MLB Pipeline vs Fangraphs, and age for level. Extra pieces in a package count for less.</p>
+      <p class="hint">Front offices decide trades headliner first: the best player in the deal sets the price, and extra pieces count for less. Each club weighs its window, its needs, who is already ahead of a player, positional logjams, years of control and its payroll.</p>
     </details>
   </div>`}
 function defaultAdd40(id){const p=P[id];return p.lvl==='MLB'||p.lvl==='IL'||p.kind!=='min'}
@@ -1615,7 +1723,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118051644';
+const BUILD='20261118073645';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1724,6 +1832,7 @@ async function copy(txt,msg){
 document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
   {const h=!e.target.closest('.tbadge')&&e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
+  {const fp=e.target.closest('[data-fapos]');if(fp){UI.faPos=fp.dataset.fapos;render();return}}
   const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(fromNav)goTo('desk');return}
