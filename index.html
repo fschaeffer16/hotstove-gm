@@ -600,7 +600,7 @@ function render40(){
     <div class="cardhead"><h2>Minor leaguers</h2><span class="cnt">${minors.length}</span></div>
     <div class="gbar" role="group" aria-label="Position group">${['All','P','C','IF','OF'].map(g=>`<button type="button" data-gmin="${g}" aria-pressed="${UI.gMin===g}">${g==='All'?'All':({P:'Pitchers',C:'Catchers',IF:'Infield',OF:'Outfield'})[g]}<b>${g==='All'?minors.length:minors.filter(id=>grpOf(id)===g||(g==='IF'&&grpOf(id)==='DH')).length}</b></button>`).join('')}</div>
     <div class="filters"><input type="search" id="pQ" placeholder="Search org players…" value="${esc(UI.pQ)}" aria-label="Search minor leaguers"></div>
-    <div style="max-height:320px;overflow:auto">${minors.filter(id=>UI.gMin==='All'||grpOf(id)===UI.gMin||(UI.gMin==='IF'&&grpOf(id)==='DH')).filter(id=>!UI.pQ||P[id].n.toLowerCase().includes(UI.pQ.toLowerCase())).sort((a,b)=>fvn(P[b].fv)-fvn(P[a].fv)||(P[a].n>P[b].n?1:-1)).map(id=>prow(id,`<span class="tag">${esc(P[id].lvl)}</span>${P[id].fv?' '+fvB(P[id].fv):''}`)).join('')}</div>
+    <div style="max-height:320px;overflow:auto">${minors.filter(id=>UI.gMin==='All'||grpOf(id)===UI.gMin||(UI.gMin==='IF'&&grpOf(id)==='DH')).filter(id=>!UI.pQ||P[id].n.toLowerCase().includes(UI.pQ.toLowerCase())).sort((a,b)=>(P[b].fv?hsValue(b):0)-(P[a].fv?hsValue(a):0)||fvn(P[b].fv)-fvn(P[a].fv)||(P[a].n>P[b].n?1:-1)).map(id=>{const rk=P[id].fv?hsRanks()[id]:0;return prow(id,`${rk?`<span class="tag" title="Hot Stove prospect rank">#${rk}</span> `:''}<span class="tag">${esc(P[id].lvl)}</span>${P[id].fv?' '+fvB(P[id].fv):''}`)}).join('')}</div>
   </div>`;
 }
 function renderCBT(c){
@@ -1012,7 +1012,7 @@ function renderTrade(){
   const on40=id=>owner(id)===ME?status(id)==='40':((D.fortyBy[owner(id)]||[]).includes(id)||P[id].lvl==='MLB'||P[id].lvl==='IL'||P[id].kind!=='min');
   const grpOf=id=>{const p=P[id];if(p.p)return /SP/.test(p.pos||'')||pgrp(id)==='SP'?'SP':'RP';const g=pgrp(id);return g==='C'?'C':g==='OF'||/^(LF|CF|RF|OF)/.test(p.pos||'')?'OF':'INF'};
   const fside=side=>id=>(UI.tGrp[side]==='40'?on40(id):!on40(id))&&(UI.tPF[side]==='All'||grpOf(id)===UI.tPF[side]);
-  const sortP=(a,b)=>hsValue(b)-hsValue(a);
+  const sortP=(a,b)=>(P[b].fv?hsValue(b):0)-(P[a].fv?hsValue(a):0)||(P[b].age||99)-(P[a].age||99);
   const outL=metsIds().filter(qf(UI.tQout)).filter(fside('out')).sort(UI.tGrp.out==='40'?sortT:sortP),inL=teamIds(code).filter(qf(UI.tQin)).filter(fside('in')).sort(UI.tGrp.in==='40'?sortT:sortP);
   const ctl=side=>`<div class="seg" role="group" aria-label="Roster">${[['40','40-man'],['pros','Prospects']].map(([k,l])=>`<button type="button" data-tgrp="${side}:${k}" aria-pressed="${UI.tGrp[side]===k}">${l}</button>`).join('')}</div>
     <div class="chips" role="group" aria-label="Position">${['All','SP','RP','C','INF','OF'].map(k=>`<button type="button" data-tpf="${side}:${k}" aria-pressed="${UI.tPF[side]===k}">${k}</button>`).join('')}</div>`;
@@ -1459,7 +1459,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118002237';
+const BUILD='20261118002733';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
