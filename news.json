@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Tampa Bay Rays released RHP Jesse Scholtens.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T22:40:42Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
    "title": "Rays Release Jesse Scholtens To Pursue KBO Opportunity",
    "blurb": "The Rays announced that right-hander Jesse Scholtens has been released to pursue an opportunity in the KBO League in South Korea. It&#8217;s unclear which KBO team is interested in Scholtens. Tampa&#8217;s 40-man roster count drops from 39 to 38. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/rays-release-jesse-scholtens-to-pursue-kbo-opportunity.html",
@@ -3105,5 +3116,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T22:20:37Z"
+ "updated": "2026-11-19T22:40:42Z"
 }

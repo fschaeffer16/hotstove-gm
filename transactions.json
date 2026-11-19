@@ -1875,9 +1875,20 @@
    "src": "MLB Stats API",
    "sid": 950686,
    "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Jesse Scholtens",
+   "team": "TBR",
+   "pos": "RHP",
+   "date": "2026-11-19",
+   "summary": "Tampa Bay Rays released RHP Jesse Scholtens.",
+   "src": "MLB Stats API",
+   "sid": 950687,
+   "status": "official"
   }
  ],
- "live": "2026-11-19T21:40:28Z",
+ "live": "2026-11-19T22:40:42Z",
  "seen_sids": [
   950119,
   950220,
@@ -2046,6 +2057,7 @@
   950669,
   950684,
   950685,
-  950686
+  950686,
+  950687
  ]
 }
