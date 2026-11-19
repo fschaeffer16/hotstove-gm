@@ -1,0 +1,23 @@
+# Rumor sources for Hot Stove GM trade intel
+
+The owner's list (Nov 19, 2026). Use it when updating `intel.json` (who is on the block, what each club wants).
+
+## Tier 1: national reporters (act on a single report)
+- Jeff Passan (ESPN)
+- Ken Rosenthal (The Athletic)
+- Will Sammon (The Athletic)
+- Others at the same level: Jon Heyman (New York Post), Mark Feinsand (MLB.com), Jon Morosi (MLB Network), Bob Nightengale (USA Today), Buster Olney and Jesse Rogers (ESPN), Robert Murray (FanSided), Joel Sherman (New York Post)
+
+## Tier 2: team beat writers (act on a single report about their own club)
+The beat writers for each of the 30 clubs at ESPN, The Athletic, MLB.com and the main local paper, East Coast, Midwest and West Coast alike.
+
+## How to reach them
+1. MLB Trade Rumors quotes these reporters with attribution; check it first.
+2. Web search the reporter's name with the club or player and today's date.
+3. X: reporters post there first, and fans often post the key line of a paywalled article. A fan post counts only when it names the reporter and outlet. Treat it as unconfirmed until MLB Trade Rumors, the reporter's own post or a second outlet matches; then use it.
+
+## Rules
+- Never guess. No report, no intel entry.
+- Put the reporter and outlet in the note or `src` (for example "Rosenthal, The Athletic, Nov. 19").
+- Do not copy paywalled text. One short line in our own words.
+- "Wants a right-handed bat" or "needs a left-handed reliever" style details go in the club's `note`; `wants` keeps the position codes.
