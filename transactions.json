@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18",
+ "updated": "2026-11-19",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -420,7 +420,14 @@
      "from": "KCR",
      "to": "BOS",
      "forty": false,
-     "pos": "?"
+     "pos": "SS"
+    },
+    {
+     "name": "Angel Bastardo",
+     "from": "BOS",
+     "to": "KCR",
+     "forty": false,
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-17",
@@ -645,7 +652,7 @@
      "from": "BAL",
      "to": "ATL",
      "forty": true,
-     "pos": "?"
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-17",
@@ -662,7 +669,7 @@
      "from": "BAL",
      "to": "NYY",
      "forty": true,
-     "pos": "?"
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-17",
@@ -734,7 +741,7 @@
      "from": "BAL",
      "to": "TEX",
      "forty": true,
-     "pos": "?"
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-17",
@@ -751,7 +758,14 @@
      "from": "BAL",
      "to": "ATH",
      "forty": false,
-     "pos": "?"
+     "pos": "RHP"
+    },
+    {
+     "name": "Josiah Romeo",
+     "from": "ATH",
+     "to": "BAL",
+     "forty": false,
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-17",
@@ -1130,7 +1144,7 @@
      "from": "BAL",
      "to": "WSN",
      "forty": true,
-     "pos": "?"
+     "pos": "LHP"
     }
    ],
    "date": "2026-11-17",
@@ -1147,7 +1161,14 @@
      "from": "ATH",
      "to": "BOS",
      "forty": false,
-     "pos": "?"
+     "pos": "RHP"
+    },
+    {
+     "name": "Raymond Burgos",
+     "from": "BOS",
+     "to": "ATH",
+     "forty": true,
+     "pos": "LHP"
     }
    ],
    "date": "2026-11-17",
@@ -1455,7 +1476,14 @@
      "from": "TBR",
      "to": "BOS",
      "forty": true,
-     "pos": "?"
+     "pos": "C"
+    },
+    {
+     "name": "Angel Roa",
+     "from": "BOS",
+     "to": "TBR",
+     "forty": false,
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-18",
@@ -1472,7 +1500,42 @@
      "from": "KCR",
      "to": "SEA",
      "forty": false,
-     "pos": "?"
+     "pos": "RHP"
+    },
+    {
+     "name": "José A. Ferrer",
+     "from": "SEA",
+     "to": "KCR",
+     "forty": true,
+     "pos": "LHP"
+    },
+    {
+     "name": "Logan Evans",
+     "from": "SEA",
+     "to": "KCR",
+     "forty": true,
+     "pos": "RHP"
+    },
+    {
+     "name": "Bryce Miller",
+     "from": "SEA",
+     "to": "KCR",
+     "forty": true,
+     "pos": "RHP"
+    },
+    {
+     "name": "Maikel Garcia",
+     "from": "KCR",
+     "to": "SEA",
+     "forty": true,
+     "pos": "3B"
+    },
+    {
+     "name": "James McArthur",
+     "from": "KCR",
+     "to": "SEA",
+     "forty": true,
+     "pos": "RHP"
     }
    ],
    "date": "2026-11-18",
@@ -1489,7 +1552,7 @@
      "from": "DET",
      "to": "LAA",
      "forty": true,
-     "pos": "?"
+     "pos": "3B"
     }
    ],
    "date": "2026-11-18",
@@ -1697,7 +1760,7 @@
    "status": "official"
   }
  ],
- "live": "2026-11-18T23:26:17Z",
+ "live": "2026-11-19T08:07:35Z",
  "seen_sids": [
   950119,
   950220,

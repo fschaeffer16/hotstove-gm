@@ -144,6 +144,8 @@ def main():
         for p in m.get('players', []) or []:
             have_np.add((nmz(p['name']), m.get('type')))
     added, news_new = [], []
+    # MLB gives every player in one trade the same transaction id, so trades are matched by id and their players merged
+    trade_by_sid = {m['sid']: m for m in moves if m.get('type') == 'trade' and m.get('sid')}
     now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
     # -------- official: MLB Stats API --------
@@ -151,7 +153,7 @@ def main():
         org = parents()
         for t in statsapi():
             sid, code = t.get('id'), t.get('typeCode')
-            if not sid or sid in have_sid or 'person' not in t:
+            if not sid or 'person' not in t or (sid in have_sid and code != 'TR'):
                 continue
             name = t['person'].get('fullName', '')
             to_id, fr_id = (t.get('toTeam') or {}).get('id'), (t.get('fromTeam') or {}).get('id')
@@ -192,6 +194,13 @@ def main():
                 for x in (mv.get('players') or [mv]):
                     if x.get('pos', '?') == '?':
                         x['pos'] = pm.group(1)
+            if mv['type'] == 'trade' and sid in trade_by_sid:
+                tm = trade_by_sid[sid]
+                if nmz(name) not in {nmz(x['name']) for x in tm.get('players', [])}:
+                    tm.setdefault('players', []).append(mv['players'][0])
+                    added.append(tm)
+                have_sid.add(sid)
+                continue
             key = (nmz(name), mv['type'])
             mv.update({'date': date, 'summary': desc, 'src': 'MLB Stats API', 'sid': sid, 'status': 'official'})
             have_sid.add(sid)
@@ -203,6 +212,8 @@ def main():
                         m.setdefault('sid', sid)
                 continue
             moves.append(mv)
+            if mv['type'] == 'trade':
+                trade_by_sid[sid] = mv
             have_np.add(key)
             added.append(mv)
             news_new.append({'title': desc, 'link': '', 'time': now, 'source': 'MLB transactions', 'kind': 'official',
