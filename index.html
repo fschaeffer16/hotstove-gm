@@ -452,6 +452,18 @@ body.hub-on .wrap{max-width:1100px}
 .mv .bar i{display:block;height:100%;border-radius:6px}
 .mv i.up{background:linear-gradient(90deg,#1d7f47,#4cc27f)}.mv i.dn{background:linear-gradient(90deg,#b3261e,#ff6b5f)}
 .mv b{font-family:var(--mono);text-align:right}.mv b.up{color:var(--good)}.mv b.dn{color:var(--bad)}
+.needs{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card)}
+.needs>summary{cursor:pointer;font:700 13px var(--display,var(--body));letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+.ncols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+@media(max-width:720px){.ncols{grid-template-columns:1fr}}
+.nrow{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line)}
+.nrow:last-of-type{border-bottom:0}
+.nrow .nl{min-width:0;font-size:13px}.nrow .nl b{font-weight:600}.nrow .nl .hint{display:block}
+.nrow .nv{text-align:right;font:12px var(--mono);flex:0 0 46%}
+.nrow .arr{color:var(--muted)}
+.nst{display:block;font:700 10.5px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.nst.good{color:var(--good)}.nst.bad{color:var(--bad)}
+.tag.rep{background:var(--blue-soft);color:var(--blue)}
 .tsum{margin-top:12px;border:1px solid var(--accent);border-radius:8px;padding:12px;background:var(--sel)}
 .tsum .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .kv{display:flex;justify-content:space-between;gap:8px;font-size:13px}
@@ -1320,6 +1332,55 @@ function dataAdj(id,code,incoming,win,gp,w){const s=scout(id),p=P[id],a=ana(code
   if(s.slowBat){d-=1;N.push('bat speed is below average for a hitter his age')}
   const I=s.inj;if(I){const x=I.r>=1.9?2:I.r>=1.5?1.2:I.r>=1.25?.5:0;if(x){d-=x*(incoming?(now?1.35:1):.5);N.push(injLine(I,incoming))}}
   return {d:Math.max(-5,Math.min(5,d)),notes:N}}
+/* ===== Needs board: what each club is short of, by hand and by spot, and how the moves so far have filled it =====
+   Reads the projected splits (hitters vs LHP / RHP, pitchers vs LHH / RHH), projected WAR, the live roster and the stated wants in intel.json. */
+const pWoba=q=>q?.69*q.bb+2.03*q.hr+.98*Math.max(0,1-q.k-q.bb-q.hr)*q.babip:null;
+const NEEDPOS=['C','1B','2B','3B','SS','OF','DH'];
+function needRaw(ids){const R=ids.filter(id=>P[id]&&established(id)),H=R.filter(x=>!P[x].p),war=x=>P[x].proj.war,by=(a,f,n)=>a.slice().sort((x,y)=>f(y)-f(x)).slice(0,n),avg=a=>a.length?a.reduce((t,x)=>t+x,0)/a.length:null,sum=a=>a.reduce((t,x)=>t+x,0);
+  const Hs=H.filter(x=>bRate(x).L),vL=by(Hs,x=>bRate(x).L.woba,9),vR=by(Hs,x=>bRate(x).R.woba,9),top9=by(H,war,9);
+  const SP=by(R.filter(x=>pgrp(x)==='SP'),war,5),RP=by(R.filter(x=>pgrp(x)==='RP'),war,7),pen=k=>avg(RP.map(x=>pWoba(pRate(x)[k])).filter(v=>v!=null));
+  const pos={};for(const g of NEEDPOS){const w=H.filter(x=>pgrp(x)===g).map(war).sort((a,b)=>b-a);pos[g]=g==='OF'?(w[2]??-1):g==='DH'?null:(w[0]??-1)}
+  return {vL:vL.length>=7?avg(vL.map(x=>bRate(x).L.woba)):null,vR:vR.length>=7?avg(vR.map(x=>bRate(x).R.woba)):null,lhB:top9.reduce((t,x)=>t+(P[x].hand==='L'?1:P[x].hand==='S'?.5:0),0),rhB:top9.reduce((t,x)=>t+(P[x].hand==='R'?1:P[x].hand==='S'?.5:0),0),
+    sp:sum(SP.map(war)),lhSP:SP.filter(x=>P[x].hand==='L').length,rp:sum(RP.map(war)),lhRP:RP.filter(x=>P[x].hand==='L').length,penL:pen('L'),penR:pen('R'),pos}}
+let _nd=null,_ndKey='';
+function needLg(){const k=cfKey()+'|'+ME;if(_nd&&_ndKey===k)return _nd;const o={};for(const c of Object.keys(D.teams))o[c]=needRaw(roster(c));_ndKey=k;return _nd=o}
+/* rank of a value among the 30 clubs (1 = best); lo=true when a lower number is better */
+function needRank(key,v,lo){if(v==null)return null;const all=Object.values(needLg()).map(x=>x[key]).filter(x=>x!=null);return 1+all.filter(x=>lo?x<v-1e-9:x>v+1e-9).length}
+const NEEDROWS=[['vL','Lineup vs left-handed pitching','a right-handed bat',0,'woba'],['vR','Lineup vs right-handed pitching','a left-handed bat',0,'woba'],['sp','Rotation','a starter',0,'war'],['rp','Bullpen','a reliever',0,'war'],['penL','Bullpen vs left-handed hitters','a left-handed reliever',1,'woba'],['penR','Bullpen vs right-handed hitters','a right-handed reliever',1,'woba']];
+const POSN={C:'catcher','1B':'first base','2B':'second base','3B':'third base',SS:'shortstop',OF:'outfield'};
+/* the club's needs from a roster: each row has a value, a league rank and whether it is a need */
+function needRep(code,ids){const r=needRaw(ids||roster(code)),W=teamIntel(code).wants||[],out=[];
+  for(const [k,label,fix,lo,unit] of NEEDROWS){const v=r[k],rk=needRank(k,v,lo);if(v==null)continue;
+    let need=rk>=21,why='';
+    if(k==='penL'&&r.lhRP===0){need=true;why='no left-hander in the bullpen'}else if(k==='penL'&&r.lhRP===1&&rk>=16){need=true;why='one left-hander in the bullpen'}
+    if(k==='vL'&&r.rhB<=2.5&&rk>=16){need=true;why='lineup leans left-handed'}if(k==='vR'&&r.lhB<=1.5&&rk>=16){need=true;why='lineup is nearly all right-handed'}
+    const rep=(k==='sp'&&(W.includes('SP')||W.includes('P')))||((k==='rp'||k==='penL'&&need)&&(W.includes('RP')||W.includes('P')));
+    out.push({k,label,fix,v,rk,need:need||(rep&&(k==='sp'||k==='rp')),rep,why,unit,lo})}
+  for(const g of Object.keys(POSN)){const v=r.pos[g],rep=W.includes(g)||(g==='2B'&&W.includes('INF')),thin=v<(g==='OF'?1:1.3);if(!thin&&!rep)continue;
+    out.push({k:'p'+g,label:(g==='OF'?'Third outfielder':'Starter at '+POSN[g]),fix:WANT_TXT[g]||g,v,rk:null,need:thin||rep,rep,why:'',unit:'war'})}
+  if(r.lhSP===0)out.push({k:'lhSP',label:'Left-handed starter',fix:'a left-handed starter',v:0,rk:null,need:true,rep:false,why:'none in the top five',unit:'n'});
+  return {rows:out,raw:r}}
+const needFmt=(x)=>x.unit==='woba'?f3(x.v)+' wOBA':x.unit==='war'?(x.v<0?'none':x.v.toFixed(1)+' WAR'):String(x.v);
+/* one-line list of what a club still needs, for the GM and the AI clubs */
+function needList(code){return needRep(code).rows.filter(x=>x.need).map(x=>x.fix)}
+/* does this player fill a handed or bullpen need of the club? used by free-agent bidding and AI deadline deals */
+function fillsNeed(id,code){const p=P[id];if(!p||!p.proj)return 0;const N=needRep(code).rows.filter(x=>x.need).map(x=>x.k),g=pgrp(id),s=scout(id);let b=0;
+  if(!p.p){const B=bRate(id),lg=needLg()[code]||{};if(N.includes('vL')&&B.L&&lg.vL!=null&&B.L.woba>lg.vL+.015)b+=.6;if(N.includes('vR')&&B.R&&lg.vR!=null&&B.R.woba>lg.vR+.015)b+=.6;if(N.includes('p'+g))b+=.4}
+  else{if(g==='RP'&&N.includes('penL')&&(p.hand==='L'||s.bothSides))b+=.6;if(g==='RP'&&N.includes('penR')&&p.hand==='R')b+=.3;if(g==='SP'&&N.includes('sp'))b+=.4;if(g==='RP'&&N.includes('rp'))b+=.3;if(g==='SP'&&p.hand==='L'&&N.includes('lhSP'))b+=.3}
+  return Math.min(1.2,b)}
+/* the board on the trade screen: now vs after this deal, and vs the start of the offseason for the user's club */
+function needsBoardHTML(code,outSel,inSel){const any=outSel.length||inSel.length;
+  const one=(c,give,get)=>{const now=needRep(c),ids=roster(c).filter(id=>!give.includes(id)).concat(get),aft=any?needRep(c,ids):null,base=c===ME?needRep(c,Object.keys(P).filter(id=>P[id].team===c)):null,W=teamIntel(c);
+    const pri=x=>(x.rep?0:10)+(x.rk?(31-x.rk)/3:x.unit==='war'?Math.max(0,x.v)*3:5),keys=[...new Set((aft?aft.rows.filter(x=>x.need&&!(now.rows.find(y=>y.k===x.k)||{}).need):[]).concat(now.rows.filter(x=>x.need).sort((x,y)=>pri(x)-pri(y)).slice(0,6)).map(x=>x.k))];
+    const rows=keys.map(k=>{const a=now.rows.find(x=>x.k===k),b=aft&&aft.rows.find(x=>x.k===k),s0=base&&base.rows.find(x=>x.k===k),x=a||b;
+      let st='',cls='';if(aft){const was=a&&a.need,is=b&&b.need,d=a&&b?(b.v-a.v)*(x.lo?-1:1):0,big=x.unit==='woba'?.004:.4;
+        if(was&&!is){st='Filled';cls='good'}else if(!was&&is){st='New hole';cls='bad'}else if(d>=big){st='Better';cls='good'}else if(d<=-big){st='Worse';cls='bad'}else{st='Still open';cls=''}}
+      else if(s0&&a&&s0.need&&Math.abs(a.v-s0.v)>=(x.unit==='woba'?.004:.4)){const up=(a.v-s0.v)*(x.lo?-1:1)>0;st=up?'Better since Nov':'Worse since Nov';cls=up?'good':'bad'}
+      const val=y=>y?needFmt(y)+(y.rk?` <span class="hint">${ORDN(y.rk)}</span>`:''):'-';
+      return `<div class="nrow"><div class="nl"><b>${esc(x.label)}</b>${x.rep?'<span class="tag rep">reported</span>':''}<span class="hint">Needs ${esc(x.fix)}${x.why?' · '+esc(x.why):''}</span></div><div class="nv">${val(a)}${aft?` <span class="arr">→</span> ${val(b)}`:''}${st?`<span class="nst ${cls}">${st}</span>`:''}</div></div>`}).join('');
+    const filled=base?base.rows.filter(x=>x.need&&!(now.rows.find(y=>y.k===x.k)||{}).need).map(x=>x.label):[];
+    return `<div class="nside"><div class="subh">${esc(tnm(c))} needs</div>${rows||'<p class="hint" style="margin:4px 0">No clear holes on this roster.</p>'}${filled.length?`<p class="hint" style="margin:6px 0 0">Filled this offseason: ${filled.map(esc).join(', ')}.</p>`:''}${W.note?`<p class="hint" style="margin:6px 0 0">Reported: ${esc(W.note)}</p>`:''}</div>`};
+  return `<details class="needs" open><summary>Team needs ${any?'· before and after this deal':''}</summary><div class="ncols">${one(ME,outSel,inSel)}${D.teams[code]?one(code,inSel,outSel):''}</div><p class="hint" style="margin:8px 0 0">From projected splits vs left- and right-handers, projected WAR and the latest reports. Rank is among the 30 clubs. The season simulator plays these same matchups, so a filled need shows up in the games.</p></details>`}
 const gpts=g=>Math.pow(2,(g-40)/5);/* tiers: each 5 grade points doubles the weight, so a 60 is worth four 50s */
 function gradeTo(id,code,incoming){
   const p=P[id],notes=[],c=ctx(code),win=c.win,pr=prof(code),gp=pgrp(id),age=p.age||28;let g,burden=0;
@@ -1664,7 +1725,7 @@ function faSuitors(id){
     const R0=teamIds(code).filter(x=>established(x)&&pgrp(x)===g);
     const best=g==='SP'?(R0.map(x=>P[x].proj.war).sort((a,b)=>b-a)[4]??-1):g==='RP'?(R0.map(x=>P[x].proj.war).sort((a,b)=>b-a)[2]??-1):R0.reduce((m,x)=>Math.max(m,P[x].proj.war),-1);
     const gain=w-best;if(gain<.5)continue;
-    out.push({code,score:gain+(teamReady(code)?1:0)+room/50e6})}
+    out.push({code,score:gain+(teamReady(code)?1:0)+room/50e6+fillsNeed(id,code)})}
   return out.sort((a,b)=>b.score-a.score)}
 function agentEval(id,c,mode){
   const p=P[id],T=c.total*1e6,Y=c.years,notes=[];let need,my,askAAV;
@@ -1800,6 +1861,7 @@ function renderTrade(){
   ${tradeExtrasHTML(code)}
   <div class="filters" style="margin-top:10px"><label class="field" style="max-width:240px">Cash (${esc(MEN())} pay +, receive −) $M<input id="tCash" type="number" step="0.5" value="${UI.tCash}"></label></div></details>
   ${prev}
+  ${needsBoardHTML(code,outSel,inSel)}
   <div class="ttry"><button class="btn" type="button" data-act="tclear">Clear</button><button class="btn primary" type="button" data-act="ttry"${any?'':' disabled'}>Try trade</button></div>
   ${tried?`<div class="tsum" id="tsum">
     <div class="cols">
@@ -2761,7 +2823,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261119091424';
+const BUILD='20261119221024';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
