@@ -1858,9 +1858,26 @@
    "src": "MLB Stats API",
    "sid": 950684,
    "status": "official"
+  },
+  {
+   "type": "claim",
+   "players": [
+    {
+     "name": "Chayce McDermott",
+     "from": "NYM",
+     "to": "CHC",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-19",
+   "summary": "Chicago Cubs claimed RHP Chayce McDermott off waivers from New York Mets.",
+   "src": "MLB Stats API",
+   "sid": 950686,
+   "status": "official"
   }
  ],
- "live": "2026-11-19T21:20:23Z",
+ "live": "2026-11-19T21:40:28Z",
  "seen_sids": [
   950119,
   950220,
@@ -2028,6 +2045,7 @@
   950662,
   950669,
   950684,
-  950685
+  950685,
+  950686
  ]
 }

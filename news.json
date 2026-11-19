@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Chicago Cubs claimed RHP Chayce McDermott off waivers from New York Mets.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T21:40:28Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC",
+    "NYM"
+   ]
+  },
+  {
    "title": "Toronto Blue Jays designated RHP Chase Lee for assignment.",
    "blurb": "",
    "link": "",
@@ -3062,5 +3074,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T21:20:23Z"
+ "updated": "2026-11-19T21:40:28Z"
 }
