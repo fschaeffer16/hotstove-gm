@@ -1769,9 +1769,53 @@
    "src": "MLB Stats API",
    "sid": 950648,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Erick Mejia",
+   "team": "SFG",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "San Francisco Giants signed free agent RHP Erick Mejia to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950662,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Luke Williams",
+   "team": "ATL",
+   "pos": "SS",
+   "date": "2026-11-16",
+   "summary": "Atlanta Braves signed free agent SS Luke Williams to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950650,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Michael Arias",
+   "team": "BOS",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Boston Red Sox signed free agent RHP Michael Arias to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950653,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Anderson Pilar",
+   "team": "DET",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Detroit Tigers signed free agent RHP Anderson Pilar to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950657,
+   "status": "official"
   }
  ],
- "live": "2026-11-19T14:38:46Z",
+ "live": "2026-11-19T14:48:50Z",
  "seen_sids": [
   950119,
   950220,
@@ -1932,6 +1976,10 @@
   950619,
   950620,
   950622,
-  950648
+  950648,
+  950650,
+  950653,
+  950657,
+  950662
  ]
 }

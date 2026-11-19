@@ -1,6 +1,62 @@
 {
  "items": [
   {
+   "title": "San Francisco Giants signed free agent RHP Erick Mejia to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T14:48:50Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "Atlanta Braves signed free agent SS Luke Williams to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T14:48:50Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATL"
+   ]
+  },
+  {
+   "title": "Boston Red Sox signed free agent RHP Michael Arias to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T14:48:50Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "BOS"
+   ]
+  },
+  {
+   "title": "Detroit Tigers signed free agent RHP Anderson Pilar to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T14:48:50Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "The Opener: Skubal Meetings, Mariners/Royals Trade, Gray",
+   "blurb": "The offseason is starting to pick up. We could see a sprint to the finish line with a potential lockout looming in December. 1. Skubal sit-downs continue The Padres were scheduled to meet with Tarik Skubal yesterday (h/t Jon Heyman of the New York Post). That means four teams have now sat down with ",
+   "link": "https://www.mlbtraderumors.com/2026/11/the-opener-skubal-meetings-mariners-royals-trade-gray.html",
+   "time": "2026-11-19T14:42:09Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "KCR",
+    "SEA"
+   ]
+  },
+  {
    "title": "Atlanta Braves signed free agent RHP Darlin Pinales to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -2803,5 +2859,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T14:38:46Z"
+ "updated": "2026-11-19T14:48:50Z"
 }
