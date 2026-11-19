@@ -130,9 +130,13 @@ header.top{background:linear-gradient(115deg,var(--team-deep) 0%,var(--team1) 60
 
 /* slots */
 .slots{display:grid;gap:4px}
-.slot{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:8px;border:1px dashed var(--line);border-radius:6px;padding:5px 6px;min-height:40px;background:var(--paper)}
+.slot{display:grid;grid-template-columns:30px 52px minmax(0,1fr) auto;align-items:center;gap:8px;border:1px dashed var(--line);border-radius:6px;padding:5px 6px;min-height:40px;background:var(--paper)}
 .slot.filled{border-style:solid;background:var(--card)}
 .slot.over{border-color:var(--accent);background:var(--sel)}
+.grip{display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:stretch;margin:-5px 0 -5px -6px;padding:0 2px 0 4px;border-radius:5px 0 0 5px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;color:var(--muted);line-height:1}
+.grip b{font-family:var(--display);font-size:15px;color:var(--ink,inherit)}.grip i{font-style:normal;font-size:13px;letter-spacing:-2px;opacity:.7}
+.grip:not(.off):active{cursor:grabbing;background:var(--sel)}.grip.off{cursor:default}
+.slot.dragsrc{opacity:.35}.dragghost{position:fixed;z-index:9999;pointer-events:none;opacity:.95;box-shadow:0 8px 24px rgba(0,0,0,.35);transform:rotate(-1deg)}
 .war{display:inline-block;min-width:30px;text-align:center;font:600 11px var(--mono);color:#fff;border-radius:3px;padding:0 4px;margin-right:4px;vertical-align:1px}
 .war.w4{background:var(--w4)}.war.w3{background:var(--w3)}.war.w2{background:var(--w2)}.war.w1{background:var(--w1)}
 .fv{display:inline-block;min-width:30px;text-align:center;font:600 11px var(--mono);border-radius:3px;padding:0 4px;color:#fff;background:var(--w1)}
@@ -357,7 +361,7 @@ textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px so
 .verdictbox .kv{align-items:baseline}.verdictbox .kv span{min-width:0}
 @media (max-width:560px){
   .brand h1{font-size:24px}.tile{min-width:0;flex:1 1 30%;padding:5px 8px}.tile b{font-size:15px}
-  .slot{grid-template-columns:44px minmax(0,1fr) auto;gap:6px}.slot .lbl{font-size:14px}
+  .slot{grid-template-columns:26px 44px minmax(0,1fr) auto;gap:6px}.slot .lbl{font-size:14px}
   .tab{padding:7px 9px;font-size:15px}.panel{padding:10px}.card{padding:12px}
   .form{grid-template-columns:1fr}.big{font-size:28px}
   .loglist li{grid-template-columns:24px minmax(0,1fr);}.loglist .ty{grid-column:2}.loglist li>span:nth-child(3),.loglist .cb{grid-column:2}
@@ -520,6 +524,11 @@ function tidyDepth(){ensureDep();const live=new Set([...S.lineup.map(x=>x[1]),..
   const rd=uniq(S.rot.slice(6));while(rd.length<4)rd.push(null);if(rd.every(Boolean))rd.push(null);
   while(S.rot.length<6)S.rot.push(null);S.rot=S.rot.slice(0,6).concat(rd)}
 function slotOf(id){return SLOTKEYS().find(k=>getSlot(k)===id)}
+function moveSlot(src,dst){
+  if(!src||!dst||src===dst)return;
+  if(src[0]==='L'&&dst[0]==='L'){snap();const it=S.lineup.splice(+src.slice(1),1)[0];S.lineup.splice(+dst.slice(1),0,it);commit();return}
+  const id=getSlot(src);if(id)place(id,dst);
+}
 function place(id,k){
   const cur=getSlot(k),from=slotOf(id);
   if(from===k)return;
@@ -622,8 +631,10 @@ function slotHTML(k,label,labelOpts){
   const flag=p&&(!isMets(id)||(on26Key(k)&&status(id)!=='40'));
   const lbl=labelOpts?`<select class="lbl r-${esc(label)}" data-lbl="${k}" aria-label="Slot role">${labelOpts.map(o=>`<option${o===label?' selected':''}>${o}</option>`).join('')}</select>`:`<span class="lbl">${esc(label)}</span>`;
   const sub=p?`${P[id].proj?warB(P[id].proj.war):''}${esc(P[id].pos)} · ${projTxt(id)}${status(id)!=='40'?' · <b style="color:var(--warn)">not on 40</b>':''}${note(id)?' · '+esc(note(id)):''}`:'';
+  const ord=k[0]==='L'?(+k.slice(1)+1):'';
+  const grip=p?`<span class="grip" data-grip="${k}" aria-label="Drag ${esc(p.n)}" title="Drag to move">${ord?`<b>${ord}</b>`:''}<i>⋮⋮</i></span>`:`<span class="grip off">${ord?`<b>${ord}</b>`:''}</span>`;
   return `<div class="slot ${p?'filled':''} ${flag?'flag':''} ${on26Key(k)?'':'depth'}" data-slot="${k}">
-    ${lbl}
+    ${grip}${lbl}
     <div class="who">${p?`<div class="nm" draggable="true" data-drag="${id}" data-open="${id}">${esc(p.n)} <span class="hint">(${esc(hand(id))})</span></div><div class="sub">${sub}</div>`:`<div class="empty">Drop a player here</div>`}</div>
     ${p?`<button class="x" type="button" data-clear="${k}" aria-label="${on26Key(k)?'Move to depth':'Remove from depth'}" title="${on26Key(k)?'Move to depth':'Remove from depth'}">×</button>`:'<span></span>'}
   </div>`;
@@ -645,6 +656,7 @@ function renderDepth(){ensureDep();
   return `<div class="card">
     <div class="cardhead"><h2>Lineup</h2><span class="cnt">${war9.toFixed(1)} WAR</span></div>
     <div class="slots">${S.lineup.map((x,i)=>slotHTML('L'+i,x[0],LPOS)).join('')}</div>
+    <div class="depthnote">Drag the ⋮⋮ grip to change the batting order or swap in a bench player</div>
     <div class="depthnote">Bench</div>
     <div class="slots">${S.bench.map((x,i)=>slotHTML('B'+i,x[0],BPOS)).join('')}</div>
     <div class="depthnote">Depth (not on 26-man) · tap × on a starter to send him here</div>
@@ -1762,7 +1774,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261118211544';
+const BUILD='20261119005419';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1991,7 +2003,23 @@ document.addEventListener('input',e=>{
 document.addEventListener('dragstart',e=>{const d=e.target.closest&&e.target.closest('[data-drag]');if(!d)return;e.dataTransfer.setData('text/plain',d.dataset.drag);e.dataTransfer.effectAllowed='move'});
 document.addEventListener('dragover',e=>{const s=e.target.closest&&e.target.closest('[data-slot]');if(!s)return;e.preventDefault();s.classList.add('over')});
 document.addEventListener('dragleave',e=>{const s=e.target.closest&&e.target.closest('[data-slot]');if(s)s.classList.remove('over')});
-document.addEventListener('drop',e=>{const s=e.target.closest&&e.target.closest('[data-slot]');if(!s)return;e.preventDefault();const id=e.dataTransfer.getData('text/plain');if(id&&P[id])place(id,s.dataset.slot)});
+document.addEventListener('drop',e=>{const s=e.target.closest&&e.target.closest('[data-slot]');if(!s)return;e.preventDefault();s.classList.remove('over');const id=e.dataTransfer.getData('text/plain');if(!id||!P[id])return;const from=slotOf(id);if(from)moveSlot(from,s.dataset.slot);else place(id,s.dataset.slot)});
+/* touch + mouse dragging by the grip (iPhone has no HTML5 drag and drop) */
+(function(){let G=null;
+  const slotAt=(x,y)=>{const el=document.elementFromPoint(x,y);return el&&el.closest&&el.closest('[data-slot]')};
+  const scroll=()=>{if(!G)return;const y=G.y,m=70,v=y<m?-(m-y)/4:y>innerHeight-m?(y-innerHeight+m)/4:0;if(v){scrollBy(0,v);hover()}G.raf=requestAnimationFrame(scroll)};
+  const hover=()=>{const t=slotAt(G.x,G.y);if(G.over&&G.over!==t)G.over.classList.remove('over');if(t&&t.dataset.slot!==G.k)t.classList.add('over');G.over=t};
+  document.addEventListener('pointerdown',e=>{const g=e.target.closest&&e.target.closest('[data-grip]');if(!g||e.button>0)return;e.preventDefault();
+    const slot=g.closest('[data-slot]'),r=slot.getBoundingClientRect(),gh=slot.cloneNode(true);
+    gh.classList.add('dragghost');gh.style.width=r.width+'px';gh.style.left=r.left+'px';gh.style.top=r.top+'px';document.body.appendChild(gh);slot.classList.add('dragsrc');
+    G={k:g.dataset.grip,slot,gh,dx:e.clientX-r.left,dy:e.clientY-r.top,x:e.clientX,y:e.clientY,over:null,pid:e.pointerId};
+    try{g.setPointerCapture(e.pointerId)}catch(_){}G.raf=requestAnimationFrame(scroll)});
+  document.addEventListener('pointermove',e=>{if(!G||e.pointerId!==G.pid)return;e.preventDefault();G.x=e.clientX;G.y=e.clientY;G.gh.style.left=(e.clientX-G.dx)+'px';G.gh.style.top=(e.clientY-G.dy)+'px';hover()},{passive:false});
+  const end=(e,ok)=>{if(!G||e.pointerId!==G.pid)return;cancelAnimationFrame(G.raf);const t=ok&&slotAt(e.clientX,e.clientY),k=G.k;
+    G.gh.remove();G.slot.classList.remove('dragsrc');if(G.over)G.over.classList.remove('over');G=null;
+    if(t&&t.dataset.slot!==k)moveSlot(k,t.dataset.slot)};
+  document.addEventListener('pointerup',e=>end(e,true));document.addEventListener('pointercancel',e=>end(e,false));
+})();
 $('#scrim').addEventListener('click',()=>{closeDrawer();closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDrawer();closeModal()}});
 $('#bUndo').onclick=()=>{if(!HIST.length)return;S=JSON.parse(HIST.pop());commit();toast('Undone')};
