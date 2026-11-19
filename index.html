@@ -697,6 +697,9 @@ function addLog(type,text,inc,out){S.log.push({d:today(),type,text,inc:inc||0,ou
 function count40(){return metsIds().filter(id=>status(id)==='40').length}
 function need40(n){const c=count40();return c+n<=40}
 function fortyMsg(n){return `The 40-man is at ${count40()}/40, so it has no room for ${n} more. DFA, release or outright someone first.`}
+/* real clubs agree to deals first and clear the 40-man spot when the move is made official, so going over is allowed with a warning */
+function overMsg(n){const c=count40()+n;return `Your 40-man will be ${c}/40. That's fine for now: real teams agree first and clear the spot when the deal is made official. Make room by DFA, release, outright or trade (Roster tab).`}
+function overToast(){const c=count40();if(c>40)setTimeout(()=>toast(`40-man is ${c}/40. Make room by DFA, release, outright or trade.`),900)}
 
 function doRelease(id,label){
   snap();const k=kind(id),v=cbtOf(id),p=P[id];
@@ -708,9 +711,9 @@ function doRelease(id,label){
   commit();closeDrawer();toast(`${p.n}: ${label.toLowerCase()}`);
 }
 function doOutright(id){snap();unslot(id);S.status[id]='MiLB';addLog('OUTRIGHT',`Outrighted ${P[id].n} off the 40-man`+(kind(id)==='guar'?` (salary still counts)`:''),0,kind(id)==='arb'?aav(id):0);commit();closeDrawer()}
-function doSelect(id){if(!need40(1)){toast(fortyMsg(1));return}snap();S.status[id]='40';addLog('SELECTED',`Added ${P[id].n} to the 40-man`,0,0);commit();closeDrawer()}
+function doSelect(id){snap();S.status[id]='40';addLog('SELECTED',`Added ${P[id].n} to the 40-man`,0,0);commit();closeDrawer();overToast()}
 function doIL(id){snap();S.status[id]='IL60';unslot(id);addLog('60-DAY IL',`Moved ${P[id].n} to the 60-day IL (off the 40-man count)`,0,0);commit();closeDrawer()}
-function doActivate(id){if(!need40(1)){toast(fortyMsg(1));return}snap();S.status[id]='40';addLog('ACTIVATED',`Activated ${P[id].n} from the 60-day IL`,0,0);commit();closeDrawer()}
+function doActivate(id){snap();S.status[id]='40';addLog('ACTIVATED',`Activated ${P[id].n} from the 60-day IL`,0,0);commit();closeDrawer();overToast()}
 function insertProspect(id){
   if(!P[id].fv||S.top.includes(id))return;
   const f=hsValue(id);const live=S.top.filter(isMets);
@@ -866,6 +869,7 @@ function renderDepth(){ensureDep();
   const warns=[];
   if(pp!==13)warns.push(`${pp} position players (target 13)`);
   if(pi!==13)warns.push(`${pi} pitchers (target 13)`);
+  if(count40()>40)warns.push(`40-man is ${count40()}/40: make room by DFA, release, outright or trade (tap a player)`);
   const not40=a.filter(id=>status(id)!=='40');if(not40.length)warns.push(`Not on 40-man: ${not40.map(id=>P[id].n).join(', ')}`);
   const pl=S.lineup.filter(x=>x[1]&&isP(x[1]));if(pl.length)warns.push('Pitcher in the lineup');
   if(META_IX&&!(S.r5&&S.r5.mlbDone)){const ex=metsIds().filter(id=>P[id].fv&&r5Exposed(id)&&hsGrade(id)>=45).sort((a,b)=>hsValue(b)-hsValue(a));if(ex.length)warns.push(`Rule 5: ${ex.length} ranked prospect${ex.length>1?'s are':' is'} eligible and not on the 40-man (${ex.slice(0,3).map(id=>P[id].n).join(', ')}${ex.length>3?'…':''}). Protect them in Draft › Rule 5.`)}
@@ -1038,7 +1042,7 @@ function contractModal(id,mode){
       <div class="kv"><span>CBT AAV</span><b>${M(r.aav)}</b></div>
       <div class="kv"><span>${esc(MEN())} CBT after</span><b>${M(after)} (${sgn(delta)})</b></div>
       <div class="kv"><span>Tax after</span><b>${M(tax(after))} · ${tierName(after)[0]}</b></div>
-      ${mode!=='ext'&&!need40(1)?`<div class="verdict bad">${esc(fortyMsg(1))}</div>`:''}
+      ${mode!=='ext'&&!need40(1)?`<div class="verdict warn">${esc(overMsg(1))}</div>`:''}
       ${mode!=='ext'&&p.qo?qoNote(id,c.total*1e6):''}`;
   };
   const offer=()=>{
@@ -1059,7 +1063,6 @@ function contractModal(id,mode){
     const c=pre||read(),r=contractCalc(c);
     if(!force&&UI.negOK!==JSON.stringify(c)){toast('His agent has not agreed. Use their counter or Force sign.');return}
     if(c.deferred>c.total){toast('Deferred money cannot exceed the total.');return}
-    if(mode!=='ext'&&!need40(1)){toast(fortyMsg(1));return}
     snap();
     const yrsMap={};for(let i=0;i<c.years;i++)yrsMap[c.start+i]=c.total*1e6/c.years;
     const desc=`${c.years} yr, $${c.total}M (${c.years>1?c.start+'-'+String(c.start+c.years-1).slice(2):c.start})`+(c.deferred?`, $${c.deferred}M deferred (paid ${c.payStart}-${c.payStart+c.payYears-1})`:'')+(c.bonus?`, $${c.bonus}M signing bonus`:'')+(c.notes?`; ${c.notes}`:'');
@@ -1069,7 +1072,7 @@ function contractModal(id,mode){
     else{let qt='';if(p.qo){const nth=((S.qo||[]).filter(q=>q.to===ME)).length,f=qoForfeit(ME,nth),cp=qoComp(p.prev,c.total*1e6);S.qo=(S.qo||[]).concat([{id,from:p.prev,to:ME,total:c.total*1e6}]);
         qt=` (QO: forfeit ${f.picks.map(ordN).join(' and ')}-highest 2027 pick${f.picks.length>1?'s':''}${f.ifa?' + '+M1(f.ifa)+' international pool':''}; ${D.teams[p.prev]?D.teams[p.prev].name:p.prev} get a ${cp.label})`}
       S.team[id]=ME;S.status[id]='40';addLog(force?'SIGNED (forced)':'SIGNED',`Signed FA ${p.n}: ${desc} — CBT AAV ${M(r.aav)}${qt}`,r.aav,0)}
-    closeModal();commit();toast(`${p.n} ${mode==='ext'?'extended':'signed'} · CBT AAV ${M(r.aav)}`);
+    closeModal();commit();toast(`${p.n} ${mode==='ext'?'extended':'signed'} · CBT AAV ${M(r.aav)}`);if(mode!=='ext')overToast();
   };
 }
 
@@ -2748,7 +2751,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261119044949';
+const BUILD='20261119083022';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
