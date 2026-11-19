@@ -1830,9 +1830,37 @@
    "src": "MLB Stats API",
    "sid": 950669,
    "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Chase Lee",
+   "team": "TOR",
+   "pos": "RHP",
+   "date": "2026-11-19",
+   "summary": "Toronto Blue Jays designated RHP Chase Lee for assignment.",
+   "src": "MLB Stats API",
+   "sid": 950685,
+   "status": "official"
+  },
+  {
+   "type": "claim",
+   "players": [
+    {
+     "name": "Christian Cairo",
+     "from": "LAD",
+     "to": "TOR",
+     "forty": true,
+     "pos": "SS"
+    }
+   ],
+   "date": "2026-11-19",
+   "summary": "Toronto Blue Jays claimed SS Christian Cairo off waivers from Los Angeles Dodgers.",
+   "src": "MLB Stats API",
+   "sid": 950684,
+   "status": "official"
   }
  ],
- "live": "2026-11-19T19:49:54Z",
+ "live": "2026-11-19T21:20:23Z",
  "seen_sids": [
   950119,
   950220,
@@ -1998,6 +2026,8 @@
   950653,
   950657,
   950662,
-  950669
+  950669,
+  950684,
+  950685
  ]
 }

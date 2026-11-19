@@ -1,6 +1,40 @@
 {
  "items": [
   {
+   "title": "Toronto Blue Jays designated RHP Chase Lee for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T21:20:23Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays claimed SS Christian Cairo off waivers from Los Angeles Dodgers.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T21:20:23Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR",
+    "LAD"
+   ]
+  },
+  {
+   "title": "Cubs Claim Chayce McDermott",
+   "blurb": "The Cubs have claimed right-hander Chayce McDermott off waivers from the Mets, reports Jon Heyman of The New York Post. There wasn&#8217;t any previous indication that McDermott lost his roster spot with New York but they evidently tried to quietly pass him through waivers. The Cubs had multiple 40-",
+   "link": "https://www.mlbtraderumors.com/2026/11/cubs-claim-chayce-mcdermott.html",
+   "time": "2026-11-19T21:20:08Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
    "title": "Blue Jays Claim Christian Cairo, Designate Chase Lee For Assignment",
    "blurb": "The Blue Jays announced that they have claimed infielder Christian Cairo off waivers from the Dodgers. Right-hander Chase Lee has been designated for assignment in a corresponding 40-man move. The Dodgers designated Cairo for assignment earlier this week when they added several young players to the ",
    "link": "https://www.mlbtraderumors.com/2026/11/blue-jays-claim-christian-cairo-designate-chase-lee-for-assignment.html",
@@ -3028,5 +3062,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T21:00:18Z"
+ "updated": "2026-11-19T21:20:23Z"
 }
