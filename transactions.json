@@ -1813,9 +1813,26 @@
    "src": "MLB Stats API",
    "sid": 950657,
    "status": "official"
+  },
+  {
+   "type": "claim",
+   "players": [
+    {
+     "name": "Braden Nett",
+     "from": "ATH",
+     "to": "BAL",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-19",
+   "summary": "Baltimore Orioles claimed RHP Braden Nett off waivers from Athletics.",
+   "src": "MLB Stats API",
+   "sid": 950669,
+   "status": "official"
   }
  ],
- "live": "2026-11-19T14:48:50Z",
+ "live": "2026-11-19T19:49:54Z",
  "seen_sids": [
   950119,
   950220,
@@ -1980,6 +1997,7 @@
   950650,
   950653,
   950657,
-  950662
+  950662,
+  950669
  ]
 }

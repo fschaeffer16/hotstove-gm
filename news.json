@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Baltimore Orioles claimed RHP Braden Nett off waivers from Athletics.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T19:49:54Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH",
+    "BAL"
+   ]
+  },
+  {
    "title": "Astros To Hire Bobby Wilson As Bench Coach",
    "blurb": "The Astros are going to hire Bobby Wilson as their bench coach, per a report from Chandler Rome and Ken Rosenthal of The Athletic. Wilson will work under new manager Brad Ausmus. He was previously working with the Nationals as catching coordinator. Wilson, now 43, played in the big leagues as a catc",
    "link": "https://www.mlbtraderumors.com/2026/11/astros-to-hire-bobby-wilson-as-bench-coach.html",
@@ -2983,5 +2995,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T19:29:50Z"
+ "updated": "2026-11-19T19:49:54Z"
 }
