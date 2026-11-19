@@ -1,6 +1,15 @@
 {
  "items": [
   {
+   "title": "Pete Rose posthumously pardoned by President Donald Trump",
+   "blurb": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
+   "link": "https://www.espn.com/mlb/story/_/id/50534187/pete-rose-posthumously-pardoned-president-donald-trump",
+   "time": "2026-11-19T21:48:12Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "Chicago Cubs claimed RHP Chayce McDermott off waivers from New York Mets.",
    "blurb": "",
    "link": "",
@@ -3074,5 +3083,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T21:40:28Z"
+ "updated": "2026-11-19T21:50:31Z"
 }
