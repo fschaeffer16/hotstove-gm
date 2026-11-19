@@ -1,6 +1,15 @@
 {
  "items": [
   {
+   "title": "Revisiting sports and pop culture from GTA V's launch",
+   "blurb": "\"Grand Theft Auto VI\" was released Thursday following a 13-year wait since GTA V.",
+   "link": "https://www.espn.com/nba/story/_/id/50526626/gta-sports-pop-culture-look-back",
+   "time": "2026-11-19T15:21:54Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "San Francisco Giants signed free agent RHP Erick Mejia to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -2859,5 +2868,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T14:48:50Z"
+ "updated": "2026-11-19T15:28:57Z"
 }
