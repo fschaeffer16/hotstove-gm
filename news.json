@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Atlanta Braves signed free agent RHP Darlin Pinales to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-19T14:38:46Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATL"
+   ]
+  },
+  {
    "title": "Skubal to ...? What about other big free agents? How MLB offseason dominoes fall",
    "blurb": "Based on what ESPN's Jeff Passan is hearing, we predict where the top names available will land -- and how they impact each other.",
    "link": "https://www.espn.com/mlb/story/_/id/50512061/offseason-free-agency-signings-predictions",
@@ -2792,5 +2803,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-19T12:18:17Z"
+ "updated": "2026-11-19T14:38:46Z"
 }

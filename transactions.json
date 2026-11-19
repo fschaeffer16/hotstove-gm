@@ -1758,9 +1758,20 @@
    "src": "MLB Stats API",
    "sid": 950622,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Darlin Pinales",
+   "team": "ATL",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Atlanta Braves signed free agent RHP Darlin Pinales to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950648,
+   "status": "official"
   }
  ],
- "live": "2026-11-19T08:07:35Z",
+ "live": "2026-11-19T14:38:46Z",
  "seen_sids": [
   950119,
   950220,
@@ -1920,6 +1931,7 @@
   950616,
   950619,
   950620,
-  950622
+  950622,
+  950648
  ]
 }
