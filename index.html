@@ -1117,6 +1117,9 @@ function baseWAR(code){if(_rw[code]!=null)return _rw[code];const b=code==='NYM'?
   const ids=[...b.lineup.map(x=>x[1]),...b.bench.map(x=>x[1]),...b.rot.slice(0,6),...b.pen.map(x=>x[1])].filter(Boolean);
   return _rw[code]=ids.reduce((s,id)=>s+(P[id]&&P[id].proj?P[id].proj.war:0),0)}
 function teamReady(code){const w=D.teams[code]&&D.teams[code].win;return w==='allin'||w==='contend'||baseWAR(code)>=36}
+/* guaranteed money still owed (2027 on) and the most a club will take on for one player in a trade */
+function remGuar(id){const y=(S.contract[id]&&S.contract[id].yrs)||P[id].yrs||{};return Object.entries(y).reduce((s,[k,v])=>s+(+k>=2027&&typeof v==='number'?v:0),0)}
+function kMaxOf(code,win){const m=(D.teams[code]||{}).mkt;let x=m==='small'?75e6:m==='mid'?150e6:275e6;if(win==='rebuild')x*=.4;else if(win==='retool')x*=.7;return x}
 function capOf(code){const p=prof(code);return (teamReady(code)&&p.capReady)?p.capReady:p.cap}
 
 /* ---------- valuation engine (opposing GM + agent) ---------- */
@@ -1517,6 +1520,7 @@ function gmReply(text,code,outSel,inSel,cashM){
   /* where that leaves the deal */
   const E=evalTrade(code,outSel,inSel,cashM);let end;
   if(E.verdict==='locked')end="None of it matters, though: the rules don't allow this one.";
+  else if(E.bigK)end=`It still isn't about the players. We don't take on a contract that size.`;
   else if(E.budget)end=`It still isn't about the players. This puts us past what ownership will spend.`;
   else if(E.untouch&&E.untouch.length)end=`But ${nm(E.untouch[0].x.id)} isn't moving. Only a better player coming back changes that.`;
   else if(E.verdict==='accept')end=E0.verdict==='accept'?'We already had a deal.':"Alright. You've made your case. We can do this.";
@@ -1605,6 +1609,9 @@ function evalTrade(code,outSel,inSel,cashM){
   /* payroll */
   const base=teamCBTbase(code),after=teamCBT(code)+outSel.reduce((s,id)=>s+partnerCount(id),0)-inSel.reduce((s,id)=>s+partnerCount(id),0)-cashM*1e6;
   const cap=Math.max(capOf(code)*1e6,base);R.after=after;R.cap=cap;R.budget=after>cap&&after>teamCBT(code);
+  /* contract size: small and mid markets (and rebuilding clubs) won't absorb a huge long-term deal, unless they send one back */
+  R.kMax=kMaxOf(code,c.win);{const inc=outSel.map(id=>({id,rem:remGuar(id)})).sort((a,b)=>b.rem-a.rem),remIn=inc.reduce((t,x)=>t+x.rem,0),remOut=inSel.reduce((t,id)=>t+remGuar(id),0);
+    R.bigK=inc.length&&inc[0].rem>R.kMax&&remIn-remOut>R.kMax*.5?inc[0]:null}
   /* the club's questions, in order */
   const untouch=giv.map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
   R.untouch=untouch.filter(u=>u.why==='reported untouchable'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
@@ -1619,20 +1626,22 @@ function evalTrade(code,outSel,inSel,cashM){
   R.pkgOK=R.recv>=R.need&&(R.recv>0||R.give<0);
   R.checks=[
     ['Payroll fits',!R.budget],
+    ...(R.bigK?[['Contract size they will take on',false]]:[]),
     ['Headliner measures up',R.headOK],
     ...(winNow&&mlbOut.length?[['Big-league help back',!R.needMLB]]:[]),
     ...(untouch.length?[['No untouchables',!R.untouch.length]]:[]),
     ['Enough talent overall',R.pkgOK]];
   if(R.locked.length||X.errs.length)R.verdict='locked';
-  else if(R.budget||R.untouch.length)R.verdict='reject';
+  else if(R.budget||R.bigK||R.untouch.length)R.verdict='reject';
   else if(R.headOK&&R.pkgOK&&!R.needMLB)R.verdict='accept';
   else if(R.ratio>=.75&&hIn.g>=hOut.g-slack-4)R.verdict='counter';
   else R.verdict='reject';
   /* what would get it done: name players from your system, the way a GM asks */
-  if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.untouch.length)){
+  if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){
     const frozen=id=>r5Frozen()&&r5Exposed(id);
-    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
-    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const fitsMoney=id=>remGuar(id)<=R.kMax&&!(after+partnerCount(id)>cap&&after+partnerCount(id)>teamCBT(code));
+    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)&&fitsMoney(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)&&fitsMoney(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
     const src=R.needMLB?mlbPool:pool;src.sort((a,b)=>a.pts-b.pts);
     R.add=src.find(x=>works([x])&&(!R.needMLB||true))||null;
@@ -1819,6 +1828,7 @@ function verdictHTML(E){
   const ask=E.add?nm(E.add):E.add2?`${nm(E.add2.a)} and ${nm(E.add2.b)}`:'';
   let msg='';
   if(E.verdict==='locked')msg=[E.locked.length?`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`:'',...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
+  else if(E.bigK)msg=`"We don't take on contracts like ${esc(P[E.bigK.id].n)}'s." He has ${M(E.bigK.rem)} guaranteed left. ${esc(D.teams[E.code].name)} won't absorb more than about ${M(E.kMax)} for one player, unless a big contract goes back the other way.`;
   else if(E.budget)msg=`"That takes us past what ownership will spend." This puts them at ${M(E.after)}, over their ${M(E.cap)} limit. Take salary back or add cash.`;
   else if(E.untouch&&E.untouch.length){const u=E.untouch[0],it=intelOf(u.x.id);msg=u.why==='reported untouchable'?`"${esc(P[u.x.id].n)} isn't available." ${it&&it.note?esc(it.note)+'.':''} That's not a conversation right now.`:`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
   else if(E.verdict==='accept')msg=`"${esc(E.quote)} We can do this."`;
@@ -2751,7 +2761,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261119083022';
+const BUILD='20261119091424';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
