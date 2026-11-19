@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hot Stove GM</title>
+<title>Virtual Hot Stove GM</title>
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
@@ -307,6 +307,151 @@ table.list{width:100%;border-collapse:collapse;font-size:13px}
 .trow .meta{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .trow .r{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
 .tside h3{color:var(--blue)}
+.sbtn{border:1px solid var(--line);background:var(--card);color:var(--blue);border-radius:99px;font:600 11px var(--body);padding:1px 8px;margin-left:6px;vertical-align:1px}
+.sbtn:hover{border-color:var(--accent)}
+.stags{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 2px}
+.tag.stg{margin:0;background:var(--blue-soft);color:var(--blue);text-transform:none;letter-spacing:0;font-size:11px;padding:1px 7px;border-radius:99px}
+.tag.stg.warn{background:transparent;color:var(--warn);border:1px solid var(--warn)}
+.sreasons{margin:4px 0 0;padding-left:18px;font-size:12.5px}
+.cmpgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.cmp{border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:6px;font-size:12.5px;min-width:0}
+.cmp .kv{font-size:12.5px}.cmp .hint{font-size:11.5px}
+.cmpn{border:0;background:transparent;padding:0;font-weight:600;font-size:14px;color:var(--blue);text-align:left;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+.cmpt{border-top:2px solid var(--ink);padding-top:4px;font-size:12.5px}
+.gmtalk{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.gmtalk textarea{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:8px;font:14px/1.4 var(--body);resize:vertical}
+.gmtalk .say{font-size:13px;padding:6px 8px;border-radius:8px;margin:4px 0}
+.gmtalk .say.me{background:var(--blue-soft);margin-left:18px}
+.gmtalk .say.gm{background:var(--chip);margin-right:18px}
+/* separate screens (Trade Machine, Season) */
+body.focus-on header.top,body.focus-on #selBanner,body.focus-on .tmhead{display:none}
+.focus{max-width:1100px;margin:0 auto;padding-top:10px}
+.fbar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.fhome{border:0;border-radius:999px;background:var(--team1);color:#fff;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.03em;text-transform:uppercase;padding:8px 14px 8px 12px;white-space:nowrap}
+.ftitle{font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fright{display:flex;gap:6px;flex:none}
+.flink{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--blue);white-space:nowrap}
+.fpanel{border:1px solid var(--line);border-radius:12px}
+.ffoot{display:flex;justify-content:center;margin:14px 0 4px}
+@media (max-width:560px){.ftitle{font-size:16px}.flink{padding:5px 8px;font-size:12px}}
+.launch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media (max-width:700px){.launch{grid-template-columns:1fr}}
+.lcard{position:relative;overflow:hidden;text-align:left;border:0;border-radius:14px;padding:16px 16px 14px;color:#fff;display:grid;gap:2px;min-height:118px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.lcard.trade{background:linear-gradient(120deg,var(--hs-navy,#081634),var(--hs-navy2,#12295c) 60%,#1d3f8a)}
+.lcard.season{background:linear-gradient(120deg,#0c3b22,#14603a 60%,#1c7d4c)}
+.lcard .art{position:absolute;right:-18px;top:-22px;width:150px;height:150px;color:rgba(255,255,255,.2)}
+.lcard .k{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--hs-gold,#f7b32b)}
+.lcard .t{font-family:var(--display);font-weight:800;font-size:28px;line-height:1;text-transform:uppercase;letter-spacing:.02em}
+.lcard .d{font-size:12.5px;opacity:.88;max-width:78%;margin-top:4px}
+.lcard .go{margin-top:8px;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--hs-gold2,#ffd76a)}
+.sehero{position:relative;overflow:hidden;border-radius:12px;padding:14px 16px;margin-bottom:12px;color:#fff;background:linear-gradient(120deg,var(--team-deep),var(--team1) 62%,color-mix(in srgb,var(--team1) 70%,var(--team2)))}
+.sehero::after{content:"";position:absolute;inset:auto 0 0 0;height:5px;background:var(--team2)}
+.sehero.champ{background:linear-gradient(120deg,#5a4300,#b8860b 55%,#f7b32b)}
+.sehero .art{position:absolute;right:-26px;top:-30px;width:190px;height:190px;color:rgba(255,255,255,.14)}
+.sehero .k{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--hs-gold2,#ffd76a)}
+.sehero .t{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
+.sehero .d{font-size:13px;opacity:.9;margin-top:6px}
+.sehero .row{display:flex;align-items:center;gap:16px;margin-top:8px;flex-wrap:wrap}
+.sehero .rec{font-family:var(--mono);font-weight:600;font-size:40px;line-height:1;display:flex;align-items:baseline;gap:4px}
+.sehero .rec i{font-style:normal;opacity:.6;font-size:28px}
+.sehero .rg{display:grid;justify-items:center;gap:2px;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;opacity:.95}
+.sehero .ring{width:58px;height:58px}
+.sboard{background:#0d2a1c;border:3px solid #071a11;border-radius:10px;padding:8px 10px;color:#f3e7b8;margin-bottom:12px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.sboard .cap{display:flex;justify-content:space-between;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#cfe3d5;margin-bottom:4px}
+.sboard table{border-collapse:collapse;font:600 14px var(--mono);width:100%}
+.sboard th{text-align:left;padding:3px 8px 3px 2px;color:#fff;font-weight:700}
+.sboard td{text-align:center;padding:3px 5px;min-width:20px}
+.sboard thead td{color:#9fbfa9;font-size:11px}
+.sboard td.tot{color:#fff;border-left:1px solid rgba(255,255,255,.18);font-weight:700}
+.sboard tr.me th{color:var(--hs-gold2,#ffd76a)}
+.sboard .recap{font-size:12px;color:#cfe3d5;margin-top:5px}
+/* standings and box score tables */
+.standw{margin-bottom:12px;border:1px solid var(--line);border-radius:8px}
+table.stand{border-collapse:collapse;font-size:12.5px;width:100%;white-space:nowrap}
+.stand th,.stand td{padding:5px 7px;border-bottom:1px solid var(--line)}
+.stand td{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.stand th{text-align:left;font-weight:500;position:sticky;left:0;background:var(--card);z-index:1;box-shadow:1px 0 0 var(--line)}
+.stand thead th,.stand thead td{background:var(--blue-soft);color:var(--blue);font:700 11px var(--body);letter-spacing:.05em;text-transform:uppercase}
+.stand tbody tr:last-child th,.stand tbody tr:last-child td{border-bottom:0}
+.stand tr.me th,.stand tr.me td{font-weight:700;background:var(--sel)}
+.stand tr.cut th,.stand tr.cut td{border-bottom:2px dashed var(--accent)}
+.stand .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0;border:0}
+.stand td.pos{color:var(--good)}.stand td.neg{color:var(--bad)}
+table.bx{border-collapse:collapse;font-size:12.5px;width:100%;white-space:nowrap}
+.bx th,.bx td{padding:3px 6px;border-bottom:1px solid var(--line)}
+.bx td{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.bx th{text-align:left;font-weight:500}
+.bx thead th,.bx thead td{font:700 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink)}
+.bx .ord{display:inline-block;width:14px;color:var(--muted);font:11px var(--mono)}
+.bx .pos{color:var(--muted);font-size:11px}
+.bx tr.tot th,.bx tr.tot td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
+.bxteam{border-left:6px solid var(--blue);padding-left:8px;margin:14px 0 4px}
+.bxteam h3{color:var(--ink);font-size:17px;letter-spacing:.03em}
+.bxnote{font-size:12px;line-height:1.5;margin:6px 0 10px;color:var(--ink)}
+.bxdec{font-size:13px;margin:0 0 4px}
+/* brand home screen */
+body.hub-on{background:radial-gradient(1200px 600px at 70% -10%,#1b3a7a 0%,var(--hs-navy,#081634) 55%,#040b1c 100%) no-repeat #040b1c;color:#e9eefb}
+body.hub-on .wrap{max-width:1100px}
+.hub{padding-top:14px}
+.hhero{position:relative;overflow:hidden;border-radius:18px;padding:26px 20px 22px;text-align:center;background:linear-gradient(160deg,#0d2152 0%,#081634 55%,#1a0d05 100%);border:1px solid rgba(247,179,43,.35);box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.04)}
+.hhero .glow{position:absolute;left:50%;top:-70px;width:520px;height:340px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,90,18,.55),rgba(247,179,43,.18) 55%,transparent 75%);filter:blur(6px);animation:hsglow 5s ease-in-out infinite alternate;pointer-events:none}
+@keyframes hsglow{from{opacity:.75;transform:translateX(-50%) scale(1)}to{opacity:1;transform:translateX(-50%) scale(1.08)}}
+@media (prefers-reduced-motion: reduce){.hhero .glow{animation:none}}
+.hhero::after{content:"";position:absolute;inset:auto 0 0 0;height:6px;background:linear-gradient(90deg,var(--hs-fire,#ff5a12),var(--hs-gold,#f7b32b) 50%,var(--hs-blue,#2f8cff))}
+.hlogo{position:relative;border-radius:22px;box-shadow:0 8px 30px rgba(255,90,18,.45),0 0 0 2px rgba(247,179,43,.6)}
+.hhero .k{position:relative;margin-top:12px;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--hs-gold,#f7b32b)}
+.hhero h1{position:relative;font-size:clamp(38px,10vw,72px);line-height:.92;text-transform:uppercase;letter-spacing:.01em;margin-top:4px;background:linear-gradient(180deg,#fff 10%,#ffe9b0 48%,#ff9a3c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(0,0,0,.45))}
+.hhero h1 span{display:block;font-size:.42em;letter-spacing:.42em;margin-bottom:4px;background:none;-webkit-text-fill-color:#9fc4ff;color:#9fc4ff}
+.hhero h1 em{font-style:normal;-webkit-text-fill-color:var(--hs-fire,#ff5a12);color:var(--hs-fire,#ff5a12)}
+.hhero .htag{position:relative;max-width:560px;margin:12px auto 0;font-size:15px;color:#d5def2}
+.hstats{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+.hstats span{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:999px;padding:4px 12px;font-size:12.5px;color:#cfd9f0}
+.hstats b{font-family:var(--mono);color:#fff}
+.hsec{margin-top:22px}
+.hsec h2{color:#fff;font-size:24px;letter-spacing:.05em}
+.lgl{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--hs-gold,#f7b32b);margin:10px 0 6px}
+.clubs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media (min-width:760px){.clubs{grid-template-columns:repeat(8,minmax(0,1fr))}}
+.club{border:2px solid transparent;border-radius:10px;padding:7px 4px 6px;background:linear-gradient(160deg,var(--c1),color-mix(in srgb,var(--c1) 70%,#000));color:#fff;display:grid;gap:1px;justify-items:center;min-width:0;box-shadow:inset 0 -4px 0 var(--c2),0 2px 6px rgba(0,0,0,.35)}
+.club b{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.04em;line-height:1}
+.club span{font-size:10px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.club.on{border-color:var(--hs-gold,#f7b32b);box-shadow:inset 0 -4px 0 var(--c2),0 0 0 3px rgba(247,179,43,.35),0 6px 18px rgba(247,179,43,.35);transform:translateY(-1px)}
+.hcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:8px}
+.hcard{position:relative;overflow:hidden;text-align:left;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px 16px 14px;color:#fff;display:grid;gap:2px;min-height:132px;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform .15s,box-shadow .15s}
+.hcard:hover,.hcard:focus-visible{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.5),0 0 0 2px var(--hs-gold,#f7b32b)}
+.hcard.front{background:linear-gradient(135deg,#1a2a52,#27407e)}
+.hcard.trade{background:linear-gradient(135deg,#7a1d06,#ff5a12 70%,#ff9a3c)}
+.hcard.season{background:linear-gradient(135deg,#0b3a22,#14703f 65%,#27a05e)}
+.hcard.draft{background:linear-gradient(135deg,#3b1a66,#6c3fc0)}
+.hcard.news{background:linear-gradient(135deg,#0d2f66,#2f8cff)}
+.hcard .art{position:absolute;right:-20px;top:-22px;width:150px;height:150px;color:rgba(255,255,255,.22)}
+.hcard .k{font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--hs-gold2,#ffd76a)}
+.hcard .t{font-family:var(--display);font-weight:800;font-size:27px;line-height:1;text-transform:uppercase;letter-spacing:.02em;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.hcard .d{font-size:12.5px;opacity:.92;max-width:80%;margin-top:4px}
+.hcard .go{margin-top:8px;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase}
+.hfoot{text-align:center;font-size:11.5px;color:#8fa0c4;margin:22px 0 6px}
+/* trade matchup banner */
+.tvs{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;border-radius:14px;overflow:hidden;margin-bottom:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);min-height:84px}
+.tvs .side{display:grid;align-content:center;padding:10px 14px;color:#fff;min-width:0}
+.tvs .side.a{background:linear-gradient(120deg,color-mix(in srgb,var(--a1) 70%,#000),var(--a1));box-shadow:inset 0 -6px 0 var(--a2)}
+.tvs .side.b{background:linear-gradient(240deg,color-mix(in srgb,var(--b1) 70%,#000),var(--b1));box-shadow:inset 0 -6px 0 var(--b2);text-align:right}
+.tvs .side b{font-family:var(--display);font-weight:800;font-size:38px;line-height:.9;letter-spacing:.03em}
+.tvs .side span{font-size:12px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tvs .mid{display:grid;justify-items:center;align-content:center;gap:2px;padding:6px 10px;background:linear-gradient(180deg,var(--hs-navy,#081634),#12295c);color:var(--hs-gold,#f7b32b)}
+.tvs .mid .sw{width:44px;height:44px}
+.tvs .mid i{font-style:normal;font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#fff;white-space:nowrap}
+/* how your moves worked out */
+.mvbox{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px;background:linear-gradient(180deg,var(--card),var(--paper))}
+.mvhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.mvhead h3{color:var(--ink);font-size:16px}
+.mvnet{font-family:var(--mono);font-weight:700;font-size:15px;padding:3px 10px;border-radius:999px;color:#fff}
+.mvnet.up{background:var(--good)}.mvnet.dn{background:var(--bad)}
+.mv{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(50px,1fr) 44px;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line);font-size:13px}
+.mv .who{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mv .bar{height:10px;background:var(--chip);border-radius:6px;overflow:hidden}
+.mv .bar i{display:block;height:100%;border-radius:6px}
+.mv i.up{background:linear-gradient(90deg,#1d7f47,#4cc27f)}.mv i.dn{background:linear-gradient(90deg,#b3261e,#ff6b5f)}
+.mv b{font-family:var(--mono);text-align:right}.mv b.up{color:var(--good)}.mv b.dn{color:var(--bad)}
 .tsum{margin-top:12px;border:1px solid var(--accent);border-radius:8px;padding:12px;background:var(--sel)}
 .tsum .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .kv{display:flex;justify-content:space-between;gap:8px;font-size:13px}
@@ -377,7 +522,7 @@ textarea.out{width:100%;min-height:320px;font:12px/1.4 var(--mono);border:1px so
     <div class="brand">
       <img class="logo" src="logo.png" alt="Hot Stove GM logo, back to top" width="64" height="64" data-goto="home" style="cursor:pointer">
       <div>
-      <h1>Hot Stove GM <span class="tm"><span id="hTeam">Mets</span> <em>2027</em></span></h1>
+      <h1>Virtual Hot Stove GM <span class="tm"><span id="hTeam">Mets</span> <em>2027</em></span></h1>
       <p><label for="teamPick" class="sr">Team</label><select id="teamPick" class="teampick" aria-label="Team you are running"></select> Fangraphs payroll &amp; Roster Resource · 40-man rosters 11/17 · free sandbox</p>
       </div>
     </div>
@@ -403,7 +548,7 @@ const RATE_DEFAULT=4.5;
 let ME='NYM',BASE_T=0,IL60=new Set();
 const MEN=()=>D.teams[ME].name;
 const skey=()=>ME==='NYM'?KEY:KEY+'-'+ME;
-let D,P,S,HIST=[],UI={g40:'P',gMin:'All',tGrp:{out:null,in:null},tFold:{out:false,in:false},tTried:'',tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
+let D,P,S,HIST=[],UI={g40:'P',gMin:'All',tGrp:{out:null,in:null},tFold:{out:false,in:false},tTried:'',tPF:{out:'All',in:'All'},tPk:new Set(),tIfa:0,tab:'hub',homeTab:'fa',sel:null,faPos:'All',faQ:'',faSort:'pwar',faDir:-1,tTeam:'ATL',prQ:'',prTeam:'All',prPos:'All',prSort:'rank',tOut:new Set(),tIn:new Set(),tAdd40:new Set(),tCash:0,tQout:'',tQin:'',pQ:''};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=v=>'$'+(v/1e6).toFixed(2)+'M';
@@ -468,7 +613,7 @@ function grpOf(id){
   if(['LF','CF','RF','OF'].includes(f))return 'OF';
   return 'DH';
 }
-const note=id=>(D.notes||{})[id]||'';
+const note=id=>{const x=SE&&SE.il[id];if(x&&x.ret>SE.day)return 'IL: '+x.what+(x.ret>=999?', out for the season':', back about '+seDate(x.ret));return (D.notes||{})[id]||''};
 
 /* ---------- CBT ---------- */
 function cbt(){
@@ -580,6 +725,9 @@ function render(){
   renderTiles();
   const c=cbt();
   if(UI.tab==='log'){UI.tab='trade';UI.tView='log'}
+  if(!isFocus())UI.homeTab=UI.tab;document.body.classList.toggle('focus-on',isFocus());document.body.classList.toggle('hub-on',UI.tab==='hub');
+  if(UI.tab==='hub'){$('#app').innerHTML=hubHTML();renderBanner();renderNav();return}
+  if(isFocus()){$('#app').innerHTML=focusHTML(({trade:renderTrade,season:renderSeason})[UI.tab]());renderBanner();renderNav();applyCollapse();return}
   $('#app').innerHTML=`
   <div class="grid">
     <section>${renderDepth()}</section>
@@ -588,15 +736,86 @@ function render(){
   </div>
   <div class="desk">
 
-    <div class="panel" style="border-top:1px solid var(--line);border-radius:8px">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,news:renderNews,moves:renderMoves,log:renderLog,export:renderExport})[UI.tab]()}</div>
+    <div class="panel" style="border-top:1px solid var(--line);border-radius:8px">${({fa:renderFA,trade:renderTrade,pros:renderPros,top:renderTop,draft:renderDraft,season:renderSeason,news:renderNews,moves:renderMoves,log:renderLog,export:renderExport})[UI.tab]()}</div>
   </div>`;
   renderBanner();renderNav();applyCollapse();
 }
-const NAV=[['home','⌂ Home'],['moves',"Today's Moves"],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['export','Copy update']];
+const NAV=[['home','⌂ Home'],['moves',"Today's Moves"],['roster','Roster'],['cbt','Payroll'],['fa','Free Agents'],['trade','Trade'],['season','Season'],['pros','Prospects'],['top','Top 50'],['draft','Draft'],['news','News'],['export','Copy update']];
 function renderNav(){const el=$('#topnavIn');if(!el)return;const cur=UI.navAt||UI.tab;
-  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'||k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur}">${l}${k==='news'&&newNew()?' •':''}${k==='moves'&&todayCount()?' ('+todayCount()+')':''}</button>`).join('');
+  if(FOCUS[UI.tab]){el.innerHTML=`<button type="button" data-act="gohome">⌂ Home</button><button type="button" data-act="gofront">Front Office</button>`+['trade','season'].map(k=>`<button type="button" data-tab="${k}" role="tab" aria-selected="${k===UI.tab}">${FOCUS[k]}</button>`).join('');return}
+  el.innerHTML=NAV.map(([k,l])=>`<button type="button" ${k==='home'?'data-act="gohome"':k==='roster'||k==='cbt'?`data-goto="${k}"`:`data-tab="${k}" role="tab"`} aria-selected="${k===cur||(k==='home'&&UI.tab==='hub')}">${l}${k==='news'&&newNew()?' •':''}${k==='moves'&&todayCount()?' ('+todayCount()+')':''}</button>`).join('');
   const b=el.querySelector('[aria-selected="true"]');if(b&&b.scrollIntoView&&!UI.navNoScroll)b.scrollIntoView({block:'nearest',inline:'nearest'})}
 function goTo(k){if(k==='home'){window.scrollTo({top:0});return}const t=k==='roster'?$('.grid'):k==='cbt'?$('.cbtcol'):$('.desk');if(t)t.scrollIntoView({block:'start'})}
+/* ===== Separate screens: the Trade Machine and the Season each take over the page, with a way back home ===== */
+const FOCUS={trade:'Trade Machine',season:'2027 Season'};
+const isFocus=()=>!!FOCUS[UI.tab]||UI.tab==='hub';
+function goHome(){UI.tab='hub';UI.navAt=null;render();window.scrollTo(0,0)}
+function goFront(where){UI.tab=UI.homeTab||'fa';UI.navAt=null;render();if(where)goTo(where);else window.scrollTo(0,0)}
+const DIAMOND=`<svg class="art" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 14 186 100 100 186 14 100Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M100 52 148 100 100 148 52 100Z" fill="currentColor" opacity=".18"/><circle cx="100" cy="100" r="9" fill="currentColor"/><rect x="92" y="6" width="16" height="16" transform="rotate(45 100 14)" fill="currentColor"/><rect x="178" y="92" width="16" height="16" transform="rotate(45 186 100)" fill="currentColor"/><rect x="6" y="92" width="16" height="16" transform="rotate(45 14 100)" fill="currentColor"/><path d="M100 186 60 226M100 186 140 226" stroke="currentColor" stroke-width="3"/></svg>`;
+const SWAP=`<svg class="art" viewBox="0 0 200 200" aria-hidden="true"><circle cx="62" cy="70" r="40" fill="none" stroke="currentColor" stroke-width="3"/><path d="M36 52c14 10 14 28 0 38M88 52c-14 10-14 28 0 38" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 5"/><circle cx="138" cy="132" r="40" fill="currentColor" opacity=".18"/><circle cx="138" cy="132" r="40" fill="none" stroke="currentColor" stroke-width="3"/><path d="M112 114c14 10 14 28 0 38M164 114c-14 10-14 28 0 38" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 5"/><path d="M118 44h46l-12-12M164 44l-12 12M82 158H36l12 12M36 158l12-12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+function launchHTML(){const live=SE&&SE.team===ME,rec=live?`${SE.w[ME]}-${SE.l[ME]}`:'';
+  return `<div class="launch">
+    <button type="button" class="lcard trade" data-tab="trade">${SWAP}<span class="k">Hot Stove</span><span class="t">Trade Machine</span><span class="d">Deal with 29 front offices. Scouting cards, side-by-side, and a GM you can argue with.</span><span class="go">Open ›</span></button>
+    <button type="button" class="lcard season" data-tab="season">${DIAMOND}<span class="k">${live?(SE.phase==='done'?'Season complete':SE.phase==='post'?'Postseason':SE.phase==='dl'?'Trade deadline':'In progress'):'Play ball'}</span><span class="t">${live?rec+' · 2027 Season':'Play the 2027 Season'}</span><span class="d">${live?'Pick up where you left off: standings, box scores, the deadline and October.':'Take your roster through 162 games, the deadline and the playoffs.'}</span><span class="go">${live?'Continue ›':'Start ›'}</span></button>
+  </div>`}
+function focusHTML(body){const k=UI.tab,other=k==='trade'?'season':'trade';
+  return `<div class="focus f-${k}">
+    <div class="fbar"><button type="button" class="fhome" data-act="gohome" aria-label="Back to the home screen">‹ Home</button><span class="ftitle">${FOCUS[k]}</span>
+      <span class="fright"><button type="button" class="flink" data-act="goroster">My roster</button><button type="button" class="flink" data-tab="${other}">${other==='trade'?'Trade Machine':(SE?'Season':'Play season')} ›</button></span></div>
+    ${k==='trade'&&UI.tView!=='log'?tradeBannerHTML():''}<div class="panel fpanel">${body}</div>
+    <div class="ffoot"><button type="button" class="btn" data-act="gohome">‹ Back to home screen</button></div>
+  </div>`}
+/* season graphics: club banner with a playoff-odds ring, and a ballpark scoreboard for the last game */
+function seRing(pct,label){const r=26,c=2*Math.PI*r,v=Math.max(0,Math.min(100,pct));
+  return `<svg class="ring" viewBox="0 0 64 64" role="img" aria-label="${label} ${v}%"><circle cx="32" cy="32" r="${r}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--hs-gold,#f7b32b)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(c*v/100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="inherit">${v}%</text></svg>`}
+function seHeroHTML(){const c=ME;
+  if(!SE)return `<div class="sehero">${DIAMOND}<div class="k">Opening Day · March 25, 2027</div><div class="t">${esc(tnm(c))}</div><div class="d">162 games. One trade deadline. One October.</div></div>`;
+  const od=SE.od[c]||[0,0,0],po=SE.po,champ=po&&po.champ,ph=SE.phase;
+  const k=ph==='done'?(champ===c?'World Series champions':'Season complete'):ph==='post'?'Postseason':ph==='dl'?'Trade deadline · '+seDate(SE.dl):'Through '+seDate(Math.max(SE.d0,SE.day-1));
+  return `<div class="sehero${champ===c?' champ':''}">${DIAMOND}<div class="k">${esc(k)}</div><div class="t">${esc(tnm(c))}</div>
+    <div class="row"><div class="rec"><b>${SE.w[c]}</b><i>-</i><b>${SE.l[c]}</b></div>${ph==='reg'||ph==='dl'?`<div class="rg">${seRing(od[0],'Playoff odds')}<span>Playoffs</span></div><div class="rg">${seRing(od[1],'Division odds')}<span>Division</span></div>`:champ?`<div class="d" style="margin:0">${esc(tnm(champ))} won it all</div>`:''}</div></div>`}
+function seBoardHTML(){const keys=Object.keys(SE.box).sort((a,b)=>SE.box[b].d-SE.box[a].d);if(!keys.length)return '';const bx=SE.box[keys[0]],n=Math.max(9,bx.ls[0].length),T=[bx.a,bx.h];
+  const row=i=>`<tr class="${T[i]===ME?'me':''}"><th>${T[i]}</th>${Array.from({length:n},(_,j)=>`<td>${bx.ls[i][j]??(j<bx.ls[0].length?'x':'')}</td>`).join('')}<td class="tot">${bx.R[i]}</td><td class="tot">${bx.H[i]}</td></tr>`;
+  return `<div class="sboard" data-act="se-box" data-id="m:${keys[0]}" role="button" tabindex="0" aria-label="Last game box score"><div class="cap"><span>${bx.po?esc(bx.po):'Final · '+seDate(bx.d)}</span><span>Box score ›</span></div>
+    <div class="scroll"><table><thead><tr><th></th>${Array.from({length:n},(_,j)=>`<td>${j+1}</td>`).join('')}<td class="tot">R</td><td class="tot">H</td></tr></thead><tbody>${row(0)}${row(1)}</tbody></table></div><div class="recap">${esc(bx.rec)}</div></div>`}
+/* ===== Brand home screen: Virtual Hot Stove GM (working title), in our own colors, not any club's ===== */
+const BRAND='Virtual Hot Stove GM';
+const FLAME=`<svg class="art" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 12c10 34 44 46 44 92a44 44 0 0 1-88 0c0-20 10-30 18-44 4 14 10 20 16 22-4-26 2-46 10-70Z" fill="currentColor"/><circle cx="100" cy="118" r="26" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3"/><path d="M84 100c9 9 9 27 0 36M116 100c-9 9-9 27 0 36" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-dasharray="3 4"/></svg>`;
+const DESK=`<svg class="art" viewBox="0 0 200 200" aria-hidden="true"><rect x="30" y="40" width="140" height="120" rx="10" fill="none" stroke="currentColor" stroke-width="4"/><path d="M30 72h140M62 40v120" stroke="currentColor" stroke-width="3"/><path d="M78 92h74M78 112h58M78 132h66" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".7"/><circle cx="46" cy="92" r="5" fill="currentColor"/><circle cx="46" cy="112" r="5" fill="currentColor"/><circle cx="46" cy="132" r="5" fill="currentColor"/></svg>`;
+const DRAFT=`<svg class="art" viewBox="0 0 200 200" aria-hidden="true"><path d="M40 160V70l60-40 60 40v90" fill="none" stroke="currentColor" stroke-width="4"/><path d="M70 160v-50h60v50" fill="none" stroke="currentColor" stroke-width="4"/><path d="M100 60l8 16 18 2-13 12 4 18-17-9-17 9 4-18-13-12 18-2Z" fill="currentColor"/></svg>`;
+const NEWSI=`<svg class="art" viewBox="0 0 200 200" aria-hidden="true"><rect x="34" y="44" width="132" height="112" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><path d="M52 70h60M52 92h96M52 110h96M52 128h70" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".7"/><rect x="124" y="62" width="26" height="18" fill="currentColor"/></svg>`;
+function hubHTML(){const codes=Object.keys(D.teams).sort((a,b)=>tnm(a).localeCompare(tnm(b))),picked=(()=>{try{return !!localStorage.getItem('gm-last-team')}catch(e){return false}})(),live=SE&&SE.team===ME;
+  const AL=codes.filter(c=>!NL.includes(c)),NLc=codes.filter(c=>NL.includes(c));
+  const chip=c=>{const [a,b]=COLORS[c]||['#234','#fff'];return `<button type="button" class="club${picked&&c===ME?' on':''}" data-club="${c}" style="--c1:${a};--c2:${b}" aria-pressed="${picked&&c===ME}"><b>${c}</b><span>${esc(tnm(c))}</span></button>`};
+  const card=(cls,art,k,t,d,attr,go)=>`<button type="button" class="hcard ${cls}" ${attr}>${art}<span class="k">${k}</span><span class="t">${t}</span><span class="d">${d}</span><span class="go">${go} ›</span></button>`;
+  return `<div class="hub">
+    <section class="hhero"><div class="glow"></div><img src="logo.png" alt="" width="96" height="96" class="hlogo">
+      <div class="k">The offseason never stops</div><h1><span>Virtual</span> Hot Stove <em>GM</em></h1>
+      <p class="htag">Run a real front office. Make the deals. Then play the season and see how your moves worked out.</p>
+      <div class="hstats"><span><b>30</b> clubs</span><span><b>${Object.keys(P).length.toLocaleString()}</b> players</span><span><b>162</b> games</span><span><b>29</b> rival GMs</span></div></section>
+    <section class="hsec"><h2>${picked?'Your club':'Choose your club'}</h2><p class="hint" style="margin:2px 0 8px;color:#b9c6e2">${picked?`You are running the <b style="color:#fff">${esc(tnm(ME))}</b>. Tap another club to switch; each one keeps its own save.`:'Pick any of the 30. Each club keeps its own save on this device.'}</p>
+      <div class="lgl">American League</div><div class="clubs">${AL.map(chip).join('')}</div><div class="lgl">National League</div><div class="clubs">${NLc.map(chip).join('')}</div></section>
+    <section class="hsec"><h2>Where to?</h2><div class="hcards">
+      ${card('front',DESK,'Your desk',`${esc(tnm(ME))} Front Office`,'Roster and depth chart, payroll and the tax, free agents, prospects.','data-act="gofront"','Open')}
+      ${card('trade',SWAP,'Hot Stove','Trade Machine','Deal with 29 front offices. Scouting cards, side-by-side, and a GM you can argue with.','data-tab="trade"','Open')}
+      ${card('season',DIAMOND,live?(SE.phase==='done'?'Season complete':SE.phase==='post'?'Postseason':'In progress'):'Play ball',live?`${SE.w[ME]}-${SE.l[ME]} · 2027 Season`:'Play the 2027 Season','Every game batter by batter. Standings, box scores, the deadline and October.','data-tab="season"',live?'Continue':'Start')}
+      ${card('draft',DRAFT,'War room','2027 Draft','Our own draft board, the lottery, and a mock draft with pick trades.','data-tab="draft"','Open')}
+      ${card('news',NEWSI,'Around the league',"Today's Moves",'Real trades, signings and roster moves as they happen.','data-tab="moves"','Open')}
+    </div></section>
+    <p class="hfoot">${BRAND} · working title · a free sandbox, not affiliated with MLB or any club</p></div>`}
+/* trade screen banner: the two clubs in their own colors */
+function tradeBannerHTML(){const a=ME,b=UI.tTeam,ca=COLORS[a]||['#123','#fff'],cb=COLORS[b]||['#321','#fff'];
+  return `<div class="tvs" style="--a1:${ca[0]};--a2:${ca[1]};--b1:${cb[0]};--b2:${cb[1]}"><div class="side a"><b>${a}</b><span>${esc(tnm(a))}</span></div><div class="mid">${SWAP.replace('class="art"','class="sw"')}<i>Trade Machine</i></div><div class="side b"><b>${D.teams[b]?b:'?'}</b><span>${esc(D.teams[b]?tnm(b):'Pick a partner')}</span></div></div>`}
+/* season: how the moves you made are working out */
+function seMovesHTML(){const c=ME,inn=metsIds().filter(id=>P[id].team!==c),out=Object.keys(S.team).filter(id=>P[id]&&P[id].team===c&&S.team[id]!==c);
+  if(!inn.length&&!out.length)return '';const war=id=>seWarOf(id),mx=Math.max(1,...inn.concat(out).map(id=>Math.abs(war(id))));
+  const row=(id,gone)=>{const w=war(id),p=P[id],s=p.p?SE.ps[id]:SE.bs[id],ln=!s?'has not played':p.p?`${s[9]}-${s[10]}, ${s[2]?(s[5]*27/s[2]).toFixed(2):'-'} ERA, ${ipf(s[2])} IP`:`${f3(s[3]/(s[2]||1))}, ${s[6]} HR, ${s[8]} RBI`;
+    return `<div class="mv"><div class="who"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span><span class="hint"> ${gone?'now '+esc(owner(id)):p.team==='FA'?'signed':'from '+esc(p.team)} · ${ln}</span></div><div class="bar"><i class="${w>=0?'up':'dn'}" style="width:${Math.max(3,Math.abs(w)/mx*100).toFixed(0)}%"></i></div><b class="${w>=0?'up':'dn'}">${w>=0?'+':''}${w.toFixed(1)}</b></div>`};
+  const sum=ids=>ids.reduce((t,id)=>t+war(id),0),net=sum(inn)-sum(out);
+  return `<div class="mvbox"><div class="mvhead"><h3>How your moves are working out</h3><span class="mvnet ${net>=0?'up':'dn'}">${net>=0?'+':''}${net.toFixed(1)} WAR net</span></div>
+    ${inn.length?`<div class="subh">Players you brought in (${inn.length})</div>${inn.sort((x,y)=>war(y)-war(x)).slice(0,8).map(id=>row(id,false)).join('')}`:''}
+    ${out.length?`<div class="subh">Players you let go (${out.length})</div>${out.sort((x,y)=>war(y)-war(x)).slice(0,8).map(id=>row(id,true)).join('')}`:''}
+    <p class="hint" style="margin:6px 0 0">WAR this season. Net is what you added minus what you gave up.</p></div>`}
 /* collapsible cards: tap a card's title bar to fold it; remembered per device */
 let COLL=(()=>{try{return new Set(JSON.parse(localStorage.getItem('hs-collapsed')||'[]'))}catch(e){return new Set()}})();
 function cardKey(c){const h=c.querySelector('.cardhead h2');return h?h.textContent.trim().toLowerCase():null}
@@ -730,6 +949,7 @@ function renderCBT(c){
     </div>
     <p class="hint" style="margin:6px 0 0">Tax rate: ${esc(cbtRateLabel(ME))}${RULES.cbt.payors2026Est?' (2026 payors are estimated until MLB finalizes them in December)':''}.${room<0?` $40M+ over: the ${esc(MEN())}' highest 2028 pick moves back 10 spots; a top-6 pick is protected and the next pick moves instead.`:''}</p>
     ${(()=>{const q=qoSignings().filter(x=>x.to===ME);return q.length?`<p class="hint" style="margin:4px 0 0">Qualifying-offer signings: ${q.map(x=>`${esc(P[x.id].n)} (lose ${x.forfeit.picks.map(ordN).join(' + ')} pick${x.forfeit.ifa?', '+M1(x.forfeit.ifa)+' intl pool':''})`).join('; ')}.</p>`:''})()}
+    ${D.teams[ME].ph?`<p class="hint" style="margin:4px 0 0">Tax payroll by year: ${D.teams[ME].ph.map((v,i)=>v==null?'':`'${21+i} $${v}M`).filter(Boolean).join(' · ')}.${D.teams[ME].fut?` Already committed: 2028 $${D.teams[ME].fut[0]}M · 2029 $${D.teams[ME].fut[1]}M · 2030 $${D.teams[ME].fut[2]}M.`:''}</p>`:''}
     <p class="hint" style="margin:4px 0 0">International bonus pool (est.): ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · hard cap, $250K trade steps.</p>
     <div class="bar" aria-label="CBT payroll against tax tiers">${bands}${ticks}<div class="base" style="left:${pct(BASE_TOTAL())}%" title="Baseline $289.28M"></div><div class="marker" style="left:${pct(t)}%"><span>${M1(t)}</span></div></div>
     <table class="ledger">
@@ -856,15 +1076,16 @@ function contractModal(id,mode){
 /* ---------- front-office profiles ---------- */
 // cap = payroll ceiling ($M CBT) ownership will go to; sell = tendency to trade players 1-2 years from free agency (0-1);
 // pros = how they treat prospects: hoard (value them more) | currency (trade them for big-league help) | neutral
+/* payroll ceilings in $M of luxury-tax payroll. Checked 11/19 against real 2021-2026 payrolls (inputs/payroll): NYM, NYY, TOR, SDP and ARI were raised to what each club actually carried in 2026. */
 const PROFILE={
  LAD:{cap:420,sell:0,pros:'currency',defer:'heavy',note:'Outspends everyone, defers money, uses prospects to land stars'},
- NYM:{cap:330,sell:0,pros:'neutral',defer:'some',note:'Owner will spend; front office protects top prospects and values control'},
- NYY:{cap:310,sell:0,pros:'currency',defer:'light',note:'Pays for stars, trades prospects for pitching'},
+ NYM:{cap:355,sell:0,pros:'neutral',defer:'some',note:'Owner will spend; front office protects top prospects and values control'},
+ NYY:{cap:335,sell:0,pros:'currency',defer:'light',note:'Pays for stars, trades prospects for pitching'},
  PHI:{cap:315,capReady:345,sell:0,pros:'currency',defer:'some',note:'Aggressive buyer; prospects are trade chips'},
- TOR:{cap:275,sell:0,pros:'neutral',defer:'some',note:'Spending big around Vladimir Guerrero Jr.'},
+ TOR:{cap:310,sell:0,pros:'neutral',defer:'some',note:'Spending big around Vladimir Guerrero Jr.'},
  BOS:{cap:280,sell:0,pros:'neutral',defer:'light',note:'Buys pitching, protective of its best prospects'},
  ATL:{cap:255,sell:.1,pros:'neutral',defer:'light',note:'Locks up young core early on team-friendly extensions'},
- SDP:{cap:240,sell:.2,pros:'currency',defer:'heavy',note:'Will trade anyone; prospects are currency'},
+ SDP:{cap:265,sell:.2,pros:'currency',defer:'heavy',note:'Will trade anyone; prospects are currency'},
  CHC:{cap:225,capReady:265,sell:.3,pros:'hoard',defer:'light',note:'Measured spending, values its farm system'},
  HOU:{cap:245,capReady:270,sell:.3,pros:'neutral',defer:'light',note:'Contender watching payroll, lets stars walk late'},
  TEX:{cap:225,capReady:240,sell:.3,pros:'neutral',defer:'some',note:'Spent for a title, now trimming payroll'},
@@ -872,7 +1093,7 @@ const PROFILE={
  LAA:{cap:195,sell:.4,pros:'neutral',defer:'light',note:'Ownership pushes to win now despite results'},
  SEA:{cap:190,capReady:215,sell:.5,pros:'hoard',defer:'light',note:'Builds through pitching development, careful with money'},
  DET:{cap:205,capReady:230,sell:.3,pros:'neutral',defer:'some',note:'Young core arriving, now adding payroll'},
- ARI:{cap:205,capReady:220,sell:.3,pros:'neutral',defer:'some',note:'Mid-market contender stretching payroll'},
+ ARI:{cap:205,capReady:230,sell:.3,pros:'neutral',defer:'some',note:'Mid-market contender stretching payroll'},
  BAL:{cap:195,capReady:235,sell:.4,pros:'hoard',defer:'light',note:'Deep farm, new owner spending more'},
  KCR:{cap:170,capReady:190,sell:.4,pros:'neutral',defer:'light',note:'Built around Bobby Witt Jr., spends in bursts'},
  MIN:{cap:155,sell:.7,pros:'neutral',defer:'light',note:'Payroll cuts; listening on veterans'},
@@ -901,7 +1122,7 @@ const MKT_LABEL={big:'big market',mid:'mid market',small:'small market'};
 const WT={allin:{now:1.3,fut:.85,pros:.8,old:1},contend:{now:1.15,fut:1,pros:1.05,old:.9},ascend:{now:1,fut:1.1,pros:1.15,old:.8},retool:{now:.95,fut:1,pros:1.05,old:.85},rebuild:{now:.55,fut:1.15,pros:1.3,old:.6}};
 const SALW={big:.8,mid:1,small:1.3};
 const DPW=9.5e6;
-function ctx(code){const t=D.teams[code];return {win:t.win||'retool',mkt:t.mkt||'mid'}}
+function ctx(code){const t=D.teams[code];return {win:(SE&&SE.win&&SE.win[code])||t.win||'retool',mkt:t.mkt||'mid'}}
 function roster(code){return code===ME?metsIds():teamIds(code)}
 function pgrp(id){const p=P[id];const f=String(p.pos||'').split('/')[0];
   if(['LF','CF','RF','OF'].includes(f))return 'OF';
@@ -1013,6 +1234,86 @@ const ROLE=(id,g)=>{const p=P[id],gp=pgrp(id);
   if(gp==='SP')return g>=68?'ace':g>=62?'No. 1-2 starter':g>=56?'No. 2-3 starter':g>=50?'mid-rotation starter':g>=44?'back-end starter':'swingman';
   if(gp==='RP')return g>=56?'elite closer':g>=50?'closer / top setup man':g>=45?'setup man':'middle reliever';
   return g>=70?'franchise player':g>=64?'star':g>=58?'All-Star caliber regular':g>=52?'above-average regular':g>=46?'average regular':g>=41?'role player':'bench piece'};
+/* ===== What the data says about a player (2026 results, splits, Statcast, WAR by season, injuries) =====
+   Front-office reading of a player, not a dollar value. scout(id) is the same for every club; dataAdj() is how one club
+   reacts to it: fit with its own roster, whether it believes his year, his trend, and his health. It moves a trade grade
+   by at most 5 points either way, so it can tip a close deal but cannot turn a role player into a star. */
+/* how much each front office leans on underlying data (1 = analytics-first, 0 = traditional scouting and results) */
+const ANA={LAD:1,TBR:1,MIL:1,HOU:.9,NYY:.9,CLE:.9,BAL:.9,BOS:.9,SEA:.9,NYM:.9,DET:.9,MIN:.8,ATL:.8,TOR:.8,CHC:.8,SFG:.8,STL:.8,MIA:.8,PHI:.7,ARI:.7,WSN:.7,TEX:.6,CIN:.6,PIT:.6,KCR:.6,ATH:.6,SDP:.5,CHW:.5,LAA:.3,COL:.2};
+const ana=c=>ANA[c]??.6;
+const NUMW=['no','one','two','three','four','five','six'];
+/* expected stats run a little off actual ones league-wide; measure luck against the typical gap, not zero */
+let _lgLuck=null;
+function lgLuck(){if(_lgLuck)return _lgLuck;const h=[],q=[],med=a=>a.length?a.sort((x,y)=>x-y)[a.length>>1]:0;
+  for(const id in P){const pj=P[id].proj,y=pj&&pj.y;if(!y||P[id].team==='DUP')continue;if(pj.t==='b'&&y.xwoba&&y.pa>=250)h.push(y.woba-y.xwoba);else if(pj.t==='p'&&y.xera&&y.era!=null&&y.ip>=50)q.push(y.xera-y.era)}
+  return _lgLuck={h:med(h),p:med(q)}}
+const _sct={};
+function scout(id){if(_sct[id])return _sct[id];
+  const p=P[id],pj=p.proj||{},y=pj.y||{},o={tags:[],inj:(SN&&SN.inj&&SN.inj[id])||null,od:(SN&&SN.od&&SN.od[id])||null},age=p.age||28;
+  /* WAR trend over the last three seasons; a down year spent on the injured list is not a decline */
+  const wh=pj.wh;if(wh&&wh[3]!=null&&wh[4]!=null){const a=wh[2],b=wh[3],c=wh[4],hurt26=o.inj&&o.inj.st&&o.inj.st.some(s=>s[0]===2026&&s[1]>=50);
+    if(c>=b+.8&&(a==null||b>=a-.2))o.trend=1;else if(c<=b-.8&&(a==null||b<=a+.3)&&!hurt26)o.trend=-1;
+    if(a!=null&&c>=Math.max(a,b)+1.5)o.jump=1}
+  if(!p.p){const b=pj.s?bRate(id):null;
+    if(b&&b.L){o.wl=b.L.woba;o.wr=b.R.woba;const gap=o.wl-o.wr;
+      if(o.wl>=.345&&gap>=.02){o.crushL=1;o.tags.push('Crushes lefties')}
+      if(o.wr>=.35&&gap<=-.03){o.crushR=1;o.tags.push('Crushes righties')}
+      if(Math.abs(gap)>=.05&&Math.min(o.wl,o.wr)<.295){o.platoon=gap>0?'L':'R';o.tags.push('Platoon bat')}}
+    if(y.xwoba&&y.pa>=250){const d=y.woba-y.xwoba-lgLuck().h;if(d>=.025)o.luck=1;else if(d<=-.025)o.luck=-1}
+    if(o.jump&&y.xwoba&&o.luck!==1){o.backed=1;o.tags.push('Breakout backed by Statcast')}
+    if(y.pa>=250){if(y.chase!=null&&y.chase<=.22)o.tags.push('Elite chase rate');if(y.hard>=.5)o.tags.push('Hits it hard');if(y.brl>=.14)o.tags.push('Barrels everything');if(y.con>=.86)o.tags.push('Contact bat')}
+    if(age>=33&&y.bat&&y.bat<70){o.slowBat=1;o.tags.push('Bat speed below average')}
+  }else{const r=pj.s?pRate(id):null,q=s=>s.k-s.bb-3.3*s.hr-(s.babip-.293)*.6;
+    if(r&&r.L){o.ql=q(r.L);o.qr=q(r.R);const gap=o.ql-o.qr;
+      if(pgrp(id)==='RP'){if(Math.abs(gap)<.03&&Math.min(o.ql,o.qr)>=.09){o.bothSides=1;o.tags.push('Gets both sides out')}
+        else if(p.hand==='L'&&gap>=.09){o.spec='L';o.tags.push('Lefty specialist')}
+        else if(p.hand!=='L'&&gap<=-.09){o.spec='R';o.tags.push('Righty specialist')}}}
+    if(y.xera&&y.era!=null&&y.ip>=50){const d=y.xera-y.era-lgLuck().p;if(d>=.6)o.luck=1;else if(d<=-.6)o.luck=-1}
+    if(o.jump&&y.xera&&o.luck!==1){o.backed=1;o.tags.push('Breakout backed by Statcast')}
+    if(y.maxv>=99.5)o.tags.push('Big velocity');if(y.k>=.3&&(y.tbf>=120||y.ip>=40))o.tags.push('Misses bats');if(y.chase>=.32)o.tags.push('Elite chase rate');if(y.gb>=.52)o.tags.push('Ground-ball machine')}
+  if(o.luck===1)o.tags.push(p.p?'2026 ERA beat the contact':'2026 a bit lucky');else if(o.luck===-1)o.tags.push(p.p?'Better than his 2026 ERA':'Unlucky in 2026');
+  if(o.trend===1&&age<=28)o.tags.push('On the rise');else if(o.trend===-1&&age>=30)o.tags.push('Declining');
+  if(o.od&&o.od.ret>=999)o.tags.push('Out for 2027');else if(o.od&&o.od.ret>20)o.tags.push('Hurt now');
+  if(o.inj&&o.inj.r>=1.5)o.tags.push('Injury risk');
+  if(o.inj&&o.inj.tj>=2025&&p.p)o.tags.push('Elbow surgery '+o.inj.tj);
+  return _sct[id]=o}
+function injLine(I,incoming){const pc=I.pc||{},top=Object.keys(pc).sort((a,b)=>pc[b]-pc[a])[0],tail=incoming?' worry us':'';
+  const nm={head:'concussion',wrist:'wrist and hand',lat:'lat',blister:'finger'}[top]||top;
+  if(top&&pc[top]>=2)return `${NUMW[Math.min(6,pc[top])]} ${nm} injuries since 2024${tail}`;
+  if(I.tj>=2025)return `elbow surgery in ${I.tj}${incoming?' is a risk we have to price in':''}`;
+  return `${I.n} trips to the injured list since 2022${incoming?' give us pause':''}`}
+/* what a club's own roster is missing, from its best nine bats, top five starters and top seven relievers */
+let _cf={},_cfKey='',_cfLg=null;
+const cfKey=()=>S.log.length+'|'+Object.keys(S.team).length+'|'+(SE?SE.day:'');
+function clubFit(code){const k=cfKey();if(k!==_cfKey){_cf={};_cfLg=null;_cfKey=k}if(_cf[code])return _cf[code];
+  const R=roster(code).filter(established),top=(f,n)=>R.filter(f).sort((a,b)=>P[b].proj.war-P[a].proj.war).slice(0,n);
+  const H=top(x=>!P[x].p,9),SPs=top(x=>pgrp(x)==='SP',5),RPs=top(x=>pgrp(x)==='RP',7);let wl=0,wr=0,n=0,lh=0;
+  for(const h of H){const b=bRate(h);if(b.L){wl+=b.L.woba;wr+=b.R.woba;n++}lh+=P[h].hand==='L'?1:P[h].hand==='S'?.5:0}
+  return _cf[code]={wl:n>=6?wl/n:null,wr:n>=6?wr/n:null,lh,nH:H.length,lhSP:SPs.filter(x=>P[x].hand==='L').length,nSP:SPs.length,lhRP:RPs.filter(x=>P[x].hand==='L').length,nRP:RPs.length}}
+function lgFit(){clubFit(Object.keys(D.teams)[0]);if(_cfLg)return _cfLg;const cs=Object.keys(D.teams),f=cs.map(c=>[c,clubFit(c)]).filter(x=>x[1].wl!=null);
+  const worst=k=>new Set(f.slice().sort((a,b)=>a[1][k]-b[1][k]).slice(0,10).map(x=>x[0]));return _cfLg={weakL:worst('wl'),weakR:worst('wr')}}
+function dataAdj(id,code,incoming,win,gp,w){const s=scout(id),p=P[id],a=ana(code),N=[],now=win==='allin'||win==='contend';let d=0;
+  if(incoming){const F=clubFit(code),LG=lgFit();
+    if(!p.p){
+      if(s.crushL&&LG.weakL.has(code)){d+=2;N.push('we like his bat vs lefties, which we need')}
+      else if(s.crushR&&LG.weakR.has(code)){d+=2;N.push('he hits right-handers, where our lineup is thin')}
+      if(s.platoon){if(gp!=='DH'&&w>=needAt(code,gp,id)+1){d-=2.5;N.push('a platoon bat, and we need an everyday player there')}else{d-=1;N.push('really a platoon bat')}}
+      if(w>=1.5&&F.nH>=7){if(F.lh<=2&&(p.hand==='L'||p.hand==='S')){d+=1;N.push('a left-handed bat balances our lineup')}else if(F.lh>=6&&p.hand==='R'){d+=1;N.push('a right-handed bat balances our lineup')}}
+    }else{
+      if(p.hand==='L'){if(gp==='SP'&&F.nSP>=4&&F.lhSP===0&&w>=1.5){d+=2;N.push("we don't have a left-handed starter")}
+        else if(gp==='RP'&&F.nRP>=5&&F.lhRP<=1&&w>=.3&&s.spec!=='L'){d+=1.5;N.push('we are short on left-handed relief')}}
+      if(gp==='RP'){if(s.bothSides){d+=1;N.push('gets lefties and righties out')}else if(s.spec){d-=1.5;N.push(s.spec==='L'?'mostly a lefty specialist':'much better against righties than lefties')}}}
+    if(s.luck===1){if(a>=.5){d-=2*a;N.push(p.p?'his 2026 ERA was better than the contact he gave up; we think he was a bit lucky':'Statcast says his 2026 was a bit lucky')}else{d+=.5;N.push('coming off a strong year')}}
+    else if(s.luck===-1){if(a>=.5){d+=1.5*a;N.push(p.p?'he pitched better than his 2026 ERA':'he hit the ball better than his 2026 numbers show')}else{d-=.5;N.push('coming off a down year')}}
+    if(s.backed&&a>=.5){d+=1;N.push('the breakout is backed by Statcast')}
+  }else{/* their own player: an analytics club holds on to a player it thinks was unlucky, and will sell high on a lucky one */
+    if(s.luck===-1&&a>=.5){d+=1.5*a;N.push('they trust his underlying numbers more than his 2026 results')}
+    else if(s.luck===1&&a>=.7){d-=1;N.push('they think 2026 was his high point and would sell now')}}
+  if(s.trend===1&&(p.age||30)<=28){d+=1;N.push('still getting better each year')}
+  else if(s.trend===-1&&(p.age||0)>=30){d-=1.5;N.push('his production has dropped two years running')}
+  if(s.slowBat){d-=1;N.push('bat speed is below average for a hitter his age')}
+  const I=s.inj;if(I){const x=I.r>=1.9?2:I.r>=1.5?1.2:I.r>=1.25?.5:0;if(x){d-=x*(incoming?(now?1.35:1):.5);N.push(injLine(I,incoming))}}
+  return {d:Math.max(-5,Math.min(5,d)),notes:N}}
 const gpts=g=>Math.pow(2,(g-40)/5);/* tiers: each 5 grade points doubles the weight, so a 60 is worth four 50s */
 function gradeTo(id,code,incoming){
   const p=P[id],notes=[],c=ctx(code),win=c.win,pr=prof(code),gp=pgrp(id),age=p.age||28;let g,burden=0;
@@ -1020,7 +1321,8 @@ function gradeTo(id,code,incoming){
     const w=p.proj.war,cy=ctrl(id).length;
     g=40+5*w;if(gp==='RP')g=Math.min(g,60);var raw=g;
     notes.push(`${w.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);
-    if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
+    if(cy<=1&&incoming&&SE&&SE.win&&(win==='allin'||win==='contend')){g+=1;notes.push('deadline: a contender pays up for help right now')}/* season sim, deadline day: buyers pay more for rentals */
+    else if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
     else if(cy===2)g-=2;else if(cy>=5&&age<=29)g+=2;
     if(p.fv&&age<=25){const pg=hsGrade(id);if(pg>g)g=pg}
     if(win==='rebuild'||win==='ascend'){if(age>=33){g-=10;notes.push(`age ${p.age}: no fit for a ${win==='rebuild'?'rebuilding':'young'} club`)}else if(age>=30){g-=5;notes.push(`age ${p.age}: older than their timeline`)}}
@@ -1046,6 +1348,8 @@ function gradeTo(id,code,incoming){
       if(win==='rebuild'&&age>=29){g-=3;notes.push('rebuilding: veterans are available')}
       else if(win==='retool'&&age>=31&&cy<=2){g-=2;notes.push('retooling: listening on veterans')}
     }
+    /* 2026 results, splits, Statcast, WAR trend and injury history, as this club reads them */
+    {const A=dataAdj(id,code,incoming,win,gp,w);g+=A.d;for(const n of A.notes)notes.push(n)}
   }else if(p.fv){
     g=hsGrade(id);notes.push(`Hot Stove grade ${Math.round(g)}`+(p.t100?` · FG Top 100 #${p.t100}`:'')+(p.mlbp?` · MLB Pipeline #${p.mlbp} in org`:''));
     const R=roster(code).filter(x=>x!==id);
@@ -1070,6 +1374,161 @@ function gradeTo(id,code,incoming){
   }else{g=p.proj?Math.min(42,38+2*Math.max(0,p.proj.war)):36;notes.push('organizational depth')}
   g=Math.max(20,Math.min(80,g));
   return {g,pts:gpts(g)-burden,burden,label:ROLE(id,established(id)?Math.max(raw,p.fv&&age<=25?hsGrade(id):0):(p.fv?hsGrade(id):g)),notes}}
+/* ===== Scouting card and side-by-side comparison (trade screen) ===== */
+const PITCHN={FA:'4-seam',FT:'2-seam',FC:'cutter',FS:'splitter',FO:'forkball',SI:'sinker',SL:'slider',CU:'curve',KC:'knuckle curve',EP:'eephus',CH:'changeup',SC:'screwball',KN:'knuckleball'};
+const pct=(x,d)=>x==null?'–':(x*100).toFixed(d||0)+'%';
+const stags=(id,n)=>scout(id).tags.slice(0,n||9).map(t=>`<span class="tag stg${/risk|Hurt|Out for|surgery|Declining|lucky|beat the contact|below average|Platoon|specialist/.test(t)?' warn':''}">${esc(t)}</span>`).join('');
+function line26(id){const pj=P[id].proj,y=pj&&pj.y;if(!y)return '';
+  if(pj.t==='b')return `${f3(y.avg)}/${f3(y.obp)}/${f3(y.slg)} · ${y.wrc} wRC+ · ${y.pa} PA`;
+  return y.ip?`${y.era.toFixed(2)} ERA · ${y.fip.toFixed(2)} FIP · ${y.ip} IP`:`${pct(y.k)} K · ${pct(y.bb)} BB · ${y.tbf} batters faced`}
+function line27(id){const pj=P[id].proj;if(!pj)return '';return pj.t==='b'?`${pj.war} WAR · ${pj.wrc} wRC+ · ${pj.ops} OPS · ${pj.pa} PA`:`${pj.war} WAR · ${pj.era} ERA · ${pj.fip} FIP · ${pj.ip} IP`}
+function injRisk(I){return !I?'Normal':I.r>=1.9?'High':I.r>=1.5?'Elevated':I.r>=1.25?'Some':'Normal'}
+function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj.y||{},s=scout(id),hit=!p.p,own=owner(id);
+  const kv=(a,b)=>b==null||b===''?'':`<div class="kv"><span>${a}</span><b>${b}</b></div>`;
+  /* how the trade partner sees him */
+  let gm='';const code=UI.tTeam;
+  if(UI.tab==='trade'&&D.teams[code]&&(own===code||own===ME)&&(established(id)||p.fv)){const inc=own===ME,g=gradeTo(id,code,inc),un=!inc&&untouchable(id,code);
+    gm=`<div class="tsum" style="margin:8px 0"><b>How the ${esc(tnm(code))} see him:</b> ${esc(g.label)}${un?` · <b>${esc(un)}, not available</b>`:''}${g.notes.length?`<ul class="sreasons">${g.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}</div>`}
+  /* splits */
+  let spl='';
+  if(hit&&(y.vl||y.vr)){const row=(k,l)=>{const v=y[k],x=y[k+'x']||[];return v?`<tr><td>${l}</td><td class="r">${v[0]}</td><td class="r">${f3(x[5]!=null?x[5]:v[2]+v[3])}</td><td class="r">${x[0]??'–'}</td><td class="r">${pct(x[1])}</td><td class="r">${pct(x[4])}</td></tr>`:''};
+    spl=`<div class="scroll"><table class="list"><thead><tr><th>2026</th><th class="r">PA</th><th class="r">OPS</th><th class="r">wRC+</th><th class="r">K%</th><th class="r">BB%</th></tr></thead><tbody>${row('vl','vs LHP')}${row('vr','vs RHP')}</tbody></table></div>`}
+  else if(!hit&&(y.vl||y.vr)){const row=(k,l)=>{const v=y[k];return v?`<tr><td>${l}</td><td class="r">${v[0]}</td><td class="r">${f3(v[2]+v[3])}</td><td class="r">${f3(v[1])}</td><td class="r">${pct(v[4])}</td><td class="r">${pct(v[5])}</td></tr>`:''};
+    spl=`<div class="scroll"><table class="list"><thead><tr><th>2026</th><th class="r">BF</th><th class="r">OPS</th><th class="r">AVG</th><th class="r">K%</th><th class="r">BB%</th></tr></thead><tbody>${row('vl','vs LHB')}${row('vr','vs RHB')}</tbody></table></div>`}
+  if(hit&&s.wl!=null)spl+=`<p class="hint" style="margin:4px 0 0">2027 projected wOBA: ${f3(s.wl)} vs LHP · ${f3(s.wr)} vs RHP</p>`;
+  if(!hit&&pj.sl)spl+=`<p class="hint" style="margin:4px 0 0">2027 projected strikeouts: ${pct(pj.sl[0])} vs LHB · ${pct(pj.sr[0])} vs RHB</p>`;
+  /* Statcast */
+  let sc='';
+  if(hit)sc=kv('Exit velocity (max)',y.ev?`${y.ev} (${y.maxev}) mph`:null)+kv('Hard-hit · barrel',y.hard!=null?`${pct(y.hard)} · ${pct(y.brl,1)}`:null)+kv('Expected wOBA vs actual',y.xwoba?`${f3(y.xwoba)} vs ${f3(y.woba)}`:null)+kv('Chase · contact',y.chase!=null?`${pct(y.chase)} · ${pct(y.con)}`:null)+kv('Bat speed',y.bat?y.bat+' mph':null);
+  else{const mix=y.mix?y.mix.map(m=>[m[0],m[1]]):y.pp?Object.entries(y.pp).map(([k,v])=>[k,v[0]]).sort((a,b)=>b[1]-a[1]):null;
+    sc=kv('Velocity, all pitches (top)',y.maxv?`${y.vel} (${y.maxv}) mph`:null)+kv('Strikeout rate',y.k!=null?pct(y.k,1):null)+kv('Chase rate',y.chase!=null?pct(y.chase):null)+kv('Hard-hit · barrel allowed',y.hard!=null?`${pct(y.hard)} · ${pct(y.brl,1)}`:null)+kv('Expected ERA vs actual',y.xera&&y.era!=null?`${y.xera.toFixed(2)} vs ${y.era.toFixed(2)}`:null)
+      +(mix?`<p class="hint" style="margin:4px 0 0"><b>Pitch mix:</b> ${mix.slice(0,6).map(m=>(PITCHN[m[0]]||m[0])+' '+pct(m[1])).join(', ')}</p>`:'')}
+  /* injuries */
+  const I=s.inj,od=s.od;
+  const inj=(od&&od.ret>0?`<p style="margin:2px 0"><b style="color:var(--bad)">Now:</b> ${esc(od.what)}${od.ret>=999?', out for 2027':', back about '+seDate(od.ret)}</p>`:'')
+    +(I&&I.st&&I.st.length?`<p class="hint" style="margin:2px 0">Risk: <b>${injRisk(I)}</b> · ${I.n} IL stint${I.n===1?'':'s'} since 2022 · ${I.d||0} days missed since 2024</p>${I.st.slice().reverse().map(x=>`<div class="kv"><span>${x[0]} · ${esc(x[2]||'not listed')}</span><b>${x[1]} d</b></div>`).join('')}`:'<p class="hint" style="margin:2px 0">No injured-list stints since 2022.</p>');
+  /* contract */
+  const c=S.contract[id],cy=established(id)||p.kind!=='min'?ctrl(id).length:null,sal=own===ME?cbtOf(id):partnerCount(id);
+  const con=kv('Contract',esc(c?c.desc:(p.contract||(p.team==='FA'&&own==='FA'?'Free agent':'Minor-league / pre-arb'))))+kv('2027 salary (CBT)',sal?M1(sal):'league minimum')+kv('Years of control',cy!=null?cy:null)+kv('Options left',p.opt&&p.opt!=='n/a'?esc(p.opt):null)+kv('Service time',p.svc?esc(p.svc):null)
+    +(p.lvl!=='MLB'&&own!=='FA'?kv('Rule 5',r5Exposed(id)?'Eligible and unprotected':'Protected or not yet eligible'):'');
+  const sec=(t,h)=>h?`<div class="dsec"><h3>${t}</h3>${h}</div>`:'';
+  $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(p.n)}${handTag(id)}</h2>
+    <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
+    ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
+    ${sec('The short version',kv('2027 projection',line27(id))+kv('2026',line26(id))+(pj.wh?kv("WAR '22-'26",pj.wh.map(w=>w==null?'–':w.toFixed(1)).join(' · ')):'')+(p.fv&&!established(id)?kv('Hot Stove grade',Math.round(hsGrade(id))):''))}
+    ${sec(hit?'Splits vs left and right':'Splits vs left- and right-handed hitters',spl)}${sec('Statcast',sc)}${sec('Injury history',inj)}${sec('Contract and control',con)}
+    <div class="dact" style="justify-content:flex-end">${back?'<button class="btn" type="button" data-act="tcompare">Back to comparison</button>':''}<button class="btn" type="button" data-act="scout-full" data-id="${id}">Full player card</button><button class="btn primary" type="button" data-act="closemodal">Close</button></div>`;
+  openModal();$('#modal').scrollTop=0}
+function tradeCompare(){const code=UI.tTeam,out=[...UI.tOut].filter(isMets),inn=[...UI.tIn].filter(id=>owner(id)===code);
+  const card=id=>{const p=P[id],pj=p.proj,sal=owner(id)===ME?cbtOf(id):partnerCount(id),cy=established(id)||p.kind!=='min'?ctrl(id).length:null;
+    return `<div class="cmp"><button type="button" class="cmpn" data-scout="${id}" data-back="1">${esc(p.n)}</button><div class="hint">${esc(p.pos||'')} · age ${p.age??'?'}${p.fv&&!established(id)?' · FV '+esc(p.fv):''}</div>
+      ${pj?`<div class="kv"><span>2027</span><b>${pj.war} WAR</b></div><div class="hint">${pj.t==='b'?pj.wrc+' wRC+ · '+pj.pa+' PA':pj.era+' ERA · '+pj.ip+' IP'}</div>`:'<div class="hint">No projection</div>'}
+      ${line26(id)?`<div class="hint" style="margin-top:2px">2026: ${line26(id)}</div>`:''}
+      <div class="kv" style="margin-top:2px"><span>${cy!=null?cy+' yr'+(cy===1?'':'s')+' control':'Prospect'}</span><b>${sal?M1(sal):'min'}</b></div>
+      ${scout(id).tags.length?`<div class="stags">${stags(id,3)}</div>`:''}</div>`};
+  const tot=ids=>{const w=ids.reduce((s,id)=>s+(P[id].proj?P[id].proj.war:0),0),m=ids.reduce((s,id)=>s+(owner(id)===ME?cbtOf(id):partnerCount(id)),0),ag=ids.filter(id=>P[id].age);
+    return ids.length?`<div class="cmpt"><div class="kv"><span>Players</span><b>${ids.length}</b></div><div class="kv"><span>2027 WAR</span><b>${w.toFixed(1)}</b></div><div class="kv"><span>2027 salary</span><b>${M1(m)}</b></div><div class="kv"><span>Average age</span><b>${ag.length?(ag.reduce((s,id)=>s+P[id].age,0)/ag.length).toFixed(1):'–'}</b></div></div>`:''};
+  $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start"><h2 style="margin:0">Side by side</h2><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
+    <p class="hint" style="margin:2px 0 8px">Tap a name for his scouting card.</p>
+    <div class="cmpgrid"><div><div class="subh">You give</div>${out.map(card).join('')||'<p class="hint">Nobody yet</p>'}${tot(out)}</div><div><div class="subh">You get</div>${inn.map(card).join('')||'<p class="hint">Nobody yet</p>'}${tot(inn)}</div></div>
+    <div class="dact" style="justify-content:flex-end"><button class="btn primary" type="button" data-act="closemodal">Close</button></div>`;
+  openModal();$('#modal').scrollTop=0}
+/* ===== Make your case: the user answers the other GM in his own words =====
+   The GM does not react to wording. He picks out the baseball arguments in the message (health, luck, fit, control,
+   age, prospect upside, leverage) and checks each one against the same data he grades players with. A point that is
+   true moves him a little; a point that is false gets the facts back. It can tip a close deal (package value up to
+   +12%) but never beats the hard questions: MLB rules, payroll, untouchables, the headliner, big-league help back. */
+const talkKey=(code,o,i,cash)=>JSON.stringify([code,[...o].sort(),[...i].sort(),cash||0]);
+function talkFor(code,o,i,cash){const t=UI.tTalk;return t&&t.key===talkKey(code,o,i,cash)?t:null}
+function gmReply(text,code,outSel,inSel,cashM){
+  const key=talkKey(code,outSel,inSel,cashM);if(!UI.tTalk||UI.tTalk.key!==key)UI.tTalk={key,log:[],used:{},bonus:0,done:false};
+  const T=UI.tTalk,tx=' '+text.toLowerCase()+' ',c=ctx(code),win=c.win,now=win==='allin'||win==='contend',a=ana(code),say=[],E0=evalTrade(code,outSel,inSel,cashM);
+  const named=ids=>ids.filter(id=>{const l=sn(id).toLowerCase();return l.length>=4&&tx.includes(l)});
+  const best=(ids,f)=>ids.slice().sort((x,y)=>f(y)-f(x))[0];
+  const theirs=inSel.filter(id=>established(id)||P[id].fv),mine=outSel.filter(id=>established(id)||P[id].fv);
+  const their=f=>named(theirs)[0]||(theirs.length?best(theirs,f||(id=>gradeTo(id,code,false).g)):null);
+  const my=f=>named(mine)[0]||(mine.length?best(mine,f||(id=>gradeTo(id,code,true).g)):null);
+  let delta=0;const hit=(k,d,line)=>{if(T.used[k]){say.push(line.replace(/^[^.!?]*[.!?]\s*/,'')||line);return}T.used[k]=1;delta+=d;say.push(line)};
+  const nm=id=>sn(id);
+  /* tone */
+  if(/idiot|stupid|dumb|moron|clown|\bjoke\b|pathetic|f[u*]ck|sh[i*]t|bullsh|garbage|trash|\bsuck/.test(tx)){T.done=true;T.bonus=Math.max(-.08,T.bonus-.04);
+    const gm="We're done for today. Call me when you want to talk baseball.";T.log.push({me:text,gm});return gm}
+  /* health of their player */
+  if(/injur|hurt|health|medical|\bil\b|surger|elbow|shoulder|fragile|durab|banged|missed time|tommy john/.test(tx)){const id=their(x=>(scout(x).inj||{r:0}).r);
+    if(id){const s=scout(id),I=s.inj;
+      if(s.od&&s.od.ret>20)hit('inj',.06,`I won't argue that. ${nm(id)} is coming off ${s.od.what.replace(/\s*\(.*\)$/,'').toLowerCase()} and ${s.od.ret>=999?"won't pitch in 2027":"won't be ready for Opening Day"}. That is in my price, but maybe not all of it.`);
+      else if(I&&I.r>=1.5)hit('inj',I.r>=1.9?.06:.04,`Fair. ${injLine(I,false).replace(/^./,ch=>ch.toUpperCase())}. I can't tell you ${nm(id)}'s medicals are clean.`);
+      else if(I&&I.n>=4)hit('injx',0,`${nm(id)} has had his trips to the injured list, ${I.n} since 2022, but he has been on the field lately. That history is already in my price.`);
+      else hit('injx',-.01,`${nm(id)} has been on the field. ${I?I.n+' trip'+(I.n===1?'':'s')+' to the injured list since 2022':'No injured-list time since 2022'} is not a red flag.`)}}
+  /* was their player lucky, was mine unlucky */
+  if(/luck|statcast|expected|xwoba|xera|xba|babip|regress|fluke|unsustain|career year|over ?perform|outperform|underlying|peripheral/.test(tx)){
+    const t=their(x=>scout(x).luck===1?2:0),m=my(x=>scout(x).luck===-1?2:0),ts=t&&scout(t),ms=m&&scout(m),ty=t&&P[t].proj&&P[t].proj.y,my_=m&&P[m].proj&&P[m].proj.y;
+    const num=(id,y)=>P[id].p?`an expected ERA of ${y.xera.toFixed(2)} against the ${y.era.toFixed(2)} he posted`:`an expected wOBA of ${f3(y.xwoba)} against the ${f3(y.woba)} he posted`;
+    if(/unlucky|better than|underlying|deserved|bad luck/.test(tx)&&ms&&ms.luck===-1&&my_)a>=.5?hit('unl',.04+.02*a,`You're right about ${nm(m)}: ${num(m,my_)}. Our model likes him more than his line.`):hit('unl',0,`Maybe ${nm(m)} was unlucky. We go by what a player did, not what he should have done.`);
+    else if(ts&&ts.luck===1&&ty)a>=.5?hit('luck',.03+.03*a,`Our numbers say the same about ${nm(t)}: ${num(t,ty)}. I know some of 2026 won't repeat.`):hit('luck',.01,`${nm(t)} produced. I don't trade a guy for less because a computer says he was fortunate.`);
+    else if(t&&ty&&(ty.xwoba||ty.xera))hit('luckx',-.01,`Check it again. ${nm(t)} had ${num(t,ty)}. The year was real.`);
+    else if(ms&&ms.luck===-1&&my_)hit('unl',a>=.5?.04:0,a>=.5?`On ${nm(m)}, yes: ${num(m,my_)}. He was better than his numbers.`:`We go by what ${nm(m)} did on the field.`)}
+  /* fit and need */
+  if(/\bneed|hole|\bfit|fills|lineup|rotation|bullpen|lefty|left-hand|right-hand|southpaw|platoon|against lefties|vs\.? lefties|against righties|upgrade|weak at|thin at/.test(tx)){const m=my(id=>established(id)?P[id].proj.war:0);
+    if(m&&established(m)){const gp=pgrp(m),w=P[m].proj.war,A=dataAdj(m,code,true,win,gp,w),fit=A.notes.find(n=>/which we need|balances our lineup|short on|don't have a left|lineup is thin|lefties and righties/.test(n));
+      if(wantsGrp(code,gp)&&w>=.8)hit('need',.05,`True. We have been looking for ${WANT_TXT[gp]||'help at '+gp}, and ${nm(m)} is the kind of player we've asked about.`);
+      else if(gp!=='DH'&&w>=needAt(code,gp,m)+1.5)hit('need',.04,`That's fair. ${nm(m)} would start for us at ${gp} on day one.`);
+      else if(fit)hit('need',.03,`I'll give you that: ${fit}.`);
+      else{const top=groupDepth(code,gp,m)[0];hit('needx',-.01,`We're covered at ${gp}${top?': '+nm(top)+' is ahead of him':''}. ${nm(m)} doesn't change our club.`)}}
+    else hit('needx',0,`A prospect doesn't fill a hole on my big-league roster this year.`)}
+  /* control, rentals, money */
+  if(/rental|free agen|walks?\b|expir|one year|lose him|contract year|leaves? after/.test(tx)){const t=their(id=>established(id)?-ctrl(id).length:-9);
+    if(t&&established(t)&&ctrl(t).length<=1)win==='allin'?hit('rent',0,`We're going for it in 2027. Where ${nm(t)} plays in 2028 is next winter's problem.`):hit('rent',.05,`I know ${nm(t)} can walk after the season. Getting something now beats a draft pick later, I'll admit that.`);
+    else if(t&&established(t))hit('rentx',-.01,`${nm(t)} isn't a rental. We control him for ${ctrl(t).length} more years.`)}
+  if(/control|cheap|pre-?arb|\barb\b|years? of|team[- ]friendly|cost[- ]controlled|minimum/.test(tx)){const m=my(id=>established(id)?ctrl(id).length:0);
+    if(m&&established(m)&&ctrl(m).length>=4&&(P[m].age||30)<=28)hit('ctrl',.03,`${ctrl(m).length} years of control on ${nm(m)} does matter to us. That's why we're still talking.`);
+    else if(m&&established(m))hit('ctrlx',0,`${nm(m)} comes with ${ctrl(m).length} year${ctrl(m).length===1?'':'s'} of control. That is already in my math.`)}
+  if(/salary|payroll|money|overpaid|expensive|afford|relief|dump|eat (the|his)|off your books|albatross/.test(tx)){const t=their(id=>gradeTo(id,code,false).burden);const b=t?gradeTo(t,code,false).burden:0;
+    if(t&&b>.5)hit('sal',.05,`Yes, moving ${nm(t)}'s contract helps us. ${M1(partnerCount(t))} a year is more than he gives us now.`);
+    else if(E0.budget)hit('salx',0,`Money is the whole problem here. This puts us past what ownership will spend.`);
+    else if(t)hit('salx',-.01,`${nm(t)} earns his money. I'm not paying you to take a good contract.`)}
+  /* age and decline of their player */
+  if(/\bold\b|\bage\b|aging|declin|past his prime|slowing|washed|over the hill|on the way down|getting older|years old|\b3[2-9]\b/.test(tx)){const t=their(id=>(P[id].age||0)+(scout(id).trend===-1?5:0));
+    if(t){const s=scout(t),ag=P[t].age||0;
+      if(s.trend===-1&&ag>=30)hit('age',.05,`${nm(t)} is ${Math.floor(ag)} and his WAR has dropped two years running. I see the same curve you do.`);
+      else if(ag>=33)hit('age',.03,`He's ${Math.floor(ag)}. I know which way that goes, even if it hasn't shown up yet.`);
+      else hit('agex',-.01,`${nm(t)} is ${Math.floor(ag)||'young'}${s.trend===1?' and still getting better':' and in his prime'}. Age is the reason he costs this much.`)}}
+  /* prospect upside */
+  if(/upside|ceiling|prospect|top[- ]?100|future|potential|tools|ranked|farm|high pick|first[- ]round/.test(tx)){const m=my(id=>P[id].fv&&!established(id)?hsGrade(id):0);
+    if(m&&P[m].fv&&!established(m)){const g=hsGrade(m),real=P[m].t100||g>=55;
+      if(real&&!now)hit('up',.05,`Our scouts like ${nm(m)} too: a ${Math.round(g)} on our board${P[m].t100?', No. '+P[m].t100+' in the game':''}. That's the kind of player we're collecting.`);
+      else if(real)hit('up',.01,`${nm(m)} might be very good in 2029. I need wins in 2027.`);
+      else hit('upx',-.01,`Our scouts have ${nm(m)} as a ${ROLE(m,g)}, a ${Math.round(g)}. That's not the piece that moves me.`)}
+    else hit('upx',0,`I don't see a prospect in this offer for me to dream on.`)}
+  /* how good is my big leaguer */
+  if(!say.length&&/good|great|star|ace|elite|best|underrated|proven|\bwar\b|stats|numbers|hits?\b|\bops\b|\bera\b|production|breakout|improv/.test(tx)){const m=my(id=>established(id)?P[id].proj.war:0);
+    if(m&&established(m)){const s=scout(m),g=gradeTo(m,code,true),l=line26(m);
+      if(s.backed||s.trend===1&&(P[m].age||30)<=28)hit('perf',.03,`${nm(m)} is on the way up, I'll grant you that${s.backed?', and Statcast backs the jump':''}.`);
+      else hit('perfx',0,`We have ${nm(m)} as ${/^[aeiou]/i.test(g.label)?'an':'a'} ${g.label}: ${P[m].proj.war} WAR projected${l?', after '+l.split(' · ').slice(0,2).join(', ')+' in 2026':''}. That's what I'm pricing.`)}}
+  /* leverage */
+  if(/other (team|club|offer)|another (team|club|offer|gm)|elsewhere|walk away|final offer|last offer|take it or leave|best offer|moving on|shop/.test(tx)){const t=their(id=>established(id)?-ctrl(id).length:-9),sell=Math.max(prof(code).sell||0,win==='rebuild'?1:0);
+    if(t&&established(t)&&ctrl(t).length<=2&&sell>=.6)hit('lev',.03,`Don't make it a threat. But yes, I would rather move ${nm(t)} now than wait and hope.`);
+    else hit('levx',-.02,`Then make that call. My price doesn't change because you say you have other options.`)}
+  if(!say.length)say.push(`I hear you, but give me a baseball reason. Health, the contract, how he fits us, what the numbers say: that's what moves me.`);
+  T.bonus=Math.max(-.08,Math.min(.12,T.bonus+delta));
+  /* where that leaves the deal */
+  const E=evalTrade(code,outSel,inSel,cashM);let end;
+  if(E.verdict==='locked')end="None of it matters, though: the rules don't allow this one.";
+  else if(E.budget)end=`It still isn't about the players. This puts us past what ownership will spend.`;
+  else if(E.untouch&&E.untouch.length)end=`But ${nm(E.untouch[0].x.id)} isn't moving. Only a better player coming back changes that.`;
+  else if(E.verdict==='accept')end=E0.verdict==='accept'?'We already had a deal.':"Alright. You've made your case. We can do this.";
+  else if(E.needMLB)end=`I still need big-league help back if ${nm(E.hOut.id)} leaves. We're trying to win.`;
+  else if(!E.headOK&&E.hOut.id)end=`It still comes down to the best player in the deal. ${E.hIn.id?nm(E.hIn.id)+" isn't "+nm(E.hOut.id):'Nothing coming back matches '+nm(E.hOut.id)}, and talking doesn't change that.`;
+  else if(E.verdict==='counter')end=delta>0?"That gets us closer. I still need a little more in the deal.":"We're close, but that didn't move me.";
+  else end=delta>0?"I'll give you the point. We're still a real piece apart.":"We're not close.";
+  if(T.log.length>=2&&E.verdict!=='accept'){T.done=true;end+=' I have heard your case. Change the offer if you want a different answer.'}
+  const gm=say.join(' ')+' '+end;T.log.push({me:text,gm,up:delta>0});return gm}
+function gmTalkHTML(E,code,outSel,inSel,cashM){if(E.verdict==='locked')return '';const T=talkFor(code,outSel,inSel,cashM),log=T?T.log:[];
+  if(E.verdict==='accept'&&!log.length)return '';
+  return `<div class="gmtalk"><div class="subh">Make your case</div>
+    ${log.map(l=>`<div class="say me"><b>You:</b> ${esc(l.me)}</div><div class="say gm"><b>${esc(tnm(code))} GM:</b> ${esc(l.gm)}</div>`).join('')}
+    ${T&&T.done||E.verdict==='accept'?'':`<textarea id="gmSay" maxlength="300" rows="2" placeholder="Answer the ${esc(tnm(code))} GM in your own words…" aria-label="Your reply to the ${esc(tnm(code))} GM"></textarea>
+    <div class="dact" style="margin-top:6px;justify-content:space-between;align-items:center"><span class="hint" style="flex:1;min-width:0">He checks what you say against the numbers. A true point can tip a close deal. ${3-log.length} repl${3-log.length===1?'y':'ies'} left.</span><button class="btn primary" type="button" data-act="gmsay">Send</button></div>`}</div>`}
 /* untouchable to the club that holds him */
 function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(id);
   if(it&&it.status==='untouchable')return 'reported untouchable';
@@ -1089,7 +1548,7 @@ function pkg(list){const pos=list.filter(x=>x.pts>0).sort((a,b)=>b.pts-a.pts),ne
 /* kept for older callers: v = package points */
 function valueTo(id,code,incoming){const r=gradeTo(id,code,incoming);return {v:r.pts,notes:r.notes,g:r.g,label:r.label}}
 function sumW(vals){return pkg(vals.map(v=>({pts:v})))}
-function lockedFA(id){const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&isMets(id))}
+function lockedFA(id){if(SE&&SE.day>=SE_JUN15)return false;const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&owner(id)!=='FA')}
 function sumW(vals){const pos=vals.filter(x=>x>0).sort((a,b)=>b-a),neg=vals.filter(x=>x<=0);const w=[1,.85,.7,.55,.45,.4];return pos.reduce((s,x,i)=>s+x*(w[i]??.35),0)+neg.reduce((s,x)=>s+x,0)}
 function hashN(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))%9973;return h}
 /* ---- picks + international pool space as trade assets ---- */
@@ -1136,6 +1595,7 @@ function evalTrade(code,outSel,inSel,cashM){
   const cashPts=cashM*({small:.25,mid:.18,big:.1}[c.mkt]);
   const all=[...rec,...recX];const allG=[...giv,...givX];
   R.recv=pkg(all)+Math.max(0,cashPts);R.give=pkg(allG)+Math.max(0,-cashPts);
+  {const tk=talkFor(code,outSel,inSel,cashM);if(tk&&tk.bonus&&R.recv>0){R.recv*=1+tk.bonus;R.talk=tk.bonus}}/* the user made his case to the GM (gmReply); never touches rules, payroll, untouchables or the headliner test */
   /* headliners: the best real asset on each side (a contract they're dumping is not a headliner) */
   const hIn=rec.concat(recX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0}),hOut=giv.concat(givX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0});
   R.hIn=hIn;R.hOut=hOut;
@@ -1267,7 +1727,7 @@ function tradeRow(id,side){
   const set=side==='out'?UI.tOut:UI.tIn;const p=P[id];
   const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',p.t100?('#'+p.t100+' T100'):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
   const v=side==='out'?cbtOf(id):partnerCount(id);
-  return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<div class="meta">${esc(meta)}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
+  return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<button type="button" class="sbtn" data-scout="${id}" aria-label="Scouting card for ${esc(p.n)}">card</button><div class="meta">${esc(meta)}${established(id)&&scout(id).tags.length?' · '+esc(scout(id).tags.slice(0,2).join(' · ')):''}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
 const tSig=()=>JSON.stringify([UI.tTeam,[...UI.tOut].sort(),[...UI.tIn].sort(),UI.tCash,[...(UI.tPk||[])].sort(),UI.tIfa||0]);
 function tViewSeg(){return `<div class="seg tview" role="group" aria-label="Trade machine view"><button type="button" data-tview="mach" aria-pressed="${UI.tView!=='log'}">Make a trade</button><button type="button" data-tview="log" aria-pressed="${UI.tView==='log'}">Transactions${S.log.length?' ('+S.log.length+')':''}</button></div>`}
@@ -1344,15 +1804,15 @@ function renderTrade(){
       <div><div class="subh">${esc(code)} CBT (est.)</div>
         <div class="kv"><span>Before</span><b>${M(pB)}</b></div><div class="kv"><span>After</span><b>${M(pA)}</b></div></div>
     </div>
-    ${verdictHTML(evalTrade(code,outSel,inSel,UI.tCash))}
-    <div class="dact" style="justify-content:flex-end"><button class="btn danger" type="button" data-act="tforce">Force approve</button><button class="btn primary" type="button" data-act="texec"${evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
+    ${verdictHTML(Object.assign(evalTrade(code,outSel,inSel,UI.tCash),{sel:[outSel,inSel,UI.tCash]}))}
+    <div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="tcompare">Compare players</button><button class="btn danger" type="button" data-act="tforce">Force approve</button><button class="btn primary" type="button" data-act="texec"${evalTrade(code,outSel,inSel,UI.tCash).verdict!=='accept'?' disabled':''}>Execute trade</button></div>
   </div>`:''}`;
 }
 const xl=(E,side)=>((E.X&&E.X.lines)||[]).filter(l=>l.side===side).map(l=>`<div class="kv"><span>${esc(l.n)} <span class="hint">${esc(l.notes.join(' · '))}</span></span></div>`).join('');
 function verdictHTML(E){
   const T=D.teams[E.code],V={accept:['ACCEPTED','good'],counter:['CLOSE: THEY WANT MORE','warn'],reject:['REJECTED','bad'],locked:['NOT ALLOWED','bad']}[E.verdict];
   const nm=x=>`<b>${esc(P[x.id].n)}</b>`;
-  const line=x=>`<div class="kv"><span>${esc(P[x.id].n)}${handTag(x.id)} <span class="hint">${esc(x.label)}${x.notes.length?' · '+esc(x.notes.join(' · ')):''}</span></span></div>`;
+  const line=x=>`<div class="kv"><span><span data-scout="${x.id}" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px">${esc(P[x.id].n)}</span>${handTag(x.id)} <span class="hint">${esc(x.label)}${x.notes.length?' · '+esc(x.notes.join(' · ')):''}</span></span></div>`;
   const ask=E.add?nm(E.add):E.add2?`${nm(E.add2.a)} and ${nm(E.add2.b)}`:'';
   let msg='';
   if(E.verdict==='locked')msg=[E.locked.length?`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`:'',...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
@@ -1374,14 +1834,16 @@ function verdictHTML(E){
     ${prof(E.code).note?`<p class="hint" style="margin:4px 0 0">Front office: ${esc(prof(E.code).note)}</p>`:''}
     <p style="margin:6px 0">${msg}</p>
     ${chk&&E.verdict!=='locked'?`<div class="tchks">${chk}</div>`:''}
+    ${E.sel?gmTalkHTML(E,E.code,E.sel[0],E.sel[1],E.sel[2]):''}
     <details><summary>How the ${esc(T.name)} see each player</summary>
       <div class="subh">They get</div>${E.rec.map(line).join('')}${xl(E,'rec')}${E.rec.length||xl(E,'rec')?'':'<span class="hint">nothing</span>'}
       <div class="subh">They give</div>${E.giv.map(line).join('')}${xl(E,'giv')}${E.giv.length||xl(E,'giv')?'':'<span class="hint">nothing</span>'}
-      <p class="hint">Front offices decide trades headliner first: the best player in the deal sets the price, and extra pieces count for less. Each club weighs its window, its needs, who is already ahead of a player, positional logjams, years of control and its payroll.</p>
+      <p class="hint">Front offices decide trades headliner first: the best player in the deal sets the price, and extra pieces count for less. Each club weighs its window, its needs, who is already ahead of a player, positional logjams, years of control and its payroll. It also reads the data: how a player's splits fit its own roster, whether Statcast backs up his 2026, his WAR trend and his injury history. Analytics-heavy front offices lean on that more than traditional ones.</p>
     </details>
   </div>`}
 function defaultAdd40(id){const p=P[id];return p.lvl==='MLB'||p.lvl==='IL'||p.kind!=='min'}
 function execTrade(force){
+  if(SE&&SE.dlDone){toast('The trade deadline has passed. No more trades this season.');return}
   const code=UI.tTeam;const outSel=[...UI.tOut].filter(isMets),inSel=[...UI.tIn].filter(id=>owner(id)===code);
   const add40=inSel.filter(id=>defaultAdd40(id)||UI.tAdd40.has(id));
   const out40=outSel.filter(id=>status(id)==='40').length;
@@ -1401,6 +1863,7 @@ function execTrade(force){
   const xt=[...X.picksIn.map(p=>`pick #${p.no} (${RDN[p.rd]})`),...(X.ifa<0?[M1(-X.ifa)+' international pool']:[])],xo=[...X.picksOut.map(p=>`pick #${p.no} (${RDN[p.rd]})`),...(X.ifa>0?[M1(X.ifa)+' international pool']:[])];
   const txt=`${MEN()} get ${[...inSel.map(id=>P[id].n),...xt].join(', ')||'nothing'} from ${D.teams[code].name} for ${[...outSel.map(id=>P[id].n),...xo].join(', ')||'nothing'}`+(cash?` (${cash>0?MEN()+' send':MEN()+' receive'} $${Math.abs(UI.tCash)}M cash)`:'');
   addLog(force?'TRADE (forced)':'TRADE',txt,inV+Math.max(0,cash),outV+Math.max(0,-cash));
+  if(SE){inSel.forEach(id=>{seSlotOut(id);(SE.dlMoves=SE.dlMoves||[]).push({id,to:ME,w0:seWarOf(id)})});outSel.forEach(id=>seSlotIn(code,id));if(SE.phase!=='done'&&SE.phase!=='post')seOdds();seSave()}
   UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};
   commit();toast('Trade done. New players are under Players to assign.');
 }
@@ -1440,7 +1903,7 @@ const RULES={
   cbt:{rates:[.20,.30,.50],s1:.12,s2first:.425,s2rep:.45,s3:.60,dropOver:40e6,
     payors2025:['LAD','NYM','NYY','PHI','TEX','TOR','SDP','HOU','BOS'],
     /* 2026 payors are finalized in December; estimate (clubs well over the $244M 2026 line). Drives 2027 rates and QO penalties. */
-    payors2026:['LAD','NYM','NYY','PHI','TOR'],payors2026Est:true},
+    payors2026:['LAD','NYM','NYY','PHI','TOR','BOS','SDP','CHC','ATL'],payors2026Est:true},/* the nine clubs over $244M in Roster Resource's 2026 luxury-tax payrolls */
   /* revenue-sharing payees (estimate: the 15 Competitive Balance clubs); everyone else is a payor */
   payees:['ARI','BAL','CLE','COL','KCR','PIT','STL','ATH','CIN','DET','MIA','MIL','MIN','SEA','TBR'],
   qo:{amount:23.15e6},
@@ -1661,7 +2124,7 @@ function drTradeDraw(teams){teams=teams||[...new Set(DS.picks.filter(p=>p.t!==DS
 const DGR=[[1.16,'A+'],[1.1,'A'],[1.05,'A-'],[1.01,'B+'],[.97,'B'],[.94,'B-'],[.9,'C+'],[.86,'C'],[.82,'C-'],[.75,'D']];
 function drGrade(t){let got=0;DS.picks.forEach((p,i)=>{if(p.t===t&&DS.made[i])got+=pickVal(DP[DS.made[i]].rk)});const r=got/(DS.base[t]||1);return {r,got,l:(DGR.find(x=>r>=x[0])||[0,'F'])[1]}}
 function drTag(p,pl){return pl.rk<=p.no*.75-1?'<span class="tag off">Steal</span>':pl.rk>=p.no*1.35+3?'<span class="tag inj">Reach</span>':'<span class="tag">Value</span>'}
-function drResultsText(){const g=drGrade(DS.team),L=[`Hot Stove GM · 2027 mock draft · ${tnm(DS.team)}`,`Draft grade: ${g.l}`,''];
+function drResultsText(){const g=drGrade(DS.team),L=[`Virtual Hot Stove GM · 2027 mock draft · ${tnm(DS.team)}`,`Draft grade: ${g.l}`,''];
   DS.picks.forEach((p,i)=>{if(p.t===DS.team&&DS.made[i]){const x=DP[DS.made[i]];L.push(`#${p.no} (${RDN[p.rd]}): ${x.n}, ${x.pos}, ${x.sch} · Hot Stove #${x.rk}`)}});
   if(DS.log.length){L.push('','Trades:');DS.log.forEach(t=>L.push('- '+t))}
   L.push('','Round 1:');DS.picks.forEach((p,i)=>{if(p.rd==='1'&&DS.made[i])L.push(`${p.no}. ${tnm(p.t)}: ${DP[DS.made[i]].n}, ${DP[DS.made[i]].pos}, ${DP[DS.made[i]].sch}`)});
@@ -1752,6 +2215,517 @@ function drMockHTML(){
   ${made.length>8?`<details><summary>All ${made.length} picks so far</summary><div class="scroll"><table class="list"><tbody>${made.map(([p,i])=>pickLine(p,i)).join('')}</tbody></table></div></details>`:''}${trades}</div>
   <div><h3>Up next</h3><div class="scroll"><table class="list"><tbody>${next.map(p=>`<tr${p.t===DS.team?' style="font-weight:600"':''}><td class="r">${p.no}</td><td>${esc(tnm(p.t))}${p.t!==p.o?' <span class="hint">(from '+p.o+')</span>':''}</td><td class="hint">${RDN[p.rd]}</td></tr>`).join('')||'<tr><td class="hint">Last pick.</td></tr>'}</tbody></table></div></div></div>`}
 
+/* ================= SEASON SIMULATOR =================
+   SN = season.json (schedule + injury history), SE = saved season state for this club, SX = in-memory only (recent box scores). */
+let SN=null,SE=null,SX={box:{}};
+const SEKEY=()=>'hs-season-v1-'+ME;
+const LGP=[.222,.094,.031,.293];/* league per plate appearance: K, BB+HBP, HR, and BABIP */
+const PARK={COL:1.13,ATH:1.05,BOS:1.04,CIN:1.04,ARI:1.02,KCR:1.02,SEA:.94,SDP:.96,SFG:.96,NYM:.97,MIA:.97,CLE:.97};
+const SE_DAYS=186,SE_JUN15=82;
+function seRnd(){let t=SE.rs_=(SE.rs_+0x6D2B79F5)|0;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296}
+const seDate=d=>{const x=new Date(2027,2,25+d);return (x.getMonth()+1)+'/'+x.getDate()};
+const sn=id=>{const a=P[id].n.replace(/\s+(Jr\.?|Sr\.?|II|III|IV)$/,'').split(' ');return a.slice(1).join(' ')||a[0]};
+const seLg=c=>{for(const k in SN.div)if(SN.div[k].includes(c))return k};
+const seFrac=()=>SE&&SE.phase!=='off'?Math.max(.04,(SE.end-Math.min(SE.day,SE.end))/SE_DAYS):1;
+function seOut(id){if(!SE)return false;const x=SE.il[id];return !!(x&&x.ret>SE.day)}
+/* ---- ratings ---- */
+const _br={},_pr={};
+function bRate(id){if(_br[id])return _br[id];const p=P[id],s=p&&p.proj&&p.proj.t==='b'&&p.proj.s;let r;
+  if(s)r={bb:s[0],k:s[1],hr:s[2],t3:s[3],d2:s[4],s1:s[5],sbt:s[6],sbs:s[7],def:s[8],g:s[9],wrc:p.proj.wrc};
+  else{const q=p&&p.p?.45:.74+Math.min(.14,Math.max(0,(fvn(p&&p.fv)-40)*.012));r={bb:.07*q+.01,k:.222+(1-q)*.25,hr:.031*q*q,t3:.003*q,d2:.043*q,s1:.139*(.75+.25*q),sbt:.05,sbs:.7,def:0,g:110,wrc:Math.round(100*q*q)}}
+  r.babip=(r.s1+r.d2+r.t3)/Math.max(.3,1-r.bb-r.k-r.hr);
+  r.vp=s&&p.proj.y&&p.proj.y.vp||null;
+  {const y=s&&p.proj.y;r.gb=y&&y.gb?Math.min(.6,Math.max(.28,.44*y.gb/.412)):.44;r.fl=y&&y.fb?Math.min(.48,Math.max(.2,.34*y.fb/.391)):.34}/* ground-ball and fly-ball outs follow his real 2026 batted-ball mix */
+  if(s&&p.proj.sl&&p.proj.sr){const mk=q=>{const v={bb:q[0],k:q[1],hr:q[2],t3:q[3],d2:q[4],s1:q[5]};v.babip=(v.s1+v.d2+v.t3)/Math.max(.3,1-v.bb-v.k-v.hr);v.woba=.69*v.bb+.88*v.s1+1.25*v.d2+1.58*v.t3+2.03*v.hr;return v};
+    r.L=mk(p.proj.sl);r.R=mk(p.proj.sr);r.pt=p.proj.pt}/* his own projected splits vs left- and right-handed pitching */
+  return _br[id]=r}
+function pRate(id){if(_pr[id])return _pr[id];const p=P[id],s=p&&p.proj&&p.proj.t==='p'&&p.proj.s;let r;
+  if(s){r={k:s[0],bb:s[1],hr:s[2],babip:s[3],fip:p.proj.fip||4.6};const q=p.proj;if(q.sl&&q.sr){const mk=a=>({k:a[0],bb:a[1],hr:a[2],babip:a[3]});r.L=mk(q.sl);r.R=mk(q.sr)}}/* L / R: his own projected line vs left- and right-handed batters */
+  if(s){const y=p.proj.y;r.mixL=y&&y.mixL||null;r.mixR=y&&y.mixR||null;r.mix=y&&(y.mix||(y.pp?Object.entries(y.pp).map(([k,v])=>[k,v[0],0]):null))||null;r.gbf=y&&y.gb?Math.min(1.35,Math.max(.7,y.gb/0.418)):1;
+    const np=y&&y.mix?y.mix.filter(x=>x[1]>=.1).length:y&&y.pp?Math.max(2,Object.values(y.pp).filter(v=>v[0]>=.1).length+(1-Object.values(y.pp).reduce((t,v)=>t+v[0],0)>=.12?1:0)):3;r.tto=np<=2?1.5:np>=4?.7:1}/* a deep arsenal holds up better the third time through the order; a two-pitch pitcher fades faster *//* ground-ball pitchers get more grounders (and double plays), from his real 2026 batted-ball mix */
+  else{const f=p&&p.p?Math.min(10,Math.max(0,fvn(p.fv)-40)):-20;r={k:.185+f*.003,bb:.112-f*.0015,hr:.037-f*.0004,babip:.304,fip:5.4-f*.06}}
+  return _pr[id]=r}
+const pQ=id=>pRate(id).fip+({MLB:0,IL:0,AAA:.12,AA:.4}[P[id].lvl]??(P[id].proj?.2:1));
+const hQ=id=>bRate(id).wrc+({MLB:8,IL:8,AAA:4,AA:0}[P[id].lvl]??(P[id].proj?2:-15));
+function seElig(id,pos){const ps=String(P[id].pos||'').split('/'),has=a=>ps.some(x=>a.includes(x)),OFS=['LF','CF','RF','OF'];
+  if(pos==='DH'||ps.includes(pos))return true;if(pos==='C')return false;
+  if(OFS.includes(pos))return has(OFS)&&(pos!=='CF'||has(['CF','OF']));
+  if(pos==='1B')return has(['3B','LF','RF','OF','C','2B','DH','IF','INF','UT','CI']);
+  if(pos==='2B')return has(['SS','3B','IF','INF','UT','MI']);
+  if(pos==='3B')return has(['SS','2B','IF','INF','UT','CI']);
+  if(pos==='SS')return has(['2B','3B','IF','INF','UT','MI']);return false}
+const isSPp=id=>P[id].p&&(String(P[id].pos).includes('SP')||(P[id].proj&&P[id].proj.gs>=3));
+/* ---- today's roster for a club: the depth chart as set, with injured or departed players replaced from the bench, the depth chart, then the best ready player in the system ---- */
+function seBase(code){if(code===ME){ensureDep();return {lineup:S.lineup,bench:S.bench,rot:S.rot,pen:S.pen,hdep:S.hdep,pdep:S.pdep}}return SE.ai[code]}
+function seRoster(code){
+  const B=seBase(code),ok=id=>id&&P[id]&&owner(id)===code&&!seOut(id),used=new Set(),subs=[];
+  let orgH=null,orgP=null;
+  const org=()=>{if(!orgH){const all=roster(code).filter(id=>ok(id)&&(P[id].proj||P[id].fv||P[id].lvl==='MLB'));orgH=all.filter(id=>!P[id].p).sort((a,b)=>hQ(b)-hQ(a));orgP=all.filter(id=>P[id].p).sort((a,b)=>pQ(a)-pQ(b))}};
+  const lineup=B.lineup.map(x=>[x[0],ok(x[1])&&!P[x[1]].p?x[1]:null]);lineup.forEach(x=>x[1]&&used.add(x[1]));
+  let bench=B.bench.map(x=>x[1]).filter(id=>ok(id)&&!P[id].p&&!used.has(id));bench=bench.filter((x,i)=>bench.indexOf(x)===i);
+  const hdep=(B.hdep||[]).filter(id=>ok(id)&&!P[id].p);
+  lineup.forEach((x,i)=>{if(x[1])return;const pos=x[0],was=B.lineup[i][1];
+    let c=bench.filter(id=>seElig(id,pos)).sort((a,b)=>hQ(b)-hQ(a))[0];
+    if(c)bench=bench.filter(y=>y!==c);else{c=hdep.find(id=>!used.has(id)&&seElig(id,pos));
+      if(!c){org();c=orgH.find(id=>!used.has(id)&&!bench.includes(id)&&seElig(id,pos))||orgH.find(id=>!used.has(id)&&!bench.includes(id))}}
+    if(c){x[1]=c;used.add(c);if(was&&P[was])subs.push([c,was])}});
+  bench.forEach(id=>used.add(id));
+  const needB=()=>bench.length<4;
+  if(needB()&&!bench.some(id=>seElig(id,'C'))){org();const c=hdep.concat(orgH).find(id=>!used.has(id)&&seElig(id,'C'));if(c){bench.push(c);used.add(c)}}
+  for(const id of hdep){if(!needB())break;if(!used.has(id)){bench.push(id);used.add(id)}}
+  if(needB()){org();for(const id of orgH){if(!needB())break;if(!used.has(id)){bench.push(id);used.add(id)}}}
+  /* pitchers */
+  const cfg=B.rot.filter(id=>ok(id)),rot=cfg.slice(0,5);rot.forEach(id=>used.add(id));
+  if(rot.length<5){org();for(const id of orgP){if(rot.length>=5)break;if(!used.has(id)&&isSPp(id)&&!B.pen.some(x=>x[1]===id)){rot.push(id);used.add(id);const was=B.rot.slice(0,5).find(y=>y&&!ok(y)&&!subs.some(s=>s[1]===y));if(was&&P[was])subs.push([id,was])}}}
+  const pen=B.pen.filter(x=>ok(x[1])&&!used.has(x[1])).map(x=>[x[0],x[1]]);pen.forEach(x=>used.add(x[1]));
+  const sw=cfg[5];if(sw&&!used.has(sw)&&pen.length<8){pen.push(['LR',sw]);used.add(sw)}
+  for(const id of (B.pdep||[])){if(pen.length>=8)break;if(ok(id)&&!used.has(id)){pen.push(['MD',id]);used.add(id)}}
+  if(pen.length<8){org();for(const id of orgP){if(pen.length>=8)break;if(!used.has(id)&&!cfg.includes(id)){pen.push(['MD',id]);used.add(id)}}}
+  if(pen.length&&!pen.some(x=>x[0]==='CL')){const b=pen.filter(x=>x[0]==='SU')[0]||pen.slice().sort((a,b)=>pQ(a[1])-pQ(b[1]))[0];b[0]='CL'}
+  return {code,lineup,bench,rot,pen,subs}}
+/* ---- who starts today: regulars rest in line with their projected games, and a bench bat with the platoon edge can take the start ---- */
+function seLineup(R,oppHand,po){const bench=R.bench.slice(),out=[];
+  const adj=id=>{const b=bRate(id),h=P[id].hand;if(b.L)return (oppHand==='L'?b.L:b.R).woba*300;return b.wrc*(!h||h==='S'?1:h===oppHand?(h==='L'?.9:.97):(h==='L'?1.03:1.06))};
+  for(const [pos,id] of R.lineup){if(!id)continue;const b=bRate(id);let sit=po?(pos==='C'?.06:0):Math.min(.55,Math.max(pos==='C'?.2:.02,b.pt?1-b.pt[oppHand==='L'?0:1]:1-b.g/157));
+    const c=bench.filter(x=>seElig(x,pos)).sort((a,b)=>adj(b)-adj(a))[0];
+    if(c&&adj(c)>adj(id)*1.04&&(b.L?bRate(c).L:P[id].hand===oppHand&&P[id].hand==='L'))sit=Math.max(sit,po?.35:.5);/* a bench bat who is clearly better against this hand gets the start about half the time */
+    if(c&&seRnd()<sit){out.push({id:c,pos});bench.splice(bench.indexOf(c),1)}else out.push({id,pos})}
+  return out}
+function seAvail(id,day){const u=SE.pu[id];if(!u)return true;const g=day-u[0];return g<=0?false:g===1?u[1]<=28&&u[2]<2:g===2?u[1]<=45:true}
+function sePickSP(code,R,day,po){const rot=R.rot;if(!rot.length)return R.pen.length?R.pen[R.pen.length-1][1]:null;
+  const last=id=>SE.pu[id]?SE.pu[id][0]:-99,rested=id=>day-last(id)>=5;
+  if(po)return rot.filter(rested).sort((a,b)=>pQ(a)-pQ(b))[0]||rot.slice().sort((a,b)=>last(a)-last(b))[0];
+  const i=SE.ri[code]||0;for(let n=0;n<rot.length;n++){const id=rot[(i+n)%rot.length];if(rested(id)){SE.ri[code]=(i+n+1)%rot.length;return id}}
+  return rot.slice().sort((a,b)=>last(a)-last(b))[0]}
+function seMkPit(id,sp){const pj=P[id].proj,cap=SE.cap&&SE.cap[id];
+  const lim=!sp?30:Math.min(cap?78:102,Math.max(60,pj&&pj.gs>=5?Math.round(pj.ip/pj.gs*15.8):pj&&pj.gs>=1?78:62));
+  return {id,r:pRate(id),hand:P[id].hand||'R',sp,lim,pc:0,bf:0,o:0,h:0,r_:0,er:0,bb:0,k:0,hr:0,ri:0,go:0,fo:0,lead:null,dec:''}}
+/* one plate appearance: 0 walk, 1 strikeout, 2 home run, 3 single, 4 double, 5 triple, 6 out in play */
+/* league line in each of the four matchups (pitcher hand x batter side), from every big-league pitcher's projected splits weighted by innings */
+let _lg4=null;
+function seLg4(){if(_lg4)return _lg4;const A={LL:[0,0,0,0,0],LR:[0,0,0,0,0],RL:[0,0,0,0,0],RR:[0,0,0,0,0]};
+  for(const id in P){const p=P[id];if(!p.p||!p.proj||p.proj.t!=='p'||!(p.proj.ip>=20)||p.team==='DUP')continue;const r=pRate(id);if(!r.L)continue;const h=p.hand==='L'?'L':'R',w=p.proj.ip;
+    for(const s of ['L','R']){const a=A[h+s],v=r[s],ws=w*(s===(h==='L'?'L':'R')?(h==='L'?.2:.6):(h==='L'?.8:.4));a[0]+=v.k*ws;a[1]+=v.bb*ws;a[2]+=v.hr*ws;a[3]+=v.babip*ws;a[4]+=ws}}
+  _lg4={};for(const k in A){const a=A[k];_lg4[k]=a[4]?{k:a[0]/a[4],bb:a[1]/a[4],hr:a[2]/a[4],babip:a[3]/a[4]}:{k:LGP[0],bb:LGP[1],hr:LGP[2],babip:LGP[3]}}return _lg4}
+function sePA(b0,c,bh,home,park,dAdj){
+  const ph=c.hand,side=bh==='L'||bh==='R'?bh:(ph==='L'?'R':'L'),own=ph==='L'?b0.L:b0.R,b=own||b0,ps=side==='L'?c.r.L:c.r.R,p=ps||c.r,
+    G=ps?seLg4()[(ph==='L'?'L':'R')+side]:{k:LGP[0],bb:LGP[1],hr:LGP[2],babip:LGP[3]};/* pitcher's own split is compared with the league line for that same matchup, so the platoon edge is counted once */
+  let k=b.k*p.k/G.k*1.03,bb=b.bb*p.bb/G.bb*.935,hr=b.hr*p.hr/G.hr*.95*park*(home?1.03:.97),bab=b.babip*p.babip/G.babip*(1+(park-1)*.35)*(home?1.008:.992)+dAdj;
+  if(!own&&bh&&bh!=='S'){if(bh===ph){if(bh==='L'){k*=1.12;bb*=.9;hr*=.82;bab*=.97}else{k*=1.03;bb*=.97;hr*=.96;bab*=.995}}else if(bh==='L'){k*=.97;bb*=1.03;hr*=1.05;bab*=1.005}else{k*=.93;bb*=1.08;hr*=1.1;bab*=1.015}}
+  const mx=(side==='L'?c.r.mixL:c.r.mixR)||c.r.mix;/* what he actually throws to hitters on this side of the plate, when known */
+  if(b0.vp&&mx){let e=0;for(const m of mx){const v=b0.vp[m[0]];if(v)e+=m[1]*(v[2]-1)}bab*=Math.min(1.06,Math.max(.94,1+e))}/* pitch-type matchup: a hitter who handled (or struggled with) the pitches this pitcher leans on, by his real 2026 results */
+  if(c.sp&&c.bf>=18){const t=c.r.tto||1;k*=1-.06*t;hr*=1+.12*t;bab*=1+.02*t}if(c.pc>c.lim){k*=.92;bb*=1.1;hr*=1.15}
+  const rest=(1-b.bb-b.k-b.hr)*(1-p.k-p.bb-p.hr)/(1-G.k-G.bb-G.hr),x=seRnd()*(k+bb+hr+rest);
+  if(x<bb){c.pc+=5.6;return 0}if(x<bb+k){c.pc+=4.8;return 1}if(x<bb+k+hr){c.pc+=3.3;return 2}
+  c.pc+=3.4;if(seRnd()<bab){const y=seRnd()*(b.s1+b.d2+b.t3);return y<b.s1?3:y<b.s1+b.d2?4:5}return 6}
+/* ---- one full game. Returns the box score. ---- */
+function seGame(hc,ac,day,po){
+  const Rs=[seRoster(ac),seRoster(hc)],sp=[sePickSP(ac,Rs[0],day,po),sePickSP(hc,Rs[1],day,po)],park=PARK[hc]||1;
+  const T=[0,1].map(i=>{const R=Rs[i],lu=seLineup(R,P[sp[1-i]].hand||'R',po),p0=seMkPit(sp[i],true);let d=17.5;lu.forEach(x=>d+=bRate(x.id).def);
+    return {code:R.code,lu:lu.map(x=>({id:x.id,pos:x.pos,pa:0,lob:0,r2:0,gd:0,s:[0,0,0,0,0,0,0,0,0,0,0]})),bi:0,pit:[p0],cur:p0,runs:0,hits:0,ls:[],lob:0,ra:0,rh:0,ev:[],
+      pen:R.pen.filter(x=>x[1]!==sp[i]).map(x=>({role:x[0],id:x[1],ok:seAvail(x[1],day)})),dAdj:Math.max(-.012,Math.min(.012,-d/.8/4300))}});
+  let wp=null,lp=null;const lead=i=>T[i].runs-T[1-i].runs;
+  function change(f,inn,L){const s=T[f],av=s.pen.filter(x=>!x.used);if(!av.length)return false;
+    const okp=av.filter(x=>x.ok),pool=okp.length?okp:av,by=r=>pool.find(x=>x.role===r);let c;
+    if(inn>=9&&L>=0&&L<=3)c=by('CL')||by('SU');
+    else if(inn===8&&L>=0&&L<=3)c=by('SU');
+    else if(inn===7&&L>=0&&L<=2)c=pool.filter(x=>x.role==='SU')[1]||by('MD');
+    else if(inn<=5||Math.abs(L)>=5)c=by('LR')||by('LG')||pool.filter(x=>x.role==='MD'||x.role==='RP').pop();
+    if(!c)c=by('MD')||by('RP')||by('LG')||by('LR')||(Math.abs(L)<=3?by('SU'):null)||pool[pool.length-1];
+    c.used=1;const p=seMkPit(c.id,false);p.role=c.role;p.lead=L;s.pit.push(p);s.cur=p;return true}
+  function half(b,inn){const f=1-b,B=T[b],F=T[f];let outs=0,o0=0,bs=[null,null,null];B.ls[inn-1]=0;const onb=()=>(bs[0]?1:0)+(bs[1]?1:0)+(bs[2]?1:0),left=()=>{B.lob+=onb()};
+    {const c=F.cur,L=lead(f),long=c.role==='LR'||c.role==='LG';
+      if(c.sp?(c.pc>=c.lim-10||c.r_>=5||(c.r_>=4&&c.pc>65)||(inn>=7&&c.pc>=c.lim-22)):(long?c.pc>=40:c.pc>=10))change(f,inn,L)}
+    F.cur.ri=0;if(inn>=10)bs[1]={b:B.lu[(B.bi+8)%9],p:null};
+    const score=(rn,bat)=>{B.runs++;B.ls[inn-1]++;rn.b.s[1]++;if(bat){bat.s[3]++;if(o0===2)bat.r2++}if(rn.p){rn.p.r_++;rn.p.ri++;if(seRnd()>.07)rn.p.er++}
+      const d=B.runs-F.runs;if(d===1){wp=B.cur;lp=rn.p||F.cur}else if(d===0)wp=lp=null};
+    while(outs<3){let c=F.cur;
+      if(c.sp?(c.pc>=c.lim+12||c.r_>=7):(c.ri>=3||c.pc>=(c.role==='LR'||c.role==='LG'?55:36))){if(change(f,inn,lead(f))){c=F.cur;c.ri=0}}
+      if(bs[0]&&!bs[1]){const rr=bRate(bs[0].b.id);if(seRnd()<rr.sbt*1.1){c.pc+=1;if(seRnd()<rr.sbs){bs[0].b.s[9]++;B.ev.push(['SB',bs[0].b.id,c.id]);bs[1]=bs[0];bs[0]=null}else{bs[0].b.s[10]++;B.ev.push(['CS',bs[0].b.id,c.id]);bs[0]=null;outs++;c.o++;if(outs>=3)break}}}
+      const bt=B.lu[B.bi],me={b:bt,p:c};B.bi=(B.bi+1)%9;bt.pa++;c.bf++;const risp=!!(bs[1]||bs[2]),on=onb();o0=outs;let sf=false;
+      const o=sePA(bRate(bt.id),c,P[bt.id].hand,b===1,park,F.dAdj);
+      if(o===0){bt.s[4]++;c.bb++;if(bs[0]){if(bs[1]){if(bs[2])score(bs[2],bt);bs[2]=bs[1]}bs[1]=bs[0]}bs[0]=me}
+      else if(o===1){bt.s[0]++;bt.s[5]++;c.k++;c.o++;outs++}
+      else if(o===6){bt.s[0]++;c.o++;const x=seRnd(),q=bRate(bt.id),gbp=Math.min(.68,q.gb*(c.r.gbf||1)),flp=Math.min(.95-gbp,q.fl*(2-(c.r.gbf||1)));
+        if(x<gbp){c.go++;if(bs[0]&&outs<2&&seRnd()<.42){outs+=2;c.o++;bt.gd=1;bs[0]=null;if(outs<3){if(bs[2]){score(bs[2],null);bs[2]=null}if(bs[1]){bs[2]=bs[1];bs[1]=null}}}
+          else{outs++;if(outs<3){if(bs[2]&&seRnd()<.62){score(bs[2],bt);bs[2]=null}if(bs[1]&&!bs[2]&&seRnd()<.6){bs[2]=bs[1];bs[1]=null}if(bs[0]&&!bs[1]&&seRnd()<.7){bs[1]=bs[0];bs[0]=null}}}}
+        else if(x<gbp+flp){c.fo++;outs++;if(outs<3&&bs[2]&&seRnd()<.78){bt.s[0]--;sf=true;score(bs[2],bt);bs[2]=null;if(bs[1]&&seRnd()<.25){bs[2]=bs[1];bs[1]=null}}}
+        else{c.fo++;outs++}}
+      else{bt.s[0]++;bt.s[2]++;c.h++;B.hits++;
+        if(o===2){bt.s[6]++;c.hr++;B.ev.push(['HR',bt.id,inn,on,o0,c.id]);for(let i=2;i>=0;i--)if(bs[i]){score(bs[i],bt);bs[i]=null}score(me,bt)}
+        else if(o===3){if(bs[2]){score(bs[2],bt);bs[2]=null}if(bs[1]){if(seRnd()<(outs===2?.85:.62))score(bs[1],bt);else bs[2]=bs[1];bs[1]=null}
+          if(bs[0]){if(!bs[2]&&seRnd()<.31)bs[2]=bs[0];else bs[1]=bs[0]}bs[0]=me}
+        else if(o===4){bt.s[7]++;if(bs[2]){score(bs[2],bt);bs[2]=null}if(bs[1]){score(bs[1],bt);bs[1]=null}if(bs[0]){if(seRnd()<(outs===2?.7:.43))score(bs[0],bt);else bs[2]=bs[0];bs[0]=null}bs[1]=me}
+        else{bt.s[8]++;for(let i=2;i>=0;i--)if(bs[i]){score(bs[i],bt);bs[i]=null}bs[2]=me}}
+      if(o!==0&&!sf&&risp){B.ra++;if(o>=2&&o<=5)B.rh++}if(o===1||o===6)bt.lob+=onb();
+      if(b===1&&inn>=9&&B.runs>F.runs){left();return true}}
+    left();return false}
+  let inn=0;for(;;){inn++;half(0,inn);if(inn>=9&&T[1].runs>T[0].runs){T[1].ls[inn-1]=null;break}if(half(1,inn))break;if(inn>=9&&T[0].runs!==T[1].runs)break;if(inn>=25)break}
+  if(T[0].runs===T[1].runs)T[1].runs++;/* safety net; a tie cannot stand */
+  const wi=T[0].runs>T[1].runs?0:1,W=T[wi],L=T[1-wi];
+  if(!wp||!W.pit.includes(wp))wp=W.pit[W.pit.length-1];if(wp.sp&&wp.o<15){const rl=W.pit.filter(x=>!x.sp).sort((a,b)=>b.o-a.o)[0];if(rl)wp=rl}
+  if(!lp||!L.pit.includes(lp))lp=L.pit[0];wp.dec='W';lp.dec='L';
+  const fin=W.pit[W.pit.length-1];if(fin!==wp&&((fin.lead!=null&&fin.lead>=1&&fin.lead<=3&&fin.o>=3)||fin.o>=9))fin.dec='S';
+  for(const s of T){for(const p of s.pit){const u=SE.pu[p.id];SE.pu[p.id]=[day,Math.round(p.pc),u&&day-u[0]===1?u[2]+1:1]}
+    if(!po){for(const x of s.lu){const a=SE.bs[x.id]||(SE.bs[x.id]=[0,0,0,0,0,0,0,0,0,0,0,0,0]),q=x.s;a[0]++;a[1]+=x.pa;a[2]+=q[0];a[3]+=q[2];a[4]+=q[7];a[5]+=q[8];a[6]+=q[6];a[7]+=q[1];a[8]+=q[3];a[9]+=q[4];a[10]+=q[5];a[11]+=q[9];a[12]+=q[10]}
+      for(const p of s.pit){const a=SE.ps[p.id]||(SE.ps[p.id]=[0,0,0,0,0,0,0,0,0,0,0,0,0]);a[0]++;a[1]+=p.sp?1:0;a[2]+=p.o;a[3]+=p.h;a[4]+=p.r_;a[5]+=p.er;a[6]+=p.bb;a[7]+=p.k;a[8]+=p.hr;a[9]+=p.dec==='W'?1:0;a[10]+=p.dec==='L'?1:0;a[11]+=p.dec==='S'?1:0;a[12]+=p.bf}}}
+  const inj=seInjRoll(T,day);
+  const box={d:day,a:ac,h:hc,R:[T[0].runs,T[1].runs],H:[T[0].hits,T[1].hits],ls:[T[0].ls,T[1].ls],
+    /* batter row: id, pos, AB R H RBI BB K HR, LOB, season AVG and OPS after the game, 2B 3B SB, 2-out RBI, GIDP, season HR RBI 2B SB */
+    bat:T.map(s=>s.lu.map(x=>{const a=po?null:SE.bs[x.id];return [x.id,x.pos,x.s[0],x.s[1],x.s[2],x.s[3],x.s[4],x.s[5],x.s[6],x.lob,a&&a[2]?+(a[3]/a[2]).toFixed(3):null,a&&a[2]?+seOPS(a).toFixed(3):null,x.s[7],x.s[8],x.s[9],x.r2,x.gd,a?a[6]:null,a?a[8]:null,a?a[4]:null,a?a[11]:null]})),
+    /* pitcher row: id, outs, H R ER BB K HR, decision, pitches, batters faced, groundouts, flyouts, season ERA after the game */
+    pit:T.map(s=>s.pit.map(p=>{const a=po?null:SE.ps[p.id];return [p.id,p.o,p.h,p.r_,p.er,p.bb,p.k,p.hr,p.dec,Math.round(p.pc),p.bf,p.go,p.fo,a&&a[2]?+(a[5]*27/a[2]).toFixed(2):null]})),inj};
+  {const pr=q=>{const a=po?null:SE.ps[q.id];return a?[q.id,a[9],a[10]]:[q.id,null,null]},sv=W.pit.find(q=>q.dec==='S'),np=T[0].pit.concat(T[1].pit).reduce((t,q)=>t+q.pc,0);
+    box.x={lob:[T[0].lob,T[1].lob],risp:[[T[0].rh,T[0].ra],[T[1].rh,T[1].ra]],hr:T.map(s=>s.ev.filter(e=>e[0]==='HR').map(e=>[e[1],e[2],e[3],e[4],e[5]])),
+      dec:{w:pr(wp),l:pr(lp),s:sv?[sv.id,po?null:(SE.ps[sv.id]||[])[11]]:null},t:Math.round(58+np*.35+(inn-9)*4)}}
+  box.rec=seRecap(box,wi);return box}
+function seRecap(bx,wi){const out=[],side=i=>{const st=[];
+    for(const b of bx.bat[i]){if(b[8]>=2)st.push([b[8]*3+b[5],`${sn(b[0])} ${b[8]} HR`]);else if(b[8]===1&&b[5]>=3)st.push([4+b[5],`${sn(b[0])} HR, ${b[5]} RBI`]);else if(b[4]>=3)st.push([b[4]+b[5]*.5,`${sn(b[0])} ${b[4]}-for-${b[2]}`]);else if(b[5]>=3)st.push([b[5],`${sn(b[0])} ${b[5]} RBI`]);else if(b[8]===1)st.push([2,`${sn(b[0])} HR`])}
+    const p=bx.pit[i][0];if(p[1]>=18&&p[3]<=2)st.push([5+p[1]/3-p[3]*1.5,`${sn(p[0])} ${ipf(p[1])} IP, ${p[3]} R${p[6]>=9?', '+p[6]+' K':''}`]);
+    const s=bx.pit[i].find(x=>x[8]==='S');if(s)st.push([1.5,`${sn(s[0])} SV`]);return st.sort((a,b)=>b[0]-a[0])};
+  const w=side(wi).slice(0,3).map(x=>x[1]),l=side(1-wi).slice(0,1).filter(x=>x[0]>=5).map(x=>x[1]);
+  return w.concat(l).join(', ')||'A quiet one'}
+const ipf=o=>Math.floor(o/3)+(o%3?'.'+o%3:'');
+/* ---- injuries: risk from history, age and role; length from the kind of injury ---- */
+const INJH=[['hamstring strain',14,28,16,'hamstring'],['oblique strain',28,42,9,'oblique'],['calf strain',12,25,6,'calf'],['quad strain',12,25,5,'quad'],['groin strain',12,25,4,'groin'],['lower back strain',10,24,7,'back'],['broken hand (hit by pitch)',30,50,5,'wrist'],['wrist sprain',12,30,4,'wrist'],['thumb sprain',15,35,4,'thumb'],['knee sprain',15,60,6,'knee'],['ankle sprain',10,25,6,'ankle'],['shoulder strain',15,45,5,'shoulder'],['concussion',7,14,3,'head'],['hip inflammation',15,35,3,'hip'],['torn ACL',999,999,.6,'knee'],['hamate surgery',40,60,1.5,'wrist'],['foot fracture',25,55,3,'foot'],['elbow inflammation',15,40,2,'elbow']];
+const INJP=[['shoulder inflammation',20,45,14,'shoulder'],['elbow inflammation',18,40,12,'elbow'],['forearm strain',30,75,9,'forearm'],['torn UCL (Tommy John surgery)',999,999,3.5,'elbow'],['lat strain',40,80,5,'lat'],['oblique strain',28,42,6,'oblique'],['lower back strain',15,25,6,'back'],['blister',15,15,5,'blister'],['hamstring strain',15,28,3,'hamstring'],['groin strain',15,28,3,'groin'],['calf strain',15,25,2,'calf'],['biceps tendinitis',15,30,5,'shoulder'],['flexor strain',45,90,4,'elbow'],['knee inflammation',15,30,2,'knee'],['rotator cuff strain',45,100,3,'shoulder'],['hip inflammation',15,30,2,'hip'],['neck stiffness',15,20,2,'neck']];
+function seRisk(id){const p=P[id],h=SN.inj[id],a=p.age||28;return (h?h.r:SN.inj0||1)*(a>=36?1.35:a>=33?1.15:a<26?.9:1)*(String(p.pos).split('/')[0]==='C'?1.15:1)}
+function seHurt(id,day,code){const p=P[id],T=p.p?INJP:INJH,h=SN.inj[id],w=T.map(x=>x[3]*(h&&h.b&&h.b.includes(x[4])?4:1));
+  let r=seRnd()*w.reduce((a,b)=>a+b,0),i=0;for(;i<T.length-1;i++){r-=w[i];if(r<=0)break}
+  const t=T[i],d=t[1]>=999?999:Math.max(p.p?15:10,Math.round(t[1]+seRnd()*(t[2]-t[1])));
+  SE.il[id]={ret:d>=999?999:day+1+d,what:t[0],t:code,d0:day};
+  seNews(code,'inj',`${p.n} to the IL: ${t[0]}${d>=999?', out for the season':', about '+(d>=42?Math.round(d/7)+' weeks':d+' days')}`,day);return [id,t[0],d]}
+function seInjRoll(T,day){const out=[];for(const s of T){
+    for(const x of s.lu)if(seRnd()<.0037*seRisk(x.id))out.push(seHurt(x.id,day,s.code));
+    for(const p of s.pit)if(seRnd()<(p.sp?.03:.011)*seRisk(p.id))out.push(seHurt(p.id,day,s.code))}
+  return out}
+function seNews(code,k,txt,day){SE.news.push({d:day??SE.day,t:code,k,x:txt});if(SE.news.length>260)SE.news.splice(0,SE.news.length-260)}
+/* ---- save / load ---- */
+function seSave(){try{localStorage.setItem(SEKEY(),JSON.stringify(SE))}catch(e){toast('This device is out of room for the season save. Finish or end another club\'s season to free space.')}}
+function seLoad(){SE=null;SX={box:{}};try{const s=JSON.parse(localStorage.getItem(SEKEY())||'null');if(s&&s.v===1&&s.team===ME)SE=s}catch(e){}}
+function seDrop(restore){if(SE&&restore&&SE.s0){try{S=JSON.parse(SE.s0)}catch(e){}}SE=null;SX={box:{}};try{localStorage.removeItem(SEKEY())}catch(e){}HIST=[]}
+/* ---- AI rosters ---- */
+function seAiInit(){SE.ai={};for(const c of Object.keys(D.teams)){if(c===ME)continue;const b=c==='NYM'?{lineup:D.lineup,bench:D.bench,rot:D.rot,pen:D.pen}:D.base[c];
+  SE.ai[c]={lineup:b.lineup.map(x=>[x[0],x[1]]),bench:b.bench.map(x=>[x[0],x[1]]),rot:b.rot.filter(Boolean),pen:b.pen.map(x=>[x[0],x[1]])}}}
+const seW=x=>x&&P[x]&&P[x].proj?P[x].proj.war:-1;
+function seSlotOut(id){for(const c in SE.ai){const A=SE.ai[c];A.lineup.forEach(x=>{if(x[1]===id)x[1]=null});A.bench.forEach(x=>{if(x[1]===id)x[1]=null});A.pen.forEach(x=>{if(x[1]===id)x[1]=null});A.rot=A.rot.filter(x=>x!==id)}}
+function seBenchIn(A,id){let bi=A.bench.findIndex(x=>!x[1]);if(bi<0){let bw=99;A.bench.forEach((x,i)=>{if(seW(x[1])<bw){bw=seW(x[1]);bi=i}});if(bw>=seW(id))return}A.bench[bi][1]=id}
+function seSlotIn(code,id){const A=SE.ai[code];if(!A||!P[id])return;const p=P[id],live=x=>x&&P[x]&&owner(x)===code&&!seOut(x)?seW(x):-2;
+  seSlotOut(id);if(!established(id)&&!(p.proj&&p.proj.war>=.5))return;
+  if(!p.p){let bi=-1,bw=seW(id);A.lineup.forEach((x,i)=>{if(seElig(id,x[0])&&live(x[1])<bw){bw=live(x[1]);bi=i}});
+    if(bi>=0){const old=A.lineup[bi][1];A.lineup[bi][1]=id;if(old&&owner(old)===code)seBenchIn(A,old)}else seBenchIn(A,id)}
+  else if(isSPp(id)){let bi=-1,bw=seW(id);for(let i=0;i<5;i++)if(live(A.rot[i])<bw){bw=live(A.rot[i]);bi=i}
+    if(bi>=0&&bi<A.rot.length){const old=A.rot[bi];A.rot[bi]=id;A.rot.splice(5,0,old)}else if(bi>=0)A.rot.push(id);else A.rot.splice(5,0,id)}
+  else{const cl=A.pen.find(x=>x[0]==='CL');let nid=id,role=seW(id)>=.8?'SU':'MD';
+    if(cl&&p.proj&&p.proj.s&&p.proj.s[5]>=15&&seW(id)>live(cl[1])){nid=cl[1];cl[1]=id;role='SU'}
+    if(!nid)return;let bi=-1,bw=seW(nid);A.pen.forEach((x,i)=>{if(x[0]!=='CL'&&live(x[1])<bw){bw=live(x[1]);bi=i}});if(bi>=0)A.pen[bi]=[role,nid]}}
+function seActive(code,id){const A=SE.ai[code];return !!A&&(A.lineup.some(x=>x[1]===id)||A.rot.slice(0,5).includes(id)||A.pen.some(x=>x[1]===id)||A.bench.some(x=>x[1]===id))}
+function seGain(code,id){const A=SE.ai[code],p=P[id],w=seW(id),live=x=>x&&P[x]&&owner(x)===code&&!seOut(x)?seW(x):-1;
+  if(!p.p){let g=-9;A.lineup.forEach(x=>{if(seElig(id,x[0]))g=Math.max(g,w-live(x[1]))});return g}
+  if(isSPp(id)){let m=9;for(let i=0;i<5;i++)m=Math.min(m,live(A.rot[i]));return w-m}
+  const ws=A.pen.map(x=>live(x[1])).sort((a,b)=>b-a);return w-(ws[3]??-1)}
+function seMove(id,to){const from=owner(id),c=partnerCount(id)*seFrac();S.team[id]=to;delete S.status[id];
+  if(D.teams[from])S.teamAdj[from]=(S.teamAdj[from]||0)-c;S.teamAdj[to]=(S.teamAdj[to]||0)+c;seSlotOut(id);seSlotIn(to,id)}
+/* ---- before Opening Day: the other 29 clubs sign the remaining free agents by need and budget ---- */
+function seAiSign(){const fa=faList().filter(id=>P[id].proj).sort((a,b)=>(P[b].pwar||seW(b))-(P[a].pwar||seW(a)));let n=0;
+  for(const id of fa){const p=P[id],w=p.pwar||seW(id);let ask=p.maav||Math.max(1e6,w*7e6),yrs=Math.max(1,p.my||1),pick=null;
+    const su=faSuitors(id).filter(s=>SE.ai[s.code]);
+    if(su.length)pick=su[Math.min(su.length-1,Math.floor(seRnd()*seRnd()*3))].code;
+    else if(w>=.4){ask*=.7;yrs=Math.max(1,yrs-1);let best=.3;
+      for(const c in SE.ai){const t=D.teams[c];if(capOf(c)*1e6-teamCBT(c)<ask)continue;if(t.win==='rebuild'&&((p.age||30)>=31&&ask>6e6))continue;const g=seGain(c,id)+seRnd()*.3;if(g>best){best=g;pick=c}}}
+    if(!pick)continue;const ym={};for(let y=0;y<yrs;y++)ym[2027+y]=ask;
+    S.contract[id]={aav:ask,yrs:ym,desc:`${yrs} yr, $${(ask*yrs/1e6).toFixed(ask*yrs>=1e7?0:1)}M (2027${yrs>1?'-'+String(2026+yrs).slice(2):''})`};
+    S.team[id]=pick;S.teamAdj[pick]=(S.teamAdj[pick]||0)+ask;seSlotIn(pick,id);
+    seNews(pick,'sign',`${tnm(pick)} sign ${p.n} (${p.pos}): ${S.contract[id].desc}`);n++}
+  return n}
+/* ---- AI-to-AI trades: sellers move veterans to buyers for prospects, priced by the same engine the user faces ---- */
+function seAiTrades(max,dl){const codes=Object.keys(SE.ai),win=c=>ctx(c).win;let memo={};const V=(id,c,inc)=>memo[id+c+inc]??(memo[id+c+inc]=valueTo(id,c,inc).v);
+  const sellers=codes.filter(c=>win(c)==='rebuild'||win(c)==='retool'),buyers=codes.filter(c=>win(c)==='allin'||win(c)==='contend'),cands=[],done=[],cnt={},sold={};
+  for(const s of sellers)for(const id of teamIds(s)){const p=P[id];if(!established(id)||lockedFA(id)||seOut(id)||!(p.proj.war>=1.2)||(p.age||30)<27)continue;const cl=ctrl(id).length;if(cl>(win(s)==='rebuild'?3:2)||(win(s)!=='rebuild'&&cl>1&&p.proj.war>=3.5))continue;cands.push([id,s])}
+  cands.sort((a,b)=>P[b[0]].proj.war-P[a[0]].proj.war);
+  for(const [id,s] of cands){if(done.length>=max)break;if((sold[s]||0)>=(dl?4:2)||seRnd()>(dl?.65:.3)||untouchable(id,s))continue;
+    let ask=Math.max(.7,V(id,s,false)),best=null;
+    for(const b of buyers){if((cnt[b]||0)>=(dl?2:1))continue;const bid=V(id,b,true);if(bid<ask*1.05)continue;
+      if(teamCBT(b)+partnerCount(id)*seFrac()>capOf(b)*1e6*1.06||seGain(b,id)<.4)continue;if(!best||bid>best.bid)best={b,bid}}
+    if(!best)continue;const b=best.b;ask=Math.max(ask,best.bid*.6);/* sellers hold out for a fair share of what the buyer thinks he is worth */
+    const pros=teamIds(b).filter(x=>P[x].fv&&!established(x)&&!seActive(b,x)&&!seOut(x)&&!untouchable(x,b)).map(x=>({x,sv:V(x,s,true),bv:V(x,b,false)})).filter(o=>o.sv>.7).sort((a,b)=>b.sv-a.sv).slice(0,14);
+    let pk=null;const tot=(arr,k)=>pkg(arr.map(o=>({pts:o[k]}))),fit=arr=>{const sv=tot(arr,'sv'),bv=tot(arr,'bv');if(sv>=ask&&sv<=ask*1.5+1&&bv<=best.bid*1.05&&(!pk||bv<pk.bv))pk={arr,bv}};
+    pros.forEach(o=>fit([o]));const m=Math.min(9,pros.length);
+    if(!pk)for(let i=0;i<pros.length;i++)for(let j=i+1;j<pros.length;j++)fit([pros[i],pros[j]]);
+    if(!pk)for(let i=0;i<m;i++)for(let j=i+1;j<m;j++)for(let k=j+1;k<m;k++)fit([pros[i],pros[j],pros[k]]);
+    if(!pk)continue;
+    const w0=seWarOf(id);seMove(id,b);pk.arr.forEach(o=>seMove(o.x,s));cnt[b]=(cnt[b]||0)+1;sold[s]=(sold[s]||0)+1;memo={};
+    seNews(b,'trade',`${tnm(b)} get ${P[id].n} (${P[id].pos}) from the ${tnm(s)} for ${pk.arr.map(o=>P[o.x].n).join(', ')}`);
+    done.push({id,to:b,from:s,w0})}
+  return done}
+/* ---- weekly: clubs replace players who are failing and call up prospects who are ready ---- */
+function seManage(code){const A=SE.ai[code],day=SE.day-SE.d0;if(!A||day<21)return;const live=x=>x&&P[x]&&owner(x)===code&&!seOut(x);
+  const org=roster(code).filter(id=>live(id)&&!seActive(code,id)&&(P[id].proj||P[id].fv)),orgH=org.filter(id=>!P[id].p).sort((a,b)=>hQ(b)-hQ(a)),orgS=org.filter(isSPp).sort((a,b)=>pQ(a)-pQ(b));
+  const ready=id=>{const p=P[id];return fvn(p.fv)>=50&&(p.lvl==='AAA'||(p.lvl==='AA'&&day>=75)||p.lvl==='MLB')};
+  for(const x of A.lineup){const id=x[1];if(!live(id))continue;const s=SE.bs[id],pj=P[id].proj||{war:0,wrc:70};
+    const cold=s&&s[1]>=140&&seOPS(s)<.6&&pj.war<2,c=orgH.find(y=>seElig(y,x[0])&&(cold?bRate(y).wrc>=bRate(id).wrc-6:ready(y)&&bRate(y).wrc>=bRate(id).wrc+4&&pj.war<2.5));
+    if(c){x[1]=c;seBenchIn(A,id);seNews(code,'call',cold?`${tnm(code)} call up ${P[c].n}; ${P[id].n} (${seOPS(s).toFixed(3).replace(/^0/,'')} OPS) loses his job`:`${tnm(code)} promote ${P[c].n}${P[c].fv?' (FV '+P[c].fv+')':''} to take over at ${x[0]}`);return}}
+  for(let i=0;i<Math.min(5,A.rot.length);i++){const id=A.rot[i];if(!live(id))continue;const s=SE.ps[id],pj=P[id].proj||{war:0};
+    const cold=s&&s[1]>=8&&s[2]>0&&s[5]*27/s[2]>6.2&&pj.war<1.5,c=orgS.find(y=>cold?pQ(y)<=pQ(id)+.25:ready(y)&&pQ(y)<pQ(id)-.2&&pj.war<2);
+    if(c){A.rot=A.rot.filter(y=>y!==c);A.rot[A.rot.indexOf(id)]=c;A.rot.splice(5,0,id);seNews(code,'call',cold?`${tnm(code)} pull ${P[id].n} (${(s[5]*27/s[2]).toFixed(2)} ERA) from the rotation; ${P[c].n} gets the ball`:`${tnm(code)} promote ${P[c].n}${P[c].fv?' (FV '+P[c].fv+')':''} to the rotation`);return}}}
+/* ---- season-to-date numbers ---- */
+const seOPS=s=>{const ab=s[2]||1,pa=s[1]||1,b1=s[3]-s[4]-s[5]-s[6];return (s[3]+s[9])/pa+(b1+2*s[4]+3*s[5]+4*s[6])/ab};
+function seLgAvg(){if(SX.lgDay===SE.day&&SX.lg)return SX.lg;let pa=0,wn=0,o=0,r=0;
+  for(const id in SE.bs){const s=SE.bs[id];pa+=s[1];wn+=.69*s[9]+.88*(s[3]-s[4]-s[5]-s[6])+1.25*s[4]+1.58*s[5]+2.03*s[6]}
+  for(const id in SE.ps){const s=SE.ps[id];o+=s[2];r+=s[4]}
+  SX.lgDay=SE.day;return SX.lg={woba:pa?wn/pa:.31,ra9:o?r*27/o:4.4}}
+function seBWar(id){const s=SE.bs[id];if(!s||!s[1])return 0;const pa=s[1],L=seLgAvg(),woba=(.69*s[9]+.88*(s[3]-s[4]-s[5]-s[6])+1.25*s[4]+1.58*s[5]+2.03*s[6])/pa;
+  const pj=P[id].proj;let non=0;if(pj&&pj.t==='b'&&pj.s&&pj.pa>0){const q=pj.s,pw=.69*q[0]+.88*q[5]+1.25*q[4]+1.58*q[3]+2.03*q[2];non=(pj.war*9.7-(pw-.31)/1.2*pj.pa-20*pj.pa/600)/pj.pa*pa}
+  return ((woba-L.woba)/1.2*pa+21.5*pa/600+non)/9.7}
+function sePWar(id){const s=SE.ps[id];if(!s||!s[2])return 0;const ip=s[2]/3,L=seLgAvg(),fip=(13*s[8]+3*s[6]-2*s[7])/ip+3.2+.35,m=.5*s[4]/ip*9+.5*fip,st=s[1]/s[0];
+  return (L.ra9*(1.17+.16*st)-m)/9*ip/9.7}
+const seWarOf=id=>(SE.bs[id]?seBWar(id):0)+(SE.ps[id]?sePWar(id):0);
+function seStand(k){return SN.div[k].slice().sort((a,b)=>SE.w[b]-SE.l[b]-(SE.w[a]-SE.l[a])||SE.rs[b]-SE.ra[b]-(SE.rs[a]-SE.ra[a]))}
+function seWild(L){const lead=['E','C','W'].map(x=>seStand(L+x)[0]);return SN.teams.filter(c=>seLg(c).slice(0,2)===L&&!lead.includes(c)).sort((a,b)=>SE.w[b]-SE.l[b]-(SE.w[a]-SE.l[a])||SE.rs[b]-SE.ra[b]-(SE.rs[a]-SE.ra[a]))}
+const seGB=(a,b)=>((SE.w[a]-SE.l[a])-(SE.w[b]-SE.l[b]))/2;
+/* ---- playoff odds: play out the rest of the schedule 300 times from roster strength and results so far ---- */
+function seTalent(code){const R=seRoster(code),hw=(id,pa)=>{const pj=P[id].proj;return pj&&pj.t==='b'?pj.war/Math.max(pj.pa,250)*pa:-.3*pa/600},pw=(id,ip)=>{const pj=P[id].proj;return pj&&pj.t==='p'?pj.war/Math.max(pj.ip,ip*.5)*ip:-.2*ip/100};
+  let w=0;R.lineup.forEach(x=>{if(x[1])w+=hw(x[1],570)});R.bench.forEach(id=>w+=hw(id,130));R.rot.forEach(id=>w+=pw(id,160));R.pen.forEach(x=>w+=pw(x[1],58));return w}
+function seOdds(n){n=n||300;const T=SN.teams,tal=T.map(seTalent),avg=tal.reduce((a,b)=>a+b,0)/30;
+  const p=T.map((c,i)=>{let q=.5+(tal[i]-avg)/162;const g=SE.w[c]+SE.l[c];if(g>20){const rs=Math.pow(SE.rs[c],1.83),ra=Math.pow(SE.ra[c],1.83),k=Math.min(.3,g/162*.45);q=q*(1-k)+rs/(rs+ra)*k}return Math.min(.7,Math.max(.3,q))});
+  const od=p.map(x=>x/(1-x)),po=new Float64Array(30),dv=new Float64Array(30),ws=new Float64Array(30),w=new Int16Array(30),games=[];
+  for(let d=Math.min(SE.day,SE.end);d<SE.end;d++)for(const g of SN.days[d]){const o=od[g[0]]/od[g[1]]*1.17;games.push(g[0],g[1],o/(1+o))}
+  const divs=Object.keys(SN.div).map(k=>SN.div[k].map(c=>T.indexOf(c)));
+  for(let s=0;s<n;s++){for(let i=0;i<30;i++)w[i]=SE.w[T[i]];for(let i=0;i<games.length;i+=3){if(Math.random()<games[i+2])w[games[i]]++;else w[games[i+1]]++}
+    for(let L=0;L<2;L++){const wc=[];for(let k=0;k<3;k++){const dd=divs[L*3+k];let b=dd[0],bv=-1;const v=dd.map(i=>w[i]+Math.random()*.9);dd.forEach((i,j)=>{if(v[j]>bv){bv=v[j];b=i}});dv[b]++;po[b]++;dd.forEach((i,j)=>{if(i!==b)wc.push([v[j],i])})}
+      wc.sort((a,b)=>b[0]-a[0]);for(let k=0;k<3;k++)po[wc[k][1]]++}
+    for(let i=0;i<30;i++)ws[i]+=w[i]}
+  SE.od={};T.forEach((c,i)=>SE.od[c]=[Math.round(po[i]/n*100),Math.round(dv[i]/n*100),Math.round(ws[i]/n)])}
+/* ---- Opening Day injured list from real data: players on the IL now, with a return date read from their projected playing time and any note ---- */
+function seOpenIL(){const tj=s=>{const m=/TJ\s+(\d+)\/(\d+)\/(\d+)/.exec(s);if(!m)return null;const d=new Date(2000+ +m[3],+m[1]-1,+m[2]);d.setMonth(d.getMonth()+14);return Math.round((d-new Date(2027,2,25))/864e5)};
+  const OD=SN.od||{};/* the current Roster Resource injury report decides first; anyone else flagged IL falls back to projected playing time */
+  for(const id in OD){const x=OD[id];if(P[id]&&x.ret>SE.d0)SE.il[id]={ret:x.ret,what:x.what,t:P[id].team,d0:SE.d0,od:1}}
+  for(const id in P){const p=P[id];if(p.team==='DUP'||p.team==='FA'||OD[id])continue;const nt=(D.notes||{})[id]||'';if(!(p.lvl==='IL'||p.lvl==='Inj'||nt))continue;
+    const pj=p.proj;let ret;const sh=pj?(pj.t==='p'?(isSPp(id)?pj.ip/165:pj.ip/58):pj.pa/450):.5,byPT=sh>=.8?0:sh<.03?999:Math.min(165,Math.round((1-sh)*SE_DAYS*.85));
+    if(/questionable/i.test(nt))ret=/TJ/.test(nt)?26:12;else if(nt&&tj(nt)!=null)ret=Math.max(tj(nt),p.lvl==='IL'?byPT:0);else ret=byPT;
+    if(ret>SE.d0)SE.il[id]={ret,what:nt?nt.replace(/,? ?questionable for OD/i,'').trim()||'recovering':'recovering (on the IL since 2026)',t:p.team,d0:SE.d0,od:1}}
+  SE.cap={};for(const id in SN.inj)if(SN.inj[id].cap)SE.cap[id]=SN.inj[id].cap}
+/* ---- start ---- */
+function seStart(len){const d0=len===120?47:len===81?90:0;
+  SE={v:1,team:ME,phase:'reg',d0,day:d0,end:SN.days.length,len,rs_:(Date.now()^hashN(ME)*7919)|0,w:{},l:{},rs:{},ra:{},l10:{},ha:{},x1:{},xi:{},bs:{},ps:{},il:{},pu:{},ri:{},sc:{},box:{},news:[],s0:JSON.stringify(S)};
+  SE.dl=d0+Math.round((SE.end-d0)*.69);SX={box:{}};HIST=[];
+  for(const c of SN.teams){SE.w[c]=SE.l[c]=SE.rs[c]=SE.ra[c]=0;SE.l10[c]=''}
+  seAiInit();seOpenIL();
+  const tr=seAiTrades(6,false),sg=seAiSign();SE.off=[sg,tr.length];
+  seOdds(500);SE.pre={};for(const c of SN.teams)SE.pre[c]=SE.od[c][2];
+  seNews(ME,'info',`Opening Day, ${seDate(d0)}. Over the winter the other clubs signed ${sg} free agents and made ${tr.length} trades.`);
+  seSave();save()}
+function seSimDay(){const d=SE.day,T=SN.teams,sc=[],boxes=[];
+  for(const g of SN.days[d]){const h=T[g[0]],a=T[g[1]],bx=seGame(h,a,d,false),hw=bx.R[1]>bx.R[0];bx.g=[g[2],g[3]];
+    SE.w[hw?h:a]++;SE.l[hw?a:h]++;SE.rs[h]+=bx.R[1];SE.ra[h]+=bx.R[0];SE.rs[a]+=bx.R[0];SE.ra[a]+=bx.R[1];
+    SE.l10[h]=((hw?'W':'L')+SE.l10[h]).slice(0,10);SE.l10[a]=((hw?'L':'W')+SE.l10[a]).slice(0,10);
+    {const H=SE.ha=SE.ha||{},X1=SE.x1=SE.x1||{},XI=SE.xi=SE.xi||{},win=hw?h:a,los=hw?a:h;for(const c of [h,a]){H[c]=H[c]||[0,0,0,0];X1[c]=X1[c]||[0,0];XI[c]=XI[c]||[0,0]}
+      H[h][hw?0:1]++;H[a][hw?3:2]++;if(Math.abs(bx.R[1]-bx.R[0])===1){X1[win][0]++;X1[los][1]++}if(bx.ls[0].length>9){XI[win][0]++;XI[los][1]++}}
+    sc.push([g[0],g[1],bx.R[1],bx.R[0]]);boxes.push(bx);if(h===ME||a===ME)SE.box[SE.box[d]?d+'b':d]=bx}
+  SE.sc[d]=sc;SX.box[d]=boxes;delete SX.box[d-12];SX.last=d;SE.day++;
+  for(const id in SE.il){const x=SE.il[id];if(x.ret===SE.day){seNews(owner(id),'ret',`${P[id].n} is back from the IL`);delete SE.il[id]}}
+  for(const id in SE.cap)if(!SE.il[id]&&SE.ps[id]&&SE.ps[id][2]/3>=SE.cap[id]){SE.il[id]={ret:999,what:'shut down (innings limit after surgery)',t:owner(id),d0:d};seNews(owner(id),'inj',`${P[id].n} shut down for the year at his innings limit`)}
+  if((SE.day-SE.d0)%7===0)for(const c in SE.ai)seManage(c);
+  if(SE.day>=SE.end)seEndReg()}
+const seMineG=d=>SN.days[d]&&SN.days[d].find(g=>SN.teams[g[0]]===ME||SN.teams[g[1]]===ME);
+function seSim(mode){if(!SE||SE.phase==='done')return;
+  if(SE.phase==='dl'){toast('Close the trade deadline first.');return}
+  if(SE.phase==='post')sePost(mode);
+  else{let n=0;while(SE.phase==='reg'){if(SE.day===SE.dl&&!SE.dlDone){seDeadline();break}
+      const g=seMineG(SE.day);seSimDay();n++;
+      if(mode==='game'?!!g:mode==='series'?g&&g[2]===g[3]:mode==='2w'?n>=14:mode==='month'?n>=30:false)break}
+    if(SE.phase!=='post')seOdds()}
+  seSave();save()}
+/* ---- trade deadline ---- */
+function seDeadline(){SE.phase='dl';seOdds(500);SE.win={};
+  for(const c of SN.teams){const po=SE.od[c][0],b=D.teams[c].win||'retool',low=b==='rebuild'||b==='retool';
+    SE.win[c]=po>=80?'allin':po>=38?'contend':po>=12?(low?'retool':'ascend'):(b==='rebuild'?'rebuild':'retool')}
+  seNews(ME,'info',`Trade deadline day, ${seDate(SE.day)}. Buyers and sellers are set by the standings.`)}
+function seBlock(){const out=[];for(const c in SE.ai){const w=SE.win[c];if(w!=='rebuild'&&w!=='retool')continue;
+    for(const id of teamIds(c)){const p=P[id];if(!established(id)||lockedFA(id)||seOut(id)||p.proj.war<1||(p.age||30)<27||ctrl(id).length>(w==='rebuild'?3:2)||(w!=='rebuild'&&ctrl(id).length>1&&p.proj.war>=3.5)||untouchable(id,c))continue;out.push(id)}}
+  return out.sort((a,b)=>P[b].proj.war-P[a].proj.war)}
+function seCloseDL(){const tr=seAiTrades(16,true);SE.dlMoves=(SE.dlMoves||[]).concat(tr.map(t=>({id:t.id,to:t.to,w0:t.w0})));
+  SE.dlw=SE.win;delete SE.win;SE.dlDone=1;SE.phase='reg';SE.dlN=tr.length;
+  seNews(ME,'info',`The deadline has passed. The other clubs made ${tr.length} trade${tr.length===1?'':'s'}.`);seOdds();seSave();save()}
+/* ---- end of the regular season: awards, then the bracket ---- */
+function seEndReg(){SE.phase='post';seOdds(1);const top=(arr,n)=>arr.sort((a,b)=>b[1]-a[1]).slice(0,n).map(x=>[x[0],+x[1].toFixed(1)]);
+  const lgOf=id=>{const o=owner(id);return D.teams[o]?seLg(o).slice(0,2):''},rook=id=>{const c=P[id].proj&&P[id].proj.car;if(c)return c[0]<=130&&c[1]<=50;/* real rookie rule: no more than 130 at-bats or 50 innings before 2027 */const s=String(P[id].svc||'').split('.');return s[0]===''?!!P[id].fv:(+s[0]===0&&+(s[1]||0)<45)};
+  SE.aw={};for(const L of ['AL','NL']){const b=Object.keys(SE.bs).filter(id=>lgOf(id)===L&&!P[id].p).map(id=>[id,seBWar(id)]),p=Object.keys(SE.ps).filter(id=>lgOf(id)===L).map(id=>[id,sePWar(id)]);
+    SE.aw[L]={mvp:top(b.concat(p.map(x=>[x[0],x[1]*.85])),5),cy:top(p.slice(),5),roy:top(b.concat(p).filter(x=>rook(x[0])),3)}}
+  const seed=L=>{const dw=['E','C','W'].map(x=>seStand(L+x)[0]).sort((a,b)=>SE.w[b]-SE.w[a]||SE.rs[b]-SE.ra[b]-(SE.rs[a]-SE.ra[a]));return dw.concat(seWild(L).slice(0,3))};
+  const sd={AL:seed('AL'),NL:seed('NL')},mk=(L,nm,a,b,n)=>({lg:L,nm,a,b,wa:0,wb:0,n,g:[]});
+  SE.po={rd:0,gd:0,sd,hist:[],ser:[].concat(...['AL','NL'].map(L=>[mk(L,L+' Wild Card',sd[L][2],sd[L][5],3),mk(L,L+' Wild Card',sd[L][3],sd[L][4],3)]))};
+  seNews(ME,'info',`The regular season is over. ${sd.AL.concat(sd.NL).includes(ME)?'You are in the playoffs.':'You missed the playoffs.'}`)}
+const SE_HOME={3:[1,1,1],5:[1,1,0,0,1],7:[1,1,0,0,0,1,1]};
+function sePoDay(){const po=SE.po,d=SE.day,boxes=[];
+  for(const s of po.ser){const need=(s.n+1)/2;if(s.wa>=need||s.wb>=need)continue;const k=s.wa+s.wb,ah=SE_HOME[s.n][k],h=ah?s.a:s.b,a=ah?s.b:s.a,bx=seGame(h,a,d,true);
+    bx.po=`${s.nm}, Game ${k+1}`;const aw=(bx.R[1]>bx.R[0])===!!ah;if(aw)s.wa++;else s.wb++;s.g.push(ah?[bx.R[1],bx.R[0]]:[bx.R[0],bx.R[1]]);boxes.push(bx);
+    if(h===ME||a===ME)SE.box['p'+po.rd+'-'+k]=bx}
+  SX.box[d]=boxes;SX.last=d;po.gd++;const n=po.ser[0].n;SE.day+=(n===7&&(po.gd===2||po.gd===5))||(n===5&&(po.gd===2||po.gd===4))?2:1;
+  if(po.ser.every(s=>s.wa>=(s.n+1)/2||s.wb>=(s.n+1)/2)){const win=s=>s.wa>s.wb?s.a:s.b,W=po.ser.map(win),sd=po.sd,mk=(L,nm,a,b,n)=>({lg:L,nm,a,b,wa:0,wb:0,n,g:[]});
+    const hi=(L,x,y)=>sd[L].indexOf(x)<sd[L].indexOf(y)?[x,y]:[y,x];po.hist.push(po.ser);po.gd=0;SE.day+=1;
+    if(po.rd===0)po.ser=[mk('AL','AL Division Series',sd.AL[0],W[1],5),mk('AL','AL Division Series',sd.AL[1],W[0],5),mk('NL','NL Division Series',sd.NL[0],W[3],5),mk('NL','NL Division Series',sd.NL[1],W[2],5)];
+    else if(po.rd===1)po.ser=[mk('AL','AL Championship Series',...hi('AL',W[0],W[1]),7),mk('NL','NL Championship Series',...hi('NL',W[2],W[3]),7)];
+    else if(po.rd===2){const [x,y]=SE.w[W[0]]>=SE.w[W[1]]?[W[0],W[1]]:[W[1],W[0]];po.ser=[mk('','World Series',x,y,7)]}
+    else{po.champ=W[0];po.ser=[];SE.phase='done';seNews(W[0],'info',`The ${tnm(W[0])} win the 2027 World Series.`)}
+    po.rd++}}
+function sePost(mode){const r=SE.po.rd;do sePoDay();while(SE.phase==='post'&&(mode==='end'||(mode!=='game'&&SE.po.rd===r)))}
+/* ---- season screens ---- */
+function seAct(a,id){switch(a){
+  case 'se-view':UI.seView=id;seRender();return;
+  case 'se-stat':UI.seStat=id;seRender();return;
+  case 'se-stv':UI.seStV=id;seRender();return;
+  case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
+  case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';render();return;
+  case 'se-closedl':confirmBox('Close the trade deadline?','The other clubs make their deals, and no more trades are allowed this season.','Close the deadline',()=>{seCloseDL();render()});return;
+  case 'se-box':seBoxModal(id);return;
+  case 'se-end':confirmBox('End this season?','The season is thrown away. Your roster goes back to how it was before Opening Day, and the other clubs\' winter moves are undone.','End season',()=>{seDrop(true);UI.seView='home';commit()});return;
+  case 'se-copy':copy(seReportText(),'Season report copied');return}}
+function seRender(){const p=document.querySelector('.panel');if(p&&UI.tab==='season')p.innerHTML=renderSeason();else render()}
+const seRec=c=>SE.w[c]+'-'+SE.l[c];
+const f3=x=>isFinite(x)?x.toFixed(3).replace(/^0/,''):'.000';
+function renderSeason(){
+  if(!SN)return '<p class="hint">The season data did not load. Reload the page to try again.</p>';
+  if(!SE)return seHeroHTML()+seSetupHTML();
+  const tabs=[['home','Season'],['stand','Standings'],['stats','Stats'],['games','Games']];if(SE.phase==='post'||SE.phase==='done')tabs.push(['post','Playoffs'],['report','Report']);
+  const v=tabs.some(t=>t[0]===UI.seView)?UI.seView:'home';
+  return seHeroHTML()+`<div class="filters">${tabs.map(([k,l])=>`<button class="btn sm${v===k?' primary':''}" type="button" data-act="se-view" data-id="${k}" aria-pressed="${v===k}">${l}</button>`).join('')}</div>`+({home:seHomeHTML,stand:seStandHTML,stats:seStatsHTML,games:seGamesHTML,post:sePostHTML,report:seReportHTML})[v]()}
+function seSetupHTML(){const a=active26(),sp=S.rot.slice(0,5).filter(Boolean).length,lu=S.lineup.filter(x=>x[1]).length,w=[];
+  if(lu<9)w.push(`${9-lu} open lineup spot${9-lu===1?'':'s'}`);if(sp<5)w.push(`only ${sp} of 5 rotation spots filled`);if(a.length!==26)w.push(`${a.length} players on the 26-man`);
+  return `<h2 style="margin-bottom:6px">Play the 2027 season</h2>
+  <p class="hint" style="margin-top:0">Take the roster you built into the season${SN.sched==='official'?', on the official 2027 schedule':''}. Every game is played out batter by batter from the 2027 projections: your lineup and bench, your SP1-5 in turn (SP6 is the long man), and your bullpen by role. Players get hurt and come back, the other 29 clubs manage their rosters, the sim stops at the trade deadline so you can deal, and then come the playoffs.</p>
+  <ul class="warnlist" style="margin:0 0 10px">${w.length?w.map(x=>`<li>⚠ ${esc(x)}. Open spots are filled from your depth chart and system.</li>`).join(''):'<li class="ok">✓ Your 26-man roster is set</li>'}</ul>
+  <div class="form" style="max-width:560px"><label class="field full">Season length<select id="seLen"><option value="162">Full season: 162 games (Opening Day 3/25)</option><option value="120">Lockout, shortened: about 120 games (starts 5/11)</option><option value="81">Lockout, half season: about 81 games (starts 6/23)</option></select></label></div>
+  <p class="hint">When you start, the other clubs first sign the free agents still on the board and make a few trades, the way the rest of a real winter would play out. Sign anyone you want before you start. Your offseason roster is kept, so you can end the season and go back to it.</p>
+  <div class="dact"><button class="btn primary" type="button" data-act="se-start">Start the season</button></div>`}
+function seSimBar(){const b=(m,l,p)=>`<button class="btn${p?' primary':''}" type="button" data-act="se-sim" data-id="${m}">${l}</button>`;
+  if(SE.phase==='done')return '';
+  if(SE.phase==='dl')return '<button class="btn primary" type="button" data-act="se-closedl">Close the deadline and play on</button>';
+  if(SE.phase==='post')return b('game','Next game',1)+b('series','Finish this round')+b('end','Sim to the end');
+  return b('game','1 game',1)+b('series','1 series')+b('2w','2 weeks')+b('month','1 month')+(SE.dlDone?'':b('dl','To the deadline'))+b('end',SE.dlDone?'To the end of the season':'To the end')}
+function seHomeHTML(){const c=ME,dk=seLg(c),L=dk.slice(0,2),st=seStand(dk),pl=st.indexOf(c),od=SE.od[c]||[0,0,0],wc=seWild(L),wi=wc.indexOf(c),ord=['1st','2nd','3rd','4th','5th'];
+  const gbt=x=>x===0?'tied':x%1?x.toFixed(1):String(x);
+  let line=`${ord[pl]} in the ${L} ${{E:'East',C:'Central',W:'West'}[dk[2]]}${pl?(seGB(st[0],c)===0?', tied for the lead':', '+gbt(seGB(st[0],c))+' GB'):st[1]&&seGB(c,st[1])>0?', up '+gbt(seGB(c,st[1])):''}`;
+  if(pl)line+=wi<3?` · holds wild card ${wi+1}`:seGB(wc[2],c)===0?' · tied for the last wild card':` · ${gbt(seGB(wc[2],c))} back of the last wild card`;
+  let nx='';if(SE.phase==='reg'||SE.phase==='dl'){for(let d=SE.day;d<SE.end;d++){const g=seMineG(d);if(g){const hm=SN.teams[g[0]]===c;nx=`Next: ${seDate(d)} ${hm?'vs':'at'} ${esc(tnm(SN.teams[hm?g[1]:g[0]]))} (game ${g[2]} of ${g[3]})`;break}}}
+  let head;
+  if(SE.phase==='post'||SE.phase==='done'){const po=SE.po,all=po.hist.flat().concat(po.ser),mine=all.filter(s=>s.a===c||s.b===c).pop(),inIt=po.sd.AL.concat(po.sd.NL).includes(c);
+    const stt=po.champ===c?'World Series champions':!inIt?'Missed the playoffs':mine&&(mine.wa>=(mine.n+1)/2||mine.wb>=(mine.n+1)/2)&&(mine.wa>mine.wb?mine.a:mine.b)!==c?`Eliminated in the ${mine.nm}`:mine?`${mine.nm}: ${esc(tnm(mine.a))} ${mine.wa}, ${esc(tnm(mine.b))} ${mine.wb}`:'Bye: waiting in the Division Series';
+    head=`<div class="vhead"><span class="vtag ${po.champ===c?'good':''}">${seRec(c)}</span><b>${esc(stt)}</b><span class="hint">${po.champ?esc(tnm(po.champ))+' won the World Series':'Postseason · '+['Wild Card round','Division Series','Championship Series','World Series'][po.rd]}</span></div>`}
+  else head=`<div class="vhead"><span class="vtag ${od[0]>=50?'good':od[0]>=15?'warn':''}">${seRec(c)}</span><b>${esc(line)}</b></div>
+    <div class="statline" style="margin-bottom:0"><span class="pill">Playoff odds ${od[0]}%</span><span class="pill">Division ${od[1]}%</span><span class="pill">On pace for ${od[2]} wins</span><span class="pill">Preseason: ${SE.pre[c]} wins</span></div>
+    <p class="hint" style="margin:6px 0 0">Through ${seDate(SE.day-1)}${SE.day===SE.d0?' (season not started)':''}. ${nx}${SE.dlDone?'':' · Deadline '+seDate(SE.dl)}</p>`;
+  const keys=Object.keys(SE.box).sort((a,b)=>(SE.box[b].d-SE.box[a].d)).slice(0,6);
+  const mineIL=Object.keys(SE.il).filter(id=>owner(id)===c&&SE.il[id].ret>SE.day),subs=seRoster(c).subs;
+  return `<div class="verdictbox ${SE.phase==='dl'?'warn':''}" style="margin-top:0">${head}<div class="dact">${seSimBar()}</div></div>
+  <div style="margin-top:12px">${seBoardHTML()}</div>${seMovesHTML()}
+  ${SE.phase==='dl'?seDeadlineHTML():''}
+  <div class="tradegrid" style="margin-top:12px"><div><h3>Your last games</h3>${keys.length?`<div class="scroll"><table class="list"><tbody>${keys.map(k=>seGameRow(SE.box[k],'m:'+k,c)).join('')}</tbody></table></div>`:'<p class="hint">No games yet. Pick how far to sim.</p>'}
+  <h3 style="margin-top:14px">Injured list</h3>${mineIL.length?`<div class="scroll"><table class="list"><tbody>${mineIL.map(id=>{const x=SE.il[id],s=subs.find(y=>y[1]===id);return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span><br><span class="hint">${esc(x.what)}${s?' · '+esc(P[s[0]].n)+' fills in':''}</span></td><td class="r">${x.ret>=999?'out for year':'back '+seDate(x.ret)}</td></tr>`}).join('')}</tbody></table></div>`:'<p class="hint">Everyone is healthy.</p>'}</div>
+  <div><h3>Around the league</h3>${(()=>{const NR=n=>`<tr${n.t===c?' style="font-weight:600"':''}><td class="r hint">${seDate(n.d)}</td><td class="wrap">${esc(n.x)}</td></tr>`,nw=SE.news.filter(n=>n.t===c||n.k!=='ret').slice(-16).reverse(),T=r=>`<div class="scroll"><table class="list"><tbody>${r.map(NR).join('')}</tbody></table></div>`;return T(nw.slice(0,5))+(nw.length>5?`<details class="morenews"><summary class="hint" style="cursor:pointer;padding:8px 0">More league news (${nw.length-5})</summary>${T(nw.slice(5))}</details>`:'')})()}</div></div>
+  <div class="dact" style="margin-top:14px"><button class="btn sm danger" type="button" data-act="se-end">End this season</button></div>`}
+function seGameRow(bx,key,c){const hm=bx.h===c,my=bx.R[hm?1:0],op=bx.R[hm?0:1],opp=hm?bx.a:bx.h,mine=bx.h===c||bx.a===c;
+  const t=mine?`<b style="color:var(--${my>op?'good':'bad'})">${my>op?'W':'L'}</b> ${my}-${op} ${hm?'vs':'at'} ${opp}`:`${bx.a} ${bx.R[0]}, ${bx.h} ${bx.R[1]}`;
+  return `<tr data-act="se-box" data-id="${key}" style="cursor:pointer"><td class="r hint">${bx.po?'':seDate(bx.d)}</td><td class="wrap"><span class="nmb">${t}</span>${bx.ls[0].length>9?' <span class="hint">('+bx.ls[0].length+')</span>':''}<br><span class="hint">${bx.po?esc(bx.po)+' · ':''}${esc(bx.rec)}</span></td><td class="r hint">box ›</td></tr>`}
+function seDeadlineHTML(){const lab={allin:'Buying hard',contend:'Buying',ascend:'Holding',retool:'Selling veterans',rebuild:'Selling'},grp=k=>Object.keys(SE.ai).filter(c=>k.includes(SE.win[c])).sort((a,b)=>SE.od[b][0]-SE.od[a][0]).map(c=>`${esc(tnm(c))} <span class="hint">${SE.od[c][0]}%</span>`).join(' · ')||'none';
+  const bl=seBlock().slice(0,40);
+  return `<div class="tsum"><b>Trade deadline, ${seDate(SE.dl)}.</b> The sim is stopped so you can deal. Clubs are buyers or sellers by their playoff odds; buyers pay up for help right now (a rental costs them less of a discount), and sellers are moving veterans who are close to free agency. You are: <b>${lab[SE.win[ME]]}</b> (${SE.od[ME][0]}% playoff odds). Make trades in the Trade tab, then close the deadline: the other clubs make their deals and the season plays on.
+  <div class="subh">Buyers</div><div>${grp(['allin','contend'])}</div><div class="subh">Sellers</div><div>${grp(['retool','rebuild'])}</div><div class="subh">Standing pat</div><div>${grp(['ascend'])}</div></div>
+  <h3 style="margin-top:12px">On the trade block</h3><div class="scroll" style="max-height:420px;overflow-y:auto"><table class="list"><thead><tr><th>Player</th><th>Pos</th><th class="r">WAR</th><th class="r">Yrs</th><th></th></tr></thead><tbody>
+  ${bl.map(id=>{const p=P[id],s=p.p?SE.ps[id]:SE.bs[id];return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span><br><span class="hint">${esc(tnm(owner(id)))} · age ${p.age||''} · ${partnerCount(id)?M1(partnerCount(id)):'pre-arb'}${s?' · '+(p.p?(s[2]?(s[5]*27/s[2]).toFixed(2):'-')+' ERA':f3(seOPS(s))+' OPS'):''}</span></td><td>${esc(p.pos)}</td><td class="r">${warB(p.proj.war)}</td><td class="r">${ctrl(id).length}</td><td class="r"><button class="btn sm" type="button" data-act="totrade" data-id="${id}">Trade for</button></td></tr>`}).join('')||'<tr><td class="hint">No sellers have a fit on the block.</td></tr>'}
+  </tbody></table></div>`}
+const VENUE={ARI:'Chase Field',ATH:'Sutter Health Park',ATL:'Truist Park',BAL:'Oriole Park at Camden Yards',BOS:'Fenway Park',CHC:'Wrigley Field',CHW:'Rate Field',CIN:'Great American Ball Park',CLE:'Progressive Field',COL:'Coors Field',DET:'Comerica Park',HOU:'Daikin Park',KCR:'Kauffman Stadium',LAA:'Angel Stadium',LAD:'Dodger Stadium',MIA:'loanDepot park',MIL:'American Family Field',MIN:'Target Field',NYM:'Citi Field',NYY:'Yankee Stadium',PHI:'Citizens Bank Park',PIT:'PNC Park',SDP:'Petco Park',SEA:'T-Mobile Park',SFG:'Oracle Park',STL:'Busch Stadium',TBR:'Tropicana Field',TEX:'Globe Life Field',TOR:'Rogers Centre',WSN:'Nationals Park'};
+const ORDN=n=>n+(n%10===1&&n!==11?'st':n%10===2&&n!==12?'nd':n%10===3&&n!==13?'rd':'th');
+/* standings the way a fan reads them: W, L, PCT, GB, wild-card GB, last 10, streak, runs, home and road */
+function seStreak(c){const t=SE.l10[c]||'';if(!t)return '-';let n=1;while(n<t.length&&t[n]===t[0])n++;return t[0]+n}
+function seWCGB(c){const L=seLg(c).slice(0,2),wc=seWild(L),i=wc.indexOf(c);if(i<0)return '-';const f=x=>x%1?x.toFixed(1):String(x);
+  if(i<3){const nx=wc[3];if(!nx)return '-';const g=seGB(c,nx);return g>0?'+'+f(g):'-'}return f(seGB(wc[2],c))}
+function seStandHTML(){const v=UI.seStV||'div',post=SE.phase==='post'||SE.phase==='done',sd=post&&SE.po?SE.po.sd:null;
+  const mark=c=>{if(!sd)return '';const L=seLg(c).slice(0,2),i=sd[L].indexOf(c);return i<0?'':i<3?'y-':'w-'};
+  const rec=a=>a?a[0]+'-'+a[1]:'–',gbf=g=>g===0?'-':g%1?g.toFixed(1):String(g);
+  const row=(c,gb,cut)=>{const t=SE.l10[c]||'',w10=(t.match(/W/g)||[]).length,w=SE.w[c],l=SE.l[c],d=SE.rs[c]-SE.ra[c],ha=SE.ha&&SE.ha[c];
+    return `<tr class="${c===ME?'me':''}${cut?' cut':''}"><th scope="row"><span class="dot" style="background:${(COLORS[c]||['#888'])[0]}"></span>${mark(c)}${esc(tnm(c))}</th><td>${w}</td><td>${l}</td><td>${w+l?f3(w/(w+l)):'.000'}</td><td>${gbf(gb)}</td><td>${seWCGB(c)}</td><td>${w10}-${t.length-w10}</td><td>${seStreak(c)}</td><td>${SE.rs[c]}</td><td>${SE.ra[c]}</td><td class="${d>0?'pos':d<0?'neg':''}">${d>0?'+':''}${d}</td><td>${ha?ha[0]+'-'+ha[1]:'–'}</td><td>${ha?ha[2]+'-'+ha[3]:'–'}</td><td>${rec(SE.x1&&SE.x1[c])}</td><td>${rec(SE.xi&&SE.xi[c])}</td><td>${post?'':(SE.od[c]?SE.od[c][0]+'%':'')}</td></tr>`};
+  const hd=n=>`<thead><tr><th scope="col">${n}</th><td>W</td><td>L</td><td>PCT</td><td>GB</td><td>WCGB</td><td>L10</td><td>STRK</td><td>RS</td><td>RA</td><td>DIFF</td><td>HOME</td><td>AWAY</td><td>1-RUN</td><td>XTRA</td><td>${post?'':'ODDS'}</td></tr></thead>`;
+  const tbl=(n,rows)=>`<div class="scroll standw"><table class="stand">${hd(n)}<tbody>${rows}</tbody></table></div>`;
+  const dn={E:'East',C:'Central',W:'West'};
+  const body=L=>v==='div'?['E','C','W'].map(x=>{const st=seStand(L+x);return tbl(L+' '+dn[x],st.map(c=>row(c,seGB(st[0],c))).join(''))}).join('')
+    :(()=>{const lead=['E','C','W'].map(x=>seStand(L+x)[0]).sort((a,b)=>SE.w[b]-SE.l[b]-(SE.w[a]-SE.l[a])),wc=seWild(L);
+      return tbl(L+' division leaders',lead.map(c=>row(c,0)).join(''))+tbl(L+' Wild Card',wc.map((c,i)=>row(c,i<3?0:seGB(wc[2],c),i===2)).join(''))})();
+  return `<div class="filters"><div class="seg" role="group" aria-label="Standings view"><button type="button" data-act="se-stv" data-id="div" aria-pressed="${v==='div'}">Division</button><button type="button" data-act="se-stv" data-id="wc" aria-pressed="${v==='wc'}">Wild Card</button></div><span class="hint">${post?'Final. y- won the division, w- wild card.':'Through '+seDate(Math.max(SE.d0,SE.day-1))+'. Swipe a table sideways for more.'}</span></div>
+  <div class="tradegrid"><div>${body('AL')}</div><div>${body('NL')}</div></div>
+  ${v==='wc'?'<p class="hint">The top three wild cards in each league make the playoffs. WCGB with a plus sign is the cushion over the first club out.</p>':''}`}
+function seStatsHTML(){const tm=UI.seTeam||ME,st=UI.seStat||'bat',codes=Object.keys(D.teams).sort((a,b)=>tnm(a).localeCompare(tnm(b)));
+  const nav=`<div class="filters"><select id="seTeam" aria-label="Club">${codes.map(c=>`<option value="${c}"${c===tm?' selected':''}>${esc(tnm(c))}</option>`).join('')}</select>${[['bat','Hitters'],['pit','Pitchers'],['lead','League leaders']].map(([k,l])=>`<button class="btn sm${st===k?' primary':''}" type="button" data-act="se-stat" data-id="${k}">${l}</button>`).join('')}</div>`;
+  const nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>${seOut(id)?'<span class="tag inj">IL</span>':''}`;
+  const brow=(id,tmc)=>{const s=SE.bs[id],b1=s[3]-s[4]-s[5]-s[6];return `<tr><td>${nm(id)}${tmc?' <span class="hint">'+owner(id)+'</span>':''}</td><td class="r">${s[0]}</td><td class="r">${s[1]}</td><td class="r">${f3(s[3]/(s[2]||1))}</td><td class="r">${f3((s[3]+s[9])/(s[1]||1))}</td><td class="r">${f3((b1+2*s[4]+3*s[5]+4*s[6])/(s[2]||1))}</td><td class="r">${s[6]}</td><td class="r">${s[8]}</td><td class="r">${s[7]}</td><td class="r">${s[11]}</td><td class="r"><b>${seBWar(id).toFixed(1)}</b></td></tr>`};
+  const prow=(id,tmc)=>{const s=SE.ps[id],ip=s[2]/3||1e-9;return `<tr><td>${nm(id)}${tmc?' <span class="hint">'+owner(id)+'</span>':''}</td><td class="r">${s[9]}-${s[10]}</td><td class="r">${(s[5]/ip*9).toFixed(2)}</td><td class="r">${s[0]}</td><td class="r">${s[1]}</td><td class="r">${ipf(s[2])}</td><td class="r">${s[7]}</td><td class="r">${((s[3]+s[6])/ip).toFixed(2)}</td><td class="r">${s[11]}</td><td class="r"><b>${sePWar(id).toFixed(1)}</b></td></tr>`};
+  const bh='<thead><tr><th>Hitter</th><th class="r">G</th><th class="r">PA</th><th class="r">AVG</th><th class="r">OBP</th><th class="r">SLG</th><th class="r">HR</th><th class="r">RBI</th><th class="r">R</th><th class="r">SB</th><th class="r">WAR</th></tr></thead>',ph='<thead><tr><th>Pitcher</th><th class="r">W-L</th><th class="r">ERA</th><th class="r">G</th><th class="r">GS</th><th class="r">IP</th><th class="r">K</th><th class="r">WHIP</th><th class="r">SV</th><th class="r">WAR</th></tr></thead>';
+  if(!Object.keys(SE.bs).length)return nav+'<p class="hint">No games played yet.</p>';
+  if(st==='lead'){const gp=Math.max(1,...SN.teams.map(c=>SE.w[c]+SE.l[c])),B=Object.keys(SE.bs).filter(id=>!P[id].p),Pp=Object.keys(SE.ps),qb=B.filter(id=>SE.bs[id][1]>=3.1*gp*.9),qp=Pp.filter(id=>SE.ps[id][2]/3>=gp*.9);
+    const top=(ids,f,n)=>ids.map(id=>[id,f(id)]).sort((a,b)=>b[1]-a[1]).slice(0,n||5),lst=(t,arr,fm)=>`<div class="subh">${t}</div>${arr.map(([id,v])=>`<div class="kv"><span>${nm(id)} <span class="hint">${owner(id)}</span></span><b>${fm?fm(v):v}</b></div>`).join('')}`;
+    return nav+`<div class="tradegrid"><div class="tside"><h3>Hitters</h3>${lst('WAR',top(B,seBWar),v=>v.toFixed(1))}${lst('Home runs',top(B,id=>SE.bs[id][6]))}${lst('RBI',top(B,id=>SE.bs[id][8]))}${lst('Batting average',top(qb,id=>SE.bs[id][3]/SE.bs[id][2]),f3)}${lst('OPS',top(qb,id=>seOPS(SE.bs[id])),f3)}${lst('Stolen bases',top(B,id=>SE.bs[id][11]))}</div>
+    <div class="tside"><h3>Pitchers</h3>${lst('WAR',top(Pp,sePWar),v=>v.toFixed(1))}${lst('ERA',top(qp,id=>-SE.ps[id][5]*27/SE.ps[id][2]),v=>(-v).toFixed(2))}${lst('Wins',top(Pp,id=>SE.ps[id][9]))}${lst('Strikeouts',top(Pp,id=>SE.ps[id][7]))}${lst('Saves',top(Pp,id=>SE.ps[id][11]))}${lst('WHIP',top(qp,id=>-(SE.ps[id][3]+SE.ps[id][6])*3/SE.ps[id][2]),v=>(-v).toFixed(2))}</div></div>`}
+  if(st==='pit'){const ids=Object.keys(SE.ps).filter(id=>owner(id)===tm).sort((a,b)=>SE.ps[b][2]-SE.ps[a][2]);return nav+`<div class="scroll"><table class="list">${ph}<tbody>${ids.map(id=>prow(id)).join('')}</tbody></table></div>`}
+  const ids=Object.keys(SE.bs).filter(id=>owner(id)===tm&&!P[id].p).sort((a,b)=>SE.bs[b][1]-SE.bs[a][1]);return nav+`<div class="scroll"><table class="list">${bh}<tbody>${ids.map(id=>brow(id)).join('')}</tbody></table></div><p class="hint">Stats are with any club this season. WAR blends the hitting line with the defense and position value from his projection.</p>`}
+function seGamesHTML(){const keys=Object.keys(SE.box).sort((a,b)=>SE.box[b].d-SE.box[a].d),ld=SX.last,day=ld!=null&&SX.box[ld];let sc='';
+  if(day)sc=`<div class="scroll"><table class="list"><tbody>${day.map((bx,i)=>seGameRow(bx,'x:'+ld+':'+i,null)).join('')}</tbody></table></div>`;
+  else{const d=Object.keys(SE.sc).map(Number).sort((a,b)=>b-a)[0];sc=d==null?'<p class="hint">No games yet.</p>':`<div class="scroll"><table class="list"><tbody>${SE.sc[d].map(g=>`<tr><td class="r hint">${seDate(d)}</td><td>${SN.teams[g[1]]} ${g[3]}, ${SN.teams[g[0]]} ${g[2]}</td></tr>`).join('')}</tbody></table></div><p class="hint">Box scores for other clubs' games are kept for the days you just simmed. Your own club's box scores are kept all season.</p>`}
+  return `<div class="tradegrid"><div><h3>Your games (${keys.length})</h3>${keys.length?`<div class="scroll" style="max-height:640px;overflow-y:auto"><table class="list"><tbody>${keys.map(k=>seGameRow(SE.box[k],'m:'+k,ME)).join('')}</tbody></table></div>`:'<p class="hint">No games yet.</p>'}</div>
+  <div><h3>Latest scores, all clubs</h3>${sc}</div></div>`}
+/* box score: line score, decisions, batting and pitching tables with season numbers, and the notes under each */
+function seBoxModal(key){const k=key.split(':'),bx=k[0]==='m'?SE.box[k[1]]:(SX.box[k[1]]||[])[+k[2]];if(!bx)return;const n=Math.max(9,bx.ls[0].length),T=[bx.a,bx.h],X=bx.x||null;
+  const nmr=id=>esc(sn(id)),col=c=>(COLORS[c]||['#345'])[0];
+  const ls=`<div class="sboard" style="cursor:default;margin:8px 0"><div class="scroll"><table><thead><tr><th></th>${Array.from({length:n},(_,j)=>`<td>${j+1}</td>`).join('')}<td class="tot">R</td><td class="tot">H</td>${X?'<td class="tot">LOB</td>':''}</tr></thead><tbody>${[0,1].map(i=>`<tr class="${T[i]===ME?'me':''}"><th>${T[i]}</th>${Array.from({length:n},(_,j)=>`<td>${bx.ls[i][j]??(j<bx.ls[0].length?'x':'')}</td>`).join('')}<td class="tot">${bx.R[i]}</td><td class="tot">${bx.H[i]}</td>${X?`<td class="tot">${X.lob[i]}</td>`:''}</tr>`).join('')}</tbody></table></div></div>`;
+  let dec='';if(X&&X.dec){const d=X.dec;dec=`<p class="bxdec"><b>W:</b> ${nmr(d.w[0])}${d.w[1]!=null?` (${d.w[1]}-${d.w[2]})`:''} &nbsp; <b>L:</b> ${nmr(d.l[0])}${d.l[1]!=null?` (${d.l[1]}-${d.l[2]})`:''}${d.s?` &nbsp; <b>SV:</b> ${nmr(d.s[0])}${d.s[1]!=null?` (${d.s[1]})`:''}`:''}</p>`}
+  const side=i=>{const B=bx.bat[i],Pn=bx.pit[i],tot=j=>B.reduce((s,b)=>s+(b[j]||0),0),ext=B[0].length>9;
+    const list=(lab,arr)=>arr.length?`<b>${lab}:</b> ${arr.join('; ')}. `:'';
+    let notes='';
+    if(ext){const cnt=(j,sj)=>B.filter(b=>b[j]).map(b=>nmr(b[0])+(b[j]>1?' '+b[j]:'')+(b[sj]!=null?` (${b[sj]})`:''));
+      const hr=(X&&X.hr?X.hr[i]:[]),hrBy={};hr.forEach(h=>(hrBy[h[0]]=hrBy[h[0]]||[]).push(h));
+      const hrs=Object.keys(hrBy).map(id=>{const b=B.find(z=>z[0]===id),hs=hrBy[id];return nmr(id)+(hs.length>1?' '+hs.length:'')+` (${b&&b[17]!=null?b[17]+', ':''}${hs.map(h=>`${ORDN(h[1])} inning off ${nmr(h[4])}, ${h[2]} on, ${h[3]} out`).join('; ')})`});
+      const tb=B.filter(b=>b[4]).map(b=>{const t=b[4]+b[12]+2*b[13]+3*b[8];return nmr(b[0])+(t>1?' '+t:'')});
+      notes=`<p class="bxnote">${list('2B',cnt(12,19))}${list('3B',cnt(13))}${list('HR',hrs)}${list('TB',tb)}${list('RBI',cnt(5,18))}${list('2-out RBI',cnt(15))}${list('GIDP',B.filter(b=>b[16]).map(b=>nmr(b[0])))}${X?`<b>Team RISP:</b> ${X.risp[i][0]}-for-${X.risp[i][1]}. <b>Team LOB:</b> ${X.lob[i]}. `:''}${list('SB',cnt(14,20))}</p>`}
+    else{const hr=B.filter(b=>b[8]).map(b=>nmr(b[0])+(b[8]>1?' '+b[8]:''));notes=hr.length?`<p class="bxnote"><b>HR:</b> ${hr.join('; ')}.</p>`:''}
+    const pext=Pn[0].length>9,ptot=j=>Pn.reduce((s,p)=>s+(p[j]||0),0);
+    return `<div class="bxteam" style="border-left-color:${col(T[i])}"><h3>${esc(tnm(T[i]))}</h3></div>
+    <div class="scroll"><table class="bx"><thead><tr><th>Batters</th><td>AB</td><td>R</td><td>H</td><td>RBI</td><td>BB</td><td>K</td>${ext?'<td>LOB</td><td>AVG</td><td>OPS</td>':''}</tr></thead><tbody>
+    ${B.map((b,j)=>`<tr><th><span class="ord">${j+1}</span>${nmr(b[0])} <span class="pos">${esc(b[1])}</span></th>${[2,3,4,5,6,7].map(q=>`<td>${b[q]}</td>`).join('')}${ext?`<td>${b[9]}</td><td>${b[10]!=null?f3(b[10]):'–'}</td><td>${b[11]!=null?f3(b[11]):'–'}</td>`:''}</tr>`).join('')}
+    <tr class="tot"><th>Totals</th>${[2,3,4,5,6,7].map(q=>`<td>${tot(q)}</td>`).join('')}${ext?`<td>${tot(9)}</td><td></td><td></td>`:''}</tr></tbody></table></div>${notes}
+    <div class="scroll"><table class="bx"><thead><tr><th>Pitchers</th><td>IP</td><td>H</td><td>R</td><td>ER</td><td>BB</td><td>K</td><td>HR</td>${pext?'<td>NP</td><td>ERA</td>':''}</tr></thead><tbody>
+    ${Pn.map(p=>`<tr><th>${nmr(p[0])}${p[8]?` <span class="pos">(${p[8]}${X&&X.dec&&p[8]==='W'&&X.dec.w[1]!=null?', '+X.dec.w[1]+'-'+X.dec.w[2]:X&&X.dec&&p[8]==='L'&&X.dec.l[1]!=null?', '+X.dec.l[1]+'-'+X.dec.l[2]:X&&X.dec&&p[8]==='S'&&X.dec.s&&X.dec.s[1]!=null?', '+X.dec.s[1]:''})</span>`:''}</th><td>${ipf(p[1])}</td>${[2,3,4,5,6,7].map(q=>`<td>${p[q]}</td>`).join('')}${pext?`<td>${p[9]}</td><td>${p[13]!=null?p[13].toFixed(2):'–'}</td>`:''}</tr>`).join('')}
+    <tr class="tot"><th>Totals</th><td>${ipf(ptot(1))}</td>${[2,3,4,5,6,7].map(q=>`<td>${ptot(q)}</td>`).join('')}${pext?`<td>${ptot(9)}</td><td></td>`:''}</tr></tbody></table></div>
+    ${pext?`<p class="bxnote"><b>Batters faced:</b> ${Pn.map(p=>nmr(p[0])+' '+p[10]).join('; ')}. <b>Groundouts-flyouts:</b> ${Pn.map(p=>nmr(p[0])+' '+p[11]+'-'+p[12]).join('; ')}.</p>`:''}`};
+  const tm=X&&X.t?`${Math.floor(X.t/60)}:${String(X.t%60).padStart(2,'0')}`:'';
+  $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(tnm(bx.a))} ${bx.R[0]}, ${esc(tnm(bx.h))} ${bx.R[1]}${bx.ls[0].length>9?` <span class="hint">(${bx.ls[0].length})</span>`:''}</h2>
+    <p class="hint" style="margin:2px 0 0">Final · ${bx.po?esc(bx.po):seDate(bx.d)+', 2027'+(bx.g?' · game '+bx.g[0]+' of '+bx.g[1]:'')} · ${esc(VENUE[bx.h]||'')}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
+    ${ls}${dec}${side(0)}${side(1)}
+    <p class="bxnote" style="margin-top:10px">${tm?`<b>T:</b> ${tm}. `:''}<b>Venue:</b> ${esc(VENUE[bx.h]||tnm(bx.h))}.${bx.inj&&bx.inj.length?` <b>Injuries:</b> ${bx.inj.map(x=>esc(P[x[0]].n+' ('+x[1]+')')).join('; ')}.`:''}</p>
+    <div class="dact" style="justify-content:flex-end"><button class="btn primary" type="button" data-act="closemodal">Close</button></div>`;openModal();$('#modal').scrollTop=0}
+function sePostHTML(){const po=SE.po,rn=['Wild Card round','Division Series','Championship Series','World Series'],ser=s=>{const over=s.wa>=(s.n+1)/2||s.wb>=(s.n+1)/2,me=s.a===ME||s.b===ME;
+    return `<tr${me?' style="font-weight:600"':''}><td class="wrap"><span class="nmb">${esc(tnm(s.a))} ${s.wa}, ${esc(tnm(s.b))} ${s.wb}</span>${over?' <span class="tag off">final</span>':''}<br><span class="hint">${esc(s.nm)} · best of ${s.n}${s.g.length?' · '+s.g.map(g=>g[0]+'-'+g[1]).join(', '):''}</span></td></tr>`};
+  const rounds=po.hist.concat(po.ser.length?[po.ser]:[]);
+  return `${po.champ?`<div class="verdictbox good" style="margin-top:0"><div class="vhead"><span class="vtag good">Champions</span><b>${esc(tnm(po.champ))} win the 2027 World Series</b></div></div>`:''}
+  <p class="hint">Seeds. AL: ${po.sd.AL.map((c,i)=>(i+1)+' '+esc(tnm(c))).join(', ')}. NL: ${po.sd.NL.map((c,i)=>(i+1)+' '+esc(tnm(c))).join(', ')}. Seeds 1 and 2 skip the Wild Card round.</p>
+  ${rounds.map((r,i)=>`<h3 style="margin-top:12px">${rn[i]}</h3><div class="scroll"><table class="list"><tbody>${r.map(ser).join('')}</tbody></table></div>`).reverse().join('')}
+  ${SX.last!=null&&SX.box[SX.last]&&SX.box[SX.last][0]&&SX.box[SX.last][0].po?`<h3 style="margin-top:12px">Latest playoff games</h3><div class="scroll"><table class="list"><tbody>${SX.box[SX.last].map((bx,i)=>seGameRow(bx,'x:'+SX.last+':'+i,null)).join('')}</tbody></table></div>`:''}`}
+function seDLWinners(){const by={};for(const m of SE.dlMoves||[]){if(owner(m.id)!==m.to)continue;(by[m.to]=by[m.to]||{w:0,n:[]});by[m.to].w+=seWarOf(m.id)-m.w0;by[m.to].n.push(P[m.id].n)}
+  return Object.keys(by).map(c=>[c,by[c].w,by[c].n]).sort((a,b)=>b[1]-a[1])}
+function seReportHTML(){const c=ME,all=SN.teams.slice().sort((a,b)=>(SE.w[b]-SE.pre[b])-(SE.w[a]-SE.pre[a])),d=SE.w[c]-SE.pre[c],aw=SE.aw||{},dl=seDLWinners(),po=SE.po;
+  const al=(t,arr)=>`<div class="subh">${t}</div>${(arr||[]).map(([id,w],i)=>`<div class="kv"><span>${i+1}. <span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span> <span class="hint">${owner(id)}</span></span><b>${w.toFixed(1)} WAR</b></div>`).join('')||'<div class="hint">none</div>'}`;
+  return `<div class="verdictbox ${d>=3?'good':d<=-3?'bad':'warn'}" style="margin-top:0"><div class="vhead"><span class="vtag ${d>=3?'good':d<=-3?'bad':'warn'}">${seRec(c)}</span><b>${esc(tnm(c))}: ${d>0?d+' wins better than':d<0?-d+' wins worse than':'right on'} the preseason projection (${SE.pre[c]})</b></div>
+  <p class="hint" style="margin:6px 0 0">${po&&po.champ?`${esc(tnm(po.champ))} won the World Series.`:'The postseason is under way.'} ${po&&po.sd.AL.concat(po.sd.NL).includes(c)?'You made the playoffs.':'You missed the playoffs.'}</p></div>
+  <div class="dact"><button class="btn" type="button" data-act="se-copy">Copy report</button><button class="btn" type="button" data-act="se-view" data-id="stand">Final standings</button>${SE.phase==='done'?'<button class="btn danger" type="button" data-act="se-end">Clear season and go back to the offseason</button>':''}</div>
+  <div class="tradegrid" style="margin-top:12px"><div class="tside"><h3>Award races</h3>${['AL','NL'].map(L=>aw[L]?al(L+' MVP',aw[L].mvp)+al(L+' Cy Young',aw[L].cy)+al(L+' Rookie of the Year',aw[L].roy):'').join('')}</div>
+  <div><div class="tside"><h3>Who won the deadline</h3>${dl.length?dl.slice(0,6).map(([t,w,n])=>`<div class="kv"><span><b>${esc(tnm(t))}</b> <span class="hint">${esc(n.join(', '))}</span></span><b>${w>=0?'+':''}${w.toFixed(1)} WAR</b></div>`).join('')+'<p class="hint">WAR from the players each club picked up at the deadline, from the trade on.</p>':'<p class="hint">No deadline trades this season.</p>'}</div>
+  <div class="tside" style="margin-top:12px"><h3>Record vs projection</h3><div class="scroll"><table class="list"><thead><tr><th>Club</th><th class="r">W-L</th><th class="r">Proj</th><th class="r">+/-</th></tr></thead><tbody>${all.map(t=>`<tr${t===c?' style="font-weight:600"':''}><td>${esc(tnm(t))}</td><td class="r">${seRec(t)}</td><td class="r">${SE.pre[t]}</td><td class="r ${SE.w[t]-SE.pre[t]>0?'minus':'plus'}">${SE.w[t]-SE.pre[t]>0?'+':''}${SE.w[t]-SE.pre[t]}</td></tr>`).join('')}</tbody></table></div></div></div></div>
+  <textarea id="outTxt" class="out" style="min-height:0;height:1px;opacity:0;border:0;padding:0" aria-hidden="true" tabindex="-1"></textarea>`}
+function seReportText(){const c=ME,L=[`Virtual Hot Stove GM · 2027 season · ${tnm(c)}`,`Record: ${seRec(c)} (preseason projection ${SE.pre[c]} wins)`];const po=SE.po;
+  if(po){L.push(po.sd.AL.concat(po.sd.NL).includes(c)?'Made the playoffs':'Missed the playoffs');if(po.champ)L.push(`World Series: ${tnm(po.champ)}`)}
+  const b=Object.keys(SE.bs).filter(id=>owner(id)===c&&!P[id].p).sort((x,y)=>seBWar(y)-seBWar(x)).slice(0,3),p=Object.keys(SE.ps).filter(id=>owner(id)===c).sort((x,y)=>sePWar(y)-sePWar(x)).slice(0,3);
+  L.push('','Best players:');b.forEach(id=>{const s=SE.bs[id];L.push(`${P[id].n}: ${f3(s[3]/(s[2]||1))}, ${s[6]} HR, ${s[8]} RBI, ${seBWar(id).toFixed(1)} WAR`)});p.forEach(id=>{const s=SE.ps[id];L.push(`${P[id].n}: ${s[9]}-${s[10]}, ${(s[5]*27/(s[2]||1)).toFixed(2)} ERA, ${ipf(s[2])} IP, ${sePWar(id).toFixed(1)} WAR`)});
+  for(const lg of ['AL','NL'])if(SE.aw&&SE.aw[lg]){const a=SE.aw[lg];L.push('',`${lg} MVP: ${a.mvp[0]?P[a.mvp[0][0]].n:'-'} · Cy Young: ${a.cy[0]?P[a.cy[0][0]].n:'-'} · Rookie: ${a.roy[0]?P[a.roy[0][0]].n:'-'}`)}
+  L.push('','https://fschaeffer16.github.io/hotstove-gm/');return L.join('\n')}
+
 /* ---------- move every team's save to another device with one link ---------- */
 const SAVEPFX='nym-gm-sandbox-v1';
 async function packSaves(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith(SAVEPFX)||k==='gm-last-team'))o[k]=localStorage.getItem(k)}
@@ -1774,7 +2748,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261119005419';
+const BUILD='20261119044949';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -1893,7 +2867,10 @@ function openDrawer(id){
       ${(()=>{const ci=controlInfo(id),r=r5Info(id);return (ci.txt?`<div class="kv"><span>Team control</span><b style="text-align:right">${esc(ci.txt)}</b></div>`:'')+(p.opt&&p.opt!=='n/a'?`<div class="kv"><span>Options</span><b>${esc(String(p.opt))}</b></div>`:'')+(r&&p.lvl!=='MLB'?`<div class="kv"><span>Rule 5</span><b style="text-align:right">${r5Exposed(id)?'<span style="color:var(--bad)">Eligible and unprotected</span>':r.eligibleNow?'Eligible (protected on the 40-man)':'First eligible Dec '+r.first}${r.est?' (est.)':''}</b></div>`:'')+(p.qo&&p.team==='FA'?`<div class="kv"><span>Qualifying offer</span><b>Declined (${M1(RULES.qo.amount)})</b></div>`:'')})()}
       ${p.mt?`<div class="kv"><span>Market (median)</span><b>${p.my} yr / ${M1(p.mt)}</b></div>`:''}
       ${yrRows?`<table class="yrtable">${yrRows}</table>`:''}</div>
-    <div class="dsec"><h3>2027 projection</h3>${pj?(pj.t==='b'?`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>wRC+</span><b>${pj.wrc}</b></div><div class="kv"><span>PA / HR</span><b>${pj.pa} / ${pj.hr}</b></div><div class="kv"><span>OPS</span><b>${pj.ops}</b></div>`:`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>ERA / FIP</span><b>${pj.era} / ${pj.fip}</b></div><div class="kv"><span>IP / GS</span><b>${pj.ip} / ${pj.gs}</b></div><div class="kv"><span>K-BB%</span><b>${pj.kbb}%</b></div>`):'<p class="hint">No 2027 projection.</p>'}</div>
+    ${pj&&pj.y&&pj.t==='p'?`<div class="dsec"><h3>2026 season</h3>${pj.y.ip?`<div class="kv"><span>ERA / FIP / xFIP</span><b>${pj.y.era.toFixed(2)} / ${pj.y.fip.toFixed(2)} / ${pj.y.xfip.toFixed(2)}</b></div><div class="kv"><span>G · IP · WHIP</span><b>${pj.y.g} · ${pj.y.ip} · ${pj.y.whip.toFixed(2)}</b></div>`:`<div class="kv"><span>Batters faced · AVG against</span><b>${pj.y.tbf} · ${f3(pj.y.avg)}</b></div>`}<div class="kv"><span>K% / BB%</span><b>${(pj.y.k*100).toFixed(1)} / ${(pj.y.bb*100).toFixed(1)}</b></div>${pj.y.maxv?`<div class="kv"><span>Velocity: all pitches avg · top</span><b>${pj.y.vel} · ${pj.y.maxv} mph</b></div>`:''}${pj.y.strk?`<div class="kv"><span>Strike rate${pj.y.spin?' · spin · arm angle':''}</span><b>${(pj.y.strk*100).toFixed(0)}%${pj.y.spin?' · '+pj.y.spin+' rpm · '+pj.y.arm+'°':''}</b></div>`:''}${pj.y.xera?`<div class="kv"><span>Expected ERA</span><b>${pj.y.xera.toFixed(2)}</b></div><div class="kv"><span>Hard-hit · barrel allowed</span><b>${(pj.y.hard*100).toFixed(0)}% · ${(pj.y.brl*100).toFixed(1)}%</b></div>`:pj.y.hard!=null?`<div class="kv"><span>Hard-hit · barrel allowed</span><b>${(pj.y.hard*100).toFixed(0)}% · ${(pj.y.brl*100).toFixed(1)}%</b></div>`:''}${pj.y.gb?`<div class="kv"><span>GB / FB / LD</span><b>${(pj.y.gb*100).toFixed(0)} / ${(pj.y.fb*100).toFixed(0)} / ${(pj.y.ld*100).toFixed(0)}%</b></div>`:''}${pj.y.chase?`<div class="kv"><span>Chase rate</span><b>${(pj.y.chase*100).toFixed(0)}%</b></div>`:''}${pj.y.mix?`<div class="subh">Pitch mix (runs per 100 pitches)</div>${pj.y.mix.map(m=>{const v=pj.y.pp&&pj.y.pp[m[0]];return `<div class="kv"><span>${({FA:'4-seam',FT:'2-seam',FC:'Cutter',FS:'Splitter',FO:'Forkball',SI:'Sinker',SL:'Slider',CU:'Curve',KC:'Knuckle curve',EP:'Eephus',CH:'Changeup',SC:'Screwball',KN:'Knuckleball'})[m[0]]||m[0]} ${(m[1]*100).toFixed(0)}%${v?' <span class="hint">'+f3(v[3])+' wOBA, '+(v[1]*100).toFixed(0)+'% K</span>':''}</span><b>${m[2]>0?'+':''}${m[2].toFixed(1)}</b></div>`}).join('')}`:pj.y.pp?`<div class="subh">Pitches (share of pitches · wOBA against)</div>${Object.entries(pj.y.pp).sort((a,b)=>b[1][0]-a[1][0]).map(([k,v])=>`<div class="kv"><span>${({FA:'4-seam',FT:'2-seam',FC:'Cutter',FS:'Splitter',FO:'Forkball',SI:'Sinker',SL:'Slider',CU:'Curve',KC:'Knuckle curve',EP:'Eephus',CH:'Changeup',SC:'Screwball',KN:'Knuckleball'})[k]||k} ${(v[0]*100).toFixed(0)}% <span class="hint">${(v[1]*100).toFixed(0)}% K</span></span><b>${f3(v[3])}</b></div>`).join('')}`:''}${[['vl','vs LHH'],['vr','vs RHH']].map(([k,l])=>pj.y[k]?`<div class="kv"><span>${l} (${pj.y[k][0]} BF, ${(pj.y[k][4]*100).toFixed(0)}% K)</span><b>${f3(pj.y[k][1])} / ${f3(pj.y[k][2])} / ${f3(pj.y[k][3])}</b></div>`:'').join('')}${[['mixL','To lefties'],['mixR','To righties']].map(([k,l])=>pj.y[k]?`<p class="hint" style="margin:4px 0 0"><b>${l}:</b> ${pj.y[k].map(m=>({FA:'4-seam',FT:'2-seam',FC:'cutter',FS:'splitter',FO:'forkball',SI:'sinker',SL:'slider',CU:'curve',KC:'knuckle curve',EP:'eephus',CH:'changeup',SC:'screwball',KN:'knuckleball'})[m[0]]+' '+(m[1]*100).toFixed(0)+'%').join(', ')}</p>`:'').join('')}</div>`:''}
+    ${pj&&pj.y&&pj.t==='b'?`<div class="dsec"><h3>2026 season</h3><div class="kv"><span>AVG / OBP / SLG</span><b>${f3(pj.y.avg)} / ${f3(pj.y.obp)} / ${f3(pj.y.slg)}</b></div><div class="kv"><span>PA · wRC+</span><b>${pj.y.pa} · ${pj.y.wrc}</b></div><div class="kv"><span>K% / BB%</span><b>${(pj.y.k*100).toFixed(1)} / ${(pj.y.bb*100).toFixed(1)}</b></div>${pj.y.xwoba?`<div class="kv"><span>wOBA / expected</span><b>${f3(pj.y.woba)} / ${f3(pj.y.xwoba)}</b></div><div class="kv"><span>Hard-hit · barrel</span><b>${(pj.y.hard*100).toFixed(0)}% · ${(pj.y.brl*100).toFixed(1)}%</b></div><div class="kv"><span>Exit velo (max)</span><b>${pj.y.ev} (${pj.y.maxev})</b></div>`:''}${pj.y.gb?`<div class="kv"><span>GB / FB / LD</span><b>${(pj.y.gb*100).toFixed(0)} / ${(pj.y.fb*100).toFixed(0)} / ${(pj.y.ld*100).toFixed(0)}%</b></div>`:''}${pj.y.bat?`<div class="kv"><span>Bat speed</span><b>${pj.y.bat} mph</b></div>`:''}${pj.y.chase?`<div class="kv"><span>Chase / contact / whiff</span><b>${(pj.y.chase*100).toFixed(0)}% / ${(pj.y.con*100).toFixed(0)}% / ${(pj.y.swstr*100).toFixed(0)}%</b></div>`:''}${pj.y.vp?Object.entries(pj.y.vp).sort((a,b)=>b[1][0]-a[1][0]).map(([k,v])=>`<div class="kv"><span>vs ${({FA:'4-seam',FT:'2-seam',FC:'cutters',FS:'splitters',SI:'sinkers',SL:'sliders',CU:'curves',KC:'knuckle curves',CH:'changeups'})[k]||k} (${v[0]} PA)</span><b>${f3(v[1])}</b></div>`).join(''):''}${[['vl','vs LHP'],['vr','vs RHP']].map(([k,l])=>{if(!pj.y[k])return '';const x=pj.y[k+'x'];return `<div class="kv"><span>${l} (${pj.y[k][0]} PA)</span><b>${f3(pj.y[k][1])} / ${f3(pj.y[k][2])} / ${f3(pj.y[k][3])}</b></div>`+(x?`<p class="hint" style="margin:0 0 4px">${[x[0]!=null?x[0]+' wRC+':'',x[1]!=null?(x[1]*100).toFixed(0)+'% K':'',x[2]!=null?(x[2]*100).toFixed(0)+'% hard-hit':'',x[3]!=null?f3(x[3])+' expected wOBA':''].filter(Boolean).join(' · ')}</p>`:'')}).join('')}</div>`:''}
+    ${pj&&pj.wh?`<div class="dsec"><h3>WAR by season</h3><div class="kv">${pj.wh.map((w,i)=>`<span style="text-align:center"><span class="hint">${2022+i}</span><br><b>${w==null?'–':w.toFixed(1)}</b></span>`).join('')}</div></div>`:''}
+    <div class="dsec"><h3>2027 projection</h3>${pj?(pj.t==='b'?`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>wRC+</span><b>${pj.wrc}</b></div><div class="kv"><span>PA / HR</span><b>${pj.pa} / ${pj.hr}</b></div><div class="kv"><span>OPS</span><b>${pj.ops}</b></div>${pj.sl?`<div class="kv"><span>vs LHP / vs RHP (wOBA)</span><b>${f3(bRate(id).L.woba)} / ${f3(bRate(id).R.woba)}</b></div>`:''}`:`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>ERA / FIP</span><b>${pj.era} / ${pj.fip}</b></div>${pj.sl?`<div class="kv"><span>K% vs LHB / vs RHB</span><b>${(pj.sl[0]*100).toFixed(1)} / ${(pj.sr[0]*100).toFixed(1)}</b></div>`:''}<div class="kv"><span>IP / GS</span><b>${pj.ip} / ${pj.gs}</b></div><div class="kv"><span>K-BB%</span><b>${pj.kbb}%</b></div>`):'<p class="hint">No 2027 projection.</p>'}</div>
     <div class="dsec"><h3>Status</h3>
       <div class="kv"><span>Options</span><b>${esc(p.opt||'—')}</b></div><div class="kv"><span>Service time</span><b>${esc(p.svc||'—')}</b></div><div class="kv"><span>Level</span><b>${esc(p.lvl)}</b></div>${p.acq?`<div class="kv"><span>Acquired</span><b style="font-family:var(--body);font-weight:500">${esc(p.acq)}</b></div>`:''}</div>
     <div class="dact">${acts.join('')}</div>`;
@@ -1918,10 +2895,12 @@ document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
   {const h=!e.target.closest('.tbadge')&&e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
   {const fp=e.target.closest('[data-fapos]');if(fp){UI.faPos=fp.dataset.fapos;render();return}}
-  const t=e.target.closest('[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-tview],[data-tdf],[data-tdall],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  const t=e.target.closest('[data-scout],[data-club],[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-tview],[data-tdf],[data-tdall],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
-  if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(fromNav)goTo('desk');return}
-  if(t.dataset.goto){UI.navAt=t.dataset.goto;renderNav();goTo(t.dataset.goto);return}
+  if(t.dataset.scout){e.preventDefault();scoutModal(t.dataset.scout,!!t.dataset.back);return}
+  if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(isFocus())window.scrollTo(0,0);else if(fromNav)goTo('desk');return}
+  if(t.dataset.club){switchTeam(t.dataset.club);toast('You are running the '+MEN()+'.');return}
+  if(t.dataset.goto){if(isFocus()){UI.tab=UI.homeTab||'fa';render()}UI.navAt=t.dataset.goto;renderNav();goTo(t.dataset.goto);return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
   if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
   if(t.dataset.tview){UI.tView=t.dataset.tview;render();return}
@@ -1945,6 +2924,9 @@ document.addEventListener('click',e=>{
   const a=t.dataset.act,id=t.dataset.id;
   switch(a){
     case 'unsel':UI.sel=null;renderBanner();render();break;
+    case 'gohome':goHome();break;
+    case 'gofront':goFront();break;
+    case 'goroster':goFront('roster');break;
     case 'closedrawer':closeDrawer();break;
     case 'closemodal':closeModal();break;
     case 'il':doIL(id);break;
@@ -1957,10 +2939,14 @@ document.addEventListener('click',e=>{
     case 'r5back':r5OfferBack(id);break;
     case 'nontender':confirmBox('Non-tender '+P[id].n+'?',`He becomes a free agent and his ${M(aav(id))} arbitration estimate comes off the CBT payroll.`,'Non-tender',()=>doRelease(id,'Non-tendered'));break;
     case 'release':confirmBox('Release '+P[id].n+'?',kind(id)==='guar'?`His ${M(aav(id))} AAV stays on the CBT payroll as dead money.`:'He comes off the roster.',kind(id)==='guar'?'Release':'DFA / release',()=>doRelease(id,kind(id)==='guar'?'Released':'DFA'));break;
-    case 'totrade':UI.tTeam=owner(id);UI.tIn.add(id);UI.tab='trade';closeDrawer();render();break;
+    case 'totrade':UI.tTeam=owner(id);UI.tIn.add(id);UI.tab='trade';closeDrawer();render();window.scrollTo(0,0);break;
     case 'ttry':UI.tTried=tSig();UI.tFold={out:true,in:true};render();{const el=$('#tsum');if(el)el.scrollIntoView({block:'start'})}break;
     case 'tclear':UI.tFold={out:false,in:false};UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;render();break;
     case 'texec':execTrade(false);break;
+    case 'tcompare':tradeCompare();break;
+    case 'gmsay':{const ta=$('#gmSay'),txt=ta?ta.value.trim():'';if(!txt){toast('Type your reply to the GM first.');break}
+      const code=UI.tTeam;gmReply(txt.slice(0,300),code,[...UI.tOut].filter(isMets),[...UI.tIn].filter(x=>owner(x)===code),UI.tCash);render();{const el=document.querySelector('.gmtalk');if(el)el.scrollIntoView({block:'center'})}}break;
+    case 'scout-full':closeModal();openDrawer(id);break;
     case 'tforce':confirmBox('Force this trade through?','The other GM has not agreed. Forcing it records the trade as forced in your transaction log.','Force approve',()=>execTrade(true));break;
     case 'copyupd':copy(updateText(),'Update copied');break;
     case 'sendsave':sendSaves();break;
@@ -1969,7 +2955,7 @@ document.addEventListener('click',e=>{
       $('#modal').innerHTML=`<h2>Load save code</h2><label class="field">Paste a save code<textarea id="ldTxt" class="out" style="min-height:140px"></textarea></label><div class="dact" style="justify-content:flex-end"><button class="btn" type="button" data-act="closemodal">Cancel</button><button class="btn primary" type="button" id="ldGo">Load</button></div>`;
       openModal();$('#ldGo').onclick=()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob($('#ldTxt').value.trim()))));if(!o.lineup)throw 0;snap();S=o;closeModal();commit();toast('Save loaded')}catch(err){toast('That save code could not be read. Paste the whole code and try again.')}};
       break;
-    default:if(a&&a.indexOf('dr-')===0)drAct(a,id);
+    default:if(a&&a.indexOf('dr-')===0)drAct(a,id);else if(a&&a.indexOf('se-')===0)seAct(a,id);
   }
 });
 document.addEventListener('change',e=>{
@@ -1985,6 +2971,7 @@ document.addEventListener('change',e=>{
   if(t.dataset.tout){t.checked?UI.tOut.add(t.dataset.tout):UI.tOut.delete(t.dataset.tout);keepScroll();return}
   if(t.dataset.tin){t.checked?UI.tIn.add(t.dataset.tin):UI.tIn.delete(t.dataset.tin);keepScroll();return}
   if(t.dataset.add40){t.checked?UI.tAdd40.add(t.dataset.add40):UI.tAdd40.delete(t.dataset.add40);keepScroll();return}
+  if(t.id==='seTeam'){UI.seTeam=t.value;seRender();return}
   if(t.id==='drPos'){UI.drPos=t.value;drRender();return}
   if(t.id==='drCls'){UI.drCls=t.value;drRender();return}
   if(t.id==='drTP'){UI.drTP=t.value;UI.drGive=new Set();UI.drGet=new Set();drTradeDraw();return}
@@ -1992,7 +2979,8 @@ document.addEventListener('change',e=>{
   if(t.dataset.drr){t.checked?UI.drGet.add(+t.dataset.drr):UI.drGet.delete(+t.dataset.drr);drTradeDraw();return}
   if(t.id==='tCash'){UI.tCash=+t.value||0;keepScroll();return}
 });
-function keepScroll(){const ls=[...document.querySelectorAll('.tl')].map(x=>x.scrollTop);render();document.querySelectorAll('.tl').forEach((x,i)=>x.scrollTop=ls[i]||0)}
+let ksBusy=0;function keepScroll(){if(ksBusy)return;ksBusy=1;try{keepScroll0()}finally{ksBusy=0}}
+function keepScroll0(){const ls=[...document.querySelectorAll('.tl')].map(x=>x.scrollTop);render();document.querySelectorAll('.tl').forEach((x,i)=>x.scrollTop=ls[i]||0)}
 let qT;
 document.addEventListener('input',e=>{
   const t=e.target,map={faQ:'faQ',tQout:'tQout',tQin:'tQin',pQ:'pQ',prQ:'prQ',drQ:'drQ'};
@@ -2023,7 +3011,7 @@ document.addEventListener('drop',e=>{const s=e.target.closest&&e.target.closest(
 $('#scrim').addEventListener('click',()=>{closeDrawer();closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDrawer();closeModal()}});
 $('#bUndo').onclick=()=>{if(!HIST.length)return;S=JSON.parse(HIST.pop());commit();toast('Undone')};
-$('#bReset').onclick=()=>confirmBox('Reset to baseline?',`This wipes every move in this team's sandbox and returns to its baseline: ${M(BASE_T)} CBT.`,'Reset',()=>{snap();S=baseline();commit();toast('Back to baseline')});
+$('#bReset').onclick=()=>confirmBox('Reset to baseline?',`This wipes every move in this team's sandbox and returns to its baseline: ${M(BASE_T)} CBT.`,'Reset',()=>{snap();S=baseline();if(SE)seDrop(false);commit();toast('Back to baseline')});
 
 /* ---------- team colors ---------- */
 const COLORS={ARI:['#A71930','#E3D4AD'],ATH:['#003831','#EFB21E'],ATL:['#13274F','#CE1141'],BAL:['#27251F','#DF4601'],BOS:['#0C2340','#BD3039'],CHC:['#0E3386','#CC3433'],CHW:['#27251F','#C4CED4'],CIN:['#C6011F','#27251F'],CLE:['#00385D','#E50022'],COL:['#333366','#C4CED4'],DET:['#0C2340','#FA4616'],HOU:['#002D62','#EB6E1F'],KCR:['#004687','#BD9B60'],LAA:['#BA0021','#003263'],LAD:['#005A9C','#EF3E42'],MIA:['#111820','#00A3E0'],MIL:['#12284B','#FFC52F'],MIN:['#002B5C','#D31145'],NYM:['#1d4fb8','#e8601c'],NYY:['#0C2340','#C4CED3'],PHI:['#E81828','#002D72'],PIT:['#27251F','#FDB827'],SDP:['#2F241D','#FFC425'],SFG:['#27251F','#FD5A1E'],SEA:['#0C2C56','#005C5C'],STL:['#C41E3A','#0C2340'],TBR:['#092C5C','#8FBCE6'],TEX:['#003278','#C0111F'],TOR:['#134A8E','#E8291C'],WSN:['#AB0003','#14225A']};
@@ -2067,9 +3055,9 @@ function switchTeam(code){
   IL60=new Set(D.il60By[code]||[]);
   BASE_METS=Object.keys(P).filter(id=>P[id].team===ME);
   S=baseline();BASE_T=cbt().total;
-  S=load()||S;HIST=[];UI.sel=null;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
+  S=load()||S;HIST=[];seLoad();UI.sel=null;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
   if(UI.tTeam===ME||!D.teams[UI.tTeam])UI.tTeam=ME==='NYM'?'ATL':'NYM';
-  $('#teamPick').value=ME;$('#hTeam').textContent=MEN();document.title='Hot Stove GM · '+MEN();
+  $('#teamPick').value=ME;$('#hTeam').textContent=MEN();document.title='Virtual Hot Stove GM · '+MEN();
   try{localStorage.setItem('gm-last-team',ME)}catch(e){}
   render();
 }
@@ -2079,6 +3067,7 @@ fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
   try{const r=await fetch('intel.json',{cache:'no-store'});if(r.ok){INTEL=await r.json();applyIntel()}}catch(e){INTEL=null}
   try{const r=await fetch('draft.json',{cache:'no-cache'});if(r.ok)drInit(await r.json())}catch(e){DR=null}
+  try{const r=await fetch('season.json',{cache:'no-cache'});if(r.ok)SN=await r.json()}catch(e){SN=null}
   const imported=await importFromHash();
   let last='NYM';try{last=localStorage.getItem('gm-last-team')||'NYM'}catch(e){}
   const codes=Object.keys(d.teams).sort((a,b)=>d.teams[a].name.localeCompare(d.teams[b].name));
