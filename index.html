@@ -1057,17 +1057,19 @@ function contractModal(id,mode){
       ${mode!=='ext'&&!need40(1)?`<div class="verdict warn">${esc(overMsg(1))}</div>`:''}
       ${mode!=='ext'&&p.qo?qoNote(id,c.total*1e6):''}`;
   };
-  const offer=()=>{
-    const c=read();const N=negotiate(id,c,mode),A=N.A;UI.agent=A;UI.negOK=N.verdict==='accept'?JSON.stringify(c):null;
+  const offer=(peek)=>{
+    const c=read();const N=negotiate(id,c,mode,peek===true),A=N.A;UI.agent=A;UI.negOK=N.verdict==='accept'?JSON.stringify(c):null;
     const {tag,vc,say}=N;const ok=N.verdict==='accept';
     const d=$('#cDec');d.className='decision '+vc;d.hidden=false;
     d.innerHTML=`<span class="dtag">${tag}</span><span class="hint" style="margin-left:8px">${esc(p.n)}'s agent</span>
       <p class="say">${esc(say)}</p>${N.st.rounds>1&&!ok?`<p class="hint" style="margin:0 0 4px">Round ${N.st.rounds}. Serious offers move him a lot, lowballs barely, and going backwards not at all.</p>`:''}${A.notes.length?`<p class="hint" style="margin:0">${esc(A.notes.join(' · '))}</p>`:''}
+      ${N.verdict==='invalid'?'':agentTalkHTML(id,mode,ok)}
       <div class="dact">${ok||!N.counter?'':`<button class="btn" type="button" id="cCounter">Take their counter</button>`}${ok?'':`<button class="btn danger" type="button" id="cForce">Force sign</button>`}<button class="btn primary" type="button" id="cGo"${ok?'':' hidden disabled'}>${mode==='ext'?'Sign the extension':'Sign '+esc(p.n)}</button></div>`;
     if(!ok){if(N.counter)$('#cCounter').onclick=()=>{$('#cY').value=N.counter.years;$('#cT').value=N.counter.total;upd();offer()};
       $('#cForce').onclick=()=>{const c2=read();confirmBox('Force this signing?','His agent has not agreed. Forcing it records the signing as forced in your transaction log.','Force sign',()=>doSign(true,c2))}}
     $('#cGo').onclick=()=>doSign(false);
-    d.scrollIntoView({block:'nearest'});
+    {const sb=$('#agSend');if(sb)sb.onclick=()=>{const ta=$('#agSay'),txt=ta?ta.value.trim():'';if(!txt){toast('Type your reply to his agent first.');return}agentReply(txt,id,read(),mode);offer(true);const el=$('#cDec .agtalk');if(el)el.scrollIntoView({block:'center'})}}
+    if(peek!==true)d.scrollIntoView({block:'nearest'});
   };
   $('#modal').querySelectorAll('input').forEach(i=>i.addEventListener('input',upd));upd();
   $('#cOffer').onclick=offer;
@@ -1761,19 +1763,19 @@ function agentEval(id,c,mode){
 /* Agent negotiation: opens a little above his number, has a walk-away floor that depends on how many other clubs want him,
    and moves toward you each round (a lot for serious offers, a little for lowballs, not at all if you go backwards). */
 UI.neg={};
-function negotiate(id,c,mode){
+function negotiate(id,c,mode,peek){
   const A=agentEval(id,c,mode),key=ME+'|'+mode+'|'+id;
   const n=mode==='ext'?-1:faSuitors(id).length;
   const fl=mode==='ext'?.88:n>=5?.93:n>=3?.91:n>=1?.88:.84;
   const st=UI.neg[key]||(UI.neg[key]={f:mode==='ext'?1.03:1.05,f0:mode==='ext'?1.03:1.05,fl,rounds:0,last:0});
-  st.rounds++;const r=A.ratio,defBad=c.total&&c.deferred/c.total>.5;
+  if(!peek)st.rounds++;const r=A.ratio,defBad=c.total&&c.deferred/c.total>.5;
   const opts=Math.min(2,((c.notes||'').match(/opt/gi)||[]).length);
   const quote=f=>{const Yc=c.years;const need=agentEval(id,{...c,years:Yc,total:0},mode).need;
     return {years:Yc,total:Math.ceil(need*f/(1+.04*opts)/1e6*2)/2}};
   if(c.deferred>c.total)return {A,verdict:'invalid',tag:'NOT VALID',vc:'bad',say:'Deferred money cannot exceed the total.',st};
   if(!defBad&&(r>=st.f*.995||(r>=st.fl&&st.f-r<.03))){const meet=r<st.f*.995;st.f=Math.min(st.f,r);return {A,verdict:'accept',tag:'ACCEPTED',vc:'good',say:meet?'"We can meet you there. Deal."':'"We have a deal."',st}}
   let k=r>=st.fl?.5:r>=st.fl*.88?.35:r>=st.fl*.75?.2:.08,back=false;
-  if(defBad)k=0;if(st.last&&r<st.last-.005){k=0;back=true}
+  if(defBad)k=0;if(!peek&&st.last&&r<st.last-.005){k=0;back=true}if(peek)k=0;
   st.f=Math.max(st.fl,st.f-(st.f-r)*k);st.last=Math.max(st.last,r);
   const q=quote(st.f);let t=`${q.years} yr / $${q.total}M`;let tag,vc,say;
   if(mode!=='ext'&&c.years<A.my){const Yl=A.my,need=agentEval(id,{...c,years:Yl,total:0},mode).need;t+=` (or ${Yl} yr / $${Math.ceil(need*st.f/(1+.04*opts)/1e6*2)/2}M)`}
@@ -1785,6 +1787,48 @@ function negotiate(id,c,mode){
   else{tag='NOT INTERESTED';vc='bad';say=`"We're not interested at that number. If you're serious, it's ${t}."`}
   return {A,verdict:'counter',tag,vc,say,counter:q,st}}
 
+/* ===== Talking to the agent: the user answers in his own words; each point is checked against the data.
+   A true point moves the agent's number down a little; a false one stiffens him. Three replies per negotiation. ===== */
+const NOTAX=['MIA','TBR','TEX','HOU','SEA'];
+function agentReply(text,id,c,mode){const key=ME+'|'+mode+'|'+id,st=UI.neg[key];if(!st)return null;
+  const T=st.talk=st.talk||{log:[],used:{},n:0,mv:0};if(T.n>=3)return T;
+  const p=P[id],s=scout(id),x=text.toLowerCase(),has=(...w)=>w.some(k=>x.includes(k)),age=p.age||30,su=mode==='ext'?[]:faSuitors(id),pts=[];let d=0;
+  const pt=(k,ok,amt,yes,no)=>{if(T.used[k]){pts.push('We covered that already.');return}T.used[k]=1;if(ok){d-=amt;pts.push(yes)}else{d+=amt*.4;pts.push(no)}};
+  if(has('greedy','ridiculous','insane','a joke','delusional','crazy','overpaid','rip off','ripoff')){d+=.01;pts.push("That's not how you get a deal done. He knows what he's worth.")}
+  if(has('injur','hurt','health',' il ','injured list','surgery','elbow','shoulder','durab','games played','innings')){const I=s.inj;
+    pt('inj',!!(I&&I.r>=1.5),.02,`Fair: ${I?injLine(I,false):''}, and every club asks about it. We can give a little for that.`,"He's been healthy. That won't move us.")}
+  if(has('age','old','older','decline','aging','prime','mid-30','thirties')){
+    pt('age',age>=32||s.trend===-1,.015,age>=32?`He's ${Math.floor(age)}, we know. That's why the years matter more to us than the last dollar.`:'His last two seasons went the wrong way, I will give you that.',`He's ${Math.floor(age)} and in his prime. Age is a reason to pay him, not a discount.`)}
+  if(has('lucky','luck','expected','xwoba','xera','statcast','underlying','regress','babip','hard-hit','hard hit','exit velo')){
+    if(s.luck===1)pt('luck',true,.02,"You've seen the expected numbers. So has everyone else. I can move a bit, not a lot.",'');
+    else pt('luck',false,.02,'',s.luck===-1?'Look again: he hit the ball better than his results. If anything he was unlucky.':'His results match the contact. Nothing there for you.')}
+  if(has('down year','bad year','struggl','slump','worst','off year','fell off')){const wh=p.proj&&p.proj.wh,l=wh&&wh[4],pv=wh&&wh[3];
+    pt('down',l!=null&&pv!=null&&l<pv-.9,.015,'2026 was not his best, agreed. One year, though; the track record is longer than that.','There was no down year. Check the numbers again.')}
+  if(has('platoon','lefties','righties','left-hand','right-hand','split','same side','specialist')){
+    pt('split',!!(s.platoon||s.spec),.015,'He has a split, sure. Used right, he is still a weapon.','He hits both sides. No platoon discount here.')}
+  if(mode!=='ext'&&has('market','no one else','nobody','other team','thin','bidding','who else','suitors','leverage','offers')){const n=su.length;
+    pt('mkt',n<=1,.025,n?`Only the ${D.teams[su[0].code].name} are really in. I won't pretend otherwise.`:"It's quieter than I'd like. I can work with you.",`${su.slice(0,3).map(z=>D.teams[z.code].name).join(', ')}${n>3?' and others':''} are all in. I don't need to come down.`)}
+  if(has('win','contend','ring','playoff','world series','championship','october','pennant')){const w=D.teams[ME].win;
+    pt('win',teamReady(ME),.015,'He wants to win, and you can. That is worth something to him.',w==='rebuild'?"You're rebuilding. He isn't signing up for that at a discount.":"He's not sure you're a contender yet. Money talks.")}
+  if(has('everyday','every day','start','playing time','role','closer','ace','lineup','rotation spot','at-bats','at bats')){
+    pt('role',fillsNeed(id,ME)>0||(p.proj&&p.proj.war>=needAt(ME,pgrp(id),id)),.01,'A clear job matters to him. Put that in writing and we get closer.',"You've got players ahead of him. He'd want to be paid for that risk.")}
+  if(mode!=='ext'&&has('qualifying','draft pick',' qo','the pick','compensation')){
+    pt('qo',!!p.qo,.015,'The pick is a real cost to you. I can shave a little for it.','There is no qualifying offer attached. You lose nothing to sign him.')}
+  if(has('state tax','income tax','no tax','taxes')){
+    pt('tax',NOTAX.includes(ME),.01,'No state income tax. We run those numbers too; fair point.','He pays state tax with you like anywhere else.')}
+  if(has('home','hometown','family','loyal','stay','organization','fans','city','clubhouse','teammates')){const lk=mode==='ext'||((hashN(p.n+ME)%7)-3)<0;
+    pt('home',lk,.01,mode==='ext'?'He likes it here, and I have told him not to give that away. A little.':'He does like the fit with you. A little.',"He'd go anywhere for the right deal.")}
+  if(has('security','guarantee','long-term','long term','extra year','more years')){
+    pt('yrs',c.years>=(mode==='ext'?4:(p.my||1)),.01,'The years are what he wants. That helps.',"You're not offering the years, so don't sell me security.")}
+  if(has('opt-out','opt out','no-trade','no trade','incentive','bonus'))pts.push('Put it in the contract notes ("opt-out after year 2") and it counts toward his number.');
+  if(!pts.length)pts.push('I hear you. Give me something concrete: his health, his age, the market, the role, or why he wins with you.');
+  d=Math.max(-.03,Math.min(.015,d));const room=-.06-T.mv;if(d<room)d=room;T.mv+=d;
+  st.f=Math.max(.8,st.f+d);if(d<0)st.fl=Math.max(.8,st.fl+d*.5);
+  T.n++;T.log.push({me:text.slice(0,300),ag:pts.join(' '),d});return T}
+function agentTalkHTML(id,mode,ok){const st=UI.neg[ME+'|'+mode+'|'+id],T=st&&st.talk,log=T?T.log:[],left=3-(T?T.n:0);
+  return `<div class="gmtalk agtalk">${log.map(l=>`<div class="say me">${esc(l.me)}</div><div class="say gm">"${esc(l.ag)}"${l.d<-.001?' <b class="up">He comes down.</b>':l.d>.001?' <b class="dn">He digs in.</b>':''}</div>`).join('')}
+    ${ok?'':left>0?`<div class="subh" style="margin-top:6px">Make your case</div><textarea id="agSay" rows="2" maxlength="300" placeholder="Answer his agent in your own words..."></textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:6px"><span class="hint" style="flex:1">He checks what you say against the numbers. A true point brings him down a little. ${left} repl${left===1?'y':'ies'} left.</span><button class="btn primary" type="button" id="agSend">Send</button></div>`:'<p class="hint" style="margin:6px 0 0">He has heard enough. Change the offer.</p>'}</div>`}
 /* ---------- trade ---------- */
 function teamIds(code){const s=new Set(D.teams[code].players);for(const k in S.team)if(S.team[k]===code)s.add(k);return [...s].filter(id=>owner(id)===code)}
 function teamCBTbase(code){
@@ -2823,7 +2867,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261119221024';
+const BUILD='20261120034735';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
