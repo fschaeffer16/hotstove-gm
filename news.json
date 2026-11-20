@@ -1,6 +1,24 @@
 {
  "items": [
   {
+   "title": "Sources: MLBPA offers international signing plan, no draft",
+   "blurb": "The MLB Players Association proposed changes to international amateur signings, but not an international draft, sources told ESPN on Friday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50542420/mlbpa-offers-intl-signing-plan-no-draft",
+   "time": "2026-11-20T18:51:39Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Players Avoiding Arbitration Prior To The 2026 Non-Tender Deadline",
+   "blurb": "The deadline for teams to tender contracts to arbitration-eligible players is this afternoon at 4pm CT. Throughout the day, we’ll see a handful of arb-eligible players agree to terms with their clubs to avoid a hearing. These so-called “pre-tender deals” usually, although not always, involve players",
+   "link": "https://www.mlbtraderumors.com/2026/11/players-avoiding-arbitration-prior-to-the-2026-non-tender-deadline.html",
+   "time": "2026-11-20T18:49:02Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "Twins To Non-Tender Trevor Larnach",
    "blurb": "The Twins are not expected to tender a contract to outfielder Trevor Larnach before the 4 p.m. CT deadline on Friday, Dan Hayes of The Athletic reports. Larnach will become a free agent when the move becomes official. More to come&#8230;",
    "link": "https://www.mlbtraderumors.com/2026/11/twins-to-non-tender-trevor-larnach.html",
@@ -3227,30 +3245,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Braves, reliever Evan Phillips agree to 3-year, $35M deal",
-   "blurb": "The Braves and free agent relief pitcher Evan Phillips, who appeared in 31 games for the Dodgers last season, have agreed to a three-year, $35 million contract.",
-   "link": "https://www.espn.com/mlb/story/_/id/50464197/braves-reliever-evan-phillips-agree-3-year-35m-deal",
-   "time": "2026-11-12T21:24:44Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "ATL"
-   ]
-  },
-  {
-   "title": "Mets, Dodgers all in on Tarik Skubal",
-   "blurb": "Jorge Castillo breaks down the most likely teams to try and sign Tarik Skubal this offseason.",
-   "link": "https://www.espn.com/video/clip/_/id/50450827/mets-dodgers-all-tarik-skubal",
-   "time": "2026-11-12T16:35:43Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "LAD",
-    "NYM"
-   ]
   }
  ],
- "updated": "2026-11-20T18:45:05Z"
+ "updated": "2026-11-20T18:55:09Z"
 }
