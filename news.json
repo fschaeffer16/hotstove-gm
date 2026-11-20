@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Colorado Rockies signed free agent OF Enexis Antunez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T17:54:39Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
    "title": "Chicago Cubs signed free agent RHP Anderson Castillo to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3237,19 +3248,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Astros hire Yankees bench coach Brad Ausmus as new manager",
-   "blurb": "The Astros are hiring Yankees bench coach Brad Ausmus, who played 10 of his 18 MLB seasons as a catcher in Houston, as the team's new manager.",
-   "link": "https://www.espn.com/mlb/story/_/id/50453386/source-astros-hire-brad-ausmus-new-manager",
-   "time": "2026-11-11T18:49:40Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "HOU",
-    "NYY"
-   ]
   }
  ],
- "updated": "2026-11-20T17:44:36Z"
+ "updated": "2026-11-20T17:54:39Z"
 }
