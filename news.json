@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Source: Mets reach 3-year, $12 million deal with Darwinzon Hernandez",
+   "blurb": "The Mets reached a three-year, $12 million deal with Darwinzon Hernandez, a source told ESPN, helping a relief corps that underwent an overhaul this past summer.",
+   "link": "https://www.espn.com/mlb/story/_/id/50536986/mets-reach-3-year-deal-reliever-darwinzon-hernandez",
+   "time": "2026-11-20T03:10:12Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "Rockies acquire pitchers Luis Castillo, Davis Martin from White Sox",
    "blurb": "The Rockies acquired pitchers Luis Castillo and Davis Martin from the White Sox for left-hander Sean Sullivan and catching prospect Douglas Veliz.",
    "link": "https://www.espn.com/mlb/story/_/id/50536728/rockies-acquire-luis-castillo-davis-martin-white-sox",
@@ -3199,5 +3210,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-20T02:41:37Z"
+ "updated": "2026-11-20T03:11:44Z"
 }
