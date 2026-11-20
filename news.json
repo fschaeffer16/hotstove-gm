@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Chicago White Sox traded RHP Jordan Leasure to Philadelphia Phillies for RHP Christian Coppola.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T22:46:35Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI",
+    "CHW"
+   ]
+  },
+  {
    "title": "White Sox Trade Jordan Leasure To Phillies",
    "blurb": "The White Sox have traded reliever Jordan Leasure to the Phillies for minor league pitcher Christian Coppola, according to announcements from both clubs. Philadelphia immediately agreed to a deal with Leasure to avoid arbitration. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/white-sox-trade-jordan-leasure-to-phillies.html",
@@ -3248,16 +3260,7 @@
    "teams": [
     "BOS"
    ]
-  },
-  {
-   "title": "Testimony: Bettors linked to Emmanuel Clase wagered on Luis Ortiz pitches",
-   "blurb": "Bettors risked thousands of dollars on the result of specific pitches ahead of two Cleveland Guardians games in June 2025, according to witness testimony Monday in the federal gambling trial of Emmanuel Clase and Luis Ortiz.",
-   "link": "https://www.espn.com/espn/betting/story/_/id/50506345/witness-testimony-bettors-linked-emmanuel-clase-wagered-luis-ortiz-pitches",
-   "time": "2026-11-17T03:17:44Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-20T22:36:31Z"
+ "updated": "2026-11-20T22:46:35Z"
 }
