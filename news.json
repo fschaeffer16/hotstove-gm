@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Arizona Diamondbacks traded LHP Luke Dotson and Future Considerations to Boston Red Sox for RHP Johan Oviedo.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T23:57:21Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ARI",
+    "BOS"
+   ]
+  },
+  {
    "title": "Minnesota Twins traded 1B Royce Lewis to Los Angeles Dodgers for RHP Bobby Miller and C Francisco Espinoza.",
    "blurb": "",
    "link": "",
@@ -3264,18 +3276,7 @@
    "teams": [
     "PHI"
    ]
-  },
-  {
-   "title": "White Sox To Sign Dustin May",
-   "blurb": "10:07am: Agent Craig Rose confirms to Jon Heyman of the New York Post that May has agreed to a three-year, $52.5MM deal to join the ChiSox. 10:01am: The White Sox and right-hander Dustin May are in agreement on a three-year contract, reports Robert Murray of FanSided. The Paragon Sports Internationa",
-   "link": "https://www.mlbtraderumors.com/2026/11/white-sox-to-sign-dustin-may.html",
-   "time": "2026-11-17T16:07:48Z",
-   "source": "MLB Trade Rumors",
-   "kind": "report",
-   "teams": [
-    "CHW"
-   ]
   }
  ],
- "updated": "2026-11-20T23:47:11Z"
+ "updated": "2026-11-20T23:57:21Z"
 }

@@ -2223,9 +2223,33 @@
    "src": "MLB Stats API",
    "sid": 950798,
    "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Luke Dotson",
+     "from": "ARI",
+     "to": "BOS",
+     "forty": false,
+     "pos": "LHP"
+    },
+    {
+     "name": "Johan Oviedo",
+     "from": "BOS",
+     "to": "ARI",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "Arizona Diamondbacks traded LHP Luke Dotson and Future Considerations to Boston Red Sox for RHP Johan Oviedo.",
+   "src": "MLB Stats API",
+   "sid": 950804,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T23:47:11Z",
+ "live": "2026-11-20T23:57:21Z",
  "seen_sids": [
   950119,
   950220,
@@ -2412,6 +2436,7 @@
   950788,
   950789,
   950791,
-  950798
+  950798,
+  950804
  ]
 }
