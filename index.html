@@ -671,15 +671,23 @@ function contractCalc(c){
 /* ---------- slots ---------- */
 /* H = position-player depth, D = bullpen depth, R6+ = rotation depth: all off the 26-man */
 function ensureDep(){if(!S.hdep)S.hdep=[];if(!S.pdep)S.pdep=[]}
+/* 13 pitchers: 5-man rotation + 8-man bullpen, or 6-man rotation + 7-man bullpen (S.rotN, default 6) */
+const RN=()=>S&&S.rotN===5?5:6;
+function setRotN(n){if(n===RN())return;snap();ensureDep();
+  if(n===5){const id=S.rot[5]||null;S.rot.splice(5,1);S.pen.push(['LR',id]);S.rotN=5}
+  else{let i=-1;for(let j=S.pen.length-1;j>=0;j--)if(S.pen[j][0]==='LR'){i=j;break}if(i<0)i=S.pen.length-1;
+    const id=i>=0?S.pen.splice(i,1)[0][1]:null;S.rot.splice(5,0,id);S.rotN=6}
+  commit();toast(n===5?'5-man rotation + 8-man bullpen. Your SP6 moved to the bullpen as the long man.':'6-man rotation + 7-man bullpen. Your long man moved back to SP6.')}
 const SLOTKEYS=()=>{ensureDep();return [...S.lineup.map((_,i)=>'L'+i),...S.bench.map((_,i)=>'B'+i),...S.rot.map((_,i)=>'R'+i),...S.pen.map((_,i)=>'P'+i),...S.hdep.map((_,i)=>'H'+i),...S.pdep.map((_,i)=>'D'+i)]};
 function getSlot(k){ensureDep();const t=k[0],i=+k.slice(1);if(t==='L')return S.lineup[i][1];if(t==='B')return S.bench[i][1];if(t==='R')return S.rot[i]||null;if(t==='H')return S.hdep[i]||null;if(t==='D')return S.pdep[i]||null;return S.pen[i][1]}
 function setSlot(k,id){ensureDep();const t=k[0],i=+k.slice(1);if(t==='L')S.lineup[i][1]=id;else if(t==='B')S.bench[i][1]=id;else if(t==='R')S.rot[i]=id;else if(t==='H')S.hdep[i]=id;else if(t==='D')S.pdep[i]=id;else S.pen[i][1]=id}
 /* tidy depth after every change: no gaps, no duplicates, rotation keeps at least 4 depth slots plus an open one */
-function tidyDepth(){ensureDep();const live=new Set([...S.lineup.map(x=>x[1]),...S.bench.map(x=>x[1]),...S.rot.slice(0,6),...S.pen.map(x=>x[1])].filter(Boolean));
+function tidyDepth(){ensureDep();const rn=RN(),pn=13-rn;while(S.pen.length<pn)S.pen.push([S.pen.length?'RP':'CL',null]);while(S.pen.length>pn){const x=S.pen.pop();if(x[1])S.pdep.unshift(x[1])}
+  const live=new Set([...S.lineup.map(x=>x[1]),...S.bench.map(x=>x[1]),...S.rot.slice(0,rn),...S.pen.map(x=>x[1])].filter(Boolean));
   const uniq=a=>a.filter((x,i)=>x&&!live.has(x)&&a.indexOf(x)===i);
   S.hdep=uniq(S.hdep);S.pdep=uniq(S.pdep);
-  const rd=uniq(S.rot.slice(6));while(rd.length<4)rd.push(null);if(rd.every(Boolean))rd.push(null);
-  while(S.rot.length<6)S.rot.push(null);S.rot=S.rot.slice(0,6).concat(rd)}
+  const rd=uniq(S.rot.slice(rn));while(rd.length<4)rd.push(null);if(rd.every(Boolean))rd.push(null);
+  while(S.rot.length<rn)S.rot.push(null);S.rot=S.rot.slice(0,rn).concat(rd)}
 function slotOf(id){return SLOTKEYS().find(k=>getSlot(k)===id)}
 function moveSlot(src,dst){
   if(!src||!dst||src===dst)return;
@@ -697,7 +705,7 @@ function clearSlot(k){const id=getSlot(k),t=k[0],i=+k.slice(1);snap();setSlot(k,
   if(id){ /* off the 26-man goes to that unit's depth; off a depth list goes back to the 40-man */
     if(t==='L'||t==='B')S.hdep.unshift(id);
     else if(t==='P')S.pdep.unshift(id);
-    else if(t==='R'&&i<6){S.rot.splice(6,0,id)}
+    else if(t==='R'&&i<RN()){S.rot.splice(RN(),0,id)}
   }
   commit()}
 function unslot(id){for(const k of SLOTKEYS())if(getSlot(k)===id)setSlot(k,null)}
@@ -873,7 +881,7 @@ function slotHTML(k,label,labelOpts){
     ${p?`<button class="x" type="button" data-clear="${k}" aria-label="${on26Key(k)?'Move to depth':'Remove from depth'}" title="${on26Key(k)?'Move to depth':'Remove from depth'}">×</button>`:'<span></span>'}
   </div>`;
 }
-function on26Key(k){const t=k[0];return t==='L'||t==='B'||t==='P'||(t==='R'&&+k.slice(1)<6)}
+function on26Key(k){const t=k[0];return t==='L'||t==='B'||t==='P'||(t==='R'&&+k.slice(1)<RN())}
 function shortPos(id){return String((P[id]&&P[id].pos)||'DEP').split('/')[0]}
 function renderDepth(){ensureDep();
   const LPOS=['C','1B','2B','3B','SS','LF','CF','RF','DH'],BPOS=['C','CI','MI','INF','UT','OF','1B','DH'],PROLE=['CL','SU','MD','LG','LR','RP'];
@@ -887,7 +895,7 @@ function renderDepth(){ensureDep();
   if(META_IX&&!(S.r5&&S.r5.mlbDone)){const ex=metsIds().filter(id=>P[id].fv&&r5Exposed(id)&&hsGrade(id)>=45).sort((a,b)=>hsValue(b)-hsValue(a));if(ex.length)warns.push(`Rule 5: ${ex.length} ranked prospect${ex.length>1?'s are':' is'} eligible and not on the 40-man (${ex.slice(0,3).map(id=>P[id].n).join(', ')}${ex.length>3?'…':''}). Protect them in Draft › Rule 5.`)}
   for(const rid of Object.keys(S.r5mlb||{}))if(S.r5mlb[rid].code===ME&&owner(rid)===ME&&!on26(rid))warns.push(`Rule 5 pick ${P[rid].n} must stay on the 26-man all season or be offered back to the ${D.teams[S.r5mlb[rid].from].name} for $50K`);
   const dup={};S.lineup.forEach(x=>{dup[x[0]]=(dup[x[0]]||0)+1});const dd=Object.keys(dup).filter(k=>dup[k]>1);if(dd.length)warns.push(`Position listed twice: ${dd.join(', ')}`);
-  const war9=S.lineup.reduce((s,x)=>s+(x[1]?pwar(x[1]):0),0),warR=S.rot.slice(0,6).reduce((s,id)=>s+(id?pwar(id):0),0),warP=S.pen.reduce((s,x)=>s+(x[1]?pwar(x[1]):0),0);
+  const war9=S.lineup.reduce((s,x)=>s+(x[1]?pwar(x[1]):0),0),warR=S.rot.slice(0,RN()).reduce((s,id)=>s+(id?pwar(id):0),0),warP=S.pen.reduce((s,x)=>s+(x[1]?pwar(x[1]):0),0);
   return `<div class="card">
     <div class="cardhead"><h2>Lineup</h2><span class="cnt">${war9.toFixed(1)} WAR</span></div>
     <div class="slots">${S.lineup.map((x,i)=>slotHTML('L'+i,x[0],LPOS)).join('')}</div>
@@ -899,13 +907,14 @@ function renderDepth(){ensureDep();
     <ul class="warnlist">${warns.length?warns.map(w=>`<li>⚠ ${esc(w)}</li>`).join(''):'<li class="ok">✓ 13 position players + 13 pitchers, all on the 40-man</li>'}</ul>
   </div>
   <div class="card c-rot">
-    <div class="cardhead"><h2>Rotation</h2><span class="cnt">${warR.toFixed(1)} WAR (SP1–6)</span></div>
-    <div class="slots">${S.rot.slice(0,6).map((_,i)=>slotHTML('R'+i,'SP'+(i+1))).join('')}</div>
+    <div class="cardhead"><h2>Rotation</h2><span class="cnt">${warR.toFixed(1)} WAR (SP1–${RN()})</span></div>
+    <div class="seg rotn" role="group" aria-label="Staff size"><button type="button" data-rotn="5" aria-pressed="${RN()===5}">5-man + 8 RP</button><button type="button" data-rotn="6" aria-pressed="${RN()===6}">6-man + 7 RP</button></div>
+    <div class="slots">${S.rot.slice(0,RN()).map((_,i)=>slotHTML('R'+i,'SP'+(i+1))).join('')}</div>
     <div class="depthnote">Depth (not on 26-man)</div>
-    <div class="slots">${S.rot.slice(6).map((_,i)=>slotHTML('R'+(i+6),'SP'+(i+7))).join('')}</div>
+    <div class="slots">${S.rot.slice(RN()).map((_,i)=>slotHTML('R'+(i+RN()),'SP'+(i+RN()+1))).join('')}</div>
   </div>
   <div class="card c-pen">
-    <div class="cardhead"><h2>Bullpen</h2><span class="cnt">${warP.toFixed(1)} WAR</span></div>
+    <div class="cardhead"><h2>Bullpen</h2><span class="cnt">${S.pen.length} arms · ${warP.toFixed(1)} WAR</span></div>
     <div class="slots">${S.pen.map((x,i)=>slotHTML('P'+i,x[0],PROLE)).join('')}</div>
     <div class="depthnote">Depth (not on 26-man)</div>
     <div class="slots">${S.pdep.map((id,i)=>slotHTML('D'+i,'RP')).join('')}${slotHTML('D'+S.pdep.length,'DEP')}</div>
@@ -1128,7 +1137,7 @@ const PROFILE={
 const prof=code=>(D.tx&&D.tx.profiles&&D.tx.profiles[code])||PROFILE[code]||{cap:200,sell:.4,pros:'neutral',note:''};
 const _rw={};
 function baseWAR(code){if(_rw[code]!=null)return _rw[code];const b=code==='NYM'?D:D.base[code];if(!b)return 0;
-  const ids=[...b.lineup.map(x=>x[1]),...b.bench.map(x=>x[1]),...b.rot.slice(0,6),...b.pen.map(x=>x[1])].filter(Boolean);
+  const ids=[...b.lineup.map(x=>x[1]),...b.bench.map(x=>x[1]),...b.rot.slice(0,b===D?6:(b.rotN===5?5:6)),...b.pen.map(x=>x[1])].filter(Boolean);
   return _rw[code]=ids.reduce((s,id)=>s+(P[id]&&P[id].proj?P[id].proj.war:0),0)}
 function teamReady(code){const w=D.teams[code]&&D.teams[code].win;return w==='allin'||w==='contend'||baseWAR(code)>=36}
 /* guaranteed money still owed (2027 on) and the most a club will take on for one player in a trade */
@@ -2394,12 +2403,12 @@ function seRoster(code){
   for(const id of hdep){if(!needB())break;if(!used.has(id)){bench.push(id);used.add(id)}}
   if(needB()){org();for(const id of orgH){if(!needB())break;if(!used.has(id)){bench.push(id);used.add(id)}}}
   /* pitchers */
-  const cfg=B.rot.filter(id=>ok(id)),rot=cfg.slice(0,5);rot.forEach(id=>used.add(id));
-  if(rot.length<5){org();for(const id of orgP){if(rot.length>=5)break;if(!used.has(id)&&isSPp(id)&&!B.pen.some(x=>x[1]===id)){rot.push(id);used.add(id);const was=B.rot.slice(0,5).find(y=>y&&!ok(y)&&!subs.some(s=>s[1]===y));if(was&&P[was])subs.push([id,was])}}}
+  const rn=code===ME?RN():5,pn=13-rn,cfg=B.rot.filter(id=>ok(id)),rot=cfg.slice(0,rn);rot.forEach(id=>used.add(id));
+  if(rot.length<rn){org();for(const id of orgP){if(rot.length>=rn)break;if(!used.has(id)&&isSPp(id)&&!B.pen.some(x=>x[1]===id)){rot.push(id);used.add(id);const was=B.rot.slice(0,rn).find(y=>y&&!ok(y)&&!subs.some(s=>s[1]===y));if(was&&P[was])subs.push([id,was])}}}
   const pen=B.pen.filter(x=>ok(x[1])&&!used.has(x[1])).map(x=>[x[0],x[1]]);pen.forEach(x=>used.add(x[1]));
-  const sw=cfg[5];if(sw&&!used.has(sw)&&pen.length<8){pen.push(['LR',sw]);used.add(sw)}
-  for(const id of (B.pdep||[])){if(pen.length>=8)break;if(ok(id)&&!used.has(id)){pen.push(['MD',id]);used.add(id)}}
-  if(pen.length<8){org();for(const id of orgP){if(pen.length>=8)break;if(!used.has(id)&&!cfg.includes(id)){pen.push(['MD',id]);used.add(id)}}}
+  const sw=rn===5?cfg[5]:null;if(sw&&!used.has(sw)&&pen.length<pn){pen.push(['LR',sw]);used.add(sw)}
+  for(const id of (B.pdep||[])){if(pen.length>=pn)break;if(ok(id)&&!used.has(id)){pen.push(['MD',id]);used.add(id)}}
+  if(pen.length<pn){org();for(const id of orgP){if(pen.length>=pn)break;if(!used.has(id)&&!cfg.includes(id)){pen.push(['MD',id]);used.add(id)}}}
   if(pen.length&&!pen.some(x=>x[0]==='CL')){const b=pen.filter(x=>x[0]==='SU')[0]||pen.slice().sort((a,b)=>pQ(a[1])-pQ(b[1]))[0];b[0]='CL'}
   return {code,lineup,bench,rot,pen,subs}}
 /* ---- who starts today: regulars rest in line with their projected games, and a bench bat with the platoon edge can take the start ---- */
@@ -2867,7 +2876,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261120034735';
+const BUILD='20261120150512';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -2941,7 +2950,7 @@ function updateText(){
   const nm=id=>id?`${P[id].n} (${hand(id)})${note(id)?'  ('+note(id)+')':''}`:'TBD';
   L.push('','PROJECTED LINEUP','');S.lineup.forEach(([p,id])=>L.push(p.padEnd(4)+nm(id)));
   L.push('');S.bench.forEach(([p,id])=>L.push(p.padEnd(4)+nm(id)));
-  L.push('','STARTING ROTATION','');S.rot.forEach((id,i)=>{if(i===6)L.push('');L.push(('SP'+(i+1)).padEnd(5)+nm(id))});
+  L.push('','STARTING ROTATION','');S.rot.forEach((id,i)=>{if(i===RN())L.push('');L.push(('SP'+(i+1)).padEnd(5)+nm(id))});
   L.push('','BULLPEN','');S.pen.forEach(([r,id])=>L.push(r.padEnd(5)+nm(id)));
   const ids=metsIds(),f40=ids.filter(id=>status(id)==='40');
   const un=f40.filter(id=>!slotOf(id));
@@ -3014,7 +3023,7 @@ document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
   {const h=!e.target.closest('.tbadge')&&e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
   {const fp=e.target.closest('[data-fapos]');if(fp){UI.faPos=fp.dataset.fapos;render();return}}
-  const t=e.target.closest('[data-scout],[data-club],[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-tview],[data-tdf],[data-tdall],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
+  const t=e.target.closest('[data-scout],[data-club],[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-tview],[data-rotn],[data-tdf],[data-tdall],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.scout){e.preventDefault();scoutModal(t.dataset.scout,!!t.dataset.back);return}
   if(t.dataset.tab){const fromNav=!!t.closest('#topnav');UI.tab=t.dataset.tab;UI.navAt=null;render();if(isFocus())window.scrollTo(0,0);else if(fromNav)goTo('desk');return}
@@ -3022,6 +3031,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.goto){if(isFocus()){UI.tab=UI.homeTab||'fa';render()}UI.navAt=t.dataset.goto;renderNav();goTo(t.dataset.goto);return}
   if(t.dataset.prsort){UI.prSort=t.dataset.prsort;render();return}
   if(t.dataset.newsf){UI.newsF=t.dataset.newsf;render();return}
+  if(t.dataset.rotn){setRotN(+t.dataset.rotn);return}
   if(t.dataset.tview){UI.tView=t.dataset.tview;render();return}
   if(t.dataset.tdf){UI.tdF=t.dataset.tdf;render();return}
   if(t.dataset.tdall){const g=t.dataset.tdall;UI.tdAll=UI.tdAll||new Set();UI.tdAll.has(g)?UI.tdAll.delete(g):UI.tdAll.add(g);render();return}
