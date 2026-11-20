@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Sources: Dodgers acquire Royce Lewis in trade with Twins",
+   "blurb": "The Dodgers acquired Royce Lewis in a trade with the Twins, sources told ESPN, fulfilling LA's need for a versatile right-handed hitter to replace Miguel Rojas.",
+   "link": "https://www.espn.com/mlb/story/_/id/50544410/sources-dodgers-acquire-royce-lewis-trade-twins",
+   "time": "2026-11-20T23:25:24Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "LAD",
+    "MIN"
+   ]
+  },
+  {
    "title": "San Francisco Giants traded SS Christian Koss to Tampa Bay Rays for RHP Cole Stokes.",
    "blurb": "",
    "link": "",
@@ -3260,18 +3272,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Red Sox Discussing Several Pitchers In Trade Talks",
-   "blurb": "The Red Sox have a relatively crowded 40-man roster and several rotation candidates on the mend from injury. Between today&#8217;s deadline to protect eligible prospects from the Rule 5 Draft and Friday&#8217;s deadline to tender contracts to arbitration-eligible players, there are multiple deadline",
-   "link": "https://www.mlbtraderumors.com/2026/11/red-sox-trade-rumors-tanner-houck-kutter-crawford-johan-oviedo.html",
-   "time": "2026-11-17T15:53:41Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "BOS"
-   ]
   }
  ],
- "updated": "2026-11-20T23:16:46Z"
+ "updated": "2026-11-20T23:26:49Z"
 }
