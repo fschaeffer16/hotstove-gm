@@ -2055,9 +2055,37 @@
    "src": "MLB Stats API",
    "sid": 950768,
    "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Jimmy Herget",
+   "team": "COL",
+   "pos": "RHP",
+   "date": "2026-11-20",
+   "summary": "Colorado Rockies designated RHP Jimmy Herget for assignment.",
+   "src": "MLB Stats API",
+   "sid": 950769,
+   "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Chase Lee",
+     "from": "TOR",
+     "to": "COL",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "Toronto Blue Jays traded RHP Chase Lee to Colorado Rockies for cash.",
+   "src": "MLB Stats API",
+   "sid": 950770,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T17:54:39Z",
+ "live": "2026-11-20T21:26:05Z",
  "seen_sids": [
   950119,
   950220,
@@ -2237,6 +2265,8 @@
   950749,
   950750,
   950761,
-  950768
+  950768,
+  950769,
+  950770
  ]
 }

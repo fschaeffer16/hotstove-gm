@@ -1,6 +1,40 @@
 {
  "items": [
   {
+   "title": "Colorado Rockies designated RHP Jimmy Herget for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T21:26:05Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays traded RHP Chase Lee to Colorado Rockies for cash.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T21:26:05Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR",
+    "COL"
+   ]
+  },
+  {
+   "title": "Tigers, Troy Melton Agree To Six-Year Extension",
+   "blurb": "The Tigers and right-hander Troy Melton have agreed to a six-year, $46.5MM contract extension, per ESPN&#8217;s Jeff Passan. The deal includes a club option for 2033 and can max out at $98MM with incentives. Melton is a client of Paragon Sports International. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/tigers-troy-melton-agree-to-six-year-extension.html",
+   "time": "2026-11-20T21:24:41Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
    "title": "Rockies Acquire Chase Lee, Designate Jimmy Herget For Assignment",
    "blurb": "The Rockies have traded for Blue Jays right-hander Chase Lee, per a team announcement. Cash is heading back to Toronto in the deal. Colorado is designating right-hander Jimmy Herget for assignment to clear a roster spot. More to come&#8230;",
    "link": "https://www.mlbtraderumors.com/2026/11/rockies-to-acquire-chase-lee-designate-jimmy-herget-for-assignment.html",
@@ -3218,39 +3252,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Every MLB team's chance of signing Skubal -- and their backup plans",
-   "blurb": "Dodger or Met blue? We break down all 30 clubs' chances of landing the offseason's biggest free agent -- and who their Plan B should be.",
-   "link": "https://www.espn.com/mlb/story/_/id/50454235/tarik-skubal-all-30-teams-backup-plans",
-   "time": "2026-11-16T15:34:05Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Brewers acquire reliever Ryan Walker from Giants for 2 minor league pitchers",
-   "blurb": "The Brewers acquired reliever Ryan Walker from the Giants in exchange for right-handers Blake Holub and Gavin Perry.",
-   "link": "https://www.espn.com/mlb/story/_/id/50496867/brewers-acquire-ryan-walker-giants-2-minor-leaguers",
-   "time": "2026-11-16T01:07:27Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "MIL",
-    "SFG"
-   ]
-  },
-  {
-   "title": "Tim Hill, Yankees agree to 1-year, $2.25M deal, sources say",
-   "blurb": "Left-hander Tim Hill is staying with the Yankees, agreeing to a one-year, $2.25 million contract, sources told ESPN.",
-   "link": "https://www.espn.com/mlb/story/_/id/50492078/tim-hill-yankees-agree-1-year-225m-deal-sources-say",
-   "time": "2026-11-15T19:44:18Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "NYY"
-   ]
   }
  ],
- "updated": "2026-11-20T21:16:01Z"
+ "updated": "2026-11-20T21:26:05Z"
 }
