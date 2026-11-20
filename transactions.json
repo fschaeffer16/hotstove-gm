@@ -1886,9 +1886,30 @@
    "src": "MLB Stats API",
    "sid": 950687,
    "status": "official"
+  },
+  {
+   "date": "2026-11-20",
+   "type": "sign",
+   "summary": "Mets, Darwinzon Hernández Agree To Three-Year Deal",
+   "name": "Darwinzon Hernández",
+   "team": "NYM",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-darwinzon-hernandez-agree-to-three-year-deal.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 4000000,
+    "desc": "3 yr, $12M (2027-29)",
+    "yrs": {
+     "2027": 4000000,
+     "2028": 4000000,
+     "2029": 4000000,
+     "2030": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-19T22:40:42Z",
+ "live": "2026-11-20T01:51:24Z",
  "seen_sids": [
   950119,
   950220,
