@@ -2011,9 +2011,31 @@
    "src": "MLB Stats API",
    "sid": 950746,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Celso Lopez",
+   "team": "CHC",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Chicago Cubs signed free agent RHP Celso Lopez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950750,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Enmanuel Mendoza",
+   "team": "COL",
+   "pos": "C",
+   "date": "2026-11-16",
+   "summary": "Colorado Rockies signed free agent C Enmanuel Mendoza to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950749,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T15:04:01Z",
+ "live": "2026-11-20T17:34:32Z",
  "seen_sids": [
   950119,
   950220,
@@ -2189,6 +2211,8 @@
   950739,
   950742,
   950744,
-  950746
+  950746,
+  950749,
+  950750
  ]
 }

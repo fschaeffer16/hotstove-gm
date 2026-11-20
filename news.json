@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Chicago Cubs signed free agent RHP Celso Lopez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T17:34:32Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
+   "title": "Colorado Rockies signed free agent C Enmanuel Mendoza to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T17:34:32Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
    "title": "Twins To Non-Tender Bailey Ober",
    "blurb": "The Twins are expected to non-tender right-hander Bailey Ober today, reports Darren Wolfson of 5 Eyewitness News and SKOR North Radio. He&#8217;ll immediately become a free agent when the move becomes official. Ober, 31, has been a mainstay in Minnesota&#8217;s rotation over the past four years and ",
    "link": "https://www.mlbtraderumors.com/2026/11/twins-non-tender-bailey-ober.html",
@@ -3229,25 +3251,7 @@
    "teams": [
     "SDP"
    ]
-  },
-  {
-   "title": "2026 MLB offseason manager changes: Tracking hirings, firings",
-   "blurb": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
-   "link": "https://www.espn.com/mlb/story/_/id/50046775/mlb-2026-manager-changes-tracker-hirings-firings-top-replacement-candidates",
-   "time": "2026-11-11T16:28:05Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Witnessing Jacob Misiorowski's Cy Young-worthy season",
-   "blurb": "What's it like seeing a Cy Young favorite unleash a 105 mph fastball? We asked those around the Brewers' breakout star.",
-   "link": "https://www.espn.com/mlb/story/_/id/49966556/mlb-2026-jacob-misiorowski-milwaukee-brewers-cy-young-breakout-teammates",
-   "time": "2026-11-11T12:07:41Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-20T17:04:27Z"
+ "updated": "2026-11-20T17:34:32Z"
 }
