@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Miami Marlins signed free agent LHP Dylan MacLean to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T14:53:58Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Athletics signed free agent C Brian Serven to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T14:53:58Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATH"
+   ]
+  },
+  {
    "title": "Lance Broadway, ex-White Sox, Mets pitcher who turned to acting, dies at 43",
    "blurb": "Lance Broadway, a former MLB first-round pick who became an actor following his baseball career, has died. He was 43.",
    "link": "https://www.espn.com/mlb/story/_/id/50540724/pitcher-turned-actor-lance-broadway-dies-age-43",
@@ -3227,25 +3249,7 @@
     "LAD",
     "MIA"
    ]
-  },
-  {
-   "title": "U.S. Supreme Court won't hear dispute over Clemente license plates in P.R.",
-   "blurb": "The U.S. Supreme Court declined to take up a dispute between Roberto Clemente's sons vs. Puerto Rico over the use of the legend's image on license plates.",
-   "link": "https://www.espn.com/mlb/story/_/id/50442434/us-supreme-court-declines-case-clemente-license-plates",
-   "time": "2026-11-10T17:29:15Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Bob Boone, part of MLB's 1st 3-generation family, dies at 78",
-   "blurb": "Bob Boone, the catcher on the Phillies' first World Series title team who won seven Gold Gloves and was part of MLB's first three-generation family, has died.",
-   "link": "https://www.espn.com/mlb/story/_/id/50442954/bob-boone-part-mlb-1st-3-generation-family-dies-78",
-   "time": "2026-11-10T17:26:26Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-20T14:03:50Z"
+ "updated": "2026-11-20T14:53:58Z"
 }

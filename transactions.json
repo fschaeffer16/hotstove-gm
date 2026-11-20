@@ -1956,9 +1956,31 @@
    "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal",
    "status": "reported",
    "forty": true
+  },
+  {
+   "type": "sign_minor",
+   "name": "Dylan MacLean",
+   "team": "MIA",
+   "pos": "LHP",
+   "date": "2026-11-19",
+   "summary": "Miami Marlins signed free agent LHP Dylan MacLean to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950739,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Brian Serven",
+   "team": "ATH",
+   "pos": "C",
+   "date": "2026-11-19",
+   "summary": "Athletics signed free agent C Brian Serven to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950737,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T13:23:44Z",
+ "live": "2026-11-20T14:53:58Z",
  "seen_sids": [
   950119,
   950220,
@@ -2129,6 +2151,8 @@
   950685,
   950686,
   950687,
-  950733
+  950733,
+  950737,
+  950739
  ]
 }
