@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Rockies acquire pitchers Luis Castillo, Davis Martin from White Sox",
+   "blurb": "The Rockies acquired pitchers Luis Castillo and Davis Martin from the White Sox for left-hander Sean Sullivan and catching prospect Douglas Veliz.",
+   "link": "https://www.espn.com/mlb/story/_/id/50536728/rockies-acquire-luis-castillo-davis-martin-white-sox",
+   "time": "2026-11-20T02:40:43Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "CHW",
+    "COL"
+   ]
+  },
+  {
    "title": "Chicago White Sox traded RHP Luis Castillo and RHP Davis Martin to Colorado Rockies for LHP Sean Sullivan and C Douglas Veliz.",
    "blurb": "",
    "link": "",
@@ -3187,5 +3199,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-20T02:31:33Z"
+ "updated": "2026-11-20T02:41:37Z"
 }
