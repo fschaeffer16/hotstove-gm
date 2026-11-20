@@ -1,6 +1,39 @@
 {
  "items": [
   {
+   "title": "San Diego Padres signed free agent 3B Luis Suisbel to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T15:04:01Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "St. Louis Cardinals signed free agent LHP Steven Pérez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T15:04:01Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "STL"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays signed free agent RHP Adisyn Coffey to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T15:04:01Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
    "title": "Miami Marlins signed free agent LHP Dylan MacLean to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3215,41 +3248,7 @@
     "CHW",
     "MIL"
    ]
-  },
-  {
-   "title": "Cubs' Ben Brown undergoes successful spine surgery, GM says",
-   "blurb": "Cubs pitcher Ben Brown had successful cervical spine surgery Monday in New York, general manager Carter Hawkins said on Tuesday.",
-   "link": "https://www.espn.com/mlb/story/_/id/50444991/cubs-starter-brown-undergoes-spine-surgery-sources-say",
-   "time": "2026-11-11T01:40:01Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "CHC"
-   ]
-  },
-  {
-   "title": "How Pat Murphy's leadership led Brewers to World Series title",
-   "blurb": "Everyone in the Milwaukee clubhouse has their favorite Murphy story. Here are the best of the best.",
-   "link": "https://www.espn.com/mlb/story/_/id/50288815/world-series-brewers-manager-pat-murphy-stories",
-   "time": "2026-11-11T00:59:06Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "MIL"
-   ]
-  },
-  {
-   "title": "Dodgers hire Pedro Guerrero away from Marlins as new hitting coach",
-   "blurb": "The Dodgers have hired Pedro Guerrero as a hitting coach, bringing him back to the organization that drafted him as a player.",
-   "link": "https://www.espn.com/mlb/story/_/id/50446625/dodgers-hire-pedro-guerrero-away-marlins-hitting-coach",
-   "time": "2026-11-10T22:32:06Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "LAD",
-    "MIA"
-   ]
   }
  ],
- "updated": "2026-11-20T14:53:58Z"
+ "updated": "2026-11-20T15:04:01Z"
 }

@@ -1978,9 +1978,42 @@
    "src": "MLB Stats API",
    "sid": 950737,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Luis Suisbel",
+   "team": "SDP",
+   "pos": "3B",
+   "date": "2026-11-19",
+   "summary": "San Diego Padres signed free agent 3B Luis Suisbel to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950742,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Steven Pérez",
+   "team": "STL",
+   "pos": "LHP",
+   "date": "2026-11-19",
+   "summary": "St. Louis Cardinals signed free agent LHP Steven Pérez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950744,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Adisyn Coffey",
+   "team": "TBR",
+   "pos": "RHP",
+   "date": "2026-11-19",
+   "summary": "Tampa Bay Rays signed free agent RHP Adisyn Coffey to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950746,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T14:53:58Z",
+ "live": "2026-11-20T15:04:01Z",
  "seen_sids": [
   950119,
   950220,
@@ -2153,6 +2186,9 @@
   950687,
   950733,
   950737,
-  950739
+  950739,
+  950742,
+  950744,
+  950746
  ]
 }
