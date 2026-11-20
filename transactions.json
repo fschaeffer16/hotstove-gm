@@ -2033,9 +2033,20 @@
    "src": "MLB Stats API",
    "sid": 950749,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Anderson Castillo",
+   "team": "CHC",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Chicago Cubs signed free agent RHP Anderson Castillo to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950761,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T17:34:32Z",
+ "live": "2026-11-20T17:44:36Z",
  "seen_sids": [
   950119,
   950220,
@@ -2213,6 +2224,7 @@
   950744,
   950746,
   950749,
-  950750
+  950750,
+  950761
  ]
 }
