@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Chicago White Sox traded RHP Luis Castillo and RHP Davis Martin to Colorado Rockies for LHP Sean Sullivan and C Douglas Veliz.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T02:31:33Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHW",
+    "COL"
+   ]
+  },
+  {
    "title": "Mets, Darwinzon Hernández Agree To Three-Year Deal",
    "blurb": "The Mets are signing free agent reliever Darwinzon Hernández to a three-year, $12MM contract, reports José F. Rivera. The signing is still pending a physical. Hernández returns to the majors after pitching four seasons in Japan. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/mets-darwinzon-hernandez-agree-to-three-year-deal.html",
@@ -3175,5 +3187,5 @@
    "teams": []
   }
  ],
- "updated": "2026-11-20T01:51:24Z"
+ "updated": "2026-11-20T02:31:33Z"
 }

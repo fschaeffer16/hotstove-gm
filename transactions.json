@@ -1907,9 +1907,47 @@
      "2030": "FREE AGENT"
     }
    }
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Douglas Veliz",
+     "from": "COL",
+     "to": "CHW",
+     "forty": false,
+     "pos": "C"
+    },
+    {
+     "name": "Luis Castillo",
+     "from": "CHW",
+     "to": "COL",
+     "forty": true,
+     "pos": "RHP"
+    },
+    {
+     "name": "Davis Martin",
+     "from": "CHW",
+     "to": "COL",
+     "forty": true,
+     "pos": "RHP"
+    },
+    {
+     "name": "Sean Sullivan",
+     "from": "COL",
+     "to": "CHW",
+     "forty": true,
+     "pos": "LHP"
+    }
+   ],
+   "date": "2026-11-19",
+   "summary": "Chicago White Sox traded RHP Luis Castillo and RHP Davis Martin to Colorado Rockies for LHP Sean Sullivan and C Douglas Veliz.",
+   "src": "MLB Stats API",
+   "sid": 950733,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T01:51:24Z",
+ "live": "2026-11-20T02:31:33Z",
  "seen_sids": [
   950119,
   950220,
@@ -2079,6 +2117,7 @@
   950684,
   950685,
   950686,
-  950687
+  950687,
+  950733
  ]
 }
