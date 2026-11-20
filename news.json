@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Minnesota Twins traded 1B Royce Lewis to Los Angeles Dodgers for RHP Bobby Miller and C Francisco Espinoza.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T23:47:11Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "LAD",
+    "MIN"
+   ]
+  },
+  {
    "title": "Sources: Dodgers acquire Royce Lewis in trade with Twins",
    "blurb": "The Dodgers acquired Royce Lewis in a trade with the Twins, sources told ESPN, fulfilling LA's need for a versatile right-handed hitter to replace Miguel Rojas.",
    "link": "https://www.espn.com/mlb/story/_/id/50544410/sources-dodgers-acquire-royce-lewis-trade-twins",
@@ -3263,16 +3275,7 @@
    "teams": [
     "CHW"
    ]
-  },
-  {
-   "title": "Hitters benefited from checked-swing reviews in minor league testing",
-   "blurb": "The introduction of robot umpire appeals for checked-swing calls in the Triple-A Pacific Coast League this year led to lower swing-and-miss rates on breaking and off-speed pitches.",
-   "link": "https://www.espn.com/mlb/story/_/id/50511164/hitters-benefited-checked-swing-reviews-minor-league-testing",
-   "time": "2026-11-17T16:02:37Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-20T23:37:06Z"
+ "updated": "2026-11-20T23:47:11Z"
 }

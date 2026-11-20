@@ -2192,9 +2192,40 @@
    "summary": "New York Mets non-tendered RHP Dylan Ross (designated for assignment Nov. 17); he is a free agent.",
    "src": "MLB.com (Anthony DiComo), Nov. 20, 2026",
    "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Bobby Miller",
+     "from": "LAD",
+     "to": "MIN",
+     "forty": true,
+     "pos": "RHP"
+    },
+    {
+     "name": "Francisco Espinoza",
+     "from": "LAD",
+     "to": "MIN",
+     "forty": false,
+     "pos": "C"
+    },
+    {
+     "name": "Royce Lewis",
+     "from": "MIN",
+     "to": "LAD",
+     "forty": true,
+     "pos": "1B"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "Minnesota Twins traded 1B Royce Lewis to Los Angeles Dodgers for RHP Bobby Miller and C Francisco Espinoza.",
+   "src": "MLB Stats API",
+   "sid": 950798,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T23:16:46Z",
+ "live": "2026-11-20T23:47:11Z",
  "seen_sids": [
   950119,
   950220,
@@ -2380,6 +2411,7 @@
   950779,
   950788,
   950789,
-  950791
+  950791,
+  950798
  ]
 }
