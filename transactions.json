@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-20",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -1945,9 +1945,20 @@
    "src": "MLB Stats API",
    "sid": 950733,
    "status": "official"
+  },
+  {
+   "date": "2026-11-20",
+   "type": "sign",
+   "summary": "Sources: Jonathan Loáisiga returning to Yankees on 2-year deal",
+   "name": "Jonathan Loáisiga",
+   "team": "NYY",
+   "pos": "RP",
+   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-20T02:31:33Z",
+ "live": "2026-11-20T13:23:44Z",
  "seen_sids": [
   950119,
   950220,
