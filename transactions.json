@@ -2107,9 +2107,43 @@
    "src": "MLB Stats API",
    "sid": 950779,
    "status": "official"
+  },
+  {
+   "type": "claim",
+   "players": [
+    {
+     "name": "Yunior Tur",
+     "from": "ATH",
+     "to": "NYM",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "New York Mets claimed RHP Yunior Tur off waivers from Athletics.",
+   "src": "MLB Stats API",
+   "sid": 950789,
+   "status": "official"
+  },
+  {
+   "type": "claim",
+   "players": [
+    {
+     "name": "Gus Varland",
+     "from": "WSN",
+     "to": "NYM",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "New York Mets claimed RHP Gus Varland off waivers from Washington Nationals.",
+   "src": "MLB Stats API",
+   "sid": 950788,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T22:46:35Z",
+ "live": "2026-11-20T22:56:39Z",
  "seen_sids": [
   950119,
   950220,
@@ -2292,6 +2326,8 @@
   950768,
   950769,
   950770,
-  950779
+  950779,
+  950788,
+  950789
  ]
 }

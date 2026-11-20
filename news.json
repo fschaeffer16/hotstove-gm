@@ -1,6 +1,30 @@
 {
  "items": [
   {
+   "title": "New York Mets claimed RHP Yunior Tur off waivers from Athletics.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T22:56:39Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYM",
+    "ATH"
+   ]
+  },
+  {
+   "title": "New York Mets claimed RHP Gus Varland off waivers from Washington Nationals.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T22:56:39Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYM",
+    "WSN"
+   ]
+  },
+  {
    "title": "Chicago White Sox traded RHP Jordan Leasure to Philadelphia Phillies for RHP Christian Coppola.",
    "blurb": "",
    "link": "",
@@ -3240,27 +3264,7 @@
    "source": "MLB Trade Rumors",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Hall Of Fame Releases 2027 Ballot",
-   "blurb": "The Hall of Fame revealed the 2027 BBWAA ballot on Monday afternoon. Fourteen newcomers join the 13 holdovers who received between 5% and 75% of the vote share on the 2025-26 voting &#8212; excluding Manny Ramirez, who fell off last winter after 10 years on the ballot. The 14 newcomers are as follow",
-   "link": "https://www.mlbtraderumors.com/2026/11/hall-of-fame-releases-2027-ballot.html",
-   "time": "2026-11-17T04:53:43Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Red Sox, Michael Arias Agree To Minor League Deal",
-   "blurb": "The Red Sox are in agreement with reliever Michael Arias on a minor league contract, reports Andrew Parker of Sox Prospects. The righty will be in camp as a non-roster invitee. Arias spent the 2026 season in Double-A with the Yankees. He pitched to a 5.20 earned run average across 53 2/3 innings, st",
-   "link": "https://www.mlbtraderumors.com/2026/11/red-sox-michael-arias-agree-to-minor-league-deal.html",
-   "time": "2026-11-17T03:20:52Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "BOS"
-   ]
   }
  ],
- "updated": "2026-11-20T22:46:35Z"
+ "updated": "2026-11-20T22:56:39Z"
 }
