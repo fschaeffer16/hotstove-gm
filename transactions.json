@@ -2165,6 +2165,33 @@
    "src": "MLB Stats API",
    "sid": 950791,
    "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Christopher Morel",
+   "team": "NYM",
+   "date": "2026-11-20",
+   "summary": "New York Mets non-tendered INF/OF Christopher Morel; he is a free agent.",
+   "src": "MLB.com (Anthony DiComo), Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Hayden Senger",
+   "team": "NYM",
+   "date": "2026-11-20",
+   "summary": "New York Mets non-tendered C Hayden Senger; he is a free agent.",
+   "src": "MLB.com (Anthony DiComo), Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Dylan Ross",
+   "team": "NYM",
+   "date": "2026-11-20",
+   "summary": "New York Mets non-tendered RHP Dylan Ross (designated for assignment Nov. 17); he is a free agent.",
+   "src": "MLB.com (Anthony DiComo), Nov. 20, 2026",
+   "status": "official"
   }
  ],
  "live": "2026-11-20T23:16:46Z",
