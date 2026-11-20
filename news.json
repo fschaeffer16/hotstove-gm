@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Lance Broadway, ex-White Sox, Mets pitcher who turned to acting, dies at 43",
+   "blurb": "Lance Broadway, a former MLB first-round pick who became an actor following his baseball career, has died. He was 43.",
+   "link": "https://www.espn.com/mlb/story/_/id/50540724/pitcher-turned-actor-lance-broadway-dies-age-43",
+   "time": "2026-11-20T13:56:56Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "CHW",
+    "NYM"
+   ]
+  },
+  {
    "title": "Yankees To Sign Jonathan Loaisiga",
    "blurb": "Reliever Jonathan Loaisiga is heading to the Yankees on a two-year deal, reports Jorge Castillo of ESPN. More to come&#8230;",
    "link": "https://www.mlbtraderumors.com/2026/11/yankees-to-sign-jonathan-loaisiga.html",
@@ -3233,19 +3245,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Tigers SS Kevin McGonigle, Reds 1B Sal Stewart win MLB's rookie of year awards",
-   "blurb": "Detroit Tigers shortstop Kevin McGonigle, 22, won the American League Rookie of the Year award Monday night in a televised presentation, moments before Cincinnati Reds first baseman Sal Stewart, 22, was honored as the National League Rookie of the Year.",
-   "link": "https://www.espn.com/mlb/story/_/id/50437506/tigers-mcgonigle-reds-stewart-win-rookie-year-awards",
-   "time": "2026-11-10T03:00:56Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "CIN",
-    "DET"
-   ]
   }
  ],
- "updated": "2026-11-20T13:23:44Z"
+ "updated": "2026-11-20T14:03:50Z"
 }
