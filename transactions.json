@@ -2141,9 +2141,33 @@
    "src": "MLB Stats API",
    "sid": 950788,
    "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Christian Koss",
+     "from": "SFG",
+     "to": "TBR",
+     "forty": true,
+     "pos": "SS"
+    },
+    {
+     "name": "Cole Stokes",
+     "from": "TBR",
+     "to": "SFG",
+     "forty": false,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "San Francisco Giants traded SS Christian Koss to Tampa Bay Rays for RHP Cole Stokes.",
+   "src": "MLB Stats API",
+   "sid": 950791,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T22:56:39Z",
+ "live": "2026-11-20T23:16:46Z",
  "seen_sids": [
   950119,
   950220,
@@ -2328,6 +2352,7 @@
   950770,
   950779,
   950788,
-  950789
+  950789,
+  950791
  ]
 }

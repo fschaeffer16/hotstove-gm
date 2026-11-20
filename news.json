@@ -1,6 +1,29 @@
 {
  "items": [
   {
+   "title": "San Francisco Giants traded SS Christian Koss to Tampa Bay Rays for RHP Cole Stokes.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-20T23:16:46Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR",
+    "SFG"
+   ]
+  },
+  {
+   "title": "Diamondbacks To Acquire Johan Oviedo",
+   "blurb": "The Diamondbacks have acquired right-hander Johan Oviedo from the Red Sox, reports Robert Murray of FanSided. Boston&#8217;s return in the trade hasn&#8217;t yet been reported. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/diamondbacks-to-acquire-johan-oviedo.html",
+   "time": "2026-11-20T23:07:33Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
    "title": "Rays Acquire Christian Koss",
    "blurb": "The Giants announced that they have traded infielder Christian Koss to the Rays in exchange for right-hander Cole Stokes. Koss was designated for assignment by San Francisco earlier this week. The Rays had 40-man space and don&#8217;t need to make a corresponding move. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/rays-acquire-christian-koss.html",
@@ -3248,25 +3271,7 @@
    "teams": [
     "BOS"
    ]
-  },
-  {
-   "title": "Free agents to invest in, avoid during 2026-27 MLB offseason",
-   "blurb": "Here are this offseason's players to target and be wary of, given their projected contracts.",
-   "link": "https://www.espn.com/mlb/story/_/id/50501988/free-agency-2026-27-invest-avoid-contract-projections",
-   "time": "2026-11-17T15:08:11Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "The Opener: Skubal Meetings, QO Decisions, Rule 5 Deadline, Bauers/Pagán",
-   "blurb": "The GM Meetings were last week. Now, it&#8217;s onto the Skubal Meetings this week! Two-time AL Cy Young Award winner Tarik Skubal sat down with the Mets yesterday, per Jon Heyman of the New York Post. The two parties were already known to be meeting this week, though the specific date wasn&#8217;t ",
-   "link": "https://www.mlbtraderumors.com/2026/11/the-opener-skubal-meetings-qo-decisions-rule-5-deadline-bauers-pagan.html",
-   "time": "2026-11-17T14:40:11Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-20T23:06:42Z"
+ "updated": "2026-11-20T23:16:46Z"
 }
