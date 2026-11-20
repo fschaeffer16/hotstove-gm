@@ -1,6 +1,26 @@
 {
  "items": [
   {
+   "title": "MLB labor battle: Latest updates, full coverage on CBA, salary cap, more",
+   "blurb": "We tackle the toughest questions and burning issues as the owners and players negotiate on a new CBA.",
+   "link": "https://www.espn.com/mlb/story/_/id/49425027/mlb-labor-cba-owners-players-union-salary-cap-draft-proposals-mlbpa-negotiations-latest-updates",
+   "time": "2026-11-20T11:53:39Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Why Mike Trout believes new owner Stan Kroenke will revive Angels",
+   "blurb": "The sale of the Angels has the franchise's greatest player excited about the future again.",
+   "link": "https://www.espn.com/mlb/story/_/id/50531850/mike-trout-angels-new-owner-stan-kroenke",
+   "time": "2026-11-20T11:50:07Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "LAA"
+   ]
+  },
+  {
    "title": "Royals Re-Sign Vince Velasquez To Minor League Deal",
    "blurb": "The Royals are in agreement with veteran righty Vince Velasquez on a new minor league contract, reports Robert Murray of FanSided. He&#8217;ll be back in MLB camp as a non-roster invitee. Velasquez spent the second half of the 2026 season in the K.C. system. He signed a minor league deal around the ",
    "link": "https://www.mlbtraderumors.com/2026/11/royals-re-sign-vince-velasquez-to-minor-league-deal.html",
@@ -3221,25 +3241,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Pedro Martinez appeals for MLB resolution, reflects on effects of 1994 strike",
-   "blurb": "Pedro Martinez appealed to both MLB players and owners to find a solution to their CBA talks, saying \"get something done and don't lock out baseball for the fans.\"",
-   "link": "https://www.espn.com/mlb/story/_/id/50420169/pedro-martinez-tells-mlb-players-find-solution-fans",
-   "time": "2026-11-08T15:31:14Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Jyun-Yue Tseng, 25-year-old right-hander, will enter MLB's posting system",
-   "blurb": "Reliever Jyun-Yue Tseng, a 25-year-old right-hander who was 5-3 with 25 saves this year in the Chinese Professional Baseball League, is entering Major League Baseball's posting system and will be available to sign as a free agent from Sunday till Dec. 22.",
-   "link": "https://www.espn.com/mlb/story/_/id/50413012/reliever-jyun-yue-tseng-25-enters-mlb-posting-system",
-   "time": "2026-11-07T22:57:19Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-20T05:32:15Z"
+ "updated": "2026-11-20T12:03:23Z"
 }
