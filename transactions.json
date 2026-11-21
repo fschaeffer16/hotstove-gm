@@ -2727,9 +2727,53 @@
    "src": "MLB Stats API",
    "sid": 950871,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Kala'i Rosario",
+   "team": "SDP",
+   "pos": "OF",
+   "date": "2026-11-17",
+   "summary": "San Diego Padres signed free agent OF Kala'i Rosario to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950873,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Julio Robaina",
+   "team": "TBR",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "Tampa Bay Rays signed free agent LHP Julio Robaina to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950875,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Cooper Johnson",
+   "team": "TEX",
+   "pos": "C",
+   "date": "2026-11-18",
+   "summary": "Texas Rangers signed free agent C Cooper Johnson to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950881,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Dylan File",
+   "team": "TEX",
+   "pos": "RHP",
+   "date": "2026-11-18",
+   "summary": "Texas Rangers signed free agent RHP Dylan File to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950877,
+   "status": "official"
   }
  ],
- "live": "2026-11-21T15:04:22Z",
+ "live": "2026-11-21T15:14:26Z",
  "seen_sids": [
   950119,
   950220,
@@ -2926,6 +2970,10 @@
   950862,
   950864,
   950868,
-  950871
+  950871,
+  950873,
+  950875,
+  950877,
+  950881
  ]
 }

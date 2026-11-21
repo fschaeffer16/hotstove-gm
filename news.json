@@ -1,6 +1,50 @@
 {
  "items": [
   {
+   "title": "San Diego Padres signed free agent OF Kala'i Rosario to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:14:26Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays signed free agent LHP Julio Robaina to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:14:26Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "Texas Rangers signed free agent C Cooper Johnson to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:14:26Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TEX"
+   ]
+  },
+  {
+   "title": "Texas Rangers signed free agent RHP Dylan File to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:14:26Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TEX"
+   ]
+  },
+  {
    "title": "New York Mets signed free agent LHP Justin King to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3230,51 +3274,7 @@
     "ATH",
     "BAL"
    ]
-  },
-  {
-   "title": "Dodgers Designate Jake Cousins, Christian Cairo For Assignment",
-   "blurb": "The Dodgers announced they&#8217;ve designated reliever Jake Cousins and infielder Christian Cairo for assignment. They needed to open two spots on the 40-man roster to select four pitchers: righty Christian Zazueta and left-handers Jackson Ferris, Adam Serwinowski and Luke Fox. The four prospects a",
-   "link": "https://www.mlbtraderumors.com/2026/11/dodgers-designate-jake-cousins-christian-cairo-for-assignment.html",
-   "time": "2026-11-17T23:34:45Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "LAD"
-   ]
-  },
-  {
-   "title": "Brewers Select Six Players",
-   "blurb": "The Brewers announced that they have selected six players to the 40-man roster. They are infielders Luke Adams and Dylan O&#8217;Rae, catcher Matt Wood, left-hander Tate Kuehner, right-hander Cameron Wagoner and infielder/outfielder Jett Williams. Those players are now protected from being selected ",
-   "link": "https://www.mlbtraderumors.com/2026/11/brewers-select-six-players.html",
-   "time": "2026-11-17T23:31:46Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "MIL"
-   ]
-  },
-  {
-   "title": "Cardinals Designate Max Rajcic For Assignment",
-   "blurb": "The Cardinals announced they&#8217;ve designated right-hander Max Rajcic for assignment. They had one opening on the 40-man roster but needed a second to select infielder Jesús Báez and right-hander Jacob Odle, both of whom are now protected from the Rule 5 draft. It&#8217;s a tough break for Rajcic",
-   "link": "https://www.mlbtraderumors.com/2026/11/cardinals-designate-max-rajcic-for-assignment.html",
-   "time": "2026-11-17T23:29:14Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "STL"
-   ]
-  },
-  {
-   "title": "Rockies Select Three Players",
-   "blurb": "The Rockies selected the contracts of catcher Bryant Betancourt and right-handers Jackson Cox and Jack Mahoney, per a team announcement. Colorado&#8217;s 40-man roster is now at 39 players. More to come&#8230;",
-   "link": "https://www.mlbtraderumors.com/2026/11/rockies-select-three-players.html",
-   "time": "2026-11-17T23:27:28Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "COL"
-   ]
   }
  ],
- "updated": "2026-11-21T15:04:22Z"
+ "updated": "2026-11-21T15:14:26Z"
 }
