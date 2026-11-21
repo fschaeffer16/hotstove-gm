@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18",
+ "updated": "2026-11-21",
  "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it.",
  "teams": {
   "LAD": {
@@ -236,7 +236,9 @@
     "SP",
     "RP"
    ],
-   "note": "Pitching; more willing to deal Hunter Goodman than before the deadline"
+   "note": "Trying to compete in 2027: taking on salary for veteran arms (traded for Luis Castillo and Davis Martin); mid-market payroll, not a rebuild",
+   "win": "retool",
+   "shedding": false
   }
  },
  "players": [
@@ -612,6 +614,7 @@
   "Bleacher Report, 'Ranking the Top 25 MLB Trade Chips' (Oct. 12, 2026) and 'Most likely trade for all 30 teams' (Oct. 19, 2026)",
   "MLB Trade Rumors: Rays shopping Nick Fortes (Nov. 17, 2026)",
   "The Athletic via FOX19 / Bleacher Report: Krall on Elly De La Cruz (Nov. 10-11, 2026)",
-  "FanSided / Robert Murray: Pirates will not trade Paul Skenes this winter"
+  "FanSided / Robert Murray: Pirates will not trade Paul Skenes this winter",
+  "Owner note, Nov. 21, 2026: Rockies are adding veteran pitching and salary to compete"
  ]
 }
