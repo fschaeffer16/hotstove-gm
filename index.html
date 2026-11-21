@@ -974,7 +974,7 @@ function renderCBT(c){
     </div>
     <p class="hint" style="margin:6px 0 0">Tax rate: ${esc(cbtRateLabel(ME))}${RULES.cbt.payors2026Est?' (2026 payors are estimated until MLB finalizes them in December)':''}.${room<0?` $40M+ over: the ${esc(MEN())}' highest 2028 pick moves back 10 spots; a top-6 pick is protected and the next pick moves instead.`:''}</p>
     ${(()=>{const q=qoSignings().filter(x=>x.to===ME);return q.length?`<p class="hint" style="margin:4px 0 0">Qualifying-offer signings: ${q.map(x=>`${esc(P[x.id].n)} (lose ${x.forfeit.picks.map(ordN).join(' + ')} pick${x.forfeit.ifa?', '+M1(x.forfeit.ifa)+' intl pool':''})`).join('; ')}.</p>`:''})()}
-    ${D.teams[ME].ph?`<p class="hint" style="margin:4px 0 0">Tax payroll by year: ${D.teams[ME].ph.map((v,i)=>v==null?'':`'${21+i} $${v}M`).filter(Boolean).join(' · ')}.${D.teams[ME].fut?` Already committed: 2028 $${D.teams[ME].fut[0]}M · 2029 $${D.teams[ME].fut[1]}M · 2030 $${D.teams[ME].fut[2]}M.`:''}</p>`:''}
+    ${D.teams[ME].ph?`<p class="hint" style="margin:4px 0 0">Tax payroll by year: ${D.teams[ME].ph.map((v,i)=>v==null?'':`'${21+i} $${v}M`).filter(Boolean).join(' · ')}.${D.teams[ME].fut?` Already committed: 2028 $${D.teams[ME].fut[0]}M · 2029 $${D.teams[ME].fut[1]}M · 2030 $${D.teams[ME].fut[2]}M.`:''}${D.teams[ME].mk?` How the 40-man was built: ${D.teams[ME].mk[0]}% homegrown, ${D.teams[ME].mk[2]}% trades, ${D.teams[ME].mk[1]}% free agents, ${D.teams[ME].mk[3]}% waivers.`:''}</p>`:''}
     <p class="hint" style="margin:4px 0 0">International bonus pool (est.): ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · hard cap, $250K trade steps.</p>
     <div class="bar" aria-label="CBT payroll against tax tiers">${bands}${ticks}<div class="base" style="left:${pct(BASE_TOTAL())}%" title="Baseline $289.28M"></div><div class="marker" style="left:${pct(t)}%"><span>${M1(t)}</span></div></div>
     <table class="ledger">
@@ -1351,6 +1351,9 @@ function dataAdj(id,code,incoming,win,gp,w){const s=scout(id),p=P[id],a=ana(code
   else if(s.trend===-1&&(p.age||0)>=30){d-=1.5;N.push('his production has dropped two years running')}
   if(s.slowBat){d-=1;N.push('bat speed is below average for a hitter his age')}
   const I=s.inj;if(I){const x=I.r>=1.9?2:I.r>=1.5?1.2:I.r>=1.25?.5:0;if(x){d-=x*(incoming?(now?1.35:1):.5);N.push(injLine(I,incoming))}}
+  /* October record 2022-2026: a club trying to win now pays a little for a pitcher who has already done it there, and notices one who has been hit hard */
+  {const po=p.proj&&p.proj.po;if(po&&p.p&&incoming&&now){const need=po[1]>=3?20:10;if(po[2]>=need&&po[3]<=3.2){d+=.8;N.push(`has pitched well in October: ${po[3].toFixed(2)} ERA in ${po[2]} postseason innings`)}else if(po[2]>=need*1.5&&po[3]>=5.5){d-=.5;N.push(`has been hit hard in October: ${po[3].toFixed(2)} ERA in ${po[2]} postseason innings`)}}}
+  {const pb=p.proj&&p.proj.pob;if(pb&&!p.p&&incoming&&now){if(pb[1]>=60&&pb[3]>=125){d+=.8;N.push(`a proven October bat: ${pb[2]} homers and a ${f3(pb[4])} OPS in ${pb[1]} postseason plate appearances`)}else if(pb[1]>=90&&pb[3]<=70){d-=.5;N.push(`has not hit in October: ${f3(pb[4])} OPS in ${pb[1]} postseason plate appearances`)}}}
   return {d:Math.max(-5,Math.min(5,d)),notes:N}}
 /* ===== Needs board: what each club is short of, by hand and by spot, and how the moves so far have filled it =====
    Reads the projected splits (hitters vs LHP / RHP, pitchers vs LHH / RHH), projected WAR, the live roster and the stated wants in intel.json. */
@@ -1389,6 +1392,21 @@ function fillsNeed(id,code){const p=P[id];if(!p||!p.proj)return 0;const N=needRe
   else{if(g==='RP'&&N.includes('penL')&&(p.hand==='L'||s.bothSides))b+=.6;if(g==='RP'&&N.includes('penR')&&p.hand==='R')b+=.3;if(g==='SP'&&N.includes('sp'))b+=.4;if(g==='RP'&&N.includes('rp'))b+=.3;if(g==='SP'&&p.hand==='L'&&N.includes('lhSP'))b+=.3}
   return Math.min(1.2,b)}
 /* the board on the trade screen: now vs after this deal, and vs the start of the offseason for the user's club */
+/* club background for the trade screen: farm-system rank and team offense, now and how it has moved (from data.json teams[code].farm / .tb) */
+function farmRk(code){const f=D.teams[code]&&D.teams[code].farm;return f&&f[4]||0}
+/* how a club is built and where it is heading, read from the data (owner 11/21: learn team trends and how orgs build):
+   build = where the 40-man came from (trade / home / fa / mixed); pay = luxury-tax payroll 2026 against 2024 (up / down / flat) */
+function orgStyle(code){const t=D.teams[code]||{},m=t.mk,ph=t.ph,o={build:'mixed',pay:'flat',d:0};
+  if(m){o.build=m[2]>=44?'trade':m[0]>=52?'home':m[1]>=24?'fa':'mixed';o.mk=m}
+  if(ph&&ph[5]&&ph[3]){o.d=Math.round(ph[5]-ph[3]);const r=ph[5]/ph[3];o.pay=r>=1.15?'up':r<=.85?'down':'flat'}
+  return o}
+function clubTrend(code){const t=D.teams[code]||{},f=t.farm,b=t.tb,tp=t.tp,o=[],st=orgStyle(code),rkOf=(k,hi)=>Object.keys(D.teams).filter(c=>D.teams[c][k]&&D.teams[c][k][4]!=null&&(hi?D.teams[c][k][4]>t[k][4]:D.teams[c][k][4]<t[k][4])).length+1;
+  if(st.mk)o.push(st.build==='trade'?`Built mostly by trade (${st.mk[2]}% of the 40-man)`:st.build==='home'?`Draft-and-develop club (${st.mk[0]}% homegrown)`:st.build==='fa'?`Leans on free agency (${st.mk[1]}% of the 40-man signed as free agents)`:`${st.mk[0]}% homegrown, ${st.mk[2]}% trades, ${st.mk[1]}% free agents`);
+  if(st.pay!=='flat')o.push(`payroll ${st.pay==='up'?'up':'down'} $${Math.abs(st.d)}M since 2024`);
+  if(f&&f[4]){const was=f[2]||f[3];o.push(`farm system No. ${f[4]} of 30`+(was&&Math.abs(was-f[4])>=5?` (${f[4]<was?'up':'down'} from No. ${was} in ${f[2]?2024:2025})`:''))}
+  if(b&&b[4])o.push(`2026 offense No. ${rkOf('tb',true)} (${b[4]} wRC+`+(b[3]&&Math.abs(b[4]-b[3])>=6?`, ${b[4]>b[3]?'up':'down'} from ${b[3]}`:'')+')');
+  if(tp&&tp[4])o.push(`pitching No. ${rkOf('tp',false)} (ERA ${tp[4]===100?'at league average':tp[4]<100?100-tp[4]+'% better than league':tp[4]-100+'% worse than league'}`+(tp[3]&&Math.abs(tp[4]-tp[3])>=6?`, ${tp[4]<tp[3]?'better':'worse'} than 2025`:'')+')');
+  const x=o.join(' · ');return x?x[0].toUpperCase()+x.slice(1):''}
 function needsBoardHTML(code,outSel,inSel){const any=outSel.length||inSel.length;
   const one=(c,give,get)=>{const now=needRep(c),ids=roster(c).filter(id=>!give.includes(id)).concat(get),aft=any?needRep(c,ids):null,base=c===ME?needRep(c,Object.keys(P).filter(id=>P[id].team===c)):null,W=teamIntel(c);
     const pri=x=>(x.rep?0:10)+(x.rk?(31-x.rk)/3:x.unit==='war'?Math.max(0,x.v)*3:5),keys=[...new Set((aft?aft.rows.filter(x=>x.need&&!(now.rows.find(y=>y.k===x.k)||{}).need):[]).concat(now.rows.filter(x=>x.need).sort((x,y)=>pri(x)-pri(y)).slice(0,6)).map(x=>x.k))];
@@ -1399,7 +1417,7 @@ function needsBoardHTML(code,outSel,inSel){const any=outSel.length||inSel.length
       const val=(y,R)=>y?needFmt(y)+(y.rk?` <span class="hint">${ORDN(y.rk)}</span>`:''):(R&&k[0]==='p'&&R.raw.pos[k.slice(1)]!=null?(R.raw.pos[k.slice(1)]<0?'none':R.raw.pos[k.slice(1)].toFixed(1)+' WAR'):'-');
       return `<div class="nrow"><div class="nl"><b>${esc(x.label)}</b>${x.rep?'<span class="tag rep">reported</span>':''}<span class="hint">Needs ${esc(x.fix)}${x.why?' · '+esc(x.why):''}</span></div><div class="nv">${val(a,now)}${aft?` <span class="arr">→</span> ${val(b,aft)}`:''}${st?`<span class="nst ${cls}">${st}</span>`:''}</div></div>`}).join('');
     const filled=base?base.rows.filter(x=>x.need&&!(now.rows.find(y=>y.k===x.k)||{}).need).map(x=>x.label):[];
-    return `<div class="nside"><div class="subh">${esc(tnm(c))} needs</div>${rows||'<p class="hint" style="margin:4px 0">No clear holes on this roster.</p>'}${filled.length?`<p class="hint" style="margin:6px 0 0">Filled this offseason: ${filled.map(esc).join(', ')}.</p>`:''}${W.note?`<p class="hint" style="margin:6px 0 0">Reported: ${esc(W.note)}</p>`:''}</div>`};
+    return `<div class="nside"><div class="subh">${esc(tnm(c))} needs</div>${clubTrend(c)?`<p class="hint" style="margin:2px 0 6px">${clubTrend(c)}</p>`:''}${rows||'<p class="hint" style="margin:4px 0">No clear holes on this roster.</p>'}${filled.length?`<p class="hint" style="margin:6px 0 0">Filled this offseason: ${filled.map(esc).join(', ')}.</p>`:''}${W.note?`<p class="hint" style="margin:6px 0 0">Reported: ${esc(W.note)}</p>`:''}</div>`};
   return `<details class="needs" open><summary>Team needs ${any?'· before and after this deal':''}</summary><div class="ncols">${one(ME,outSel,inSel)}${D.teams[code]?one(code,inSel,outSel):''}</div><p class="hint" style="margin:8px 0 0">From projected splits vs left- and right-handers, projected WAR and the latest reports. Rank is among the 30 clubs. The season simulator plays these same matchups, so a filled need shows up in the games.</p></details>`}
 const gpts=g=>Math.pow(2,(g-40)/5);/* tiers: each 5 grade points doubles the weight, so a 60 is worth four 50s */
 /* ===== Player value profile: what a front office believes a player is worth on the field, built once and added to over time =====
@@ -1449,9 +1467,9 @@ function valFor(id,cy){const V=valW(id);if(V.hf>=1)return V.w;const n=Math.max(1
 function reliefVal(id){const p=P[id],pj=p.proj,w=pj.war||0,h=(pj.wh||[]).slice(-2),a=h[1],b=h[0];
   const rec=a!=null&&b!=null?.6*a+.4*b:a!=null?a:null,bl=rec!=null?Math.max(w,.5*w+.5*rec):w,fip=pj.fip||4.2,k=pRate(id).k||.22,y=pj.y||{};
   const pm=y.pm,elite=(fip<=2.75&&k>=.30)||bl>=2.2,strong=(fip<=3.3&&k>=.27)||bl>=1.4||(pm&&pm[3]>=60&&pm[2]>=112&&w>=.6),hl=y.hl||{},h6=hl['2026'],h5=hl['2025'],hiN=h6?h6[0]:0,hiW=h6&&h5?(h6[1]*h6[0]+h5[1]*h5[0])/(h6[0]+h5[0]):h6?h6[1]:null,sv=y.sv||[0,0,0,0],
-    big=hiN>=75,some=hiN>=40,known=!!y.hl||!!y.sv,good=hiW!=null&&hiW<=.285,
+    rr=y.rr?y.rr[0]:'',cl=/^(Closer|Co-Closer)$/.test(rr),big=hiN>=75||cl,some=hiN>=40||/Setup|Committee/.test(rr),known=!!y.hl||!!y.sv||!!rr,good=hiW!=null&&hiW<=.285,
     lev=!known?(elite?2.1:strong?1.6:w>=.8?1.2:1):elite&&big?2.1:elite?1.7:strong&&big?1.7:strong&&some?1.5:big&&good?1.5:strong?1.3:w>=.8?1.2:1,
-    role=big?(sv[0]>=40?'closer':'high-leverage reliever'):some?'setup man':'';
+    role=cl?'closer':big?(sv[0]>=40?'closer':'high-leverage reliever'):some?'setup man':'';
   const line=y.era!=null&&y.ip>=30?`${y.era.toFixed(2)} ERA${y.k?', '+Math.round(y.k*100)+'% strikeouts':''} in 2026`:'';
   const lv=h6?`${h6[0]} batters in high leverage in 2026, ${f3(h6[1])} wOBA allowed`:'';
   const vt=veloTrend(id),slow=vt&&vt.d<=-1.5&&(p.age||28)>=29;if(slow)return {w:bl*lev*.9,elite:false,strong,role,note:`his fastball is down ${Math.abs(vt.d)} mph in two years (${vt.was} to ${vt.now}), a red flag for a late-inning arm`};
@@ -1470,7 +1488,7 @@ function gradeTo(id,code,incoming){
     else if(age>=35)g-=3;
     /* money as a club sees it: overpaid years are dead weight, worse for a small budget */
     const sal=salYr(id),over=sal/1e6-Math.max(.8,w*8);
-    if(over>5){const yrs=Math.min(cy,6);burden=(over-5)*yrs/12*({small:1.4,mid:1,big:.6}[c.mkt])*(incoming?1:({allin:.2,contend:.6}[win]??1))*(teamIntel(code).shedding?(incoming?1.6:1.5):1);if(incoming&&burden>.5)notes.push(`${M1(sal)} a year for ${yrs} more year${yrs===1?'':'s'}: more salary than production`)}
+    if(over>5){const yrs=Math.min(cy,6);burden=(over-5)*yrs/12*({small:1.4,mid:1,big:.6}[c.mkt])*(incoming?1:({allin:.2,contend:.6}[win]??1))*(teamIntel(code).shedding?(incoming?1.6:1.5):1)*(incoming?({down:1.2,up:.85}[orgStyle(code).pay]||1):1);if(incoming&&burden>.5)notes.push(`${M1(sal)} a year for ${yrs} more year${yrs===1?'':'s'}: more salary than production`)}
     if(incoming){
       const need=needAt(code,gp,id);
       if(wantsGrp(code,gp)&&w>=.8){g+=3;notes.push(`they're looking for ${WANT_TXT[gp]||gp}`)}
@@ -1500,6 +1518,7 @@ function gradeTo(id,code,incoming){
       if(win==='rebuild'||win==='ascend'){g+=2;notes.push('young talent is what they want')}
       else if(win==='allin'){g-=2;notes.push('they want big-league help more than prospects')}
       if(pr.pros==='currency')g-=1;
+      {const fr=farmRk(code);if(fr>=24&&g>=45){g+=1;notes.push(`their farm system is thin (No. ${fr} of 30)`)}else if(fr&&fr<=5&&g<50){g-=1;notes.push(`their system is deep (No. ${fr}), he would not stand out in it`)}}
       if(wantsGrp(code,gp)&&g>=45){g+=1.5;notes.push(`they're looking for ${WANT_TXT[gp]||gp}`)}
       if(ahead){g-=3;notes.push(`would be blocked by ${P[ahead].n}`)}
       if(jam>=3){g-=2;notes.push(`they already have ${jam} good ${gp} prospects`)}
@@ -1509,6 +1528,8 @@ function gradeTo(id,code,incoming){
       if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him')}
       else if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
       if(pr.pros==='hoard'){g+=1.5;notes.push('this front office hoards prospects')}
+      {const bs=orgStyle(code).build;if(bs==='home'&&rk&&rk<=10){g+=.75;notes.push('a draft-and-develop club: it builds from its own system')}else if(bs==='trade'&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=.75;notes.push('this club is built by trades and moves prospects freely')}}
+      {const fr=farmRk(code);if(fr&&fr<=5&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=1;notes.push(`deep system (No. ${fr}), they can deal from it`)}else if(fr>=24&&rk&&rk<=5){g+=1;notes.push(`thin system (No. ${fr}), he matters more to them`)}}
       if(ahead){g-=3;notes.push(`blocked by ${P[ahead].n} at ${gp}`)}
       if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
     }
@@ -1544,7 +1565,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
   else{const mix=y.mix?y.mix.map(m=>[m[0],m[1]]):y.pp?Object.entries(y.pp).map(([k,v])=>[k,v[0]]).sort((a,b)=>b[1]-a[1]):null;
     sc=kv('Velocity, all pitches (top)',y.maxv?`${y.vel} (${y.maxv}) mph`:null)+kv('Strikeout rate',y.k!=null?pct(y.k,1):null)+kv('Chase rate',y.chase!=null?pct(y.chase):null)+kv('Hard-hit · barrel allowed',y.hard!=null?`${pct(y.hard)} · ${pct(y.brl,1)}`:null)+kv('Expected ERA vs actual',y.xera&&y.era!=null?`${y.xera.toFixed(2)} vs ${y.era.toFixed(2)}`:null)
       +(mix?`<p class="hint" style="margin:4px 0 0"><b>Pitch mix:</b> ${mix.slice(0,6).map(m=>(PITCHN[m[0]]||m[0])+' '+pct(m[1])).join(', ')}</p>`:'')
-      +(pj.y&&(pj.y.hl||pj.y.sv&&pj.y.sv[0]+pj.y.sv[1]>=5)?`<p class="hint" style="margin:4px 0 0"><b>Role and leverage:</b> ${pj.y.sv?pj.y.sv[0]+' saves, '+pj.y.sv[1]+' holds in '+pj.y.sv[2]+' games since 2022':''}${pj.y.hl?(pj.y.sv?'. ':'')+'High leverage: '+['2024','2025','2026'].filter(k=>pj.y.hl[k]).map(k=>k+' '+pj.y.hl[k][0]+' batters, '+f3(pj.y.hl[k][1])+' wOBA').join('; '):''}</p>`:'')
+      +(pj.y&&(pj.y.hl||pj.y.rr||pj.y.sv&&pj.y.sv[0]+pj.y.sv[1]>=5)?`<p class="hint" style="margin:4px 0 0"><b>Role and leverage:</b> ${pj.y.rr?'Projected 2027 role: '+pj.y.rr[0].toLowerCase()+(pj.y.rr[1]+pj.y.rr[2]>=10?' ('+pj.y.rr[1]+' shutdowns, '+pj.y.rr[2]+' meltdowns in 2026)':'')+'. ':''}${pj.y.sv?pj.y.sv[0]+' saves, '+pj.y.sv[1]+' holds in '+pj.y.sv[2]+' games since 2022':''}${pj.y.hl?(pj.y.sv?'. ':'')+'High leverage: '+['2024','2025','2026'].filter(k=>pj.y.hl[k]).map(k=>k+' '+pj.y.hl[k][0]+' batters, '+f3(pj.y.hl[k][1])+' wOBA').join('; '):''}</p>`:'')
       +(pj.y&&pj.y.pv?`<p class="hint" style="margin:4px 0 0"><b>Pitch shapes, 2024-26 (mph, how often):</b> ${Object.entries(pj.y.pv).sort((x,y)=>y[1][0]-x[1][0]).slice(0,6).map(([k,v])=>(PITCHN[k]||k)+' '+v[1].toFixed(1)+' ('+pct(v[0])+')').join(', ')}</p>`:'')
       +(pj.y&&pj.y.pm?`<p class="hint" style="margin:4px 0 0"><b>Pitch models (100 = average):</b> Stuff+ ${pj.y.pm[0]}, Location+ ${pj.y.pm[1]}, Pitching+ ${pj.y.pm[2]} over ${pj.y.pm[3]} innings${pj.y.pb?`. Second model (20-80 scale): ${pj.y.pb[0]} overall, ${pj.y.pb[1]} stuff, ${pj.y.pb[2]} command, ${pj.y.pb[3].toFixed(2)} modeled ERA`:''}</p>${pj.y.ps?`<p class="hint" style="margin:4px 0 0"><b>By pitch (Stuff+ / second model's 20-80 grade, how often):</b> ${Object.entries(pj.y.ps).sort((x,y)=>y[1][2]-x[1][2]).slice(0,6).map(([k,v])=>(PITCHN[k]||k)+' '+v[0]+(v[3]?'/'+v[3]:'')+' ('+pct(v[2])+')').join(', ')}${(b=>b&&b[1][1]>=110?'. Best pitch: '+(PITCHN[b[0]]||b[0]):'')(Object.entries(pj.y.ps).filter(x=>x[1][2]>=.1).sort((x,y)=>y[1][1]-x[1][1])[0])}</p>`:''}`:'')}
   /* injuries */
@@ -1562,6 +1583,8 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
     ${established(id)?sec('Value profile',(V=>V.parts.map(x=>kv(x[0],x[1])).join('')+kv('On-field value',V.w.toFixed(1)+' WAR'+(V.hf<1?' ('+V.now.toFixed(1)+' in 2027)':''))+(V.src?`<p class="hint" style="margin:4px 0 0">${esc(V.src)}</p>`:''))(valW(id))):''}
     ${pj.hs&&!p.p?sec('Bat by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.hs[k]).map(k=>`<b>${k}</b> ${pj.hs[k][1]} wRC+, ${Math.round(pj.hs[k][2]*100)}% K, ${pj.hs[k][0]} PA`).join(' · ')}</p>`):''}
     ${pj.fs&&!p.p?sec('Glove by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.fs[k]).map(k=>`<b>${k}</b> ${pj.fs[k][1]} ${pj.fs[k][4]>0?'+':''}${pj.fs[k][4]} runs, ${pj.fs[k][3]>0?'+':''}${pj.fs[k][3]} OAA`).join(' · ')}</p>`):''}
+    ${pj.pob&&!p.p?sec('Postseason, 2022-26',`<p class="hint" style="margin:0">${pj.pob[0]} games, ${pj.pob[1]} plate appearances, ${pj.pob[2]} home runs, <b>${f3(pj.pob[4])} OPS</b> (${pj.pob[3]} wRC+), in ${pj.pob[5]} October${pj.pob[5]>1?'s':''}.</p>`):''}
+    ${pj.po&&p.p?sec('Postseason, 2022-26',`<p class="hint" style="margin:0">${pj.po[0]} games${pj.po[1]?' ('+pj.po[1]+' starts)':''}, ${pj.po[2]} innings, <b>${pj.po[3].toFixed(2)} ERA</b>${pj.po[4]?', '+pj.po[4]+' saves':''}, in ${pj.po[5]} October${pj.po[5]>1?'s':''}.</p>`):''}
     ${pj.as&&p.p?sec('Arm by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.as[k]).map(k=>`<b>${k}</b> ${Math.round(pj.as[k][0]*100)}% K, ${Math.round(pj.as[k][1]*100)}% BB, ${pj.as[k][2].toFixed(2)} FIP${pj.vs&&pj.vs[k]?', '+pj.vs[k][1].toFixed(1)+' mph, '+pj.vs[k][0]+' IP':''}`).join(' · ')}</p>`):''}
     ${sec('The short version',kv('2027 projection',line27(id))+kv('2026',line26(id))+(pj.wh?kv("WAR '22-'26",pj.wh.map(w=>w==null?'–':w.toFixed(1)).join(' · ')):'')+(p.fv&&!established(id)?kv('Hot Stove grade',Math.round(hsGrade(id))):''))}
     ${sec(hit?'Splits vs left and right':'Splits vs left- and right-handed hitters',spl)}${sec('Statcast',sc)}${sec('Injury history',inj)}${sec('Contract and control',con)}
@@ -3027,7 +3050,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121215005';
+const BUILD='20261121220212';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
