@@ -2060,14 +2060,14 @@ function verdictHTML(E){
   </div>`}
 function defaultAdd40(id){const p=P[id];return p.lvl==='MLB'||p.lvl==='IL'||p.kind!=='min'}
 function execTrade(force){
-  if(SE&&SE.dlDone){toast('The trade deadline has passed. No more trades this season.');return}
+  if(!force&&SE&&SE.dlDone){toast('The trade deadline has passed. No more trades this season.');return}
   const code=UI.tTeam;const outSel=[...UI.tOut].filter(isMets),inSel=[...UI.tIn].filter(id=>owner(id)===code);
   const add40=inSel.filter(id=>defaultAdd40(id)||UI.tAdd40.has(id));
   const out40=outSel.filter(id=>status(id)==='40').length;
   const E0=evalTrade(code,outSel,inSel,UI.tCash);
-  if(E0.ruleErrs&&E0.ruleErrs.length){toast('MLB rules block this: '+E0.ruleErrs[0]+'.');return}
+  if(!force&&E0.ruleErrs&&E0.ruleErrs.length){toast('MLB rules block this: '+E0.ruleErrs[0]+'. Force approve overrides it.');return}
   if(!force&&E0.verdict!=='accept'){toast('They have not agreed. Use Force approve to push it through.');return}
-  if(count40()-out40+add40.length>40){toast(`That puts the 40-man at ${count40()-out40+add40.length}/40. DFA, release or outright someone first.`);return}
+  const n40=count40()-out40+add40.length;if(!force&&n40>40){toast(`That puts the 40-man at ${n40}/40. DFA, release or outright someone first, or use Force approve.`);return}
   snap();
   const outV=outSel.reduce((s,id)=>s+cbtOf(id),0),inV=inSel.reduce((s,id)=>s+partnerCount(id),0),cash=UI.tCash*1e6;
   const pOut=outSel.reduce((s,id)=>s+partnerCount(id),0);
@@ -2082,7 +2082,7 @@ function execTrade(force){
   addLog(force?'TRADE (forced)':'TRADE',txt,inV+Math.max(0,cash),outV+Math.max(0,-cash));
   if(SE){inSel.forEach(id=>{seSlotOut(id);(SE.dlMoves=SE.dlMoves||[]).push({id,to:ME,w0:seWarOf(id)})});outSel.forEach(id=>seSlotIn(code,id));if(SE.phase!=='done'&&SE.phase!=='post')seOdds();seSave()}
   UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};
-  commit();toast('Trade done. New players are under Players to assign.');
+  commit();toast(n40>40?`Trade done. Your 40-man is at ${n40}/40: DFA, release or outright ${n40-40} before Opening Day.`:'Trade done. New players are under Players to assign.');
 }
 
 /* ---------- top 50 ---------- */
@@ -2965,7 +2965,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121200306';
+const BUILD='20261121200452';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3165,7 +3165,9 @@ document.addEventListener('click',e=>{
     case 'gmsay':{const ta=$('#gmSay'),txt=ta?ta.value.trim():'';if(!txt){toast('Type your reply to the GM first.');break}
       const code=UI.tTeam;gmReply(txt.slice(0,300),code,[...UI.tOut].filter(isMets),[...UI.tIn].filter(x=>owner(x)===code),UI.tCash);render();{const el=document.querySelector('.gmtalk');if(el)el.scrollIntoView({block:'center'})}}break;
     case 'scout-full':closeModal();openDrawer(id);break;
-    case 'tforce':confirmBox('Force this trade through?','The other GM has not agreed. Forcing it records the trade as forced in your transaction log.','Force approve',()=>execTrade(true));break;
+    case 'tforce':{const code=UI.tTeam,o=[...UI.tOut].filter(isMets),i=[...UI.tIn].filter(id=>owner(id)===code);if(!o.length&&!i.length&&!hasExtras()&&!UI.tCash){toast('Pick the players first, then Force approve.');break}
+      const E=evalTrade(code,o,i,UI.tCash),ov=[];if(E.verdict!=='accept')ov.push('the other GM has not agreed');if(E.locked&&E.locked.length)ov.push(E.locked.join(', ')+' signed this offseason (normally locked until June 15)');for(const e of E.ruleErrs||[])ov.push(e);if(SE&&SE.dlDone)ov.push('the trade deadline has passed');
+      confirmBox('Force this trade through?',(ov.length?'This overrides: '+ov.join('; ')+'. ':'')+'The trade goes through as it stands and is marked as forced in your transaction log.','Force approve',()=>execTrade(true));break}
     case 'copyupd':copy(updateText(),'Update copied');break;
     case 'sendsave':sendSaves();break;
     case 'copysave':{const code=btoa(unescape(encodeURIComponent(JSON.stringify(S))));copy(code,'Save code copied')}break;
