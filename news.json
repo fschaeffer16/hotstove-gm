@@ -1,6 +1,30 @@
 {
  "items": [
   {
+   "title": "Washington Nationals traded RHP Braxton Roxby to Chicago Cubs for cash.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T00:37:44Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN",
+    "CHC"
+   ]
+  },
+  {
+   "title": "Chicago Cubs claimed C Joey Bart off waivers from Chicago White Sox.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T00:37:44Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CHW",
+    "CHC"
+   ]
+  },
+  {
    "title": "Arizona Diamondbacks traded LHP Luke Dotson and Future Considerations to Boston Red Sox for RHP Johan Oviedo.",
    "blurb": "",
    "link": "",
@@ -3254,29 +3278,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Orioles Outright Cameron Foster, Release Rece Hinds",
-   "blurb": "The Orioles have outrighted right-hander Cameron Foster, reports Andy Kostka of The Baltimore Banner. The team also announced that they&#8217;ve released outfielder Rece Hinds so he can pursue an opportunity overseas in the Korea Baseball Organization. Those two moves clear a couple of 40-man roster",
-   "link": "https://www.mlbtraderumors.com/2026/11/orioles-outright-cameron-foster-rece-hinds.html",
-   "time": "2026-11-17T16:33:12Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "BAL"
-   ]
-  },
-  {
-   "title": "Phillies Receiving Trade Interest In Orion Kerkering",
-   "blurb": "The Phillies are receiving trade interest in righty reliever Orion Kerkering, per Matt Gelb of The Athletic. Multiple teams have reportedly expressed interest in Kerkering, who&#8217;s coming off a rough season that saw him demoted to Triple-A in late September. It&#8217;s unclear how far those talk",
-   "link": "https://www.mlbtraderumors.com/2026/11/phillies-receiving-trade-interest-in-orion-kerkering.html",
-   "time": "2026-11-17T16:10:44Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "PHI"
-   ]
   }
  ],
- "updated": "2026-11-21T00:27:35Z"
+ "updated": "2026-11-21T00:37:44Z"
 }

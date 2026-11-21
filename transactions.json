@@ -2616,9 +2616,43 @@
    "summary": "COL non-tendered RHP Jimmy Herget; he is a free agent.",
    "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
    "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Braxton Roxby",
+     "from": "WSN",
+     "to": "CHC",
+     "forty": true,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "Washington Nationals traded RHP Braxton Roxby to Chicago Cubs for cash.",
+   "src": "MLB Stats API",
+   "sid": 950817,
+   "status": "official"
+  },
+  {
+   "type": "claim",
+   "players": [
+    {
+     "name": "Joey Bart",
+     "from": "CHW",
+     "to": "CHC",
+     "forty": true,
+     "pos": "C"
+    }
+   ],
+   "date": "2026-11-20",
+   "summary": "Chicago Cubs claimed C Joey Bart off waivers from Chicago White Sox.",
+   "src": "MLB Stats API",
+   "sid": 950816,
+   "status": "official"
   }
  ],
- "live": "2026-11-20T23:57:21Z",
+ "live": "2026-11-21T00:37:44Z",
  "seen_sids": [
   950119,
   950220,
@@ -2806,6 +2840,8 @@
   950789,
   950791,
   950798,
-  950804
+  950804,
+  950816,
+  950817
  ]
 }
