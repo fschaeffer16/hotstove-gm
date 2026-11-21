@@ -1021,7 +1021,7 @@ function renderFA(){
     <tbody>${l.map(id=>{const p=P[id];return `<tr>
       <td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}${p.qo?'<span class="tag qo">QO</span>':''}</td>
       <td>${esc(p.pos)}</td><td>${esc(p.hand)}</td><td class="r">${p.age}</td><td>${esc(p.prev||'')}</td>
-      <td class="r">${p.war26.toFixed(1)}</td><td class="r">${warB(p.pwar)}</td>
+      <td class="r">${(p.war26||0).toFixed(1)}</td><td class="r">${warB(p.pwar)}</td>
       <td class="hint">${p.proj?(p.proj.t==='b'?`${p.proj.wrc} wRC+`:`${p.proj.era.toFixed(2)} ERA · ${p.proj.kbb}% K-BB`):''}</td>
       <td class="r">${p.mt?`${p.my} yr / ${M1(p.mt)}`:'—'}</td><td class="r">${p.maav?M1(p.maav):'—'}</td>
       <td><button class="btn sm gold" type="button" data-sign="${id}">Make offer</button></td></tr>`}).join('')}</tbody>
@@ -2876,7 +2876,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261120150512';
+const BUILD='20261121002204';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3161,6 +3161,12 @@ const nmz=s=>String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLo
 function findP(name,team){const k=nmz(name);const ids=Object.keys(P).filter(i=>nmz(P[i].n)===k&&P[i].team!=='DUP');if(!ids.length)return null;return ids.find(i=>P[i].team===team)||ids[0]}
 function mkP(name,team,pos){const id=team+':'+nmz(name);if(P[id])return id;const pit=/^(RHP|LHP|SP|RP|P)$/.test(pos||'');
   P[id]={id,n:name,pos:pos||'?',hand:pos==='LHP'?'L':pos==='RHP'?'R':'',age:null,opt:'',svc:'',lvl:'MiLB',p:pit,team:'NONE',kind:'min',aav:0,contract:'',yrs:{},proj:null,fv:'',acq:''};return id}
+/* a released or non-tendered player joins the free-agent pool. A non-tendered player's market is capped a little under the
+   arbitration salary his club would not pay; without a market number the agent prices him off his projection. */
+function toFA(id,from,nt){const p=P[id],arb=p.kind==='arb'?(p.aav||0):0,w=p.proj?Math.max(0,p.proj.war||0):0;
+  Object.assign(p,{team:'FA',prev:from,lvl:'FA',kind:'fa',aav:0,contract:'',yrs:{},qo:false,pwar:+w.toFixed(1),nt:nt?1:0});{const h=p.proj&&p.proj.wh;p.war26=h&&h[4]!=null?+h[4]:0}
+  if(nt&&arb){const m=Math.max(8e5,Math.min(Math.max(8e5,w*7e6),arb*.9));p.my=1;p.mt=Math.round(m/1e5)*1e5;p.maav=p.mt}
+  if(!D.fa.includes(id))D.fa.push(id)}
 function dropFrom(id,code){const t=D.teams[code];if(t)t.players=t.players.filter(x=>x!==id);
   if(D.fortyBy[code])D.fortyBy[code]=D.fortyBy[code].filter(x=>x!==id);if(code==='NYM')D.forty=D.forty.filter(x=>x!==id);
   const b=code==='NYM'?D:D.base[code];if(b){b.lineup&&b.lineup.forEach(x=>{if(x[1]===id)x[1]=null});b.bench&&b.bench.forEach(x=>{if(x[1]===id)x[1]=null});b.pen&&b.pen.forEach(x=>{if(x[1]===id)x[1]=null});if(b.rot)b.rot=b.rot.map(x=>x===id?null:x)}}
@@ -3172,7 +3178,7 @@ function applyTx(T){
     if(t.type==='trade'||t.type==='claim'){for(const m of (t.players||[{name:t.name,from:t.from,to:t.to,forty:t.forty,pos:t.pos}])){const id=findP(m.name,m.from)||mkP(m.name,m.from,m.pos);moveP(id,m.to,m.forty!==false&&t.type==='claim'?true:m.forty)}}
     else if(t.type==='sign'||t.type==='sign_minor'){let id=findP(t.name,t.team);if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);
       if(t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}})}if(t.type==='sign_minor')P[id].lvl=P[id].lvl==='MLB'?'AAA':P[id].lvl}
-    else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);P[id].team='REL'}}
+    else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
     else if(t.type==='select'){const id=findP(t.name,t.team)||mkP(t.name,t.team,t.pos);moveP(id,t.team,true);if(t.team==='NYM'){if(!D.forty.includes(id))D.forty.push(id)}else if(!D.fortyBy[t.team].includes(id))D.fortyBy[t.team].push(id)}
     else if(t.type==='retire'){const id=findP(t.name,t.team);if(id){dropFrom(id,P[id].team);P[id].team='REL'}}
