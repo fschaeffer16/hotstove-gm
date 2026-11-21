@@ -1426,6 +1426,11 @@ function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.
   {const fs=!p.p&&pj.fs,q=k=>fs&&fs[k]&&fs[k][0]>=500?fs[k]:null,f6=q('2026'),f4=q('2024')||q('2025');
     if(f6&&f4&&age>=30&&!(M0&&M0.war!=null)){const r6=f6[4]*1000/f6[0],r4=f4[4]*1000/f4[0];
       if(r6<=-4&&r6<=r4-6){w-=.2;parts.push(['Glove by season',`${f4[4]>0?'+':''}${f4[4]} then ${f6[4]>0?'+':''}${f6[4]} fielding runs at ${f6[1]}: -0.2`]);notes.push(`his defense at ${f6[1]} is slipping with age`)}}}
+  {const A=p.p&&pgrp(id)!=='RP'&&pj.as,a6=A&&A['2026'],a5=A&&A['2025'],a4=A&&A['2024'];
+    if(a6&&a5&&a4&&!(M0&&M0.war!=null)){const kb=x=>x[0]-x[1],d1=kb(a5)-kb(a4),d2=kb(a6)-kb(a5),tr=[a4,a5,a6].map(x=>Math.round(kb(x)*100)+'%').join(', ');let m=0,why='';
+      if(age>=30&&d1<=-.025&&d2<=-.025){m=-.3;why=`his strikeouts minus walks have dropped two years running (${tr})`}
+      else if(age<=27&&d1>=.025&&d2>=.025){m=.3;why=`his strikeouts minus walks have climbed two years running (${tr})`}
+      if(m){w+=m;parts.push(['Arm by season',`K-BB ${tr}: ${m>0?'+':''}${m.toFixed(1)}`]);notes.push(why)}}}
   const M_=profOf(id);if(M_&&M_.war!=null){w=+M_.war;parts.push(['Profile correction',`${(+M_.war).toFixed(1)} WAR${M_.note?': '+M_.note:''}`]);if(M_.note)notes.push(M_.note)}
   const od=SN&&SN.od&&SN.od[id];let hf=1;if(od&&od.ret>=150){hf=.15;parts.push(['Health',`${od.what||'injured'}: expected to miss 2027`]);notes.push('he is expected to miss the 2027 season')}
     else if(od&&od.ret>=45){hf=Math.max(.5,1-od.ret/200);parts.push(['Health',`${od.what||'injured'}: out to start 2027`]);notes.push('he opens 2027 on the injured list')}
@@ -1551,6 +1556,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
     ${established(id)?sec('Value profile',(V=>V.parts.map(x=>kv(x[0],x[1])).join('')+kv('On-field value',V.w.toFixed(1)+' WAR'+(V.hf<1?' ('+V.now.toFixed(1)+' in 2027)':''))+(V.src?`<p class="hint" style="margin:4px 0 0">${esc(V.src)}</p>`:''))(valW(id))):''}
     ${pj.hs&&!p.p?sec('Bat by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.hs[k]).map(k=>`<b>${k}</b> ${pj.hs[k][1]} wRC+, ${Math.round(pj.hs[k][2]*100)}% K, ${pj.hs[k][0]} PA`).join(' · ')}</p>`):''}
     ${pj.fs&&!p.p?sec('Glove by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.fs[k]).map(k=>`<b>${k}</b> ${pj.fs[k][1]} ${pj.fs[k][4]>0?'+':''}${pj.fs[k][4]} runs, ${pj.fs[k][3]>0?'+':''}${pj.fs[k][3]} OAA`).join(' · ')}</p>`):''}
+    ${pj.as&&p.p?sec('Arm by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.as[k]).map(k=>`<b>${k}</b> ${Math.round(pj.as[k][0]*100)}% K, ${Math.round(pj.as[k][1]*100)}% BB, ${pj.as[k][2].toFixed(2)} FIP`).join(' · ')}</p>`):''}
     ${sec('The short version',kv('2027 projection',line27(id))+kv('2026',line26(id))+(pj.wh?kv("WAR '22-'26",pj.wh.map(w=>w==null?'–':w.toFixed(1)).join(' · ')):'')+(p.fv&&!established(id)?kv('Hot Stove grade',Math.round(hsGrade(id))):''))}
     ${sec(hit?'Splits vs left and right':'Splits vs left- and right-handed hitters',spl)}${sec('Statcast',sc)}${sec('Injury history',inj)}${sec('Contract and control',con)}
     <div class="dact" style="justify-content:flex-end">${back?'<button class="btn" type="button" data-act="tcompare">Back to comparison</button>':''}<button class="btn" type="button" data-act="scout-full" data-id="${id}">Full player card</button><button class="btn primary" type="button" data-act="closemodal">Close</button></div>`;
@@ -3015,7 +3021,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121213748';
+const BUILD='20261121214526';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
