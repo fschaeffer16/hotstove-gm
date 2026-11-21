@@ -2771,6 +2771,85 @@
    "src": "MLB Stats API",
    "sid": 950877,
    "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Nate Eaton",
+     "from": "BOS",
+     "to": "ATH",
+     "forty": true,
+     "pos": "OF"
+    },
+    {
+     "name": "Jareth Rayo",
+     "from": "ATH",
+     "to": "BOS",
+     "forty": false,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-10-29",
+   "summary": "Athletics acquired OF/INF Nate Eaton from Boston Red Sox for SP Jareth Rayo.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Sawyer Gipson-Long",
+   "team": "DET",
+   "pos": "RHP",
+   "date": "2026-11-02",
+   "summary": "Detroit Tigers released RHP Sawyer Gipson-Long.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Bailey Horn",
+   "team": "DET",
+   "pos": "LHP",
+   "date": "2026-11-02",
+   "summary": "Detroit Tigers released LHP Bailey Horn.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Carter Baumler",
+     "from": "TEX",
+     "to": "BAL",
+     "forty": false,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-19",
+   "summary": "Texas Rangers returned Rule 5 pick RHP Carter Baumler to Baltimore Orioles.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "select",
+   "name": "Angel Zerpa",
+   "team": "MIL",
+   "pos": "LHP",
+   "date": "2026-11-20",
+   "summary": "Milwaukee Brewers agreed to a one-year contract with LHP Angel Zerpa, avoiding arbitration.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "select",
+   "name": "Darwinzon Hernández",
+   "team": "NYM",
+   "pos": "LHP",
+   "date": "2026-11-19",
+   "summary": "New York Mets agreed to a three-year contract (2027-29) with LHP Darwinzon Hernández.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
   }
  ],
  "live": "2026-11-21T15:14:26Z",
