@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -2661,9 +2661,75 @@
    "src": "MLB Stats API",
    "sid": 950832,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Justin King",
+   "team": "NYM",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "New York Mets signed free agent LHP Justin King to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950864,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Bryan Magdaleno",
+   "team": "HOU",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "Houston Astros signed free agent LHP Bryan Magdaleno to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950860,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jerming Rosario",
+   "team": "PHI",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Philadelphia Phillies signed free agent RHP Jerming Rosario to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950868,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Adam Leverett",
+   "team": "MIA",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Miami Marlins signed free agent RHP Adam Leverett to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950862,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "TJ Shook",
+   "team": "COL",
+   "pos": "RHP",
+   "date": "2026-11-18",
+   "summary": "Colorado Rockies signed free agent RHP TJ Shook to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950858,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Josh Simpson",
+   "team": "PHI",
+   "pos": "LHP",
+   "date": "2026-11-18",
+   "summary": "Philadelphia Phillies signed free agent LHP Josh Simpson to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950871,
+   "status": "official"
   }
  ],
- "live": "2026-11-21T01:08:03Z",
+ "live": "2026-11-21T15:04:22Z",
  "seen_sids": [
   950119,
   950220,
@@ -2854,6 +2920,12 @@
   950804,
   950816,
   950817,
-  950832
+  950832,
+  950858,
+  950860,
+  950862,
+  950864,
+  950868,
+  950871
  ]
 }

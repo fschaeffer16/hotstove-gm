@@ -1,6 +1,72 @@
 {
  "items": [
   {
+   "title": "New York Mets signed free agent LHP Justin King to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:04:22Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
+   "title": "Houston Astros signed free agent LHP Bryan Magdaleno to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:04:22Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "HOU"
+   ]
+  },
+  {
+   "title": "Philadelphia Phillies signed free agent RHP Jerming Rosario to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:04:22Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
+   "title": "Miami Marlins signed free agent RHP Adam Leverett to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:04:22Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
+   "title": "Colorado Rockies signed free agent RHP TJ Shook to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:04:22Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Philadelphia Phillies signed free agent LHP Josh Simpson to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-21T15:04:22Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
    "title": "The Opener: Lewis/Miller, Melton, Loaisiga",
    "blurb": "Wow, that was a busy day. Yesterday saw a flurry of activity as teams adjusted their rosters before the 4:00 pm CT non-tender deadline. MLBTR has the complete lists of the American League and National League non-tenders, as well as players who agreed to terms with their clubs to avoid arbitration. T",
    "link": "https://www.mlbtraderumors.com/2026/11/the-opener-lewis-miller-melton-loaisiga.html",
@@ -3208,73 +3274,7 @@
    "teams": [
     "COL"
    ]
-  },
-  {
-   "title": "Reds Select Carter Graham",
-   "blurb": "The Reds announced that infielder/outfielder Carter Graham has been selected to the 40-man roster. That protects him from being exposed in the Rule 5 draft, if it takes place this offseason. Cincinnati had multiple 40-man vacancies, so no corresponding move was required. More to come.",
-   "link": "https://www.mlbtraderumors.com/2026/11/reds-select-carter-graham.html",
-   "time": "2026-11-17T23:24:35Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "CIN"
-   ]
-  },
-  {
-   "title": "Marlins Select Four Players",
-   "blurb": "The Marlins announced that they have selected right-handers Jace Beck, Eliazar Dishmey and Brandon White as well as infielder Juan Matheus to the 40-man roster. Those players are now protected from being selected in the Rule 5 draft, if it takes place this offseason. Miami had five 40-man vacancies ",
-   "link": "https://www.mlbtraderumors.com/2026/11/marlins-select-four-players.html",
-   "time": "2026-11-17T23:19:16Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "MIA"
-   ]
-  },
-  {
-   "title": "Tigers Designate Four Players For Assignment",
-   "blurb": "The Tigers announced they&#8217;ve designated four players for assignment: infielders Jace Jung and Trey Sweeney, outfielder Matt Vierling, and left-handed pitcher Jake Miller. That clears 40-man roster space for them to finalize the Emilio Pagán signing and select Josue Briceño, Max Anderson and Pe",
-   "link": "https://www.mlbtraderumors.com/2026/11/tigers-designate-four-players-for-assignment.html",
-   "time": "2026-11-17T23:17:09Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "DET"
-   ]
-  },
-  {
-   "title": "Guardians Make Multiple Roster Moves",
-   "blurb": "The Guardians announced that right-hander Justin Campbell, catcher Kody Huff, and outfielder Jaison Chourio were selected to the 40-man roster. Chourio is the most well-regarded prospect of the group. MLB Pipeline had him at No. 5 in Cleveland&#8217;s system. Chourio slashed .274/.376/.408 in 114 ga",
-   "link": "https://www.mlbtraderumors.com/2026/11/guardians-make-multiple-roster-moves.html",
-   "time": "2026-11-17T23:11:15Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "CLE"
-   ]
-  },
-  {
-   "title": "Blue Jays Select Three Players",
-   "blurb": "The Blue Jays announced that they selected outfielder RJ Schreck as well as right-handers Nolan Perry and Daniel Guerra to the 40-man roster. That protects those players from being selected in the Rule 5 draft, if it actually takes place this offseason. Toronto had three 40-man vacancies, so no corr",
-   "link": "https://www.mlbtraderumors.com/2026/11/blue-jays-select-three-players.html",
-   "time": "2026-11-17T23:11:10Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "TOR"
-   ]
-  },
-  {
-   "title": "Diamondbacks Select Six Players",
-   "blurb": "The Diamondbacks have selected six players to their 40-man roster, reports Nick Piecoro of The Arizona Republic. The six are infielders Demetrio Crisantes and Cristofer Torin, outfielder Druw Jones, left-hander Spencer Giesting, as well as right-handers Ashton Izzi and Wellington Aracena. Those play",
-   "link": "https://www.mlbtraderumors.com/2026/11/diamondbacks-select-six-players.html",
-   "time": "2026-11-17T22:56:18Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "ARI"
-   ]
   }
  ],
- "updated": "2026-11-21T14:54:19Z"
+ "updated": "2026-11-21T15:04:22Z"
 }
