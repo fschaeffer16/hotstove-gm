@@ -1,0 +1,16 @@
+{
+ "updated": "2026-11-22",
+ "about": "Player value profiles for Hot Stove GM. One entry per player whose value needs more than the projection and recent results give it: 'war' replaces his on-field value (wins), 'adj' moves his trade grade (-6..+6) for market demand, 'note' is one short line the GM can say, 'src' is where it comes from. Add entries as news and stats come in; never guess.",
+ "players": {
+  "Shohei Ohtani": {
+   "war": 7.0,
+   "note": "a two-way player: his pitching counts on top of his bat",
+   "src": "FanGraphs 2027 projections (hitting 4.2 WAR + pitching 2.3 WAR) and 2025-26 results"
+  },
+  "Mason Miller": {
+   "adj": 1,
+   "note": "the most sought-after reliever on the market",
+   "src": "Owner note, Nov. 22, 2026"
+  }
+ }
+}
