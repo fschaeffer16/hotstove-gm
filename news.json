@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Nationals Trade Braxton Roxby To Cubs",
+   "blurb": "The Nationals and Cubs announced a trade that sends reliever Braxton Roxby from Washington to Chicago in exchange for cash considerations. The Nats had designated Roxby for assignment on Tuesday. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/nationals-trade-braxton-roxby-to-cubs.html",
+   "time": "2026-11-21T00:44:47Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "CHC",
+    "WSN"
+   ]
+  },
+  {
    "title": "Washington Nationals traded RHP Braxton Roxby to Chicago Cubs for cash.",
    "blurb": "",
    "link": "",
@@ -3269,16 +3281,7 @@
    "teams": [
     "SDP"
    ]
-  },
-  {
-   "title": "Tarik Skubal free agency tracker: Latest on top MLB free agent",
-   "blurb": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-   "link": "https://www.espn.com/mlb/story/_/id/50453514/tarik-skubal-free-agency-updates",
-   "time": "2026-11-17T16:41:14Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-21T00:37:44Z"
+ "updated": "2026-11-21T00:47:49Z"
 }
