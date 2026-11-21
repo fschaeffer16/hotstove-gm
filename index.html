@@ -1446,6 +1446,14 @@ function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.
       else if(age<=27&&a5[1]>=a4[1]+8&&a6[1]>=a5[1]+8){m=.3;why=`his bat has improved two years running (${tr})`}
       if(age>=31&&a6[2]>=a4[2]+.04){m-=.2;why=(why?why+', and ':'')+`his strikeouts are climbing (${Math.round(a4[2]*100)}% to ${Math.round(a6[2]*100)}%)`}
       if(m){w+=m;parts.push(['Bat by season',`${tr}: ${m>0?'+':''}${m.toFixed(1)}`]);notes.push(why)}}}
+  /* contact quality 2024 to 2026 against age: the hitter's version of fastball velocity. Not counted on top of a wRC+ trend in the same direction. */
+  {const xs=!p.p&&pj.xs,q=k=>xs&&xs[k]&&xs[k][0]>=200?xs[k]:null,x6=q('2026'),x4=q('2024');
+    if(x6&&x4&&!(M0&&M0.war!=null)){const dH=x6[4]-x4[4],dX=x6[5]-x4[5],dE=x6[1]-x4[1],prev=parts.find(z=>z[0]==='Bat by season'),pd=prev?(/: -/.test(prev[1])?-1:1):0;let m=0;
+      if(age>=30&&dH<=-.05&&dX<=-.02&&pd>=0)m=-.3;else if(age<=27&&dH>=.05&&dX>=.02&&pd<=0)m=.3;
+      if(m){w+=m;const t=`hard-hit rate ${Math.round(x4[4]*100)}% to ${Math.round(x6[4]*100)}%, exit velocity ${x4[1]} to ${x6[1]} mph`;parts.push(['Contact quality',`${t}: ${m>0?'+':''}${m.toFixed(1)}`]);notes.push(m<0?`he is not hitting the ball as hard as he did two years ago (${t})`:`he is hitting the ball harder than two years ago (${t})`)}}}
+  /* speed 2024 to 2026: for a player whose legs were part of his game, losing them at 30 or older costs him on the bases and in the field */
+  {const ss=!p.p&&pj.ss,q=k=>ss&&ss[k]&&ss[k][0]>=250?ss[k]:null,s6=q('2026'),s4=q('2024');
+    if(s6&&s4&&age>=30&&s4[1]>=5&&s6[1]<=s4[1]-1.5&&s6[2]<=s4[2]-2&&!(M0&&M0.war!=null)){w-=.2;parts.push(['Speed',`speed score ${s4[1]} to ${s6[1]}, baserunning ${s4[2]>0?'+':''}${s4[2]} to ${s6[2]>0?'+':''}${s6[2]} runs: -0.2`]);notes.push(`he has lost a step (speed score ${s4[1]} to ${s6[1]} in two years)`)}}
   {const fs=!p.p&&pj.fs,q=k=>fs&&fs[k]&&fs[k][0]>=500?fs[k]:null,f6=q('2026'),f4=q('2024')||q('2025');
     if(f6&&f4&&age>=30&&!(M0&&M0.war!=null)){const r6=f6[4]*1000/f6[0],r4=f4[4]*1000/f4[0];
       if(r6<=-4&&r6<=r4-6){w-=.2;parts.push(['Glove by season',`${f4[4]>0?'+':''}${f4[4]} then ${f6[4]>0?'+':''}${f6[4]} fielding runs at ${f6[1]}: -0.2`]);notes.push(`his defense at ${f6[1]} is slipping with age`)}}}
@@ -1587,7 +1595,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
     ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
     ${p.ov||p.ovn?sec(p.ov?'2026 in '+p.ov[0]:'Posted player',`<p class="hint" style="margin:0">${p.ov?esc(p.ov[1])+'.':''}${p.ovn?' '+esc(p.ovn):''}</p>`):''}
     ${established(id)?sec('Value profile',(V=>V.parts.map(x=>kv(x[0],x[1])).join('')+kv('On-field value',V.w.toFixed(1)+' WAR'+(V.hf<1?' ('+V.now.toFixed(1)+' in 2027)':''))+(V.src?`<p class="hint" style="margin:4px 0 0">${esc(V.src)}</p>`:''))(valW(id))):''}
-    ${pj.hs&&!p.p?sec('Bat by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.hs[k]).map(k=>`<b>${k}</b> ${pj.hs[k][1]} wRC+, ${Math.round(pj.hs[k][2]*100)}% K, ${pj.hs[k][0]} PA`).join(' · ')}</p>`):''}
+    ${pj.hs&&!p.p?sec('Bat by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.hs[k]).map(k=>`<b>${k}</b> ${pj.hs[k][1]} wRC+, ${Math.round(pj.hs[k][2]*100)}% K, ${pj.hs[k][0]} PA`).join(' · ')}</p>${pj.xs?`<p class="hint" style="margin:4px 0 0"><b>Contact quality (exit velocity, hard-hit, barrels, xwOBA):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.xs[k]).map(k=>`<b>${k}</b> ${pj.xs[k][1]} mph, ${Math.round(pj.xs[k][4]*100)}%, ${Math.round(pj.xs[k][3]*100)}%, ${f3(pj.xs[k][5])}`).join(' · ')}</p>`:''}${pj.ss?`<p class="hint" style="margin:4px 0 0"><b>Speed (speed score 0-10, baserunning runs):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.ss[k]).map(k=>`<b>${k}</b> ${pj.ss[k][1]}, ${pj.ss[k][2]>0?'+':''}${pj.ss[k][2]}`).join(' · ')}</p>`:''}`):''}
     ${pj.fs&&!p.p?sec('Glove by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.fs[k]).map(k=>`<b>${k}</b> ${pj.fs[k][1]} ${pj.fs[k][4]>0?'+':''}${pj.fs[k][4]} runs, ${pj.fs[k][3]>0?'+':''}${pj.fs[k][3]} OAA`).join(' · ')}</p>`):''}
     ${pj.pob&&!p.p?sec('Postseason, 2022-26',`<p class="hint" style="margin:0">${pj.pob[0]} games, ${pj.pob[1]} plate appearances, ${pj.pob[2]} home runs, <b>${f3(pj.pob[4])} OPS</b> (${pj.pob[3]} wRC+), in ${pj.pob[5]} October${pj.pob[5]>1?'s':''}.</p>`):''}
     ${pj.po&&p.p?sec('Postseason, 2022-26',`<p class="hint" style="margin:0">${pj.po[0]} games${pj.po[1]?' ('+pj.po[1]+' starts)':''}, ${pj.po[2]} innings, <b>${pj.po[3].toFixed(2)} ERA</b>${pj.po[4]?', '+pj.po[4]+' saves':''}, in ${pj.po[5]} October${pj.po[5]>1?'s':''}.</p>`):''}
@@ -3056,7 +3064,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121221604';
+const BUILD='20261121222007';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
