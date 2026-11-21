@@ -1526,6 +1526,28 @@ function tradeCompare(){const code=UI.tTeam,out=[...UI.tOut].filter(isMets),inn=
    +12%) but never beats the hard questions: MLB rules, payroll, untouchables, the headliner, big-league help back. */
 const talkKey=(code,o,i,cash)=>JSON.stringify([code,[...o].sort(),[...i].sort(),cash||0]);
 function talkFor(code,o,i,cash){const t=UI.tTalk;return t&&t.key===talkKey(code,o,i,cash)?t:null}
+/* what the GM would want added: tries the user's players one at a time on top of the current offer and names the ones that close it,
+   cheapest first, leaning to players who fill one of his club's needs */
+function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=needList(code).slice(0,2),want=nl.length?`We're looking for ${nl.join(' and ')}. `:'';
+  if(E0.verdict==='locked')return "Nobody. The rules don't allow this deal as it's built.";
+  if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
+  if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
+  if(!inSel.length)return `${want}Tell me who you want from us first, then I'll tell you what it costs.`;
+  const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${p.proj.war.toFixed(1)} WAR projected with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
+    const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${p.t100?', No. '+p.t100+' in the game':''}`};
+  const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
+  /* a player the user asked about by name */
+  if(asked&&asked.length){const id=asked[0],E=evalTrade(code,outSel.concat([id]),inSel,cashM);
+    return E.verdict==='accept'?`${nm(id)}? Yes. Add him and we have a deal: ${why(id)}.`:E.verdict==='counter'?`${nm(id)} gets us close, ${why(id)}. I'd still need a small piece with him.`:(E.untouch&&E.untouch.length?`${nm(id)}? ${why(id).replace(/^./,ch=>ch.toUpperCase())}, but ${nm(E.untouch[0].x.id)} only moves for a better player than that.`:`${nm(id)} doesn't get it done; ${why(id)}, and that's not enough for what you're asking.`)}
+  const ok=pool.filter(x=>evalTrade(code,outSel.concat([x.id]),inSel,cashM).verdict==='accept').sort((a,b)=>(a.g-6*a.f)-(b.g-6*b.f));
+  if(E0.untouch&&E0.untouch.length){const u=E0.untouch[0].x.id;return ok.length?`${nm(u)} is not a player we move for a package of pieces. One better player coming back is the only way, and from your side that's ${nm(ok[0].id)}; ${why(ok[0].id)}.${ok[1]?' '+nm(ok[1].id)+' would open it too.':''}`:`${nm(u)} isn't moving. It would take a better player coming back, and with what's on the table I don't see that player in your system. ${want}Ask me about someone else on our roster.`}
+  if(ok.length){const a=ok[0],b=ok.find(x=>x.id!==a.id&&(established(x.id)!==established(a.id)||Math.abs(x.g-a.g)>=2))||ok[1];
+    return `${want}Looking at your system and what's already on the table: add ${nm(a.id)} and I'd do it; ${why(a.id)}.${b?` If he's off limits, ${nm(b.id)} gets us there too.`:''}`}
+  const near=pool.filter(x=>evalTrade(code,outSel.concat([x.id]),inSel,cashM).verdict==='counter').sort((a,b)=>b.g-a.g);
+  if(E0.needMLB){const m=pool.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5).sort((a,b)=>b.f-a.f||b.g-a.g)[0];return `${want}We're trying to win, so if ${nm(E0.hOut.id)} goes I need a big leaguer back, not just prospects.${m?' '+nm(m.id)+' is the kind of player I mean: '+why(m.id)+'.':''}`}
+  if(!E0.headOK&&E0.hOut&&E0.hOut.id){const top=pool[0];return `${want}The problem is the top of the deal. For ${nm(E0.hOut.id)} I need one player close to his level, and ${top?nm(top.id)+' is the one in your system who is; '+why(top.id):'I do not see him in your system'}. More small pieces won't do it.`}
+  if(near.length)return `${want}Nobody closes it alone, but ${nm(near[0].id)} gets us close; ${why(near[0].id)}. Him plus one more real piece.`;
+  return `${want}Honestly, I don't see the match for ${inSel.length>1?'those players':nm(inSel[0])} in your system right now. You'd have to ask for less.`}
 function gmReply(text,code,outSel,inSel,cashM){
   const key=talkKey(code,outSel,inSel,cashM);if(!UI.tTalk||UI.tTalk.key!==key)UI.tTalk={key,log:[],used:{},bonus:0,done:false};
   const T=UI.tTalk,tx=' '+text.toLowerCase()+' ',c=ctx(code),win=c.win,now=win==='allin'||win==='contend',a=ana(code),say=[],E0=evalTrade(code,outSel,inSel,cashM);
@@ -1539,6 +1561,9 @@ function gmReply(text,code,outSel,inSel,cashM){
   /* tone */
   if(/idiot|stupid|dumb|moron|clown|\bjoke\b|pathetic|f[u*]ck|sh[i*]t|bullsh|garbage|trash|\bsuck/.test(tx)){T.done=true;T.bonus=Math.max(-.08,T.bonus-.04);
     const gm="We're done for today. Call me when you want to talk baseball.";T.log.push({me:text,gm});return gm}
+  /* a question: who do you want, what would it take. He looks at the user's system and at what is already on the table and names players. */
+  if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take/.test(tx)){
+    const q=gmSuggest(code,outSel,inSel,cashM,E0,named(roster(ME).filter(id=>!outSel.includes(id))));T.log.push({me:text,gm:q,q:1});return q}
   /* health of their player */
   if(/injur|hurt|health|medical|\bil\b|surger|elbow|shoulder|fragile|durab|banged|missed time|tommy john/.test(tx)){const id=their(x=>(scout(x).inj||{r:0}).r);
     if(id){const s=scout(id),I=s.inj;
@@ -1595,7 +1620,12 @@ function gmReply(text,code,outSel,inSel,cashM){
   if(/other (team|club|offer)|another (team|club|offer|gm)|elsewhere|walk away|final offer|last offer|take it or leave|best offer|moving on|shop/.test(tx)){const t=their(id=>established(id)?-ctrl(id).length:-9),sell=Math.max(prof(code).sell||0,win==='rebuild'?1:0);
     if(t&&established(t)&&ctrl(t).length<=2&&sell>=.6)hit('lev',.03,`Don't make it a threat. But yes, I would rather move ${nm(t)} now than wait and hope.`);
     else hit('levx',-.02,`Then make that call. My price doesn't change because you say you have other options.`)}
-  if(!say.length)say.push(`I hear you, but give me a baseball reason. Health, the contract, how he fits us, what the numbers say: that's what moves me.`);
+  if(!say.length){const t0=their(),m0=my(),h=[];if(t0){const s0=scout(t0);if(s0.inj&&s0.inj.r>=1.5)h.push(`${nm(t0)}'s health`);if(s0.luck===1)h.push(`whether ${nm(t0)}'s 2026 was real`);if(established(t0)&&ctrl(t0).length<=1)h.push(`${nm(t0)} being a year from free agency`)}
+    if(m0&&established(m0))h.push(`where ${nm(m0)} fits on our club`);else if(m0)h.push(`what ${nm(m0)} becomes`);const nl=needList(code).slice(0,2);
+    T.idk=(T.idk||0)+1;const gm=[`That doesn't change my read. ${h.length?'Push me on '+h.slice(0,2).join(' or ')+'. ':''}Or ask me who I'd want from your side.`,
+      `I'm listening, but I need a baseball reason.${nl.length?' We are looking for '+nl.join(' and ')+'; show me how this deal gets us that.':''}`,
+      `Ask me what it would take and I'll tell you. Otherwise ${h[0]||'the players'} is where the conversation is.`][(T.idk-1)%3];
+    T.log.push({me:text,gm,q:1});return gm}
   T.bonus=Math.max(-.08,Math.min(.12,T.bonus+delta));
   /* where that leaves the deal */
   const E=evalTrade(code,outSel,inSel,cashM);let end;
@@ -1608,13 +1638,13 @@ function gmReply(text,code,outSel,inSel,cashM){
   else if(!E.headOK&&E.hOut.id)end=`It still comes down to the best player in the deal. ${E.hIn.id?nm(E.hIn.id)+" isn't "+nm(E.hOut.id):'Nothing coming back matches '+nm(E.hOut.id)}, and talking doesn't change that.`;
   else if(E.verdict==='counter')end=delta>0?"That gets us closer. I still need a little more in the deal.":"We're close, but that didn't move me.";
   else end=delta>0?"I'll give you the point. We're still a real piece apart.":"We're not close.";
-  if(T.log.length>=2&&E.verdict!=='accept'){T.done=true;end+=' I have heard your case. Change the offer if you want a different answer.'}
+  if(T.log.filter(l=>!l.q).length>=2&&E.verdict!=='accept'){T.done=true;end+=' I have heard your case. Change the offer if you want a different answer.'}
   const gm=say.join(' ')+' '+end;T.log.push({me:text,gm,up:delta>0});return gm}
 function gmTalkHTML(E,code,outSel,inSel,cashM){if(E.verdict==='locked')return '';const T=talkFor(code,outSel,inSel,cashM),log=T?T.log:[];
   if(E.verdict==='accept'&&!log.length)return '';
   return `<div class="gmtalk"><div class="subh">Make your case</div>
     ${log.map(l=>`<div class="say me"><b>You:</b> ${esc(l.me)}</div><div class="say gm"><b>${esc(tnm(code))} GM:</b> ${esc(l.gm)}</div>`).join('')}
-    ${T&&T.done||E.verdict==='accept'?'':`<textarea id="gmSay" maxlength="300" rows="2" placeholder="Answer the ${esc(tnm(code))} GM in your own words…" aria-label="Your reply to the ${esc(tnm(code))} GM"></textarea>
+    ${T&&T.done||E.verdict==='accept'?'':`<textarea id="gmSay" maxlength="300" rows="2" placeholder="Make a point, or ask: who do you want from my side?" aria-label="Your reply to the ${esc(tnm(code))} GM"></textarea>
     <div class="dact" style="margin-top:6px;justify-content:space-between;align-items:center"><span class="hint" style="flex:1;min-width:0">He checks what you say against the numbers. A true point can tip a close deal. ${3-log.length} repl${3-log.length===1?'y':'ies'} left.</span><button class="btn primary" type="button" data-act="gmsay">Send</button></div>`}</div>`}
 /* untouchable to the club that holds him */
 function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(id);
@@ -1808,10 +1838,37 @@ function negotiate(id,c,mode,peek){
    A true point moves the agent's number down a little; a false one stiffens him. Three replies per negotiation. ===== */
 const NOTAX=['MIA','TBR','TEX','HOU','SEA'];
 function agentReply(text,id,c,mode){const key=ME+'|'+mode+'|'+id,st=UI.neg[key];if(!st)return null;
-  const T=st.talk=st.talk||{log:[],used:{},n:0,mv:0};if(T.n>=3)return T;
-  const p=P[id],s=scout(id),x=text.toLowerCase(),has=(...w)=>w.some(k=>x.includes(k)),age=p.age||30,su=mode==='ext'?[]:faSuitors(id),pts=[];let d=0;
-  const pt=(k,ok,amt,yes,no)=>{if(T.used[k]){pts.push('We covered that already.');return}T.used[k]=1;if(ok){d-=amt;pts.push(yes)}else{d+=amt*.4;pts.push(no)}};
-  if(has('greedy','ridiculous','insane','a joke','delusional','crazy','overpaid','rip off','ripoff')){d+=.01;pts.push("That's not how you get a deal done. He knows what he's worth.")}
+  const T=st.talk=st.talk||{log:[],used:{},n:0,mv:0};if(T.n>=3)return T;var used=false;
+  const p=P[id],s=scout(id),x=text.toLowerCase(),has=(...w)=>w.some(k=>x.includes(k)),age=p.age||30,su=mode==='ext'?[]:faSuitors(id),pts=[],A0=agentEval(id,c,mode);let d=0;
+  const pt=(k,ok,amt,yes,no)=>{if(T.used[k]){pts.push(['We covered that already.','You made that point. It is in my number.','Same point, same answer.'][(T.rep=(T.rep||0)+1)%3]);return}T.used[k]=1;used=true;if(ok){d-=amt;pts.push(yes)}else{d+=amt*.4;pts.push(no)}};
+  let fitDone=false;const Y=c.years||1,opts=Math.min(2,((c.notes||'').match(/opt/gi)||[]).length),
+    quote=y=>Math.ceil(agentEval(id,{...c,years:y,total:0},mode).need*st.f/(1+.04*opts)/1e6*2)/2,ask=quote(Y),gap=Math.max(0,ask-(c.total||0)),
+    clubs=su.slice(0,3).map(z=>D.teams[z.code].name),g=pgrp(id),w=p.proj?p.proj.war:(p.pwar||0),money=v=>'$'+(Math.round(v*10)/10)+'M';
+  const say1=(k,arr)=>{T.rot=T.rot||{};const i=(T.rot[k]||0)%arr.length;T.rot[k]=(T.rot[k]||0)+1;return arr[i]};
+  if(has('greedy','ridiculous','insane','a joke','delusional','crazy','overpaid','rip off','ripoff')){d+=.01;used=true;pts.push(say1('rude',["That's not how you get a deal done. He knows what he's worth.","Insults don't lower the price. They raise it.","Keep that up and I take the next call instead."]))}
+  /* a number said out loud: "would he take 5 years, 140?" */
+  {const my_=x.match(/(\d{1,2})\s*-?\s*(?:years?|yrs?|yr)\b/),mm=x.match(/\$?\s*(\d{2,3}(?:\.\d)?)\s*(?:m\b|mil|million)/);
+    if(my_&&+my_[1]>=1&&+my_[1]<=15){const y=+my_[1],need=quote(y);
+      if(mm){const t=+mm[1];pts.push(t>=need*.995?`${y} years and ${money(t)} works. Put it in the offer and we sign.`:`At ${y} years I need ${money(need)}, about ${money(need/y)} a year. ${money(t)} leaves us ${money(need-t)} short.`)}
+      else pts.push(`${y} years? That would be ${money(need)}, about ${money(need/y)} a year.${y<A0.my?` Shorter than the ${A0.my} he is looking for, so the yearly number goes up: he gets back to the market sooner but gives up security.`:y>A0.my?` He'd take the extra years, and each one past ${A0.my} comes a bit cheaper.`:''}`)}}
+  /* questions: what does he want, who else is in */
+  if(/what (would|will|does|do|is) (it|he|you|his)|what are you (looking|asking)|what'?s (your|his|the) (number|price|ask)|your number|his number|how much|bottom line|lowest|where are (you|we)|what do you need|name your price/.test(x)){
+    const age_=Math.floor(age),pref=mode==='ext'?`He would rather stay, which is why this is below what the open market would pay.`:age_>=32?`At ${age_} this is probably his last big contract, so the guaranteed years matter more to him than the yearly number.`:age_<=28?`He's ${age_}. He'd listen to a shorter deal or an opt-out that gets him back on the market at ${age_+Math.min(3,Y)}, but the yearly number has to go up for it.`:`He wants to be paid like what he is, and he wants the years to match.`;
+    pts.push(`${Y===A0.my?`He's looking for ${Y} year${Y>1?'s':''} and ${money(ask)}`:`${A0.my} years is what he's looking for. At your ${Y}, the number is ${money(ask)}`}, about ${money(ask/Y)} a year${gap>0?`; you are ${money(gap)} short`:''}. ${pref}${clubs.length?` The ${clubs.join(', ')}${su.length>3?' and others':''} ${su.length===1?'is':'are'} in on him, so I am not bidding against myself.`:mode==='ext'?'':` It is a quiet market, so there's room to talk.`}`)}
+  let askedMkt=false;if(mode!=='ext'&&/who else|which (teams|clubs)|what (teams|clubs)|any(one|body) else|competition|who is in|who's in/.test(x)){askedMkt=true;
+    pts.push(su.length?`${su.slice(0,4).map(z=>D.teams[z.code].name).join(', ')}${su.length>4?' and '+(su.length-4)+' more':''}. Those are the clubs with the payroll room and a need at ${g}.${su.length>=4?' With that many, I don\'t have to come down.':''}`:`Honestly, nobody with both the money and the need right now. That's why I'm still on the phone with you.`)}
+  if(/defer/.test(x))pts.push(`He'll defer up to half of it. It lowers your tax number, but the value in today's dollars has to hold, so the total goes up if you push money back.`);
+  /* the fit: teammates named, the lineup, the core */
+  {const mates=metsIds().filter(m=>m!==id&&P[m].proj&&established(m)).filter(m=>{const l=sn(m).toLowerCase();return l.length>=4&&x.includes(l)}).sort((a,b)=>P[b].proj.war-P[a].proj.war).slice(0,4);
+    if(mates.length||/\bfit\b|perfect|core|missing piece|final piece|\bwith us\b|our lineup|our rotation|our roster|our club|protect|built to win/.test(x)){fitDone=true;
+      const cur=needAt(ME,g,id),up=w-cur,ahead=groupDepth(ME,g,id)[0],wins=Math.round(47+baseWAR(ME)),ready=teamReady(ME),
+        core=mates.length?`${mates.map(m=>sn(m)).join(', ').replace(/, ([^,]*)$/,' and $1')} ${mates.length>1?'are':'is'} about ${mates.reduce((t,m)=>t+P[m].proj.war,0).toFixed(1)} WAR${mates.length>1?' between them':''}`:`You project for about ${wins} wins as it stands`;
+      const spot=p.p?(g==='SP'?`he'd slot into your rotation`:`he'd pitch late for you`):`he'd play ${g} for you`;
+      if(T.used.win)pts.push(`${core}. We covered the winning part; it's already in my number.`);
+      else{T.used.win=1;used=true;
+        if(ready&&up>=1){d-=.015;pts.push(`${core}, and ${spot} about ${up.toFixed(1)} wins better than what you have there now. He sees that, and winning matters to him. I can move a little for it.${su.length>=3?` But the ${clubs[0]} can show him a lineup too.`:''}`)}
+        else if(ready){d-=.005;pts.push(`${core}. Good club. But ${ahead?`you already have ${sn(ahead)} at ${g}`:`you're covered at ${g}`}, so ${spot} as a smaller upgrade than he'd be elsewhere. That's worth a little to him, not a lot.`)}
+        else{d+=.004;pts.push(`${core}. ${mates.length?'Good players, but':'That is'} ${wins<82?'not a playoff club on paper':'a club on the edge'}, and he's not taking less to find out. Show him more than names.`)}}}}
   if(has('injur','hurt','health',' il ','injured list','surgery','elbow','shoulder','durab','games played','innings')){const I=s.inj;
     pt('inj',!!(I&&I.r>=1.5),.02,`Fair: ${I?injLine(I,false):''}, and every club asks about it. We can give a little for that.`,"He's been healthy. That won't move us.")}
   if(has('age','old','older','decline','aging','prime','mid-30','thirties')){
@@ -1823,9 +1880,9 @@ function agentReply(text,id,c,mode){const key=ME+'|'+mode+'|'+id,st=UI.neg[key];
     pt('down',l!=null&&pv!=null&&l<pv-.9,.015,'2026 was not his best, agreed. One year, though; the track record is longer than that.','There was no down year. Check the numbers again.')}
   if(has('platoon','lefties','righties','left-hand','right-hand','split','same side','specialist')){
     pt('split',!!(s.platoon||s.spec),.015,'He has a split, sure. Used right, he is still a weapon.','He hits both sides. No platoon discount here.')}
-  if(mode!=='ext'&&has('market','no one else','nobody','other team','thin','bidding','who else','suitors','leverage','offers')){const n=su.length;
+  if(mode!=='ext'&&!askedMkt&&has('market','no one else','nobody','other team','thin','bidding','suitors','leverage','offers')){const n=su.length;
     pt('mkt',n<=1,.025,n?`Only the ${D.teams[su[0].code].name} are really in. I won't pretend otherwise.`:"It's quieter than I'd like. I can work with you.",`${su.slice(0,3).map(z=>D.teams[z.code].name).join(', ')}${n>3?' and others':''} are all in. I don't need to come down.`)}
-  if(has('win','contend','ring','playoff','world series','championship','october','pennant')){const w=D.teams[ME].win;
+  if(!fitDone&&has('win','contend','ring','playoff','world series','championship','october','pennant')){const w=D.teams[ME].win;
     pt('win',teamReady(ME),.015,'He wants to win, and you can. That is worth something to him.',w==='rebuild'?"You're rebuilding. He isn't signing up for that at a discount.":"He's not sure you're a contender yet. Money talks.")}
   if(has('everyday','every day','start','playing time','role','closer','ace','lineup','rotation spot','at-bats','at bats')){
     pt('role',fillsNeed(id,ME)>0||(p.proj&&p.proj.war>=needAt(ME,pgrp(id),id)),.01,'A clear job matters to him. Put that in writing and we get closer.',"You've got players ahead of him. He'd want to be paid for that risk.")}
@@ -1838,14 +1895,21 @@ function agentReply(text,id,c,mode){const key=ME+'|'+mode+'|'+id,st=UI.neg[key];
   if(has('security','guarantee','long-term','long term','extra year','more years')){
     pt('yrs',c.years>=(mode==='ext'?4:(p.my||1)),.01,'The years are what he wants. That helps.',"You're not offering the years, so don't sell me security.")}
   if(has('opt-out','opt out','no-trade','no trade','incentive','bonus'))pts.push('Put it in the contract notes ("opt-out after year 2") and it counts toward his number.');
-  if(!pts.length)pts.push('I hear you. Give me something concrete: his health, his age, the market, the role, or why he wins with you.');
+  if(!pts.length){const hints=[];if(s.inj&&s.inj.r>=1.5)hints.push('his medicals');if(age>=32)hints.push(`what he looks like at ${Math.floor(age)+Y-1}`);if(s.luck===1)hints.push('the gap between his results and his expected numbers');if(s.platoon||s.spec)hints.push('his splits');if(mode!=='ext'&&su.length<=1)hints.push('how quiet his market is');if(p.qo)hints.push('the draft pick he costs you');hints.push(teamReady(ME)?'where he fits on a club built to win':'the role you can promise him');
+    const short=x.trim().split(/\s+/).length<=2;
+    pts.push(short?say1('no',[`Then we're ${gap>0?money(gap)+' apart':'right there'} at ${Y} year${Y>1?'s':''}. Is it the years, the money, or the player? Tell me which and I can work with it.`,
+        `That's not a counter. ${clubs.length?'The '+clubs[0]+' gave me a number today. ':''}What would you do it at?`,
+        `I can't take that back to him. Ask me what he wants, or tell me why he's worth less than ${money(ask/Y)} a year.`])
+      :say1('idk',[`I'm not sure how that changes his price. If you want to talk about ${hints.slice(0,3).join(', ')}, that's where I'd listen.`,
+        `Help me connect that to the contract. With this player the real questions are ${hints.slice(0,2).join(' and ')}. Or ask me straight what it takes.`,
+        `Maybe. But I price him on what he does and who else wants him. ${hints[0].replace(/^./,ch=>ch.toUpperCase())} is the place to push me.`]))}
   d=Math.max(-.03,Math.min(.015,d));const room=-.06-T.mv;if(d<room)d=room;T.mv+=d;
   st.f=Math.max(.8,st.f+d);if(d<0)st.fl=Math.max(.8,st.fl+d*.5);
-  T.n++;T.log.push({me:text.slice(0,300),ag:pts.join(' '),d});return T}
+  if(used)T.n++;T.log.push({me:text.slice(0,300),ag:pts.join(' '),d});return T}
 function agentTalkHTML(id,mode,ok){const st=UI.neg[ME+'|'+mode+'|'+id],T=st&&st.talk,log=T?T.log:[],left=3-(T?T.n:0);
   return `<div class="gmtalk agtalk">${log.map(l=>`<div class="say me">${esc(l.me)}</div><div class="say gm">"${esc(l.ag)}"${l.d<-.001?' <b class="up">He comes down.</b>':l.d>.001?' <b class="dn">He digs in.</b>':''}</div>`).join('')}
-    ${ok?'':left>0?`<div class="subh" style="margin-top:6px">Make your case</div><textarea id="agSay" rows="2" maxlength="300" placeholder="Answer his agent in your own words..."></textarea>
-    <div style="display:flex;gap:8px;align-items:center;margin-top:6px"><span class="hint" style="flex:1">He checks what you say against the numbers. A true point brings him down a little. ${left} repl${left===1?'y':'ies'} left.</span><button class="btn primary" type="button" id="agSend">Send</button></div>`:'<p class="hint" style="margin:6px 0 0">He has heard enough. Change the offer.</p>'}</div>`}
+    ${ok?'':left>0?`<div class="subh" style="margin-top:6px">Make your case</div><textarea id="agSay" rows="2" maxlength="300" placeholder="Make a point, or ask: what does he want? would he take 5 years?"></textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:6px"><span class="hint" style="flex:1">He checks what you say against the numbers. A true point brings him down a little; questions are free. ${left} argument${left===1?'':'s'} left.</span><button class="btn primary" type="button" id="agSend">Send</button></div>`:'<p class="hint" style="margin:6px 0 0">He has heard enough. Change the offer.</p>'}</div>`}
 /* ---------- trade ---------- */
 function teamIds(code){const s=new Set(D.teams[code].players);for(const k in S.team)if(S.team[k]===code)s.add(k);return [...s].filter(id=>owner(id)===code)}
 function teamCBTbase(code){
@@ -2884,7 +2948,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121034205';
+const BUILD='20261121073236';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
