@@ -1585,6 +1585,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
   $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(p.n)}${handTag(id)}</h2>
     <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
     ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
+    ${p.ov||p.ovn?sec(p.ov?'2026 in '+p.ov[0]:'Posted player',`<p class="hint" style="margin:0">${p.ov?esc(p.ov[1])+'.':''}${p.ovn?' '+esc(p.ovn):''}</p>`):''}
     ${established(id)?sec('Value profile',(V=>V.parts.map(x=>kv(x[0],x[1])).join('')+kv('On-field value',V.w.toFixed(1)+' WAR'+(V.hf<1?' ('+V.now.toFixed(1)+' in 2027)':''))+(V.src?`<p class="hint" style="margin:4px 0 0">${esc(V.src)}</p>`:''))(valW(id))):''}
     ${pj.hs&&!p.p?sec('Bat by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.hs[k]).map(k=>`<b>${k}</b> ${pj.hs[k][1]} wRC+, ${Math.round(pj.hs[k][2]*100)}% K, ${pj.hs[k][0]} PA`).join(' · ')}</p>`):''}
     ${pj.fs&&!p.p?sec('Glove by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.fs[k]).map(k=>`<b>${k}</b> ${pj.fs[k][1]} ${pj.fs[k][4]>0?'+':''}${pj.fs[k][4]} runs, ${pj.fs[k][3]>0?'+':''}${pj.fs[k][3]} OAA`).join(' · ')}</p>`):''}
@@ -2468,7 +2469,7 @@ function drFilter(list){const q=(UI.drQ||'').toLowerCase(),ps=UI.drPos||'All',cl
 function drFilterHTML(n){return `<div class="filters"><input type="search" id="drQ" placeholder="Search name or school…" value="${esc(UI.drQ||'')}" aria-label="Search draft prospects">
   <select id="drPos" aria-label="Position">${['All','Hitters','Pitchers','C','IF','OF'].map(t=>`<option${t===(UI.drPos||'All')?' selected':''}>${t}</option>`).join('')}</select>
   <select id="drCls" aria-label="Class">${['All','College','High school'].map(t=>`<option${t===(UI.drCls||'All')?' selected':''}>${t}</option>`).join('')}</select><span class="hint">${n}</span></div>`}
-function drRow(p,btn,taken){return `<tr${taken?' class="gone"':''}><td class="r">${p.rk}</td><td class="wrap"><span class="nmb">${esc(p.n)}</span>${p.tag==='inj'?'<span class="tag inj" title="'+esc(p.note)+'">inj</span>':''}<br><span class="hint">${esc(p.sch)}${p.cls==='COL'?' · College':/HS/.test(p.sch)?'':' · HS'}${p.bt?' · '+p.bt:''}${taken?' · '+taken:''}</span></td><td>${esc(p.pos)}</td><td class="r">${dgB(p.g)}</td>${btn!=null?`<td class="r">${btn}</td>`:''}</tr>`}
+function drRow(p,btn,taken){return `<tr${taken?' class="gone"':''}><td class="r">${p.rk}</td><td class="wrap"><span class="nmb">${esc(p.n)}</span>${p.tag==='inj'?'<span class="tag inj" title="'+esc(p.note)+'">inj</span>':''}<br><span class="hint">${esc(p.sch)}${p.cls==='COL'?' · College':/HS/.test(p.sch)?'':' · HS'}${p.bt?' · '+p.bt:''}${taken?' · '+taken:''}${p.st?'<br>'+esc(p.st):''}</span></td><td>${esc(p.pos)}</td><td class="r">${dgB(p.g)}</td>${btn!=null?`<td class="r">${btn}</td>`:''}</tr>`}
 function drBoardHTML(){const tk={};if(DS.phase!=='setup')DS.picks.forEach((p,i)=>{if(DS.made[i])tk[DS.made[i]]='#'+p.no+' '+p.t});
   const ps=drFilter(DR.players),inj=ps.filter(p=>p.note);
   return `<p class="hint" style="margin-top:0">Hot Stove's own 2027 draft board, version 1: ${DR.players.filter(p=>p.cls==='COL').length} college players and the top ${DR.players.filter(p=>p.cls==='HS').length} high schoolers so far. Grades are on the 20-80 scale and come from a blend of public rankings, adjusted for position, handedness and injuries. The board grows toward 750 as more lists are added.</p>
@@ -3055,7 +3056,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121220439';
+const BUILD='20261121221604';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
