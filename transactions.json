@@ -2650,9 +2650,20 @@
    "src": "MLB Stats API",
    "sid": 950816,
    "status": "official"
+  },
+  {
+   "type": "outright",
+   "name": "Hayden Juenger",
+   "team": "ATH",
+   "pos": "RHP",
+   "date": "2026-11-20",
+   "summary": "Athletics sent RHP Hayden Juenger outright to Las Vegas Aviators.",
+   "src": "MLB Stats API",
+   "sid": 950832,
+   "status": "official"
   }
  ],
- "live": "2026-11-21T00:37:44Z",
+ "live": "2026-11-21T01:08:03Z",
  "seen_sids": [
   950119,
   950220,
@@ -2842,6 +2853,7 @@
   950798,
   950804,
   950816,
-  950817
+  950817,
+  950832
  ]
 }
