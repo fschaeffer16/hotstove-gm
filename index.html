@@ -1269,7 +1269,7 @@ const ROLE=(id,g)=>{const p=P[id],gp=pgrp(id);
   if(!established(id)&&p.t100)return p.t100<=10?'top-10 prospect in baseball':p.t100<=25?'top-25 prospect':p.t100<=50?'top-50 prospect':'top-100 prospect';
   if(!established(id))return g>=62?'elite prospect':g>=57?'top-50 prospect':g>=52?'top-100 type prospect':g>=47?'solid prospect':g>=42?'org prospect':'depth prospect';
   if(gp==='SP')return g>=68?'ace':g>=62?'No. 1-2 starter':g>=56?'No. 2-3 starter':g>=50?'mid-rotation starter':g>=44?'back-end starter':'swingman';
-  if(gp==='RP')return g>=56?'elite closer':g>=50?'closer / top setup man':g>=45?'setup man':'middle reliever';
+  if(gp==='RP')return g>=62?'shutdown closer, one of the best relievers in baseball':g>=56?'elite closer':g>=50?'closer / top setup man':g>=45?'setup man':'middle reliever';
   return g>=70?'franchise player':g>=64?'star':g>=58?'All-Star caliber regular':g>=52?'above-average regular':g>=46?'average regular':g>=41?'role player':'bench piece'};
 /* ===== What the data says about a player (2026 results, splits, Statcast, WAR by season, injuries) =====
    Front-office reading of a player, not a dollar value. scout(id) is the same for every club; dataAdj() is how one club
@@ -1401,12 +1401,20 @@ function needsBoardHTML(code,outSel,inSel){const any=outSel.length||inSel.length
     return `<div class="nside"><div class="subh">${esc(tnm(c))} needs</div>${rows||'<p class="hint" style="margin:4px 0">No clear holes on this roster.</p>'}${filled.length?`<p class="hint" style="margin:6px 0 0">Filled this offseason: ${filled.map(esc).join(', ')}.</p>`:''}${W.note?`<p class="hint" style="margin:6px 0 0">Reported: ${esc(W.note)}</p>`:''}</div>`};
   return `<details class="needs" open><summary>Team needs ${any?'· before and after this deal':''}</summary><div class="ncols">${one(ME,outSel,inSel)}${D.teams[code]?one(code,inSel,outSel):''}</div><p class="hint" style="margin:8px 0 0">From projected splits vs left- and right-handers, projected WAR and the latest reports. Rank is among the 30 clubs. The season simulator plays these same matchups, so a filled need shows up in the games.</p></details>`}
 const gpts=g=>Math.pow(2,(g-40)/5);/* tiers: each 5 grade points doubles the weight, so a 60 is worth four 50s */
+/* What a reliever is worth in a trade. WAR undersells the best ones: it ignores leverage, and clubs pay for the ninth inning
+   (an elite closer with years of control has brought back a top-5 prospect). So blend the projection with what he actually did the
+   last two seasons, then scale by how dominant he is: projected FIP and strikeout rate. Middle relievers stay where WAR puts them. */
+function reliefVal(id){const p=P[id],pj=p.proj,w=pj.war||0,h=(pj.wh||[]).slice(-2),a=h[1],b=h[0];
+  const rec=a!=null&&b!=null?.6*a+.4*b:a!=null?a:null,bl=rec!=null?Math.max(w,.5*w+.5*rec):w,fip=pj.fip||4.2,k=pRate(id).k||.22,y=pj.y||{};
+  const elite=(fip<=2.75&&k>=.30)||bl>=2.2,strong=(fip<=3.3&&k>=.27)||bl>=1.4,lev=elite?2.1:strong?1.6:w>=.8?1.2:1;
+  const line=y.era!=null&&y.ip>=30?`${y.era.toFixed(2)} ERA${y.k?', '+Math.round(y.k*100)+'% strikeouts':''} in 2026`:'';
+  return {w:bl*lev,elite,strong,note:elite?`one of the best relievers in the game${line?': '+line:''}`:strong?`a late-inning arm clubs line up for${line?': '+line:''}`:''}}
 function gradeTo(id,code,incoming){
   const p=P[id],notes=[],c=ctx(code),win=c.win,pr=prof(code),gp=pgrp(id),age=p.age||28;let g,burden=0;
   if(established(id)){
     const w=p.proj.war,cy=ctrl(id).length;
-    g=40+5*w;if(gp==='RP')g=Math.min(g,60);var raw=g;
-    notes.push(`${w.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);
+    g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(66,40+5*rv.w)}var raw=g;
+    notes.push(`${w.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);
     if(cy<=1&&incoming&&SE&&SE.win&&(win==='allin'||win==='contend')){g+=1;notes.push('deadline: a contender pays up for help right now')}/* season sim, deadline day: buyers pay more for rentals */
     else if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
     else if(cy===2)g-=2;else if(cy>=5&&age<=29)g+=2;
@@ -2965,7 +2973,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121200452';
+const BUILD='20261121201956';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
