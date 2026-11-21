@@ -590,7 +590,7 @@ function initTop(){
 function save(){try{localStorage.setItem(skey(),JSON.stringify(S));localStorage.setItem('gm-last-team',ME)}catch(e){}}
 function load(){try{const s=localStorage.getItem(skey());if(s){const o=JSON.parse(s);if(o&&o.lineup)return o}}catch(e){}return null}
 function snap(){HIST.push(JSON.stringify(S));if(HIST.length>80)HIST.shift()}
-function commit(){R5AUTO={};if(S&&S.rot)tidyDepth();save();render()}
+function commit(){R5AUTO={};userFA();if(S&&S.rot)tidyDepth();save();render()}
 
 /* ---------- player helpers ---------- */
 const fvn=f=>{if(!f)return 0;const n=parseFloat(f);return n+(String(f).includes('+')?.5:0)};
@@ -726,7 +726,7 @@ function doRelease(id,label){
   unslot(id);
   if(k==='guar'){S.dead.push({n:p.n,aav:aav(id),note:label});addLog(label.toUpperCase(),`${label} ${p.n} — ${M(aav(id))} AAV stays on the CBT payroll as dead money`,0,0)}
   else{addLog(label.toUpperCase(),`${label} ${p.n}`+(v?` (−${M(v)} arb est.)`:''),0,v)}
-  S.team[id]='REL';delete S.status[id];
+  S.team[id]='FA';(S.rel=S.rel||{})[id]={nt:label==='Non-tendered'};delete S.status[id];
   S.top=S.top.filter(x=>x!==id);
   commit();closeDrawer();toast(`${p.n}: ${label.toLowerCase()}`);
 }
@@ -1001,6 +1001,14 @@ function renderCBT(c){
 
 /* ---------- FA ---------- */
 function faList(){return D.fa.filter(id=>owner(id)==='FA')}
+/* players this save released or non-tendered are free agents too. P is shared by every team's save, so the change is undone and redone for the save in use */
+let UFA=[];
+function userFA(){
+  for(const [id,o,added] of UFA){const q=P[id];Object.keys(q).forEach(k=>delete q[k]);Object.assign(q,o);if(added){const i=D.fa.indexOf(id);if(i>=0)D.fa.splice(i,1)}}
+  UFA=[];if(!S||!S.team)return;
+  for(const id of Object.keys(S.team)){if(S.team[id]==='REL')S.team[id]='FA';
+    if(S.team[id]==='FA'&&P[id]&&P[id].team!=='FA'){const o=JSON.parse(JSON.stringify(P[id])),had=D.fa.includes(id),r=(S.rel||{})[id];
+      toFA(id,P[id].team,r?r.nt:P[id].kind==='arb');UFA.push([id,o,!had])}}}
 function renderFA(){
   const FAG=['All','SP','RP','C','INF','OF','DH'];if(!FAG.includes(UI.faPos))UI.faPos='All';
   const faGrp=id=>{const ps=String(P[id].pos||'').split('/');const f=ps[0];
@@ -2876,7 +2884,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121002204';
+const BUILD='20261121034205';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3190,7 +3198,7 @@ function switchTeam(code){
   IL60=new Set(D.il60By[code]||[]);
   BASE_METS=Object.keys(P).filter(id=>P[id].team===ME);
   S=baseline();BASE_T=cbt().total;
-  S=load()||S;HIST=[];seLoad();UI.sel=null;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
+  S=load()||S;userFA();HIST=[];seLoad();UI.sel=null;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
   if(UI.tTeam===ME||!D.teams[UI.tTeam])UI.tTeam=ME==='NYM'?'ATL':'NYM';
   $('#teamPick').value=ME;$('#hTeam').textContent=MEN();document.title='Virtual Hot Stove GM · '+MEN();
   try{localStorage.setItem('gm-last-team',ME)}catch(e){}
