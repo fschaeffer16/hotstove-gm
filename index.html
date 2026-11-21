@@ -1401,6 +1401,28 @@ function needsBoardHTML(code,outSel,inSel){const any=outSel.length||inSel.length
     return `<div class="nside"><div class="subh">${esc(tnm(c))} needs</div>${rows||'<p class="hint" style="margin:4px 0">No clear holes on this roster.</p>'}${filled.length?`<p class="hint" style="margin:6px 0 0">Filled this offseason: ${filled.map(esc).join(', ')}.</p>`:''}${W.note?`<p class="hint" style="margin:6px 0 0">Reported: ${esc(W.note)}</p>`:''}</div>`};
   return `<details class="needs" open><summary>Team needs ${any?'· before and after this deal':''}</summary><div class="ncols">${one(ME,outSel,inSel)}${D.teams[code]?one(code,inSel,outSel):''}</div><p class="hint" style="margin:8px 0 0">From projected splits vs left- and right-handers, projected WAR and the latest reports. Rank is among the 30 clubs. The season simulator plays these same matchups, so a filled need shows up in the games.</p></details>`}
 const gpts=g=>Math.pow(2,(g-40)/5);/* tiers: each 5 grade points doubles the weight, so a 60 is worth four 50s */
+/* ===== Player value profile: what a front office believes a player is worth on the field, built once and added to over time =====
+   Layers, each visible on the scouting card:
+   1. the 2027 projection (FanGraphs);
+   2. the track record: actual WAR in 2025 and 2026. Projections regress hard to the mean, but clubs pay for what a player has
+      shown, so results well above the projection pull the value up (40% of the gap, at most +2.5 wins); results well below it pull
+      an established veteran (27 and older) down a little (25% of the gap, at most -0.8). Young players are not marked down for a rough debut;
+   3. health for 2027: a player who will miss the season, or a large part of it, is worth less this year;
+   4. the profile file (profiles.json, master in the public repo): a correction or a market note for one player, with its source.
+      {"players":{"Name":{"war":7.5,"adj":1,"note":"...","src":"..."}}}  war replaces the on-field value, adj moves the trade grade (-6..+6). */
+let PROFILES=null,_vw={};
+const profOf=id=>(PROFILES&&PROFILES.players&&P[id]&&PROFILES.players[P[id].n])||null;
+function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.war||0,parts=[['2027 projection',proj.toFixed(1)+' WAR']],notes=[];let w=proj;
+  const h=(pj.wh||[]).slice(-2),a=h[1],b=h[0],rec=a!=null&&b!=null?.6*a+.4*b:a!=null?a:null,age=p.age||28;
+  const M0=profOf(id);if(rec!=null&&pgrp(id)!=='RP'&&!(M0&&M0.war!=null)){const d=rec-proj;let m=0;if(d>=.5)m=Math.min(2.5,.4*d);else if(d<=-.75&&age>=27)m=Math.max(-.8,.25*d);
+    if(m){w+=m;parts.push(['Track record',`${b!=null?b.toFixed(1)+' and ':''}${a.toFixed(1)} WAR the last ${b!=null?'two seasons':'season'}: ${m>0?'+':''}${m.toFixed(1)}`]);if(m>=.6)notes.push(`he has produced more than the projection gives him credit for (${a.toFixed(1)} WAR in 2026)`);else if(m<=-.4)notes.push(`his recent results are below the projection (${a.toFixed(1)} WAR in 2026)`)}}
+  const M_=profOf(id);if(M_&&M_.war!=null){w=+M_.war;parts.push(['Profile correction',`${(+M_.war).toFixed(1)} WAR${M_.note?': '+M_.note:''}`]);if(M_.note)notes.push(M_.note)}
+  const od=SN&&SN.od&&SN.od[id];let hf=1;if(od&&od.ret>=150){hf=.15;parts.push(['Health',`${od.what||'injured'}: expected to miss 2027`]);notes.push('he is expected to miss the 2027 season')}
+    else if(od&&od.ret>=45){hf=Math.max(.5,1-od.ret/200);parts.push(['Health',`${od.what||'injured'}: out to start 2027`]);notes.push('he opens 2027 on the injured list')}
+  if(M_&&M_.adj)parts.push(['Market',`${M_.adj>0?'+':''}${M_.adj} grade${M_.note&&M_.war==null?': '+M_.note:''}`]);
+  return _vw[id]={w,now:w*hf,hf,adj:M_&&M_.adj?Math.max(-6,Math.min(6,+M_.adj)):0,parts,notes,src:M_&&M_.src||''}}
+/* value over the years of control: a missed 2027 costs one year of it, not all of it */
+function valFor(id,cy){const V=valW(id);if(V.hf>=1)return V.w;const n=Math.max(1,Math.min(cy,6));return V.w*(V.hf+(n-1))/n}
 /* What a reliever is worth in a trade. WAR undersells the best ones: it ignores leverage, and clubs pay for the ninth inning
    (an elite closer with years of control has brought back a top-5 prospect). So blend the projection with what he actually did the
    last two seasons, then scale by how dominant he is: projected FIP and strikeout rate. Middle relievers stay where WAR puts them. */
@@ -1412,9 +1434,9 @@ function reliefVal(id){const p=P[id],pj=p.proj,w=pj.war||0,h=(pj.wh||[]).slice(-
 function gradeTo(id,code,incoming){
   const p=P[id],notes=[],c=ctx(code),win=c.win,pr=prof(code),gp=pgrp(id),age=p.age||28;let g,burden=0;
   if(established(id)){
-    const w=p.proj.war,cy=ctrl(id).length;
-    g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(66,40+5*rv.w)}var raw=g;
-    notes.push(`${w.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);
+    const cy=ctrl(id).length,V=valW(id),w=valFor(id,cy);
+    g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(66,40+5*rv.w*(V.hf<1?valFor(id,cy)/Math.max(.1,V.w):1))}g+=V.adj;var raw=g;
+    notes.push(`${p.proj.war.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);for(const n of V.notes)notes.push(n);
     if(cy<=1&&incoming&&SE&&SE.win&&(win==='allin'||win==='contend')){g+=1;notes.push('deadline: a contender pays up for help right now')}/* season sim, deadline day: buyers pay more for rentals */
     else if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
     else if(cy===2)g-=2;else if(cy>=5&&age<=29)g+=2;
@@ -1509,6 +1531,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
   $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(p.n)}${handTag(id)}</h2>
     <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
     ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
+    ${established(id)?sec('Value profile',(V=>V.parts.map(x=>kv(x[0],x[1])).join('')+kv('On-field value',V.w.toFixed(1)+' WAR'+(V.hf<1?' ('+V.now.toFixed(1)+' in 2027)':''))+(V.src?`<p class="hint" style="margin:4px 0 0">${esc(V.src)}</p>`:''))(valW(id))):''}
     ${sec('The short version',kv('2027 projection',line27(id))+kv('2026',line26(id))+(pj.wh?kv("WAR '22-'26",pj.wh.map(w=>w==null?'–':w.toFixed(1)).join(' · ')):'')+(p.fv&&!established(id)?kv('Hot Stove grade',Math.round(hsGrade(id))):''))}
     ${sec(hit?'Splits vs left and right':'Splits vs left- and right-handed hitters',spl)}${sec('Statcast',sc)}${sec('Injury history',inj)}${sec('Contract and control',con)}
     <div class="dact" style="justify-content:flex-end">${back?'<button class="btn" type="button" data-act="tcompare">Back to comparison</button>':''}<button class="btn" type="button" data-act="scout-full" data-id="${id}">Full player card</button><button class="btn primary" type="button" data-act="closemodal">Close</button></div>`;
@@ -2973,7 +2996,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121201956';
+const BUILD='20261121202313';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3300,6 +3323,7 @@ fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status
   D=d;P=d.players;
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
   try{const r=await fetch('intel.json',{cache:'no-store'});if(r.ok){INTEL=await r.json();applyIntel()}}catch(e){INTEL=null}
+  try{const r=await fetch('profiles.json',{cache:'no-store'});if(r.ok){PROFILES=await r.json();_vw={}}}catch(e){PROFILES=null}
   try{const r=await fetch('draft.json',{cache:'no-cache'});if(r.ok)drInit(await r.json())}catch(e){DR=null}
   try{const r=await fetch('season.json',{cache:'no-cache'});if(r.ok)SN=await r.json()}catch(e){SN=null}
   const imported=await importFromHash();
