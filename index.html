@@ -1346,7 +1346,7 @@ function dataAdj(id,code,incoming,win,gp,w){const s=scout(id),p=P[id],a=ana(code
   }else{/* their own player: an analytics club holds on to a player it thinks was unlucky, and will sell high on a lucky one */
     if(s.luck===-1&&a>=.5){d+=1.5*a;N.push('they trust his underlying numbers more than his 2026 results')}
     else if(s.luck===1&&a>=.7){d-=1;N.push('they think 2026 was his high point and would sell now')}}
-  {const pm=p.p&&p.proj.y&&p.proj.y.pm;const pb=pm&&p.proj.y.pb;if(pm&&a>=.5){if(pm[2]>=110&&(!pb||pb[0]>=55)){d+=1.2*a;N.push(`${incoming?'our':'their'} pitch models love him: ${pm[0]} Stuff+, ${pm[1]} Location+`)}else if(pm[2]<=93&&(!pb||pb[0]<=48)&&(p.proj.war||0)>=1){d-=1*a;N.push(`${incoming?'our':'their'} pitch models are cool on him: ${pm[0]} Stuff+`)}}}
+  {const pm=p.p&&p.proj.y&&p.proj.y.pm;const pb=pm&&p.proj.y.pb;if(pm&&pm[3]>=50&&a>=.5){if(pm[2]>=110&&(!pb||pb[0]>=55)){d+=1.2*a;N.push(`${incoming?'our':'their'} pitch models love him: ${pm[0]} Stuff+, ${pm[1]} Location+`)}else if(pm[2]<=93&&(!pb||pb[0]<=48)&&(p.proj.war||0)>=1){d-=1*a;N.push(`${incoming?'our':'their'} pitch models are cool on him: ${pm[0]} Stuff+`)}}}
   if(s.trend===1&&(p.age||30)<=28){d+=1;N.push('still getting better each year')}
   else if(s.trend===-1&&(p.age||0)>=30){d-=1.5;N.push('his production has dropped two years running')}
   if(s.slowBat){d-=1;N.push('bat speed is below average for a hitter his age')}
@@ -1429,7 +1429,7 @@ function valFor(id,cy){const V=valW(id);if(V.hf>=1)return V.w;const n=Math.max(1
    last two seasons, then scale by how dominant he is: projected FIP and strikeout rate. Middle relievers stay where WAR puts them. */
 function reliefVal(id){const p=P[id],pj=p.proj,w=pj.war||0,h=(pj.wh||[]).slice(-2),a=h[1],b=h[0];
   const rec=a!=null&&b!=null?.6*a+.4*b:a!=null?a:null,bl=rec!=null?Math.max(w,.5*w+.5*rec):w,fip=pj.fip||4.2,k=pRate(id).k||.22,y=pj.y||{};
-  const pm=y.pm,elite=(fip<=2.75&&k>=.30)||bl>=2.2,strong=(fip<=3.3&&k>=.27)||bl>=1.4||(pm&&pm[2]>=112&&w>=.6),lev=elite?2.1:strong?1.6:w>=.8?1.2:1;
+  const pm=y.pm,elite=(fip<=2.75&&k>=.30)||bl>=2.2,strong=(fip<=3.3&&k>=.27)||bl>=1.4||(pm&&pm[3]>=60&&pm[2]>=112&&w>=.6),lev=elite?2.1:strong?1.6:w>=.8?1.2:1;
   const line=y.era!=null&&y.ip>=30?`${y.era.toFixed(2)} ERA${y.k?', '+Math.round(y.k*100)+'% strikeouts':''} in 2026`:'';
   return {w:bl*lev,elite,strong,note:elite?`one of the best relievers in the game${line?': '+line:''}`:strong?`a late-inning arm clubs line up for${line?': '+line:''}`:''}}
 function gradeTo(id,code,incoming){
@@ -2999,7 +2999,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121211943';
+const BUILD='20261121212326';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
