@@ -1141,7 +1141,7 @@ const PROFILE={
  WSN:{cap:125,capReady:190,sell:.7,pros:'hoard',defer:'light',note:'Rebuild ending, young core in place'},
  ATH:{cap:145,sell:.8,pros:'hoard',defer:'light',note:'Moving to Las Vegas; must reach a payroll floor'},
  CHW:{cap:135,sell:.8,pros:'hoard',defer:'light',note:'Rebuild paying off; protects young talent'},
- COL:{cap:135,sell:.8,pros:'hoard',defer:'light',note:'Long rebuild, open to moving anyone with value'}};
+ COL:{cap:175,sell:.4,pros:'neutral',defer:'light',note:'Mid-market club adding veteran arms and salary to compete'}};
 const prof=code=>(D.tx&&D.tx.profiles&&D.tx.profiles[code])||PROFILE[code]||{cap:200,sell:.4,pros:'neutral',note:''};
 const _rw={};
 function baseWAR(code){if(_rw[code]!=null)return _rw[code];const b=code==='NYM'?D:D.base[code];if(!b)return 0;
@@ -2965,7 +2965,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121171308';
+const BUILD='20261121171522';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
