@@ -1,6 +1,37 @@
 {
  "items": [
   {
+   "title": "MLBPA Makes Proposal Related To International Bonus Pool",
+   "blurb": "The Major League Baseball Players Association made a proposal on Friday afternoon concerning the signing of international amateur players. Ronald Blum of The Associated Press, Jorge Castillo of ESPN, and Evan Drellich of The Athletic were among those to cover the news. Most notably, the MLBPA propos",
+   "link": "https://www.mlbtraderumors.com/2026/11/mlbpa-makes-proposal-related-to-international-bonus-pool.html",
+   "time": "2026-11-21T02:38:22Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Luis Gil, former AL Rookie of Year, cut by New York Yankees at tender deadline",
+   "blurb": "Veteran starting pitcher Luis Gil, 28, a former American League Rookie of the Year, was cut loose by the New York Yankees, among 44 players who became MLB free agents when their teams declined to offer 2027 contracts by Friday's tender deadline.",
+   "link": "https://www.espn.com/mlb/story/_/id/50545849/yankees-cut-gil-24-al-rookie-year-tender-deadline",
+   "time": "2026-11-21T02:33:57Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Gavin Sheets returns to Padres with $11 million, 3-year deal",
+   "blurb": "Gavin Sheets is staying with the San Diego Padres after agreeing to a three-year contract, the team announced Friday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50545784/gavin-sheets-returns-san-diego-padres-11-million-3-year-deal",
+   "time": "2026-11-21T02:33:11Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
    "title": "Tigers Seeking Additional Relievers After Pagán Signing",
    "blurb": "The Tigers made the first move on the free agent market by signing righty reliever Emilio Pagán to a one-year, $11.5MM deal. If president of baseball operations Scott Harris has his way, there will be more bullpen additions incoming. When asked on Tuesday if he expected to add more relievers on big ",
    "link": "https://www.mlbtraderumors.com/2026/11/tigers-seeking-additional-relievers-after-pagan-signing.html",
@@ -3245,41 +3276,7 @@
    "teams": [
     "NYY"
    ]
-  },
-  {
-   "title": "Yankees' Bednar, Twins' Jeffers accept $23.15M qualifying offer",
-   "blurb": "Yankees closer David Bednar and Twins catcher Ryan Jeffers accepted the qualifying offer, returning to their respective teams on a one-year deal worth $23.15M.",
-   "link": "https://www.espn.com/mlb/story/_/id/50513467/sources-yankees-bednar-twins-jeffers-accept-2315m-offer",
-   "time": "2026-11-17T22:44:27Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "MIN",
-    "NYY"
-   ]
-  },
-  {
-   "title": "Pirates Select Mitch Jebb, Axiel Plaz",
-   "blurb": "The Pirates announced are keeping two players out of the Rule 5 draft in the event it takes place. Pittsburgh selected catcher/first baseman Axiel Plaz and outfielder Mitch Jebb with their two open spots on the 40-man roster. Plaz was one of the easier calls for any team to keep out of the draft. Fa",
-   "link": "https://www.mlbtraderumors.com/2026/11/pirates-select-mitch-jebb-axiel-paz.html",
-   "time": "2026-11-17T22:37:41Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "PIT"
-   ]
-  },
-  {
-   "title": "White Sox, pitcher Dustin May reach 3-year, $52.5M contract",
-   "blurb": "The White Sox and free agent starting pitcher Dustin May have agreed on a 3-year, $52.5M contract. The right-hander went 7-9 with a 4.70 ERA last season.",
-   "link": "https://www.espn.com/mlb/story/_/id/50511537/source-white-sox-dustin-reach-3-year-525m-contract",
-   "time": "2026-11-17T21:42:30Z",
-   "source": "ESPN",
-   "kind": "report",
-   "teams": [
-    "CHW"
-   ]
   }
  ],
- "updated": "2026-11-21T02:28:51Z"
+ "updated": "2026-11-21T02:38:56Z"
 }
