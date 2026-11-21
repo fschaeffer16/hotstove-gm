@@ -1433,6 +1433,9 @@ let PROFILES=null,_vw={};
 const profOf=id=>(PROFILES&&PROFILES.players&&P[id]&&PROFILES.players[P[id].n])||null;
 /* fastball velocity now against two years ago (20+ innings in both): the clearest aging signal for a pitcher */
 function veloTrend(id){const v=P[id].proj&&P[id].proj.vs,a=v&&v['2026'],b=v&&(v['2024']||v['2025']);if(!a||!b||a[0]<20||b[0]<20)return null;return {d:+(a[1]-b[1]).toFixed(1),now:a[1],was:b[1]}}
+/* fastball and breaking-ball spin now against 2024 (both seasons needed, and 20+ innings in each when velocity data is there) */
+function spinTrend(id){const pj=P[id].proj||{},s=pj.sn,a=s&&s['2026'],b=s&&s['2024'],v=pj.vs;if(!a||!b)return null;if(v&&!(v['2026']&&v['2024']&&v['2026'][0]>=20&&v['2024'][0]>=20))return null;
+  return {fb:a[0]-b[0],br:a[1]&&b[1]?a[1]-b[1]:0,now:a[0],was:b[0],brNow:a[1],brWas:b[1]}}
 function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.war||0,parts=[['2027 projection',proj.toFixed(1)+' WAR']],notes=[];let w=proj;
   const h=(pj.wh||[]).slice(-2),a=h[1],b=h[0],rec=a!=null&&b!=null?.6*a+.4*b:a!=null?a:null,age=p.age||28;
   const M0=profOf(id);if(rec!=null&&pgrp(id)!=='RP'&&!(M0&&M0.war!=null)){const d=rec-proj;let m=0;if(d>=.5)m=Math.min(2.5,.4*d);else if(d<=-.75&&age>=27)m=Math.max(-.8,.25*d);
@@ -1450,6 +1453,8 @@ function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.
     const ipOK=!pj.vs||['2024','2025','2026'].every(k=>pj.vs[k]&&pj.vs[k][0]>=40);
     {const vt=p.p&&pgrp(id)!=='RP'&&!(M0&&M0.war!=null)&&veloTrend(id);if(vt){let m=0;if(vt.d<=-1.5&&age>=29)m=-.3;else if(vt.d>=1.5&&age<=27)m=.2;
       if(m){w+=m;parts.push(['Velocity',`fastball ${vt.was} to ${vt.now} mph: ${m>0?'+':''}${m.toFixed(1)}`]);notes.push(m<0?`his fastball is down ${Math.abs(vt.d)} mph in two years (${vt.was} to ${vt.now})`:`his fastball is up ${vt.d} mph in two years (${vt.was} to ${vt.now})`)}}}
+    {const st=p.p&&pgrp(id)!=='RP'&&!(M0&&M0.war!=null)&&!parts.some(x=>x[0]==='Velocity')&&spinTrend(id);if(st&&age>=29&&(st.fb<=-120||st.br<=-150)){const fbHit=st.fb<=-120;w-=.2;
+      parts.push(['Spin',`${fbHit?'fastball '+st.was+' to '+st.now:'breaking ball '+st.brWas+' to '+st.brNow} rpm: -0.2`]);notes.push(fbHit?`his fastball has lost ${-st.fb} rpm of spin in two years`:`his breaking ball has lost ${-st.br} rpm of spin in two years`)}}
     if(a6&&a5&&a4&&ipOK&&!(M0&&M0.war!=null)){const kb=x=>x[0]-x[1],d1=kb(a5)-kb(a4),d2=kb(a6)-kb(a5),tr=[a4,a5,a6].map(x=>Math.round(kb(x)*100)+'%').join(', ');let m=0,why='';
       if(age>=30&&d1<=-.025&&d2<=-.025){m=-.3;why=`his strikeouts minus walks have dropped two years running (${tr})`}
       else if(age<=27&&d1>=.025&&d2>=.025){m=.3;why=`his strikeouts minus walks have climbed two years running (${tr})`}
@@ -1585,7 +1590,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
     ${pj.fs&&!p.p?sec('Glove by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.fs[k]).map(k=>`<b>${k}</b> ${pj.fs[k][1]} ${pj.fs[k][4]>0?'+':''}${pj.fs[k][4]} runs, ${pj.fs[k][3]>0?'+':''}${pj.fs[k][3]} OAA`).join(' · ')}</p>`):''}
     ${pj.pob&&!p.p?sec('Postseason, 2022-26',`<p class="hint" style="margin:0">${pj.pob[0]} games, ${pj.pob[1]} plate appearances, ${pj.pob[2]} home runs, <b>${f3(pj.pob[4])} OPS</b> (${pj.pob[3]} wRC+), in ${pj.pob[5]} October${pj.pob[5]>1?'s':''}.</p>`):''}
     ${pj.po&&p.p?sec('Postseason, 2022-26',`<p class="hint" style="margin:0">${pj.po[0]} games${pj.po[1]?' ('+pj.po[1]+' starts)':''}, ${pj.po[2]} innings, <b>${pj.po[3].toFixed(2)} ERA</b>${pj.po[4]?', '+pj.po[4]+' saves':''}, in ${pj.po[5]} October${pj.po[5]>1?'s':''}.</p>`):''}
-    ${pj.as&&p.p?sec('Arm by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.as[k]).map(k=>`<b>${k}</b> ${Math.round(pj.as[k][0]*100)}% K, ${Math.round(pj.as[k][1]*100)}% BB, ${pj.as[k][2].toFixed(2)} FIP${pj.vs&&pj.vs[k]?', '+pj.vs[k][1].toFixed(1)+' mph, '+pj.vs[k][0]+' IP':''}`).join(' · ')}</p>`):''}
+    ${pj.as&&p.p?sec('Arm by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.as[k]).map(k=>`<b>${k}</b> ${Math.round(pj.as[k][0]*100)}% K, ${Math.round(pj.as[k][1]*100)}% BB, ${pj.as[k][2].toFixed(2)} FIP${pj.vs&&pj.vs[k]?', '+pj.vs[k][1].toFixed(1)+' mph, '+pj.vs[k][0]+' IP':''}`).join(' · ')}</p>${pj.sn?`<p class="hint" style="margin:4px 0 0"><b>Spin (fastball / best breaking ball, rpm):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.sn[k]).map(k=>k+' '+pj.sn[k][0]+(pj.sn[k][1]?' / '+pj.sn[k][1]:'')).join(' · ')}</p>`:''}`):''}
     ${sec('The short version',kv('2027 projection',line27(id))+kv('2026',line26(id))+(pj.wh?kv("WAR '22-'26",pj.wh.map(w=>w==null?'–':w.toFixed(1)).join(' · ')):'')+(p.fv&&!established(id)?kv('Hot Stove grade',Math.round(hsGrade(id))):''))}
     ${sec(hit?'Splits vs left and right':'Splits vs left- and right-handed hitters',spl)}${sec('Statcast',sc)}${sec('Injury history',inj)}${sec('Contract and control',con)}
     <div class="dact" style="justify-content:flex-end">${back?'<button class="btn" type="button" data-act="tcompare">Back to comparison</button>':''}<button class="btn" type="button" data-act="scout-full" data-id="${id}">Full player card</button><button class="btn primary" type="button" data-act="closemodal">Close</button></div>`;
@@ -3050,7 +3055,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121220212';
+const BUILD='20261121220439';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
