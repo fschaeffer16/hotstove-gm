@@ -2247,6 +2247,375 @@
    "src": "MLB Stats API",
    "sid": 950804,
    "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Taylor Trammell",
+   "team": "HOU",
+   "date": "2026-11-20",
+   "summary": "HOU non-tendered OF Taylor Trammell; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Davis Schneider",
+   "team": "TOR",
+   "date": "2026-11-20",
+   "summary": "TOR non-tendered INF/OF Davis Schneider; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "David Fry",
+   "team": "CLE",
+   "date": "2026-11-20",
+   "summary": "CLE non-tendered C/1B/OF David Fry; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Luke Raley",
+   "team": "SEA",
+   "date": "2026-11-20",
+   "summary": "SEA non-tendered OF/1B Luke Raley; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "José Buttó",
+   "team": "TEX",
+   "date": "2026-11-20",
+   "summary": "TEX non-tendered RHP José Buttó; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Cole Sulser",
+   "team": "TBR",
+   "date": "2026-11-20",
+   "summary": "TBR non-tendered RHP Cole Sulser; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Connor Wong",
+   "team": "BOS",
+   "date": "2026-11-20",
+   "summary": "BOS non-tendered C Connor Wong; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Nick Mears",
+   "team": "KCR",
+   "date": "2026-11-20",
+   "summary": "KCR non-tendered RHP Nick Mears; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Kyle Isbel",
+   "team": "KCR",
+   "date": "2026-11-20",
+   "summary": "KCR non-tendered OF Kyle Isbel; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Anthony Gose",
+   "team": "KCR",
+   "date": "2026-11-20",
+   "summary": "KCR non-tendered LHP Anthony Gose; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Jake Miller",
+   "team": "DET",
+   "date": "2026-11-20",
+   "summary": "DET non-tendered LHP Jake Miller; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Trey Sweeney",
+   "team": "DET",
+   "date": "2026-11-20",
+   "summary": "DET non-tendered SS Trey Sweeney; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Matt Vierling",
+   "team": "DET",
+   "date": "2026-11-20",
+   "summary": "DET non-tendered OF/3B Matt Vierling; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Trevor Larnach",
+   "team": "MIN",
+   "date": "2026-11-20",
+   "summary": "MIN non-tendered OF Trevor Larnach; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Bailey Ober",
+   "team": "MIN",
+   "date": "2026-11-20",
+   "summary": "MIN non-tendered RHP Bailey Ober; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Matt Wallner",
+   "team": "MIN",
+   "date": "2026-11-20",
+   "summary": "MIN non-tendered OF Matt Wallner; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Fernando Cruz",
+   "team": "NYY",
+   "date": "2026-11-20",
+   "summary": "NYY non-tendered RHP Fernando Cruz; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Luis Gil",
+   "team": "NYY",
+   "date": "2026-11-20",
+   "summary": "NYY non-tendered RHP Luis Gil; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Michael Grove",
+   "team": "ATL",
+   "date": "2026-11-20",
+   "summary": "ATL non-tendered RHP Michael Grove; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "James Karinchak",
+   "team": "ATL",
+   "date": "2026-11-20",
+   "summary": "ATL non-tendered RHP James Karinchak; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Nolan Gorman",
+   "team": "STL",
+   "date": "2026-11-20",
+   "summary": "STL non-tendered INF Nolan Gorman; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Max Rajcic",
+   "team": "STL",
+   "date": "2026-11-20",
+   "summary": "STL non-tendered RHP Max Rajcic; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Gabriel Arias",
+   "team": "CHC",
+   "date": "2026-11-20",
+   "summary": "CHC non-tendered INF Gabriel Arias; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Ethan Roberts",
+   "team": "CHC",
+   "date": "2026-11-20",
+   "summary": "CHC non-tendered RHP Ethan Roberts; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Andrew Saalfrank",
+   "team": "ARI",
+   "date": "2026-11-20",
+   "summary": "ARI non-tendered LHP Andrew Saalfrank; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Blake Walston",
+   "team": "ARI",
+   "date": "2026-11-20",
+   "summary": "ARI non-tendered LHP Blake Walston; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Jake Cousins",
+   "team": "LAD",
+   "date": "2026-11-20",
+   "summary": "LAD non-tendered RHP Jake Cousins; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Victor Bericoto",
+   "team": "SFG",
+   "date": "2026-11-20",
+   "summary": "SFG non-tendered OF Victor Bericoto; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Rowan Wick",
+   "team": "SFG",
+   "date": "2026-11-20",
+   "summary": "SFG non-tendered RHP Rowan Wick; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Josiah Gray",
+   "team": "WSN",
+   "date": "2026-11-20",
+   "summary": "WSN non-tendered RHP Josiah Gray; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Carson Palmquist",
+   "team": "WSN",
+   "date": "2026-11-20",
+   "summary": "WSN non-tendered LHP Carson Palmquist; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Jared Simpson",
+   "team": "WSN",
+   "date": "2026-11-20",
+   "summary": "WSN non-tendered LHP Jared Simpson; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "JP Sears",
+   "team": "SDP",
+   "date": "2026-11-20",
+   "summary": "SDP non-tendered LHP JP Sears; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Garrett Hawkins",
+   "team": "SDP",
+   "date": "2026-11-20",
+   "summary": "SDP non-tendered RHP Garrett Hawkins; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Bryan De La Cruz",
+   "team": "PHI",
+   "date": "2026-11-20",
+   "summary": "PHI non-tendered OF Bryan De La Cruz; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Brett Harris",
+   "team": "PHI",
+   "date": "2026-11-20",
+   "summary": "PHI non-tendered INF Brett Harris; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Andrew Hoffmann",
+   "team": "PHI",
+   "date": "2026-11-20",
+   "summary": "PHI non-tendered RHP Andrew Hoffmann; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Moisés Chace",
+   "team": "PHI",
+   "date": "2026-11-20",
+   "summary": "PHI non-tendered RHP Moisés Chace; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Noah Murdock",
+   "team": "PIT",
+   "date": "2026-11-20",
+   "summary": "PIT non-tendered RHP Noah Murdock; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Leo Balcazar",
+   "team": "CIN",
+   "date": "2026-11-20",
+   "summary": "CIN non-tendered INF Leo Balcazar; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
+  },
+  {
+   "type": "nontender",
+   "name": "Jimmy Herget",
+   "team": "COL",
+   "date": "2026-11-20",
+   "summary": "COL non-tendered RHP Jimmy Herget; he is a free agent.",
+   "src": "MLB.com complete list of non-tendered players, Nov. 20, 2026",
+   "status": "official"
   }
  ],
  "live": "2026-11-20T23:57:21Z",
