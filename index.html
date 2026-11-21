@@ -1395,8 +1395,8 @@ function needsBoardHTML(code,outSel,inSel){const any=outSel.length||inSel.length
       let st='',cls='';if(aft){const was=a&&a.need,is=b&&b.need,d=a&&b?(b.v-a.v)*(x.lo?-1:1):0,big=x.unit==='woba'?.004:.4;
         if(was&&!is){st='Filled';cls='good'}else if(!was&&is){st='New hole';cls='bad'}else if(d>=big){st='Better';cls='good'}else if(d<=-big){st='Worse';cls='bad'}else{st='Still open';cls=''}}
       else if(s0&&a&&s0.need&&Math.abs(a.v-s0.v)>=(x.unit==='woba'?.004:.4)){const up=(a.v-s0.v)*(x.lo?-1:1)>0;st=up?'Better since Nov':'Worse since Nov';cls=up?'good':'bad'}
-      const val=y=>y?needFmt(y)+(y.rk?` <span class="hint">${ORDN(y.rk)}</span>`:''):'-';
-      return `<div class="nrow"><div class="nl"><b>${esc(x.label)}</b>${x.rep?'<span class="tag rep">reported</span>':''}<span class="hint">Needs ${esc(x.fix)}${x.why?' · '+esc(x.why):''}</span></div><div class="nv">${val(a)}${aft?` <span class="arr">→</span> ${val(b)}`:''}${st?`<span class="nst ${cls}">${st}</span>`:''}</div></div>`}).join('');
+      const val=(y,R)=>y?needFmt(y)+(y.rk?` <span class="hint">${ORDN(y.rk)}</span>`:''):(R&&k[0]==='p'&&R.raw.pos[k.slice(1)]!=null?(R.raw.pos[k.slice(1)]<0?'none':R.raw.pos[k.slice(1)].toFixed(1)+' WAR'):'-');
+      return `<div class="nrow"><div class="nl"><b>${esc(x.label)}</b>${x.rep?'<span class="tag rep">reported</span>':''}<span class="hint">Needs ${esc(x.fix)}${x.why?' · '+esc(x.why):''}</span></div><div class="nv">${val(a,now)}${aft?` <span class="arr">→</span> ${val(b,aft)}`:''}${st?`<span class="nst ${cls}">${st}</span>`:''}</div></div>`}).join('');
     const filled=base?base.rows.filter(x=>x.need&&!(now.rows.find(y=>y.k===x.k)||{}).need).map(x=>x.label):[];
     return `<div class="nside"><div class="subh">${esc(tnm(c))} needs</div>${rows||'<p class="hint" style="margin:4px 0">No clear holes on this roster.</p>'}${filled.length?`<p class="hint" style="margin:6px 0 0">Filled this offseason: ${filled.map(esc).join(', ')}.</p>`:''}${W.note?`<p class="hint" style="margin:6px 0 0">Reported: ${esc(W.note)}</p>`:''}</div>`};
   return `<details class="needs" open><summary>Team needs ${any?'· before and after this deal':''}</summary><div class="ncols">${one(ME,outSel,inSel)}${D.teams[code]?one(code,inSel,outSel):''}</div><p class="hint" style="margin:8px 0 0">From projected splits vs left- and right-handers, projected WAR and the latest reports. Rank is among the 30 clubs. The season simulator plays these same matchups, so a filled need shows up in the games.</p></details>`}
@@ -1528,6 +1528,24 @@ const talkKey=(code,o,i,cash)=>JSON.stringify([code,[...o].sort(),[...i].sort(),
 function talkFor(code,o,i,cash){const t=UI.tTalk;return t&&t.key===talkKey(code,o,i,cash)?t:null}
 /* what the GM would want added: tries the user's players one at a time on top of the current offer and names the ones that close it,
    cheapest first, leaning to players who fill one of his club's needs */
+/* what the GM says about THIS deal: built from the players in it (who their best piece is, what they like and what worries them
+   about what comes back), never a club slogan */
+function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&&R.hIn.id,rec=(R.rec||[]).filter(x=>x.id&&P[x.id]),now=c.win==='allin'||c.win==='contend';
+  const an=l=>(/^[aeiou]/i.test(l)?'an ':'a ')+l,isPro=id=>P[id].fv&&!established(id);
+  const what=id=>isPro(id)?(P[id].t100?`the No. ${P[id].t100} prospect in baseball`:an(ROLE(id,hsGrade(id)))+' in our system'):an(gradeTo(id,code,false).label)+` with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`;
+  /* honest worries about the players coming back */
+  const wor=[];for(const x of rec.slice().sort((a,b)=>b.g-a.g)){const id=x.id;if(!established(id))continue;const n=ctrl(id).length,ag=Math.floor(P[id].age||0);
+    if(ag>=32&&n>=3)wor.push(`${nm(id)} is ${ag} with ${n} years left on his deal`);
+    const w=(gradeTo(id,code,true).notes||[]).find(t=>/worr|risk|pause|lucky|platoon|dropped|below average|down year/.test(t));if(w){const m=w.match(/^(.*?) (worry us|give us pause|is a risk we have to price in)$/);wor.push(m?`${nm(id)}'s ${m[1].replace(/^(\d+|one|two|three|four|five|six) /,(t)=>t)} ${m[2]==='give us pause'?'give us pause':m[2]==='worry us'?'worry us':'is a risk'}`:`with ${nm(id)}, ${w}`)}}
+  const others=rec.filter(x=>x.id!==hI&&established(x.id)).sort((a,b)=>b.g-a.g).slice(0,2).map(x=>nm(x.id)),pros=rec.filter(x=>x.id!==hI&&isPro(x.id)).length;
+  const like=hI?(established(hI)?`${nm(hI)} is ${an(gradeTo(hI,code,true).label)}${wantsGrp(code,pgrp(hI))?', and we have been looking for '+(WANT_TXT[pgrp(hI)]||'help at '+pgrp(hI)):''}`:`We like ${nm(hI)}, ${an(ROLE(hI,hsGrade(hI)))}`):'';
+  if(R.verdict==='accept')return hI?`${like}${others.length?', and '+others.join(' and ')+(others.length>1?' help':' helps')+' too':''}.${now&&established(hI)?' That makes us better this year.':!now&&isPro(hI)?' That is the kind of talent we are building around.':''}`:'That works for us.';
+  if(R.needMLB)return `We are trying to win in 2027.${hO?' '+nm(hO)+' is part of that.':''}`;
+  if(!R.headOK&&hO)return `Any deal for ${nm(hO)} starts with one player close to his level.`;
+  if(!hO)return like?like+'.':'I need to see more.';
+  const top=`${nm(hO)} is ${what(hO)}${isPro(hO)&&prof(code).pros==='hoard'&&(P[hO].t100||hsGrade(hO)>=55)?', and we do not move our best young players easily':''}.`;
+  const mid=hI?` ${like}${others.length?`, and ${others.join(' and ')} ${others.length>1?'help':'helps'} us now`:pros?` and there is some depth behind him`:''}`:'';
+  return `${top}${mid}${mid?(wor.length?`, but ${wor.slice(0,2).join(', and ')}.`:R.verdict==='counter'?', and we are nearly there.':', but that is not enough for a player like that.'):''}`}
 function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=needList(code).slice(0,2),want=nl.length?`We're looking for ${nl.join(' and ')}. `:'';
   if(E0.verdict==='locked')return "Nobody. The rules don't allow this deal as it's built.";
   if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
@@ -1761,8 +1779,7 @@ function evalTrade(code,outSel,inSel,cashM){
     /* or take a piece off their side (not their headliner if that's the problem) */
     const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut||R.headOK).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
     R.drop=tryDrop||null}
-  const q={allin:['We are trying to win a ring this year.','We will pay for certainty, not lottery tickets.'],contend:['We have to be smart with every year of control.','Control matters more to us than the name.'],ascend:['Our window is opening. We are not moving young core for short-term help.','We will add, but we protect the kids who are close.'],retool:['We can go either way here. Make it worth our while.','We are listening on veterans, but not giving them away.'],rebuild:['We want young talent with upside. Veterans do nothing for us.','Take salary off our hands or bring prospects. Ideally both.']}[c.win];
-  R.quote=q[hashN(code+outSel.join()+inSel.join())%q.length];
+  R.quote=tradeQuote(R,code,c);
   _leaving=new Set();
   return R}
 function faSuitors(id){
@@ -2024,8 +2041,8 @@ function verdictHTML(E){
     let why;
     if(E.needMLB)why=` They're trying to win. If ${nm(E.hOut)} goes, they need big-league help back, not just prospects.`;
     else if(!E.headOK&&E.hOut.id)why=` The best player in this deal is ${nm(E.hOut)} (${esc(E.hOut.label)}). ${E.hIn.id?`${nm(E.hIn)} (${esc(E.hIn.label)}) isn't in his class, and depth doesn't make up for it.`:`Nothing coming back is in his class.`}`;
-    else why=` The headliner works, but they want more around him.`;
-    const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
+    else{const r=E.give?E.recv/E.give:0;why=r>=.9?` They are a small piece short.`:r>=.75?` They are one good piece short of what they are giving up.`:` What comes back is well short of what they are giving up.`}
+    const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'&&!E.needMLB&&E.headOK?` No single player from your side closes that gap.${E.drop?'':' Ask for less.'}`:E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
     const drop=E.drop?` Or take ${nm(E.drop)} out of their side.`:'';
     msg=lead+why+fix+drop}
   const chk=(E.checks||[]).map(([t,ok])=>`<span class="tchk ${ok?'ok':'no'}">${ok?'✓':'✗'} ${esc(t)}</span>`).join('');
@@ -2948,7 +2965,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121073236';
+const BUILD='20261121171308';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
