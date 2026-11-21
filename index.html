@@ -1520,7 +1520,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
   else{const mix=y.mix?y.mix.map(m=>[m[0],m[1]]):y.pp?Object.entries(y.pp).map(([k,v])=>[k,v[0]]).sort((a,b)=>b[1]-a[1]):null;
     sc=kv('Velocity, all pitches (top)',y.maxv?`${y.vel} (${y.maxv}) mph`:null)+kv('Strikeout rate',y.k!=null?pct(y.k,1):null)+kv('Chase rate',y.chase!=null?pct(y.chase):null)+kv('Hard-hit · barrel allowed',y.hard!=null?`${pct(y.hard)} · ${pct(y.brl,1)}`:null)+kv('Expected ERA vs actual',y.xera&&y.era!=null?`${y.xera.toFixed(2)} vs ${y.era.toFixed(2)}`:null)
       +(mix?`<p class="hint" style="margin:4px 0 0"><b>Pitch mix:</b> ${mix.slice(0,6).map(m=>(PITCHN[m[0]]||m[0])+' '+pct(m[1])).join(', ')}</p>`:'')
-      +(pj.y&&pj.y.pm?`<p class="hint" style="margin:4px 0 0"><b>Pitch models (100 = average):</b> Stuff+ ${pj.y.pm[0]}, Location+ ${pj.y.pm[1]}, Pitching+ ${pj.y.pm[2]} over ${pj.y.pm[3]} innings${pj.y.pb?`. Second model (20-80 scale): ${pj.y.pb[0]} overall, ${pj.y.pb[1]} stuff, ${pj.y.pb[2]} command, ${pj.y.pb[3].toFixed(2)} modeled ERA`:''}</p>${pj.y.ps?`<p class="hint" style="margin:4px 0 0"><b>By pitch (Stuff+, how often):</b> ${Object.entries(pj.y.ps).sort((x,y)=>y[1][2]-x[1][2]).slice(0,6).map(([k,v])=>(PITCHN[k]||k)+' '+v[0]+' ('+pct(v[2])+')').join(', ')}${(b=>b&&b[1][1]>=110?'. Best pitch: '+(PITCHN[b[0]]||b[0]):'')(Object.entries(pj.y.ps).filter(x=>x[1][2]>=.1).sort((x,y)=>y[1][1]-x[1][1])[0])}</p>`:''}`:'')}
+      +(pj.y&&pj.y.pm?`<p class="hint" style="margin:4px 0 0"><b>Pitch models (100 = average):</b> Stuff+ ${pj.y.pm[0]}, Location+ ${pj.y.pm[1]}, Pitching+ ${pj.y.pm[2]} over ${pj.y.pm[3]} innings${pj.y.pb?`. Second model (20-80 scale): ${pj.y.pb[0]} overall, ${pj.y.pb[1]} stuff, ${pj.y.pb[2]} command, ${pj.y.pb[3].toFixed(2)} modeled ERA`:''}</p>${pj.y.ps?`<p class="hint" style="margin:4px 0 0"><b>By pitch (Stuff+ / second model's 20-80 grade, how often):</b> ${Object.entries(pj.y.ps).sort((x,y)=>y[1][2]-x[1][2]).slice(0,6).map(([k,v])=>(PITCHN[k]||k)+' '+v[0]+(v[3]?'/'+v[3]:'')+' ('+pct(v[2])+')').join(', ')}${(b=>b&&b[1][1]>=110?'. Best pitch: '+(PITCHN[b[0]]||b[0]):'')(Object.entries(pj.y.ps).filter(x=>x[1][2]>=.1).sort((x,y)=>y[1][1]-x[1][1])[0])}</p>`:''}`:'')}
   /* injuries */
   const I=s.inj,od=s.od;
   const inj=(od&&od.ret>0?`<p style="margin:2px 0"><b style="color:var(--bad)">Now:</b> ${esc(od.what)}${od.ret>=999?', out for 2027':', back about '+seDate(od.ret)}</p>`:'')
@@ -2998,7 +2998,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121211231';
+const BUILD='20261121211344';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
