@@ -1211,7 +1211,7 @@ function prospectValue(id,code,notes){
   let mult={AAA:1.15,AA:1.05,'A+':1,A:.92,Rk:.85,DSL:.85,CPX:.85,MLB:1.15}[p.lvl]||1;
   const st=p.st;
   if(st&&st.pa>=150){let a=Math.max(-.2,Math.min(.25,(st.wrc-100)/250));if(st.k>=30)a-=.1;mult*=1+a;notes.push(`2026: ${st.wrc} wRC+, ${st.k}% K in ${st.pa} PA`)}
-  else if(st&&st.ip>=40){const a=Math.max(-.2,Math.min(.2,(st.kbb-14)/60));mult*=1+a;notes.push(`2026: ${st.kbb}% K-BB, ${st.xfip} xFIP in ${st.ip} IP`)}
+  else if(st&&st.ip>=40){const a=Math.max(-.2,Math.min(.2,(st.kbb-14)/60));mult*=1+a;notes.push(`2026: ${st.kbb}% K-BB, ${st.xfip!=null?st.xfip+' xFIP':st.era+' ERA'} in ${st.ip} IP`)}
   if(p.age&&p.age<=21.5&&(p.lvl==='AA'||p.lvl==='AAA')){mult*=1.08;notes.push('young for his level')}
   if(p.age&&p.age>=25&&['A+','A','Rk','DSL'].includes(p.lvl)){mult*=.8;notes.push('old for his level')}
   v*=Math.max(.6,Math.min(1.25,mult));
@@ -1617,6 +1617,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
   $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(p.n)}${handTag(id)}</h2>
     <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
     ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
+    ${p.ml?sec('2026 in the minors',`<p class="hint" style="margin:0"><b>${esc(p.ml[0])}</b>: ${esc(p.ml[2])}. Roster Resource minor league power rank: No. ${p.ml[1]}.</p>`):''}
     ${p.ov||p.ovn?sec(p.ov?'2026 in '+p.ov[0]:'Posted player',`<p class="hint" style="margin:0">${p.ov?esc(p.ov[1])+'.':''}${p.ovn?' '+esc(p.ovn):''}</p>`):''}
     ${established(id)?sec('Value profile',(V=>V.parts.map(x=>kv(x[0],x[1])).join('')+kv('On-field value',V.w.toFixed(1)+' WAR'+(V.hf<1?' ('+V.now.toFixed(1)+' in 2027)':''))+(V.src?`<p class="hint" style="margin:4px 0 0">${esc(V.src)}</p>`:''))(valW(id))):''}
     ${pj.hs&&!p.p?sec('Bat by season',`<p class="hint" style="margin:0">${['2022','2023','2024','2025','2026'].filter(k=>pj.hs[k]).map(k=>`<b>${k}</b> ${pj.hs[k][1]} wRC+, ${Math.round(pj.hs[k][2]*100)}% K, ${pj.hs[k][0]} PA`).join(' · ')}</p>${pj.xs?`<p class="hint" style="margin:4px 0 0"><b>Contact quality (exit velocity, hard-hit, barrels, xwOBA):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.xs[k]).map(k=>`<b>${k}</b> ${pj.xs[k][1]} mph, ${Math.round(pj.xs[k][4]*100)}%, ${Math.round(pj.xs[k][3]*100)}%, ${f3(pj.xs[k][5])}`).join(' · ')}</p>`:''}${pj.ds?`<p class="hint" style="margin:4px 0 0"><b>Swing decisions (chase rate, in-zone contact):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.ds[k]).map(k=>`<b>${k}</b> ${Math.round(pj.ds[k][1]*100)}%, ${Math.round(pj.ds[k][2]*100)}%`).join(' · ')}</p>`:''}${pj.bv?`<p class="hint" style="margin:4px 0 0"><b>Runs against fastballs / breaking balls / offspeed:</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.bv[k]).map(k=>`<b>${k}</b> ${pj.bv[k].slice(1).map(v=>(v>0?'+':'')+Math.round(v)).join(' / ')}`).join(' · ')}</p>`:''}${pj.pl?`<p class="hint" style="margin:4px 0 0"><b>Against left-handers (wRC+, PA):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.pl[k]).map(k=>`<b>${k}</b> ${pj.pl[k][2]}, ${pj.pl[k][0]}`).join(' · ')}${(q=>q?`. 2024-26: ${f3(q.l)} wOBA vs left, ${f3(q.r)} vs right`:'')(plat3(id))}</p>`:''}${pj.pr?`<p class="hint" style="margin:4px 0 0"><b>Against right-handers (wRC+, PA):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.pr[k]).map(k=>`<b>${k}</b> ${pj.pr[k][2]}, ${pj.pr[k][0]}`).join(' · ')}</p>`:''}${pj.ss?`<p class="hint" style="margin:4px 0 0"><b>Speed (speed score 0-10, baserunning runs):</b> ${['2022','2023','2024','2025','2026'].filter(k=>pj.ss[k]).map(k=>`<b>${k}</b> ${pj.ss[k][1]}, ${pj.ss[k][2]>0?'+':''}${pj.ss[k][2]}`).join(' · ')}</p>`:''}`):''}
@@ -2210,7 +2211,7 @@ function execTrade(force){
 }
 
 /* ---------- top 50 ---------- */
-function stTxt(id){const s=P[id].st;if(!s)return '';return s.pa?`${s.wrc} wRC+ · ${s.k}% K · ${s.pa} PA`:`${s.kbb}% K-BB · ${s.xfip} xFIP · ${s.ip} IP`}
+function stTxt(id){const s=P[id].st;if(!s)return '';return s.pa?`${s.wrc} wRC+ · ${s.k}% K · ${s.pa} PA`:`${s.kbb}% K-BB · ${s.xfip!=null?s.xfip+' xFIP':s.era+' ERA'} · ${s.ip} IP`}
 function renderPros(){
   const r=hsRanks();let ids=r.__ids;
   const q=UI.prQ.toLowerCase();
@@ -3089,7 +3090,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121223340';
+const BUILD='20261121223739';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
