@@ -1648,7 +1648,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
     +(p.lvl!=='MLB'&&own!=='FA'?kv('Rule 5',r5Exposed(id)?'Eligible and unprotected':'Protected or not yet eligible'):'');
   const sec=(t,h)=>h?`<div class="dsec"><h3>${t}</h3>${h}</div>`:'';
   $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(p.n)}${handTag(id)}</h2>
-    <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'}${sizeOf(id)?' · '+esc(sizeOf(id)):''} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
+    <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'}${sizeOf(id)?' · '+esc(sizeOf(id)):''} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}${p.mlbp?' · No. '+p.mlbp+' prospect in the system':''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
     ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
     ${p.ml||p.mp?sec('2026 in the minors',`<p class="hint" style="margin:0">${p.ml?`<b>${esc(p.ml[0])}</b>: ${esc(p.ml[2])}. Roster Resource minor league power rank: No. ${p.ml[1]}.`:''}${p.bm?` Batted balls: ${Math.round(p.bm[0])}% on the ground, ${Math.round(p.bm[1])}% in the air, ${Math.round(p.bm[2])}% pulled, ${Math.round(p.bm[3])}% of fly balls leave the park.`:''}${p.mp?` Pitching line (${esc(p.mp[7])}): ${p.mp[0]} IP, ${p.mp[1]}% K, ${p.mp[2]}% BB, ${p.mp[3].toFixed(2)} FIP${p.mp[4]!=null?', '+p.mp[4].toFixed(2)+' xFIP':''}${p.mp[5]?'. Fastball '+p.mp[5]+' mph'+(p.mp[6]?', '+p.mp[6]+' rpm':''):''}.`:''}${p.pd?` Swing decisions in Triple-A: chases ${p.pd[0]}% of pitches off the plate, ${p.pd[1]}% contact in the zone, ${p.pd[2]}% contact overall.`:''}</p>`):''}
     ${p.ov||p.ovn?sec(p.ov?'2026 in '+p.ov[0]:'Posted player',`<p class="hint" style="margin:0">${p.ov?esc(p.ov[1])+'.':''}${p.ovn?' '+esc(p.ovn):''}</p>`):''}
@@ -1883,7 +1883,8 @@ function pkg(list){const pos=list.filter(x=>x.pts>0).sort((a,b)=>b.pts-a.pts),ne
 /* kept for older callers: v = package points */
 function valueTo(id,code,incoming){const r=gradeTo(id,code,incoming);return {v:r.pts,notes:r.notes,g:r.g,label:r.label}}
 function sumW(vals){return pkg(vals.map(v=>({pts:v})))}
-function lockedFA(id){if(SE&&SE.day>=SE_JUN15)return false;const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&owner(id)!=='FA')}
+const TXSIGN=new Set();/* players signed to a big-league deal in a real move this offseason (set in applyTx) */
+function lockedFA(id){if(SE&&SE.day>=SE_JUN15)return false;const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&owner(id)!=='FA')||(TXSIGN.has(id)&&owner(id)!=='FA')}
 function sumW(vals){const pos=vals.filter(x=>x>0).sort((a,b)=>b-a),neg=vals.filter(x=>x<=0);const w=[1,.85,.7,.55,.45,.4];return pos.reduce((s,x,i)=>s+x*(w[i]??.35),0)+neg.reduce((s,x)=>s+x,0)}
 function hashN(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))%9973;return h}
 /* ---- picks + international pool space as trade assets ---- */
@@ -2169,7 +2170,7 @@ function teamCBT(code){return teamCBTbase(code)+(S.teamAdj[code]||0)}
 function partnerCount(id){const k=kind(id);if(k==='guar'||k==='arb')return aav(id);return 0}
 function tradeRow(id,side){
   const set=side==='out'?UI.tOut:UI.tIn;const p=P[id];
-  const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',top100(id)?('#'+top100(id)+' T100'):'',p.eta&&p.fv&&!established(id)?('ETA '+p.eta):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
+  const meta=[p.pos,p.mlbp?('#'+p.mlbp+' in system'):'',p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',top100(id)?('#'+top100(id)+' T100'):'',p.eta&&p.fv&&!established(id)?('ETA '+p.eta):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
   const v=side==='out'?cbtOf(id):partnerCount(id);
   return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<button type="button" class="sbtn" data-scout="${id}" aria-label="Scouting card for ${esc(p.n)}">card</button><div class="meta">${esc(meta)}${established(id)&&scout(id).tags.length?' · '+esc(scout(id).tags.slice(0,2).join(' · ')):''}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
@@ -2185,9 +2186,10 @@ function renderTrade(){
   /* 40-man vs prospects, then position group */
   const on40=id=>owner(id)===ME?status(id)==='40':((D.fortyBy[owner(id)]||[]).includes(id)||P[id].lvl==='MLB'||P[id].lvl==='IL'||P[id].kind!=='min');
   const grpOf=id=>{const p=P[id];if(p.p)return /SP/.test(p.pos||'')||pgrp(id)==='SP'?'SP':'RP';const g=pgrp(id);return g==='C'?'C':g==='OF'||/^(LF|CF|RF|OF)/.test(p.pos||'')?'OF':'INF'};
-  const fside=side=>id=>UI.tGrp[side]&&(UI.tGrp[side]==='40'?on40(id):!on40(id))&&(UI.tPF[side]==='All'||grpOf(id)===UI.tPF[side]);
+  const isPros=id=>{const p=P[id];return !!(p.fv||p.mlbp||p.p100)&&!established(id)};
+  const fside=side=>id=>UI.tGrp[side]&&(UI.tGrp[side]==='40'?on40(id):!on40(id)||isPros(id))&&(UI.tPF[side]==='All'||grpOf(id)===UI.tPF[side]);
   const tcol=c=>{const [a,b]=COLORS[c]||COLORS.NYM;return `--tc1:${a};--tc2:${b};--tc2ink:${lum(b)>.35?'#14100c':'#fff'}`};
-  const sortP=(a,b)=>(P[b].fv?hsValue(b):0)-(P[a].fv?hsValue(a):0)||(P[b].age||99)-(P[a].age||99);
+  const sortP=(a,b)=>(P[b].fv?hsValue(b):0)-(P[a].fv?hsValue(a):0)||(P[a].mlbp||99)-(P[b].mlbp||99)||(P[b].age||99)-(P[a].age||99);
   const outL=metsIds().filter(qf(UI.tQout)).filter(fside('out')).sort(UI.tGrp.out==='40'?sortT:sortP),inL=teamIds(code).filter(qf(UI.tQin)).filter(fside('in')).sort(UI.tGrp.in==='40'?sortT:sortP);
   const ctl=side=>`<div class="seg" role="group" aria-label="Roster">${[['40','40-man'],['pros','Prospects']].map(([k,l])=>`<button type="button" data-tgrp="${side}:${k}" aria-pressed="${UI.tGrp[side]===k}">${l}</button>`).join('')}</div>
     ${UI.tGrp[side]?`<div class="chips" role="group" aria-label="Position">${['All','SP','RP','C','INF','OF'].map(k=>`<button type="button" data-tpf="${side}:${k}" aria-pressed="${UI.tPF[side]===k}">${k}</button>`).join('')}</div>`:''}`;
@@ -3298,7 +3300,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122203126';
+const BUILD='20261122203508';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3411,7 +3413,7 @@ function openDrawer(id){
   else if(D.teams[owner(id)]){acts.push(`<button class="btn" data-act="totrade" data-id="${id}">Add to trade</button>`)}
   $('#drawer').innerHTML=`
     <div class="cardhead"><h2>${esc(p.n)}</h2><button class="x" type="button" data-act="closedrawer" aria-label="Close">×</button></div>
-    <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}${sizeOf(id)?`<span class="pill">${esc(sizeOf(id))}</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
+    <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}${sizeOf(id)?`<span class="pill">${esc(sizeOf(id))}</span>`:''}${p.mlbp?`<span class="pill">No. ${p.mlbp} prospect in system</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
     <div class="dsec"><h3>Contract</h3><p style="margin:4px 0">${esc(c?c.desc:(p.contract||(p.team==='FA'?'Free agent':'Minor-league / pre-arb')))}</p>
       <div class="kv"><span>CBT figure (2027)</span><b>${mets?M(cbtOf(id)):M(partnerCount(id))}</b></div>
       ${(()=>{const ci=controlInfo(id),r=r5Info(id);return (ci.txt?`<div class="kv"><span>Team control</span><b style="text-align:right">${esc(ci.txt)}</b></div>`:'')+(p.opt&&p.opt!=='n/a'?`<div class="kv"><span>Options</span><b>${esc(String(p.opt))}</b></div>`:'')+(r&&p.lvl!=='MLB'?`<div class="kv"><span>Rule 5</span><b style="text-align:right">${r5Exposed(id)?'<span style="color:var(--bad)">Eligible and unprotected</span>':r.eligibleNow?'Eligible (protected on the 40-man)':'First eligible Dec '+r.first}${r.est?' (est.)':''}</b></div>`:'')+(p.qo&&p.team==='FA'?`<div class="kv"><span>Qualifying offer</span><b>Declined (${M1(RULES.qo.amount)})</b></div>`:'')})()}
@@ -3600,7 +3602,10 @@ function moveP(id,to,forty){const from=P[id].team;if(from===to)return;dropFrom(i
 function applyTx(T){
   for(const t of (T.moves||[]))try{
     if(t.type==='trade'||t.type==='claim'){for(const m of (t.players||[{name:t.name,from:t.from,to:t.to,forty:t.forty,pos:t.pos}])){const id=findP(m.name,m.from)||mkP(m.name,m.from,m.pos);moveP(id,m.to,m.forty!==false&&t.type==='claim'?true:m.forty)}}
-    else if(t.type==='sign'||t.type==='sign_minor'){let id=findP(t.name,t.team);if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);
+    else if(t.type==='sign'||t.type==='sign_minor'){let id=findP(t.name,t.team);
+      /* a free agent with the same name as another club's ranked prospect is a different man: the prospect was never a free agent */
+      if(id&&P[id].team!==t.team&&P[id].team!=='FA'&&P[id].mlbp&&P[id].kind==='min'&&!D.fa.includes(id))id=null;
+      if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);if(t.type==='sign'&&String(t.date||'')>='2026-11-01')TXSIGN.add(id);
       if(t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}})}if(t.type==='sign_minor')P[id].lvl=P[id].lvl==='MLB'?'AAA':P[id].lvl}
     else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
