@@ -1923,9 +1923,15 @@ function dumpOf(id,code){const p=P[id];if(!p||!established(id)||owner(id)!==code
   const tc=teamIntel(code),age=p.age||28,yrs=ctrl(id).length;
   if(tc.shedding&&rem>=75e6&&age>=29&&yrs>=3&&valW(id).w<4&&!(it&&it.status==='untouchable'))return {rem,why:'',rep:false};
   return null}
+/* June 15 rule (CBA; owner 11/22: it is consent, not a ban): a free agent who signed a major-league contract this offseason can be traded before June 15
+   only with his written consent. Minor-league deals are exempt. He says yes when the move clearly helps him: a better chance to win, or a job the new club needs filled. */
+function faConsent(id,to){const from=owner(id),rk={allin:4,contend:3,ascend:2,retool:1,rebuild:0},lv=c=>Math.max(rk[ctx(c).win]||0,c===ME&&teamReady(c)?3:0)/* the user's club is judged by the roster he has built */,a=lv(from),b=lv(to),n=P[id].n;
+  if(b>=3&&b>a)return {ok:true,why:`${n} signed as a free agent this winter, so he has to approve any trade before June 15. He would: the ${tnm(to)} give him a better chance to win.`};
+  if(b>a&&established(id)&&(fillsNeed(id,to)>0||wantsGrp(to,pgrp(id)))&&!(fillsNeed(id,from)>0))return {ok:true,why:`${n} signed as a free agent this winter, so he has to approve any trade before June 15. He would: the ${tnm(to)} need ${WANT_TXT[pgrp(id)]||'him'} and he would have a bigger role there.`};
+  return {ok:false,why:`${n} signed as a free agent this winter, so he can't be traded before June 15 without his written consent, and he will not give it: he chose the ${tnm(from)}${b<a?', and the '+tnm(to)+' are further from winning':''}.`}}
 function evalTrade(code,outSel,inSel,cashM){
   const c=ctx(code),R={code,ctx:c,reasons:[],locked:[],checks:[]};
-  for(const id of [...outSel,...inSel])if(lockedFA(id))R.locked.push(P[id].n);
+  R.lockWhy=[];R.consent=[];for(const id of [...outSel,...inSel])if(lockedFA(id)){const k=faConsent(id,outSel.includes(id)?code:ME);if(k.ok)R.consent.push(k.why);else{R.locked.push(P[id].n);R.lockWhy.push(k.why)}}
   const giv=inSel.map(id=>({id,...gradeTo(id,code,false)}));
   _leaving=new Set(inSel);const rec=outSel.map(id=>({id,...gradeTo(id,code,true)}));
   R.rec=rec;R.giv=giv;
@@ -2262,7 +2268,7 @@ function verdictHTML(E){
   const line=x=>`<div class="kv"><span><span data-scout="${x.id}" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px">${esc(P[x.id].n)}</span>${handTag(x.id)} <span class="hint">${esc(x.label)}${x.notes.length?' · '+esc(x.notes.join(' · ')):''}</span></span></div>`;
   const ask=E.add?nm(E.add):E.add2?`${nm(E.add2.a)} and ${nm(E.add2.b)}`:'';
   let msg='';
-  if(E.verdict==='locked')msg=[E.locked.length?`${esc(E.locked.join(', '))} signed as a free agent this offseason and can't be traded until June 15.`:'',...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
+  if(E.verdict==='locked')msg=[...(E.lockWhy||[]).map(esc),...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
   else if(E.bigK)msg=`"We don't take on contracts like ${esc(P[E.bigK.id].n)}'s." He has ${M(E.bigK.rem)} guaranteed left. ${esc(D.teams[E.code].name)} won't absorb more than about ${M(E.kMax)} for one player, unless a big contract goes back the other way.`;
   else if(E.budget)msg=`"That takes us past what ownership will spend." This puts them at ${M(E.after)}, over their ${M(E.cap)} limit. Take salary back or add cash.`;
   else if(E.untouch&&E.untouch.length){const u=E.untouch[0],it=intelOf(u.x.id);msg=u.why==='reported untouchable'?`"${esc(P[u.x.id].n)} isn't available." ${it&&it.note?esc(it.note)+'.':''} That's not a conversation right now.`:`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
@@ -2282,7 +2288,7 @@ function verdictHTML(E){
   return `<div class="verdictbox ${V[1]}">
     <div class="vhead"><span class="vtag ${V[1]}">${V[0]}</span><span class="hint">${esc(T.name)} · ${WIN_LABEL[E.ctx.win]} · ${MKT_LABEL[E.ctx.mkt]}</span></div>
     ${prof(E.code).note?`<p class="hint" style="margin:4px 0 0">Front office: ${esc(prof(E.code).note)}</p>`:''}
-    <p style="margin:6px 0">${msg}</p>
+    <p style="margin:6px 0">${msg}</p>${E.verdict!=='locked'&&E.consent&&E.consent.length?`<p class="hint" style="margin:0 0 6px">${E.consent.map(esc).join(' ')}</p>`:''}
     ${chk&&E.verdict!=='locked'?`<div class="tchks">${chk}</div>`:''}
     ${E.sel?gmTalkHTML(E,E.code,E.sel[0],E.sel[1],E.sel[2]):''}
     <details><summary>How the ${esc(T.name)} see each player</summary>
@@ -3300,7 +3306,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122203508';
+const BUILD='20261122204331';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3605,7 +3611,7 @@ function applyTx(T){
     else if(t.type==='sign'||t.type==='sign_minor'){let id=findP(t.name,t.team);
       /* a free agent with the same name as another club's ranked prospect is a different man: the prospect was never a free agent */
       if(id&&P[id].team!==t.team&&P[id].team!=='FA'&&P[id].mlbp&&P[id].kind==='min'&&!D.fa.includes(id))id=null;
-      if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);if(t.type==='sign'&&String(t.date||'')>='2026-11-01')TXSIGN.add(id);
+      if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);if(t.type==='sign'&&String(t.date||'')>='2026-10-01')TXSIGN.add(id);
       if(t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}})}if(t.type==='sign_minor')P[id].lvl=P[id].lvl==='MLB'?'AAA':P[id].lvl}
     else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
