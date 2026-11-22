@@ -1567,7 +1567,8 @@ function gradeTo(id,code,incoming){
       if(cy<=1&&win!=='allin'){const sl=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);if(sl>0){g-=2*sl;notes.push('they would rather get something now than lose him for nothing')}}
       const it=intelOf(id);
       if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
-      if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
+      if(it&&it.problem){if(incoming){g-=4;notes.push('he comes with baggage'+(it.note?` (${it.note})`:''))}else{g=Math.min(g-7,50);notes.push('the club wants to move on from him and is not holding out for full value'+(it.note?` (${it.note})`:''))}}
+      else if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'&&it.price==='high'){g+=2;notes.push('they will listen, but the price is high'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'){g-=.5;notes.push('reported: they are listening on him'+(it.note?` (${it.note})`:''))}
       if(win==='rebuild'&&age>=29){g-=3;notes.push('rebuilding: veterans are available')}
@@ -1705,9 +1706,10 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
   if(R.needMLB)return `We are trying to win in 2027.${hO?' '+nm(hO)+' is part of that.':''}`;
   if(!R.headOK&&hO)return `Any deal for ${nm(hO)} starts with one player close to his level.`;
   if(!hO)return like?like+'.':'I need to see more.';
-  const top=`${nm(hO)} is ${what(hO)}${isPro(hO)&&prof(code).pros==='hoard'&&(top100(hO)||hsGrade(hO)>=55)?', and we do not move our best young players easily':''}.`;
+  const pb=intelOf(hO)&&intelOf(hO).problem;
+  const top=pb?`We are ready to move on from ${nm(hO)}, and we are not asking for full value.`:`${nm(hO)} is ${what(hO)}${isPro(hO)&&prof(code).pros==='hoard'&&(top100(hO)||hsGrade(hO)>=55)?', and we do not move our best young players easily':''}.`;
   const mid=hI?` ${like}${others.length?`, and ${others.join(' and ')} ${others.length>1?'help':'helps'} us now`:pros?` and there is some depth behind him`:''}`:'';
-  return `${top}${mid}${mid?(wor.length?`, but ${wor.slice(0,2).join(', and ')}.`:R.verdict==='counter'?', and we are nearly there.':', but that is not enough for a player like that.'):''}`}
+  return `${top}${mid}${mid?(wor.length?`, but ${wor.slice(0,2).join(', and ')}.`:R.verdict==='counter'?', and we are nearly there.':pb?', but we still need a fair return for a good player.':', but that is not enough for a player like that.'):''}`}
 /* who a GM would really ask for (owner, 11/22: the counter has to be a name that makes sense, with a reason, not just the best grade).
    Fit first: he fills a hole on their roster or a stated want, he matches their timeline, nobody blocks him. x = {id, notes} from gradeTo. */
 /* players of the user's that another GM never asks for (owner, 11/22): a full no-trade clause (in his contract, or 10-and-5 rights),
@@ -1919,6 +1921,8 @@ function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owne
    Getting out of the money is the point of the trade for them, so he is not priced as an asset. */
 let _eatProbe=0;
 function dumpOf(id,code){const p=P[id];if(!p||!established(id)||owner(id)!==code)return null;const it=intelOf(id),rem=remGuar(id);
+  /* a dump is about a contract that is worth less than it costs. A productive player on a fair deal is not one, whatever else is wrong (owner, 11/22: Marte) */
+  if(!(gradeTo(id,code,false).burden>0)&&p.proj.war>=3)return null;
   if(it&&it.dump&&rem>=12e6)return {rem,why:it.note||'',rep:true};
   const tc=teamIntel(code),age=p.age||28,yrs=ctrl(id).length;
   if(tc.shedding&&rem>=75e6&&age>=29&&yrs>=3&&valW(id).w<4&&!(it&&it.status==='untouchable'))return {rem,why:'',rep:false};
@@ -1986,7 +1990,7 @@ function evalTrade(code,outSel,inSel,cashM){
     ['Headliner measures up',R.headOK],
     ...(winNow&&mlbOut.length?[['Big-league help back',!R.needMLB]]:[]),
     ...(untouch.length?[['No untouchables',!R.untouch.length]]:[]),
-    ...(R.dump.length?[['Gets them out of the contract',!!R.dumpFull]]:[]),
+    ...(R.dump.length&&R.dumpShare<=.7?[['Gets them out of the contract',!!R.dumpFull]]:[]),
     ['Enough talent overall',R.pkgOK]];
   if(R.locked.length||X.errs.length)R.verdict='locked';
   else if(R.budget||R.bigK||R.untouch.length)R.verdict='reject';
@@ -3306,7 +3310,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122204331';
+const BUILD='20261122212912';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
