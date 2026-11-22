@@ -1531,7 +1531,7 @@ function gradeTo(id,code,incoming){
   const p=P[id],notes=[],c=ctx(code),win=c.win,pr=prof(code),gp=pgrp(id),age=p.age||28;let g,burden=0;
   if(established(id)){
     const cy=ctrl(id).length,V=valW(id),w=valFor(id,cy);
-    g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(64,40+5*rv.w*(V.hf<1?valFor(id,cy)/Math.max(.1,V.w):1))}g+=V.adj;var raw=g;
+    g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(64,40+5*rv.w*(V.hf<1?valFor(id,cy)/Math.max(.1,V.w):1))}if(rv&&rv.role==='closer'){const fl=rv.strong||rv.elite?54:51;if(g<fl){g=fl;notes.push('a closer: he has the ninth inning')}}g+=V.adj;var raw=g;
     notes.push(`${p.proj.war.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);for(const n of V.notes)notes.push(n);
     if(cy<=1&&incoming&&SE&&SE.win&&(win==='allin'||win==='contend')){g+=1;notes.push('deadline: a contender pays up for help right now')}/* season sim, deadline day: buyers pay more for rentals */
     else if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
@@ -1593,6 +1593,8 @@ function gradeTo(id,code,incoming){
     }
   }else{g=p.proj?Math.min(42,38+2*Math.max(0,p.proj.war)):36;notes.push('organizational depth')}
   g=Math.max(20,Math.min(80,g));
+  /* owner, 11/22: a player who has never played in the majors is not worth more than a star to a club trying to win. All-in clubs cap any prospect at 60, contenders at 63. */
+  if(!established(id)&&p.fv&&(win==='allin'||win==='contend')){const cap=win==='allin'?60:63;if(g>cap){g=cap;notes.push('however good, he has not done it in the majors, and this club is trying to win now')}}
   return {g,pts:gpts(g)-burden,burden,label:ROLE(id,established(id)?Math.max(raw,p.fv&&age<=25?hsGrade(id):0):(p.fv?hsGrade(id):g)),notes}}
 /* ===== Scouting card and side-by-side comparison (trade screen) ===== */
 const PITCHN={FA:'4-seam',FT:'2-seam',FC:'cutter',FS:'splitter',FO:'forkball',SI:'sinker',SL:'slider',CU:'curve',KC:'knuckle curve',EP:'eephus',CH:'changeup',SC:'screwball',KN:'knuckleball'};
@@ -1914,7 +1916,7 @@ function evalTrade(code,outSel,inSel,cashM){
   const cap=Math.max(capOf(code)*1e6,base);R.after=after;R.cap=cap;/* owner, 11/22: a club's payroll comfort zone never blocks a trade; it can make other moves afterwards. Shown as a note only. */R.over=after>cap&&after>teamCBT(code);R.budget=false;
   /* contract size: small and mid markets (and rebuilding clubs) won't absorb a huge long-term deal, unless they send one back */
   R.kMax=kMaxOf(code,c.win);{const inc=outSel.map(id=>({id,rem:remGuar(id)})).sort((a,b)=>b.rem-a.rem),remIn=inc.reduce((t,x)=>t+x.rem,0),remOut=inSel.reduce((t,id)=>t+remGuar(id),0);
-    R.bigK=inc.length&&inc[0].rem>R.kMax&&remIn-remOut>R.kMax*.5?inc[0]:null}
+    R.bigK=null}/* owner, 11/22 (twice): no payroll or contract-size limit of any kind. A club can always make other moves. Money counts only through contract burden and salary dumps. */
   /* the club's questions, in order */
   const untouch=giv.filter(x=>!x.dump).map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
   R.untouch=untouch.filter(u=>u.why==='reported untouchable'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
@@ -1945,7 +1947,7 @@ function evalTrade(code,outSel,inSel,cashM){
   else R.verdict='reject';
   /* what would get it done: name players from your system, the way a GM asks */
   if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){
-    const fitsMoney=id=>remGuar(id)<=R.kMax&&!(after+partnerCount(id)>cap&&after+partnerCount(id)>teamCBT(code));
+    const fitsMoney=id=>true;
     const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
@@ -1955,7 +1957,7 @@ function evalTrade(code,outSel,inSel,cashM){
       for(let i=0;i<top.length;i++)for(let j=i+1;j<top.length;j++){const e=[top[j],top[i]];if(works(e)){const t=top[j].pts+top[i].pts;if(!best||t<best.t)best={a:top[j],b:top[i],t}}}
       R.add2=best}
     /* or take a piece off their side (not their headliner if that's the problem) */
-    const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut||R.headOK).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
+    const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
     R.drop=tryDrop||null}
   /* eating salary (owner, 11/22: real GM logic): when the user is sending a contract the club sees as more money than production,
      find the smallest amount he could pay down (in $2M steps, then $5M, up to 80% of what is owed) that turns the answer into a yes. */
@@ -2227,10 +2229,9 @@ function verdictHTML(E){
     const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'&&!E.needMLB&&E.headOK?` No single player from your side closes that gap.${E.drop?'':' Ask for less.'}`:E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
     const drop=(E.drop?` Or take ${nm(E.drop)} out of their side.`:'')+(E.eat?` Or eat ${M(E.eat.m*1e6)} of the ${M(E.eat.rem)} left on ${esc(P[E.eat.id].n)}'s contract (enter it as cash) and it works.`:'');
     msg=lead+why+fix+drop}
-  if(E.over&&E.verdict!=='locked')msg+=` This would put them at ${M(E.after)}, past their usual ${M(E.cap)} payroll. That does not stop the deal; they can make other moves.`;
   const chk=(E.checks||[]).map(([t,ok])=>`<span class="tchk ${ok?'ok':'no'}">${ok?'✓':'✗'} ${esc(t)}</span>`).join('');
   return `<div class="verdictbox ${V[1]}">
-    <div class="vhead"><span class="vtag ${V[1]}">${V[0]}</span><span class="hint">${esc(T.name)} · ${WIN_LABEL[E.ctx.win]} · ${MKT_LABEL[E.ctx.mkt]} · usual payroll ~$${capOf(E.code)}M${prof(E.code).capReady&&!teamReady(E.code)?` (rises to $${prof(E.code).capReady}M when they're ready to win)`:''}</span></div>
+    <div class="vhead"><span class="vtag ${V[1]}">${V[0]}</span><span class="hint">${esc(T.name)} · ${WIN_LABEL[E.ctx.win]} · ${MKT_LABEL[E.ctx.mkt]}</span></div>
     ${prof(E.code).note?`<p class="hint" style="margin:4px 0 0">Front office: ${esc(prof(E.code).note)}</p>`:''}
     <p style="margin:6px 0">${msg}</p>
     ${chk&&E.verdict!=='locked'?`<div class="tchks">${chk}</div>`:''}
@@ -3183,7 +3184,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122053946';
+const BUILD='20261122054415';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
