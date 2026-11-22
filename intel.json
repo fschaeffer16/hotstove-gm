@@ -567,9 +567,9 @@
    "name": "Ketel Marte",
    "team": "ARI",
    "status": "available",
-   "dump": true,
    "ntc": true,
-   "note": "Hazen says a trade is back on the table; he went on the restricted list in August after not showing up at Fenway, and has full no-trade rights",
+   "problem": true,
+   "note": "Hazen says a trade is back on the table; he no-showed a game at Fenway and went on the restricted list, the club has suspended him twice in two years (owner note, 11/22), and he has full no-trade rights",
    "src": "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs"
   },
   {
@@ -875,7 +875,8 @@
    "team": "SFG",
    "status": "listening",
    "dump": true,
-   "note": "the club was open to offers at the deadline and wants out of a big contract; he refused to come out for a pinch-runner in June",
+   "problem": true,
+   "note": "the club was open to offers at the deadline and wants out of a big contract; he refused to come out for a pinch-runner in June and has been a problem in the clubhouse (owner note, 11/22)",
    "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus"
   },
   {
