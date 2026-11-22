@@ -293,6 +293,10 @@ table.list{width:100%;border-collapse:collapse;font-size:13px}
 .list td.r{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .list tr:hover td{background:var(--chip)}
 .list td .nmb{font-weight:600}
+/* frozen name column: the names stay put while the stats scroll sideways */
+.list.frz th:first-child,.list.frz td:first-child{position:sticky;left:0;z-index:1;background:var(--card);box-shadow:1px 0 0 var(--line)}
+.list.frz thead th:first-child{background:var(--blue-soft)}
+.list.frz tr:hover td:first-child{background:var(--chip)}
 .list tr.gone td{opacity:.45}
 .list td.wrap{white-space:normal;min-width:118px}
 
@@ -3131,8 +3135,8 @@ function seStatsHTML(){const tm=UI.seTeam||ME,st=UI.seStat||'bat',codes=Object.k
     const top=(ids,f,n)=>ids.map(id=>[id,f(id)]).sort((a,b)=>b[1]-a[1]).slice(0,n||5),lst=(t,arr,fm)=>`<div class="subh">${t}</div>${arr.map(([id,v])=>`<div class="kv"><span>${nm(id)} <span class="hint">${owner(id)}</span></span><b>${fm?fm(v):v}</b></div>`).join('')}`;
     return nav+`<div class="tradegrid"><div class="tside"><h3>Hitters</h3>${lst('WAR',top(B,seBWar),v=>v.toFixed(1))}${lst('Home runs',top(B,id=>SE.bs[id][6]))}${lst('RBI',top(B,id=>SE.bs[id][8]))}${lst('Batting average',top(qb,id=>SE.bs[id][3]/SE.bs[id][2]),f3)}${lst('OPS',top(qb,id=>seOPS(SE.bs[id])),f3)}${lst('Stolen bases',top(B,id=>SE.bs[id][11]))}</div>
     <div class="tside"><h3>Pitchers</h3>${lst('WAR',top(Pp,sePWar),v=>v.toFixed(1))}${lst('ERA',top(qp,id=>-SE.ps[id][5]*27/SE.ps[id][2]),v=>(-v).toFixed(2))}${lst('Wins',top(Pp,id=>SE.ps[id][9]))}${lst('Strikeouts',top(Pp,id=>SE.ps[id][7]))}${lst('Saves',top(Pp,id=>SE.ps[id][11]))}${lst('WHIP',top(qp,id=>-(SE.ps[id][3]+SE.ps[id][6])*3/SE.ps[id][2]),v=>(-v).toFixed(2))}</div></div>`}
-  if(st==='pit'){const ids=Object.keys(SE.ps).filter(id=>owner(id)===tm).sort((a,b)=>SE.ps[b][2]-SE.ps[a][2]);return nav+`<div class="scroll"><table class="list">${ph}<tbody>${ids.map(id=>prow(id)).join('')}</tbody></table></div>`}
-  const ids=Object.keys(SE.bs).filter(id=>owner(id)===tm&&!P[id].p).sort((a,b)=>SE.bs[b][1]-SE.bs[a][1]);return nav+`<div class="scroll"><table class="list">${bh}<tbody>${ids.map(id=>brow(id)).join('')}</tbody></table></div><p class="hint">Stats are with any club this season. WAR blends the hitting line with the defense and position value from his projection.</p>`}
+  if(st==='pit'){const ids=Object.keys(SE.ps).filter(id=>owner(id)===tm).sort((a,b)=>SE.ps[b][2]-SE.ps[a][2]);return nav+`<div class="scroll"><table class="list frz">${ph}<tbody>${ids.map(id=>prow(id)).join('')}</tbody></table></div>`}
+  const ids=Object.keys(SE.bs).filter(id=>owner(id)===tm&&!P[id].p).sort((a,b)=>SE.bs[b][1]-SE.bs[a][1]);return nav+`<div class="scroll"><table class="list frz">${bh}<tbody>${ids.map(id=>brow(id)).join('')}</tbody></table></div><p class="hint">Stats are with any club this season. WAR blends the hitting line with the defense and position value from his projection.</p>`}
 function seGamesHTML(){const keys=Object.keys(SE.box).sort((a,b)=>SE.box[b].d-SE.box[a].d),ld=SX.last,day=ld!=null&&SX.box[ld];let sc='';
   if(day)sc=`<div class="scroll"><table class="list"><tbody>${day.map((bx,i)=>seGameRow(bx,'x:'+ld+':'+i,null)).join('')}</tbody></table></div>`;
   else{const d=Object.keys(SE.sc).map(Number).sort((a,b)=>b-a)[0];sc=d==null?'<p class="hint">No games yet.</p>':`<div class="scroll"><table class="list"><tbody>${SE.sc[d].map(g=>`<tr><td class="r hint">${seDate(d)}</td><td>${SN.teams[g[1]]} ${g[3]}, ${SN.teams[g[0]]} ${g[2]}</td></tr>`).join('')}</tbody></table></div><p class="hint">Box scores for other clubs' games are kept for the days you just simmed. Your own club's box scores are kept all season.</p>`}
@@ -3214,7 +3218,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122055007';
+const BUILD='20261122200651';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
