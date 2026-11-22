@@ -2860,6 +2860,27 @@
    "summary": "Anthony Rendon retired.",
    "src": "Owner note",
    "status": "official"
+  },
+  {
+   "date": "2026-11-22",
+   "type": "sign",
+   "summary": "Tigers sign RHP Luis Gil: 1 yr, $2.3M, plus up to $2M in performance bonuses (pending physical)",
+   "name": "Luis Gil",
+   "team": "DET",
+   "pos": "SP",
+   "forty": true,
+   "contract": {
+    "aav": 2300000,
+    "desc": "1 yr, $2.3M (2027), up to $2M in performance bonuses",
+    "yrs": {
+     "2027": 2300000,
+     "2028": "ARB 3",
+     "2029": "ARB 4",
+     "2030": "FREE AGENT"
+    }
+   },
+   "src": "Jeff Passan, ESPN",
+   "status": "reported"
   }
  ],
  "live": "2026-11-21T15:14:26Z",
