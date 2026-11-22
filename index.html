@@ -1567,7 +1567,7 @@ function gradeTo(id,code,incoming){
       if(cy<=1&&win!=='allin'){const sl=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);if(sl>0){g-=2*sl;notes.push('they would rather get something now than lose him for nothing')}}
       const it=intelOf(id);
       if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
-      if(it&&it.problem){if(incoming){g-=4;notes.push('he comes with baggage'+(it.note?` (${it.note})`:''))}else{g=Math.min(g-7,50);notes.push('the club wants to move on from him and is not holding out for full value'+(it.note?` (${it.note})`:''))}}
+      if(it&&it.problem){if(incoming){g-=2.5;notes.push('he comes with baggage'+(it.note?` (${it.note})`:''))}else{g=Math.min(g-4,53);notes.push('the club wants to move on from him and is not holding out for full value'+(it.note?` (${it.note})`:''))}}
       else if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'&&it.price==='high'){g+=2;notes.push('they will listen, but the price is high'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'){g-=.5;notes.push('reported: they are listening on him'+(it.note?` (${it.note})`:''))}
@@ -2018,7 +2018,10 @@ function evalTrade(code,outSel,inSel,cashM){
   /* eating salary (owner, 11/22: real GM logic): when the user is sending a contract the club sees as more money than production,
      find the smallest amount he could pay down (in $2M steps, then $5M, up to 80% of what is owed) that turns the answer into a yes. */
   if(R.verdict!=='accept'&&R.verdict!=='locked'&&!R.untouch.length&&!_eatProbe){const pay=rec.filter(x=>established(x.id)&&x.burden>.3&&remGuar(x.id)>=8e6).sort((a,b)=>b.burden-a.burden)[0];
-    if(pay){const max=Math.floor(remGuar(pay.id)*.8/1e6);_eatProbe=1;try{for(let m=2;m<=max;m+=m<20?2:5){if(evalTrade(code,outSel,inSel,cashM+m).verdict==='accept'){R.eat={id:pay.id,m,rem:remGuar(pay.id)};break}}}finally{_eatProbe=0}}}
+    if(pay){const max=Math.floor(remGuar(pay.id)*.8/1e6);_eatProbe=1;try{
+      /* when the user's own bad contract is what sinks the offer, say so: would it work, or be close, without him? */
+      if(outSel.length>1){const v=evalTrade(code,outSel.filter(x=>x!==pay.id),inSel,cashM).verdict;if(v==='accept'||(v==='counter'&&R.verdict==='reject'))R.pull={id:pay.id,v,rem:remGuar(pay.id)}}
+      for(let m=2;m<=max;m+=m<20?2:5){if(evalTrade(code,outSel,inSel,cashM+m).verdict==='accept'){R.eat={id:pay.id,m,rem:remGuar(pay.id)};break}}}finally{_eatProbe=0}}}
   R.quote=tradeQuote(R,code,c);
   _leaving=new Set();
   return R}
@@ -2283,9 +2286,10 @@ function verdictHTML(E){
     if(E.needMLB)why=` They're trying to win. If ${nm(E.hOut)} goes, they need big-league help back, not just prospects.`;
     else if(!E.headOK&&E.hOut.id)why=` The best player in this deal is ${nm(E.hOut)} (${esc(E.hOut.label)}). ${E.hIn.id?`${nm(E.hIn)} (${esc(E.hIn.label)}) isn't in his class, and depth doesn't make up for it.`:`Nothing coming back is in his class.`}`;
     else{const r=E.give?E.recv/E.give:0;why=r>=.9?` They are a small piece short.`:r>=.75?` They are one good piece short of what they are giving up.`:` What comes back is well short of what they are giving up.`}
-    const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'&&!E.needMLB&&E.headOK?` No single player from your side closes that gap.${E.drop?'':' Ask for less.'}`:E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
+    const pull=E.pull?` ${esc(P[E.pull.id].n)}'s contract is what holds this up: he is owed ${M(E.pull.rem)}. Take him out of the deal and ${E.pull.v==='accept'?'it works':'it is close'}.`:'';
+    const fix=pull?pull:ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'&&!E.needMLB&&E.headOK?` No single player from your side closes that gap.${E.drop?'':' Ask for less.'}`:E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
     const cap1=t=>t.charAt(0).toUpperCase()+t.slice(1);
-    const whyAsk=E.add?(E.addWhy?` Why him: ${esc(E.addWhy)}.`:` He is the smallest piece in your system that closes the gap.`):E.add2&&E.add2.why&&E.add2.why[1]?` ${esc(P[E.add2.why[0]].n)} is the one they are after: ${esc(E.add2.why[1])}.`:'';
+    const whyAsk=E.pull?'':E.add?(E.addWhy?` Why him: ${esc(E.addWhy)}.`:` He is the smallest piece in your system that closes the gap.`):E.add2&&E.add2.why&&E.add2.why[1]?` ${esc(P[E.add2.why[0]].n)} is the one they are after: ${esc(E.add2.why[1])}.`:'';
     const drop=whyAsk+(E.drop?` Or take ${nm(E.drop)} out of their side.`:'')+(E.eat?` Or eat ${M(E.eat.m*1e6)} of the ${M(E.eat.rem)} left on ${esc(P[E.eat.id].n)}'s contract (enter it as cash) and it works.`:'');
     msg=lead+why+fix+drop}
   const chk=(E.checks||[]).map(([t,ok])=>`<span class="tchk ${ok?'ok':'no'}">${ok?'✓':'✗'} ${esc(t)}</span>`).join('');
@@ -3310,7 +3314,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122212912';
+const BUILD='20261122213211';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
