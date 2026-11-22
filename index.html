@@ -2728,15 +2728,20 @@ function seRoster(code){
   return {code,lineup,bench,rot,pen,subs}}
 /* ---- who starts today: regulars rest in line with their projected games, and a bench bat with the platoon edge can take the start ---- */
 function seLineup(R,oppHand,po){const bench=R.bench.slice(),out=[];
+  if(po&&R.code===ME)return R.lineup.filter(x=>x[1]).map(([pos,id])=>({id,pos}));/* playoffs: the user's lineup plays exactly as he set it */
   const adj=id=>{const b=bRate(id),h=P[id].hand;if(b.L)return (oppHand==='L'?b.L:b.R).woba*300;return b.wrc*(!h||h==='S'?1:h===oppHand?(h==='L'?.9:.97):(h==='L'?1.03:1.06))};
   for(const [pos,id] of R.lineup){if(!id)continue;const b=bRate(id);let sit=po?(pos==='C'?.06:0):Math.min(.55,Math.max(pos==='C'?.2:.02,b.pt?1-b.pt[oppHand==='L'?0:1]:1-b.g/157));
     const c=bench.filter(x=>seElig(x,pos)).sort((a,b)=>adj(b)-adj(a))[0];
     if(c&&adj(c)>adj(id)*1.04&&(b.L?bRate(c).L:P[id].hand===oppHand&&P[id].hand==='L'))sit=Math.max(sit,po?.35:.5);/* a bench bat who is clearly better against this hand gets the start about half the time */
     if(c&&seRnd()<sit){out.push({id:c,pos});bench.splice(bench.indexOf(c),1)}else out.push({id,pos})}
   return out}
+/* the user's playoff starter: SP1 to SP4 in the order he set, each needing four days of rest; a starter who is not rested is pushed back, not dropped */
+function sePoPick(rot,day,last,gs){const r=rot.slice(0,4),ok=r.filter(id=>day-last(id)>=4);
+  return ok.sort((a,b)=>(gs[a]||0)-(gs[b]||0)||r.indexOf(a)-r.indexOf(b))[0]||r.slice().sort((a,b)=>last(a)-last(b))[0]}
 function seAvail(id,day){const u=SE.pu[id];if(!u)return true;const g=day-u[0];return g<=0?false:g===1?u[1]<=28&&u[2]<2:g===2?u[1]<=45:true}
 function sePickSP(code,R,day,po){const rot=R.rot;if(!rot.length)return R.pen.length?R.pen[R.pen.length-1][1]:null;
   const last=id=>SE.pu[id]?SE.pu[id][0]:-99,rested=id=>day-last(id)>=5;
+  if(po&&code===ME&&SE.po){const gs=SE.po.gs=SE.po.gs||{},id=sePoPick(rot,day,last,gs);gs[id]=(gs[id]||0)+1;return id}
   if(po)return rot.filter(rested).sort((a,b)=>pQ(a)-pQ(b))[0]||rot.slice().sort((a,b)=>last(a)-last(b))[0];
   const i=SE.ri[code]||0;for(let n=0;n<rot.length;n++){const id=rot[(i+n)%rot.length];if(rested(id)){SE.ri[code]=(i+n+1)%rot.length;return id}}
   return rot.slice().sort((a,b)=>last(a)-last(b))[0]}
@@ -2973,7 +2978,7 @@ function seSimDay(){const d=SE.day,T=SN.teams,sc=[],boxes=[];
 const seMineG=d=>SN.days[d]&&SN.days[d].find(g=>SN.teams[g[0]]===ME||SN.teams[g[1]]===ME);
 function seSim(mode){if(!SE||SE.phase==='done')return;
   if(SE.phase==='dl'){toast('Close the trade deadline first.');return}
-  if(SE.phase==='post')sePost(mode);
+  if(SE.phase==='post'){if(sePoNeedSet()){UI.seView='post';toast('Set your playoff roster first.');return}sePost(mode)}
   else{let n=0;while(SE.phase==='reg'){if(SE.day===SE.dl&&!SE.dlDone){seDeadline();break}
       const g=seMineG(SE.day);seSimDay();n++;
       if(mode==='game'?!!g:mode==='series'?g&&g[2]===g[3]:mode==='2w'?n>=14:mode==='month'?n>=30:false)break}
@@ -3043,14 +3048,35 @@ function sePoDay(){const po=SE.po,d=SE.day,boxes=[];
     else if(po.rd===2){const [x,y]=SE.w[W[0]]>=SE.w[W[1]]?[W[0],W[1]]:[W[1],W[0]];po.ser=[mk('','World Series',x,y,7)]}
     else{po.champ=W[0];po.ser=[];SE.phase='done';seNews(W[0],'info',`The ${tnm(W[0])} win the 2027 World Series.`)}
     po.rd++}}
-function sePost(mode){const r=SE.po.rd;do sePoDay();while(SE.phase==='post'&&(mode==='end'||(mode!=='game'&&SE.po.rd===r)))}
+/* ---- playoff roster (owner, 11/22): before each round the user sets his lineup, rotation and bullpen ---- */
+const sePoMine=()=>SE&&SE.phase==='post'&&SE.po?SE.po.ser.find(x=>x.a===ME||x.b===ME):null;
+const sePoNeedSet=()=>{const x=sePoMine();return !!x&&x.wa+x.wb===0&&SE.po.ok!==SE.po.rd};
+function sePoDays(n){const out=[];let d=SE.day;for(let k=0;k<n;k++){out.push(d);const g=k+1;d+=(n===7&&(g===2||g===5))||(n===5&&(g===2||g===4))?2:1}return out}
+function sePoProb(n){const R=seRoster(ME),lastD={},gs={},last=id=>lastD[id]!=null?lastD[id]:SE.pu[id]?SE.pu[id][0]:-99;return sePoDays(n).map(d=>{const id=sePoPick(R.rot,d,last,gs);gs[id]=(gs[id]||0)+1;lastD[id]=d;return id})}
+function sePoSetHTML(){const x=sePoMine();if(!x)return '';const opp=x.a===ME?x.b:x.a,R=seRoster(ME),O=seRoster(opp),hd=id=>P[id].hand?` (${P[id].hand})`:'',nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>`;
+  const prob=sePoProb(x.n),home=SE_HOME[x.n].map(h=>(h?x.a:x.b)===ME),oS=O.rot.slice().sort((a,b)=>pQ(a)-pQ(b)).slice(0,4);
+  const late=R.rot.slice(0,4).filter((id,i)=>prob.indexOf(id)>i),out=Object.keys(SE.il).filter(id=>owner(id)===ME&&SE.il[id].ret>SE.day);
+  return `<div class="verdictbox warn" style="margin-top:0"><div class="vhead"><span class="vtag warn">Set your roster</span><b>${esc(x.nm)} vs the ${esc(tnm(opp))}</b><span class="hint">Best of ${x.n} · ${x.a===ME?'you have':'they have'} home field</span></div>
+    <p style="margin:6px 0">Set your lineup, rotation and bullpen for this round. Your lineup plays every game the way you set it, and SP1 to SP4 start in order.</p>
+    <div class="tradegrid"><div><div class="subh">Your starters</div>${prob.map((id,i)=>`<div class="kv"><span>Game ${i+1} <span class="hint">${home[i]?'home':'away'}${i>=(x.n+1)/2?', if needed':''}</span></span><b>${nm(id)}${hd(id)}</b></div>`).join('')}
+      ${late.length?`<p class="hint">${late.map(id=>esc(P[id].n)).join(' and ')} pitched too recently to go in ${late.length>1?'their':'his'} turn, so ${late.length>1?'they are':'he is'} pushed back.</p>`:''}
+      <div class="subh" style="margin-top:8px">Their starters</div><p class="hint" style="margin:2px 0">${oS.map(id=>esc(P[id].n)+hd(id)).join(', ')}</p></div>
+    <div><div class="subh">Your lineup</div>${R.lineup.filter(y=>y[1]).map((y,i)=>`<div class="kv"><span>${i+1}. ${nm(y[1])}${hd(y[1])}</span><b>${esc(y[0])}</b></div>`).join('')}
+      <div class="subh" style="margin-top:8px">Bench</div><p class="hint" style="margin:2px 0">${R.bench.map(id=>esc(P[id].n)).join(', ')||'none'}</p>
+      <div class="subh" style="margin-top:8px">Bullpen</div><p class="hint" style="margin:2px 0">${R.pen.map(y=>y[0]+' '+esc(P[y[1]].n)).join(', ')}</p>
+      ${out.length?`<div class="subh" style="margin-top:8px">Not available</div><p class="hint" style="margin:2px 0">${out.map(id=>esc(P[id].n)+' ('+esc(SE.il[id].what)+')').join(', ')}</p>`:''}</div></div>
+    <div class="dact"><button class="btn" type="button" data-act="se-poedit">${UI.poEdit?'Hide the depth chart':'Change lineup, rotation or bullpen'}</button><button class="btn primary" type="button" data-act="se-poset">Roster is set: start the series</button></div></div>
+  ${UI.poEdit?`<p class="hint">Changes save as you make them, and the summary above updates. The batting order is the lineup order, top to bottom.</p>${renderDepth()}`:''}`}
+function sePost(mode){const r=SE.po.rd;do sePoDay();while(SE.phase==='post'&&!sePoNeedSet()&&(mode==='end'||(mode!=='game'&&SE.po.rd===r)))}
 /* ---- season screens ---- */
 function seAct(a,id){switch(a){
   case 'se-view':UI.seView=id;seRender();return;
   case 'se-stat':UI.seStat=id;seRender();return;
   case 'se-stv':UI.seStV=id;seRender();return;
   case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
-  case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';render();return;
+  case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';else if(sePoNeedSet())UI.seView='post';render();if(sePoNeedSet())window.scrollTo(0,0);return;
+  case 'se-poedit':UI.poEdit=!UI.poEdit;render();return;
+  case 'se-poset':if(SE.po){SE.po.ok=SE.po.rd;SE.po.gs={};UI.poEdit=false;seSave();render();toast('Roster set. Play ball.')}return;
   case 'se-call':{const o=SE.calls&&SE.calls[+id];if(!o)return;UI.tTeam=o.code;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};for(const id of o.give)UI.tOut.add(id);for(const id of o.get)UI.tIn.add(id);UI.tab='trade';render();window.scrollTo(0,0);return}
   case 'se-callpass':{const o=SE.calls&&SE.calls[+id];if(o){o.pass=1;seSave();render()}return}
   case 'se-closedl':confirmBox('Close the trade deadline?','The other clubs make their deals, and no more trades are allowed this season.','Close the deadline',()=>{seCloseDL();render()});return;
@@ -3077,6 +3103,7 @@ function seSetupHTML(){const a=active26(),sp=S.rot.slice(0,5).filter(Boolean).le
 function seSimBar(){const b=(m,l,p)=>`<button class="btn${p?' primary':''}" type="button" data-act="se-sim" data-id="${m}">${l}</button>`;
   if(SE.phase==='done')return '';
   if(SE.phase==='dl')return '<button class="btn primary" type="button" data-act="se-closedl">Close the deadline and play on</button>';
+  if(SE.phase==='post'&&sePoNeedSet())return '<button class="btn primary" type="button" data-act="se-view" data-id="post">Set your playoff roster</button>';
   if(SE.phase==='post')return b('game','Next game',1)+b('series','Finish this round')+b('end','Sim to the end');
   return b('game','1 game',1)+b('series','1 series')+b('2w','2 weeks')+b('month','1 month')+(SE.dlDone?'':b('dl','To the deadline'))+b('end',SE.dlDone?'To the end of the season':'To the end')}
 function seHomeHTML(){const c=ME,dk=seLg(c),L=dk.slice(0,2),st=seStand(dk),pl=st.indexOf(c),od=SE.od[c]||[0,0,0],wc=seWild(L),wi=wc.indexOf(c),ord=['1st','2nd','3rd','4th','5th'];
@@ -3181,7 +3208,7 @@ function seBoxModal(key){const k=key.split(':'),bx=k[0]==='m'?SE.box[k[1]]:(SX.b
 function sePostHTML(){const po=SE.po,rn=['Wild Card round','Division Series','Championship Series','World Series'],ser=s=>{const over=s.wa>=(s.n+1)/2||s.wb>=(s.n+1)/2,me=s.a===ME||s.b===ME;
     return `<tr${me?' style="font-weight:600"':''}><td class="wrap"><span class="nmb">${esc(tnm(s.a))} ${s.wa}, ${esc(tnm(s.b))} ${s.wb}</span>${over?' <span class="tag off">final</span>':''}<br><span class="hint">${esc(s.nm)} · best of ${s.n}${s.g.length?' · '+s.g.map(g=>g[0]+'-'+g[1]).join(', '):''}</span></td></tr>`};
   const rounds=po.hist.concat(po.ser.length?[po.ser]:[]);
-  return `${po.champ?`<div class="verdictbox good" style="margin-top:0"><div class="vhead"><span class="vtag good">Champions</span><b>${esc(tnm(po.champ))} win the 2027 World Series</b></div></div>`:''}
+  return `${sePoNeedSet()?sePoSetHTML():SE.phase==='post'?`<div class="dact" style="margin:0 0 10px">${seSimBar()}</div>`:''}${po.champ?`<div class="verdictbox good" style="margin-top:0"><div class="vhead"><span class="vtag good">Champions</span><b>${esc(tnm(po.champ))} win the 2027 World Series</b></div></div>`:''}
   <p class="hint">Seeds. AL: ${po.sd.AL.map((c,i)=>(i+1)+' '+esc(tnm(c))).join(', ')}. NL: ${po.sd.NL.map((c,i)=>(i+1)+' '+esc(tnm(c))).join(', ')}. Seeds 1 and 2 skip the Wild Card round.</p>
   ${rounds.map((r,i)=>`<h3 style="margin-top:12px">${rn[i]}</h3><div class="scroll"><table class="list"><tbody>${r.map(ser).join('')}</tbody></table></div>`).reverse().join('')}
   ${SX.last!=null&&SX.box[SX.last]&&SX.box[SX.last][0]&&SX.box[SX.last][0].po?`<h3 style="margin-top:12px">Latest playoff games</h3><div class="scroll"><table class="list"><tbody>${SX.box[SX.last].map((bx,i)=>seGameRow(bx,'x:'+SX.last+':'+i,null)).join('')}</tbody></table></div>`:''}`}
@@ -3225,7 +3252,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122201000';
+const BUILD='20261122201357';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
