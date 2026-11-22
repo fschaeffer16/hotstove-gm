@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch birth date, draft year and birth country for every player in all 30 organizations
+"""Fetch birth date, draft year, birth country, height and weight for every player in all 30 organizations
 (MLB club + every affiliate, including the complex and Dominican Summer Leagues) from the MLB Stats API.
 Writes player_meta.json, which the app uses for Rule 5 eligibility and team-control math.
 Standard library only. Runs on GitHub Actions (weekly + on demand)."""
@@ -42,7 +42,8 @@ def main():
                             'pos': (p.get('primaryPosition') or {}).get('abbreviation'),
                             'debut': p.get('mlbDebutDate'),
                             'bs': (p.get('batSide') or {}).get('code'),
-                            'th': (p.get('pitchHand') or {}).get('code')})
+                            'th': (p.get('pitchHand') or {}).get('code'),
+                            'h': (p.get('height') or '').replace(' ', '') or None, 'w': p.get('weight')})
             time.sleep(0.15)
     if len(out) < 3000:
         print('Too few players fetched (%d); keeping the old file.' % len(out)); return 0
