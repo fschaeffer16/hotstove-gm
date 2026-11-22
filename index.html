@@ -1631,7 +1631,7 @@ function scoutModal(id,back){const p=P[id];if(!p)return;const pj=p.proj||{},y=pj
     +(p.lvl!=='MLB'&&own!=='FA'?kv('Rule 5',r5Exposed(id)?'Eligible and unprotected':'Protected or not yet eligible'):'');
   const sec=(t,h)=>h?`<div class="dsec"><h3>${t}</h3>${h}</div>`:'';
   $('#modal').innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h2 style="margin:0">${esc(p.n)}${handTag(id)}</h2>
-    <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
+    <p class="hint" style="margin:2px 0 0">${esc(p.pos||'')} · age ${p.age??'?'}${sizeOf(id)?' · '+esc(sizeOf(id)):''} · ${esc(D.teams[own]?tnm(own):own)}${p.lvl&&p.lvl!=='MLB'?' · '+esc(p.lvl):''}${p.fv?' · FV '+esc(p.fv):''}</p></div><button class="x" type="button" data-act="closemodal" aria-label="Close">×</button></div>
     ${s.tags.length?`<div class="stags">${stags(id)}</div>`:''}${gm}
     ${p.ml||p.mp?sec('2026 in the minors',`<p class="hint" style="margin:0">${p.ml?`<b>${esc(p.ml[0])}</b>: ${esc(p.ml[2])}. Roster Resource minor league power rank: No. ${p.ml[1]}.`:''}${p.bm?` Batted balls: ${Math.round(p.bm[0])}% on the ground, ${Math.round(p.bm[1])}% in the air, ${Math.round(p.bm[2])}% pulled, ${Math.round(p.bm[3])}% of fly balls leave the park.`:''}${p.mp?` Pitching line (${esc(p.mp[7])}): ${p.mp[0]} IP, ${p.mp[1]}% K, ${p.mp[2]}% BB, ${p.mp[3].toFixed(2)} FIP${p.mp[4]!=null?', '+p.mp[4].toFixed(2)+' xFIP':''}${p.mp[5]?'. Fastball '+p.mp[5]+' mph'+(p.mp[6]?', '+p.mp[6]+' rpm':''):''}.`:''}${p.pd?` Swing decisions in Triple-A: chases ${p.pd[0]}% of pitches off the plate, ${p.pd[1]}% contact in the zone, ${p.pd[2]}% contact overall.`:''}</p>`):''}
     ${p.ov||p.ovn?sec(p.ov?'2026 in '+p.ov[0]:'Posted player',`<p class="hint" style="margin:0">${p.ov?esc(p.ov[1])+'.':''}${p.ovn?' '+esc(p.ovn):''}</p>`):''}
@@ -2343,6 +2343,8 @@ function controlInfo(id){const p=P[id],y=(S.contract[id]&&S.contract[id].yrs)||p
 /* ---- Rule 5 eligibility (needs player_meta.json: birth date, draft year, country from MLB Stats API) ---- */
 let META=null,META_IX=null;
 function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}if(D){fillFromMeta();render()}return META}).catch(()=>{META=false})}
+/* height and weight from player_meta.json (MLB Stats API), e.g. 6'7", 282 lb */
+function sizeOf(id){const m=metaOf(id);return m&&m.h?m.h+(m.w?', '+m.w+' lb':''):''}
 function metaOf(id){if(!META_IX)return null;const p=P[id];return META_IX[nmz(p.n)+'|'+owner(id)]||META_IX[nmz(p.n)+'|'+p.team]||META_IX[nmz(p.n)]||null}
 /* handedness: hitters bat L/R/S, pitchers throw LHP/RHP (roster data first, MLB Stats API meta to fill gaps) */
 /* players added by real-world moves (or missing a position in the source data) get position and age from MLB's rosters */
@@ -3131,7 +3133,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122001918';
+const BUILD='20261122002246';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3244,7 +3246,7 @@ function openDrawer(id){
   else if(D.teams[owner(id)]){acts.push(`<button class="btn" data-act="totrade" data-id="${id}">Add to trade</button>`)}
   $('#drawer').innerHTML=`
     <div class="cardhead"><h2>${esc(p.n)}</h2><button class="x" type="button" data-act="closedrawer" aria-label="Close">×</button></div>
-    <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
+    <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}${sizeOf(id)?`<span class="pill">${esc(sizeOf(id))}</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
     <div class="dsec"><h3>Contract</h3><p style="margin:4px 0">${esc(c?c.desc:(p.contract||(p.team==='FA'?'Free agent':'Minor-league / pre-arb')))}</p>
       <div class="kv"><span>CBT figure (2027)</span><b>${mets?M(cbtOf(id)):M(partnerCount(id))}</b></div>
       ${(()=>{const ci=controlInfo(id),r=r5Info(id);return (ci.txt?`<div class="kv"><span>Team control</span><b style="text-align:right">${esc(ci.txt)}</b></div>`:'')+(p.opt&&p.opt!=='n/a'?`<div class="kv"><span>Options</span><b>${esc(String(p.opt))}</b></div>`:'')+(r&&p.lvl!=='MLB'?`<div class="kv"><span>Rule 5</span><b style="text-align:right">${r5Exposed(id)?'<span style="color:var(--bad)">Eligible and unprotected</span>':r.eligibleNow?'Eligible (protected on the 40-man)':'First eligible Dec '+r.first}${r.est?' (est.)':''}</b></div>`:'')+(p.qo&&p.team==='FA'?`<div class="kv"><span>Qualifying offer</span><b>Declined (${M1(RULES.qo.amount)})</b></div>`:'')})()}
