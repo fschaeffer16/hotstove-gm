@@ -2738,6 +2738,43 @@ function seLineup(R,oppHand,po){const bench=R.bench.slice(),out=[];
 /* the user's playoff starter: SP1 to SP4 in the order he set, each needing four days of rest; a starter who is not rested is pushed back, not dropped */
 function sePoPick(rot,day,last,gs){const r=rot.slice(0,4),ok=r.filter(id=>day-last(id)>=4);
   return ok.sort((a,b)=>(gs[a]||0)-(gs[b]||0)||r.indexOf(a)-r.indexOf(b))[0]||r.slice().sort((a,b)=>last(a)-last(b))[0]}
+/* ---- young players progress or regress during the season (owner, 11/22: based on minor-league history, scouting and peripheral stats) ----
+   Who: rookies, and big leaguers 25 or younger with under about a season and a half in the majors (pitchers 26 / 260 innings).
+   Each gets a season-long move in true talent: the read from his indicators plus a seeded swing nobody can see coming.
+   A fifth of it is there on Opening Day (winter work), the rest arrives through the year. seDevF(id) is today's factor, 1 = his projection. */
+let _dv={},_dvKey='';
+function seDevInfo(id){const key=SE?SE.rs_+'|'+SE.team:'';if(_dvKey!==key){_dv={};_dvKey=key}if(id in _dv)return _dv[id];
+  const p=P[id],pj=p&&p.proj;let out=null;
+  if(pj&&pj.s){const car=pj.car||[0,0],age=p.age||27,rook=car[0]<=130&&car[1]<=50,yng=p.p?age<=26.5&&car[1]<=260:age<=25.6&&car[0]<=900;
+    if(rook||yng){const up=[],dn=[];let D=0;const add=(v,t)=>{D+=v;(v>0?up:dn).push([Math.abs(v),t])},pc=x=>Math.round(x*100)+'%',y=pj.y||{};
+      /* scouting */
+      const fv=fvn(p.fv);if(p.t100&&p.t100<=30)add(.03,`he was a top-${p.t100<=10?10:30} prospect in baseball, and that talent is showing`);else if(p.t100||fv>=55)add(.02,'the scouts have always believed in the tools');else if(fv&&fv<=40)add(-.01,'the scouts saw a limited ceiling');
+      /* age */
+      if(age<=22.6)add(.02,`at ${Math.floor(age)} he is still growing into his game`);else if(age<=24)add(.01,`he is ${Math.floor(age)} and still improving`);else if(age>=25.6&&rook)add(-.01,`he is an older rookie at ${Math.floor(age)}, and there is less growth left`);
+      if(!p.p){const xs=pj.xs&&pj.xs[2026],hs=pj.hs&&pj.hs[2026],ds=pj.ds&&pj.ds[2026],st=p.st,pd=p.pd;
+        /* contact he earned vs results he got */
+        if(xs&&xs[0]>=150){const g=xs[5]-xs[6];if(g>=.015)add(.025,`his contact in 2026 earned a ${f3(xs[5])} wOBA and he got ${f3(xs[6])}`);else if(g<=-.015)add(-.025,`his 2026 results (${f3(xs[6])} wOBA) ran ahead of the contact he made (${f3(xs[5])})`);
+          if(xs[4]>=.45||xs[3]>=.1)add(.015,`he hits the ball hard (${pc(xs[4])} hard-hit rate)`);else if(xs[4]<=.33)add(-.015,`he does not hit the ball hard (${pc(xs[4])} hard-hit rate)`)}
+        /* swing decisions: the big leagues, or Triple-A for a rookie */
+        const ch=ds&&ds[0]>=150?ds[1]:pd?pd[0]/100:null,zc=ds&&ds[0]>=150?ds[2]:pd?pd[1]/100:null;
+        if(ch!=null){if(ch<=.27&&zc>=.85)add(.02,`he controls the strike zone (chases ${pc(ch)}, ${pc(zc)} contact in the zone)`);else if(ch>=.34)add(-.02,`he chases too much (${pc(ch)} of pitches off the plate), and pitchers know it`)}
+        const k=hs&&hs[0]>=150?hs[2]:st&&st.pa>=200?st.k/100:null;if(k!=null&&k>=.28)add(-.015,`the swing and miss (${pc(k)} strikeouts) gives pitchers a way to attack him`);
+        if(rook&&st&&st.pa>=250){if(st.wrc>=130)add(.015,`he hit everywhere he went in the minors (${st.wrc} wRC+ in 2026)`);else if(st.wrc<=90)add(-.02,`he did not hit much in the minors in 2026 (${st.wrc} wRC+)`)}}
+      else{const as=pj.as&&pj.as[2026],vs=pj.vs&&pj.vs[2026],mp=p.mp,pm=y.pm,big=vs&&vs[0]>=30;
+        const kk=big&&as?as[0]:mp?mp[1]/100:null,bb=big&&as?as[1]:mp?mp[2]/100:null,mph=big?vs[1]:mp&&mp[5]?mp[5]:null;
+        if(kk!=null){if(kk-bb>=.18)add(.02,`he misses bats and throws strikes (${pc(kk)} strikeouts, ${pc(bb)} walks)`);if(bb>=.11)add(-.02,`the walks (${pc(bb)}) catch up with him as hitters learn to wait him out`)}
+        if(mph){if(mph>=96)add(.015,`a fastball at ${mph.toFixed(1)} mph gives him room for error`);else if(mph<=91.5)add(-.01,`a ${mph.toFixed(1)} mph fastball leaves him little margin`)}
+        if(pm&&pm[3]>=40&&pm[0]>=108)add(.015,`the pitch models love his stuff (Stuff+ ${pm[0]})`)}
+      const h=hashN(id+'|'+(SE?SE.rs_:0)),N=((h%100)/100+((h*7+13)%100)/100-1)*.045,t=Math.max(-.1,Math.min(.12,Math.max(-.07,Math.min(.085,D))+N));
+      const pick=a=>a.sort((x,y)=>y[0]-x[0]).slice(0,2).map(x=>x[1]);
+      out={t,why:t>=0?pick(up):pick(dn),rook}}}
+  return _dv[id]=out}
+function seDevF(id){const d=seDevInfo(id);if(!d||!SE)return 1;const pr=SE.phase==='reg'||SE.phase==='dl'?Math.max(0,Math.min(1,(SE.day-SE.d0)/Math.max(1,SE.end-SE.d0))):1;return 1+d.t*(.2+.8*pr)}
+const seDevTag=id=>{const d=seDevInfo(id);if(!d||!SE||SE.day-SE.d0<20)return '';const f=seDevF(id);return f>=1.025?' <span class="tag" style="color:var(--good)" title="Trending up">▲</span>':f<=.975?' <span class="tag" style="color:var(--bad)" title="Trending down">▼</span>':''};
+function seDevHTML(){if(!SE||SE.day-SE.d0<20)return '';const R=seRoster(ME),ids=[...R.lineup.map(x=>x[1]),...R.bench,...R.rot,...R.pen.map(x=>x[1])].filter(id=>id&&seDevInfo(id)&&Math.abs(seDevF(id)-1)>=.025).sort((a,b)=>Math.abs(seDevF(b)-1)-Math.abs(seDevF(a)-1));
+  if(!ids.length)return '';const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+  return `<h3 style="margin-top:14px">Young players</h3><div class="scroll"><table class="list"><tbody>${ids.map(id=>{const d=seDevInfo(id),f=seDevF(id),upx=f>1,big=Math.abs(f-1)>=.06;
+    return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span> <b style="color:var(--${upx?'good':'bad'})">${upx?'▲':'▼'} ${upx?(big?'Breaking out':'Getting better'):(big?'Going backwards':'The league has adjusted')}</b><br><span class="hint">${esc(d.why.length?cap(d.why.join('; '))+'.':upx?'Nothing in his record said this was coming. Some players just take a step.':'Nothing in his record said this was coming. Some young players stall.')}</span></td></tr>`}).join('')}</tbody></table></div>`}
 function seAvail(id,day){const u=SE.pu[id];if(!u)return true;const g=day-u[0];return g<=0?false:g===1?u[1]<=28&&u[2]<2:g===2?u[1]<=45:true}
 function sePickSP(code,R,day,po){const rot=R.rot;if(!rot.length)return R.pen.length?R.pen[R.pen.length-1][1]:null;
   const last=id=>SE.pu[id]?SE.pu[id][0]:-99,rested=id=>day-last(id)>=5;
@@ -2747,7 +2784,7 @@ function sePickSP(code,R,day,po){const rot=R.rot;if(!rot.length)return R.pen.len
   return rot.slice().sort((a,b)=>last(a)-last(b))[0]}
 function seMkPit(id,sp){const pj=P[id].proj,cap=SE.cap&&SE.cap[id];
   const lim=!sp?30:Math.min(cap?78:102,Math.max(60,pj&&pj.gs>=5?Math.round(pj.ip/pj.gs*15.8):pj&&pj.gs>=1?78:62));
-  return {id,r:pRate(id),hand:P[id].hand||'R',sp,lim,pc:0,bf:0,o:0,h:0,r_:0,er:0,bb:0,k:0,hr:0,ri:0,go:0,fo:0,lead:null,dec:''}}
+  return {id,r:pRate(id),dv:seDevF(id),hand:P[id].hand||'R',sp,lim,pc:0,bf:0,o:0,h:0,r_:0,er:0,bb:0,k:0,hr:0,ri:0,go:0,fo:0,lead:null,dec:''}}
 /* one plate appearance: 0 walk, 1 strikeout, 2 home run, 3 single, 4 double, 5 triple, 6 out in play */
 /* league line in each of the four matchups (pitcher hand x batter side), from every big-league pitcher's projected splits weighted by innings */
 let _lg4=null;
@@ -2755,11 +2792,13 @@ function seLg4(){if(_lg4)return _lg4;const A={LL:[0,0,0,0,0],LR:[0,0,0,0,0],RL:[
   for(const id in P){const p=P[id];if(!p.p||!p.proj||p.proj.t!=='p'||!(p.proj.ip>=20)||p.team==='DUP')continue;const r=pRate(id);if(!r.L)continue;const h=p.hand==='L'?'L':'R',w=p.proj.ip;
     for(const s of ['L','R']){const a=A[h+s],v=r[s],ws=w*(s===(h==='L'?'L':'R')?(h==='L'?.2:.6):(h==='L'?.8:.4));a[0]+=v.k*ws;a[1]+=v.bb*ws;a[2]+=v.hr*ws;a[3]+=v.babip*ws;a[4]+=ws}}
   _lg4={};for(const k in A){const a=A[k];_lg4[k]=a[4]?{k:a[0]/a[4],bb:a[1]/a[4],hr:a[2]/a[4],babip:a[3]/a[4]}:{k:LGP[0],bb:LGP[1],hr:LGP[2],babip:LGP[3]}}return _lg4}
-function sePA(b0,c,bh,home,park,dAdj){
+function sePA(b0,c,bh,home,park,dAdj,bd){
   const ph=c.hand,side=bh==='L'||bh==='R'?bh:(ph==='L'?'R':'L'),own=ph==='L'?b0.L:b0.R,b=own||b0,ps=side==='L'?c.r.L:c.r.R,p=ps||c.r,
     G=ps?seLg4()[(ph==='L'?'L':'R')+side]:{k:LGP[0],bb:LGP[1],hr:LGP[2],babip:LGP[3]};/* pitcher's own split is compared with the league line for that same matchup, so the platoon edge is counted once */
   let k=b.k*p.k/G.k*1.03,bb=b.bb*p.bb/G.bb*.935,hr=b.hr*p.hr/G.hr*.95*park*(home?1.03:.97),bab=b.babip*p.babip/G.babip*(1+(park-1)*.35)*(home?1.008:.992)+dAdj;
   if(!own&&bh&&bh!=='S'){if(bh===ph){if(bh==='L'){k*=1.12;bb*=.9;hr*=.82;bab*=.97}else{k*=1.03;bb*=.97;hr*=.96;bab*=.995}}else if(bh==='L'){k*=.97;bb*=1.03;hr*=1.05;bab*=1.005}else{k*=.93;bb*=1.08;hr*=1.1;bab*=1.015}}
+  if(bd&&bd!==1){k*=Math.pow(bd,-.7);bb*=Math.pow(bd,.4);hr*=Math.pow(bd,1.6);bab*=Math.pow(bd,.4)}/* a young hitter's development this season */
+  if(c.dv&&c.dv!==1){k*=Math.pow(c.dv,.8);bb*=Math.pow(c.dv,-.8);hr*=Math.pow(c.dv,-1.4);bab*=Math.pow(c.dv,-.25)}/* a young pitcher's */
   const mx=(side==='L'?c.r.mixL:c.r.mixR)||c.r.mix;/* what he actually throws to hitters on this side of the plate, when known */
   if(b0.vp&&mx){let e=0;for(const m of mx){const v=b0.vp[m[0]];if(v)e+=m[1]*(v[2]-1)}bab*=Math.min(1.06,Math.max(.94,1+e))}/* pitch-type matchup: a hitter who handled (or struggled with) the pitches this pitcher leans on, by his real 2026 results */
   if(c.sp&&c.bf>=18){const t=c.r.tto||1;k*=1-.06*t;hr*=1+.12*t;bab*=1+.02*t}if(c.pc>c.lim){k*=.92;bb*=1.1;hr*=1.15}
@@ -2791,7 +2830,7 @@ function seGame(hc,ac,day,po){
       if(c.sp?(c.pc>=c.lim+12||c.r_>=7):(c.ri>=3||c.pc>=(c.role==='LR'||c.role==='LG'?55:36))){if(change(f,inn,lead(f))){c=F.cur;c.ri=0}}
       if(bs[0]&&!bs[1]){const rr=bRate(bs[0].b.id);if(seRnd()<rr.sbt*1.1){c.pc+=1;if(seRnd()<rr.sbs){bs[0].b.s[9]++;B.ev.push(['SB',bs[0].b.id,c.id]);bs[1]=bs[0];bs[0]=null}else{bs[0].b.s[10]++;B.ev.push(['CS',bs[0].b.id,c.id]);bs[0]=null;outs++;c.o++;if(outs>=3)break}}}
       const bt=B.lu[B.bi],me={b:bt,p:c};B.bi=(B.bi+1)%9;bt.pa++;c.bf++;const risp=!!(bs[1]||bs[2]),on=onb();o0=outs;let sf=false;
-      const o=sePA(bRate(bt.id),c,P[bt.id].hand,b===1,park,F.dAdj);
+      const o=sePA(bRate(bt.id),c,P[bt.id].hand,b===1,park,F.dAdj,seDevF(bt.id));
       if(o===0){bt.s[4]++;c.bb++;if(bs[0]){if(bs[1]){if(bs[2])score(bs[2],bt);bs[2]=bs[1]}bs[1]=bs[0]}bs[0]=me}
       else if(o===1){bt.s[0]++;bt.s[5]++;c.k++;c.o++;outs++}
       else if(o===6){bt.s[0]++;c.o++;const x=seRnd(),q=bRate(bt.id),gbp=Math.min(.68,q.gb*(c.r.gbf||1)),flp=Math.min(.95-gbp,q.fl*(2-(c.r.gbf||1)));
@@ -3124,6 +3163,7 @@ function seHomeHTML(){const c=ME,dk=seLg(c),L=dk.slice(0,2),st=seStand(dk),pl=st
   <div style="margin-top:12px">${seBoardHTML()}</div>${seMovesHTML()}
   ${SE.phase==='dl'?seDeadlineHTML():''}
   <div class="tradegrid" style="margin-top:12px"><div><h3>Your last games</h3>${keys.length?`<div class="scroll"><table class="list"><tbody>${keys.map(k=>seGameRow(SE.box[k],'m:'+k,c)).join('')}</tbody></table></div>`:'<p class="hint">No games yet. Pick how far to sim.</p>'}
+  ${seDevHTML()}
   <h3 style="margin-top:14px">Injured list</h3>${mineIL.length?`<div class="scroll"><table class="list"><tbody>${mineIL.map(id=>{const x=SE.il[id],s=subs.find(y=>y[1]===id);return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span><br><span class="hint">${esc(x.what)}${s?' · '+esc(P[s[0]].n)+' fills in':''}</span></td><td class="r">${x.ret>=999?'out for year':'back '+seDate(x.ret)}</td></tr>`}).join('')}</tbody></table></div>`:'<p class="hint">Everyone is healthy.</p>'}</div>
   <div><h3>Around the league</h3>${(()=>{const NR=n=>`<tr${n.t===c?' style="font-weight:600"':''}><td class="r hint">${seDate(n.d)}</td><td class="wrap">${esc(n.x)}</td></tr>`,nw=SE.news.filter(n=>n.t===c||n.k!=='ret').slice(-16).reverse(),T=r=>`<div class="scroll"><table class="list"><tbody>${r.map(NR).join('')}</tbody></table></div>`;return T(nw.slice(0,5))+(nw.length>5?`<details class="morenews"><summary class="hint" style="cursor:pointer;padding:8px 0">More league news (${nw.length-5})</summary>${T(nw.slice(5))}</details>`:'')})()}</div></div>
   <div class="dact" style="margin-top:14px"><button class="btn sm danger" type="button" data-act="se-end">End this season</button></div>`}
@@ -3160,7 +3200,7 @@ function seStandHTML(){const v=UI.seStV||'div',post=SE.phase==='post'||SE.phase=
   ${v==='wc'?'<p class="hint">The top three wild cards in each league make the playoffs. WCGB with a plus sign is the cushion over the first club out.</p>':''}`}
 function seStatsHTML(){const tm=UI.seTeam||ME,st=UI.seStat||'bat',codes=Object.keys(D.teams).sort((a,b)=>tnm(a).localeCompare(tnm(b)));
   const nav=`<div class="filters"><select id="seTeam" aria-label="Club">${codes.map(c=>`<option value="${c}"${c===tm?' selected':''}>${esc(tnm(c))}</option>`).join('')}</select>${[['bat','Hitters'],['pit','Pitchers'],['lead','League leaders']].map(([k,l])=>`<button class="btn sm${st===k?' primary':''}" type="button" data-act="se-stat" data-id="${k}">${l}</button>`).join('')}</div>`;
-  const nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>${seOut(id)?'<span class="tag inj">IL</span>':''}`;
+  const nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>${seDevTag(id)}${seOut(id)?'<span class="tag inj">IL</span>':''}`;
   const brow=(id,tmc)=>{const s=SE.bs[id],b1=s[3]-s[4]-s[5]-s[6];return `<tr><td>${nm(id)}${tmc?' <span class="hint">'+owner(id)+'</span>':''}</td><td class="r">${s[0]}</td><td class="r">${s[1]}</td><td class="r">${f3(s[3]/(s[2]||1))}</td><td class="r">${f3((s[3]+s[9])/(s[1]||1))}</td><td class="r">${f3((b1+2*s[4]+3*s[5]+4*s[6])/(s[2]||1))}</td><td class="r">${s[6]}</td><td class="r">${s[8]}</td><td class="r">${s[7]}</td><td class="r">${s[11]}</td><td class="r"><b>${seBWar(id).toFixed(1)}</b></td></tr>`};
   const prow=(id,tmc)=>{const s=SE.ps[id],ip=s[2]/3||1e-9;return `<tr><td>${nm(id)}${tmc?' <span class="hint">'+owner(id)+'</span>':''}</td><td class="r">${s[9]}-${s[10]}</td><td class="r">${(s[5]/ip*9).toFixed(2)}</td><td class="r">${s[0]}</td><td class="r">${s[1]}</td><td class="r">${ipf(s[2])}</td><td class="r">${s[7]}</td><td class="r">${((s[3]+s[6])/ip).toFixed(2)}</td><td class="r">${s[11]}</td><td class="r"><b>${sePWar(id).toFixed(1)}</b></td></tr>`};
   const bh='<thead><tr><th>Hitter</th><th class="r">G</th><th class="r">PA</th><th class="r">AVG</th><th class="r">OBP</th><th class="r">SLG</th><th class="r">HR</th><th class="r">RBI</th><th class="r">R</th><th class="r">SB</th><th class="r">WAR</th></tr></thead>',ph='<thead><tr><th>Pitcher</th><th class="r">W-L</th><th class="r">ERA</th><th class="r">G</th><th class="r">GS</th><th class="r">IP</th><th class="r">K</th><th class="r">WHIP</th><th class="r">SV</th><th class="r">WAR</th></tr></thead>';
@@ -3252,7 +3292,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122201357';
+const BUILD='20261122201809';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
