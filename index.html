@@ -1117,7 +1117,7 @@ const PROFILE={
  NYY:{cap:335,sell:0,pros:'currency',defer:'light',note:'Pays for stars, trades prospects for pitching'},
  PHI:{cap:315,capReady:345,sell:0,pros:'currency',defer:'some',note:'Aggressive buyer; prospects are trade chips'},
  TOR:{cap:310,sell:0,pros:'neutral',defer:'some',note:'Spending big around Vladimir Guerrero Jr.'},
- BOS:{cap:280,sell:0,pros:'neutral',defer:'light',note:'Buys pitching, protective of its best prospects'},
+ BOS:{cap:300,sell:0,pros:'neutral',defer:'light',note:'Big market going for it; will deal from its system for big-league help'},
  ATL:{cap:255,sell:.1,pros:'neutral',defer:'light',note:'Locks up young core early on team-friendly extensions'},
  SDP:{cap:265,sell:.2,pros:'currency',defer:'heavy',note:'Will trade anyone; prospects are currency'},
  CHC:{cap:225,capReady:265,sell:.3,pros:'hoard',defer:'light',note:'Measured spending, values its farm system'},
@@ -1154,7 +1154,7 @@ function kMaxOf(code,win){const m=(D.teams[code]||{}).mkt;let x=m==='small'?75e6
 function capOf(code){const p=prof(code);return (teamReady(code)&&p.capReady)?p.capReady:p.cap}
 
 /* ---------- valuation engine (opposing GM + agent) ---------- */
-const WIN_LABEL={allin:'All-in contender',contend:'Contender on a budget',ascend:'Rebuild ending, adding pieces',retool:'Retooling, could go either way',rebuild:'Rebuilding seller'};
+const WIN_LABEL={allin:'All-in contender',contend:'Contender',ascend:'Rebuild ending, adding pieces',retool:'Retooling, could go either way',rebuild:'Rebuilding seller'};
 const MKT_LABEL={big:'big market',mid:'mid market',small:'small market'};
 const WT={allin:{now:1.3,fut:.85,pros:.8,old:1},contend:{now:1.15,fut:1,pros:1.05,old:.9},ascend:{now:1,fut:1.1,pros:1.15,old:.8},retool:{now:.95,fut:1,pros:1.05,old:.85},rebuild:{now:.55,fut:1.15,pros:1.3,old:.6}};
 const SALW={big:.8,mid:1,small:1.3};
@@ -1345,6 +1345,7 @@ function dataAdj(id,code,incoming,win,gp,w){const s=scout(id),p=P[id],a=ana(code
       if(s.platoon){if(gp!=='DH'&&w>=needAt(code,gp,id)+1){d-=2.5;N.push('a platoon bat, and we need an everyday player there')}else{d-=1;N.push('really a platoon bat')}}
       if(w>=1.5&&F.nH>=7){if(F.lh<=2&&(p.hand==='L'||p.hand==='S')){d+=1;N.push('a left-handed bat balances our lineup')}else if(F.lh>=6&&p.hand==='R'){d+=1;N.push('a right-handed bat balances our lineup')}}
     }else{
+      if(p.hand==='R'&&gp==='SP'&&F.nSP>=4&&F.lhSP>=4&&w>=1.5){d+=2;N.push(`our rotation has ${F.lhSP} left-handers: we need a right-handed starter`)}
       if(p.hand==='L'){if(gp==='SP'&&F.nSP>=4&&F.lhSP===0&&w>=1.5){d+=2;N.push("we don't have a left-handed starter")}
         else if(gp==='RP'&&F.nRP>=5&&F.lhRP<=1&&w>=.3&&s.spec!=='L'){d+=1.5;N.push('we are short on left-handed relief')}}
       if(gp==='RP'){if(s.bothSides){d+=1;N.push('gets lefties and righties out')}else if(s.spec){d-=1.5;N.push(s.spec==='L'?'mostly a lefty specialist':'much better against righties than lefties')}}}
@@ -1390,6 +1391,7 @@ function needRep(code,ids){const r=needRaw(ids||roster(code)),W=teamIntel(code).
   for(const g of Object.keys(POSN)){const v=r.pos[g],rep=W.includes(g)||(g==='2B'&&W.includes('INF')),thin=v<(g==='OF'?1:1.3);if(!thin&&!rep)continue;
     out.push({k:'p'+g,label:(g==='OF'?'Third outfielder':'Starter at '+POSN[g]),fix:WANT_TXT[g]||g,v,rk:null,need:thin||rep,rep,why:'',unit:'war'})}
   if(r.lhSP===0)out.push({k:'lhSP',label:'Left-handed starter',fix:'a left-handed starter',v:0,rk:null,need:true,rep:false,why:'none in the top five',unit:'n'});
+  if(r.lhSP>=4)out.push({k:'rhSP',label:'Right-handed starter',fix:'a right-handed starter',v:5-r.lhSP,rk:null,need:true,rep:false,why:`${r.lhSP} of the top five are left-handed`,unit:'n'});
   return {rows:out,raw:r}}
 const needFmt=(x)=>x.unit==='woba'?f3(x.v)+' wOBA':x.unit==='war'?(x.v<0?'none':x.v.toFixed(1)+' WAR'):String(x.v);
 /* one-line list of what a club still needs, for the GM and the AI clubs */
@@ -1397,7 +1399,7 @@ function needList(code){return needRep(code).rows.filter(x=>x.need).map(x=>x.fix
 /* does this player fill a handed or bullpen need of the club? used by free-agent bidding and AI deadline deals */
 function fillsNeed(id,code){const p=P[id];if(!p||!p.proj)return 0;const N=needRep(code).rows.filter(x=>x.need).map(x=>x.k),g=pgrp(id),s=scout(id);let b=0;
   if(!p.p){const B=bRate(id),lg=needLg()[code]||{};if(N.includes('vL')&&B.L&&lg.vL!=null&&B.L.woba>lg.vL+.015)b+=.6;if(N.includes('vR')&&B.R&&lg.vR!=null&&B.R.woba>lg.vR+.015)b+=.6;if(N.includes('p'+g))b+=.4}
-  else{if(g==='RP'&&N.includes('penL')&&(p.hand==='L'||s.bothSides))b+=.6;if(g==='RP'&&N.includes('penR')&&p.hand==='R')b+=.3;if(g==='SP'&&N.includes('sp'))b+=.4;if(g==='RP'&&N.includes('rp'))b+=.3;if(g==='SP'&&p.hand==='L'&&N.includes('lhSP'))b+=.3}
+  else{if(g==='RP'&&N.includes('penL')&&(p.hand==='L'||s.bothSides))b+=.6;if(g==='RP'&&N.includes('penR')&&p.hand==='R')b+=.3;if(g==='SP'&&N.includes('sp'))b+=.4;if(g==='SP'&&N.includes('rhSP')&&p.hand==='R')b+=.5;if(g==='RP'&&N.includes('rp'))b+=.3;if(g==='SP'&&p.hand==='L'&&N.includes('lhSP'))b+=.3}
   return Math.min(1.2,b)}
 /* the board on the trade screen: now vs after this deal, and vs the start of the offseason for the user's club */
 /* club background for the trade screen: farm-system rank and team offense, now and how it has moved (from data.json teams[code].farm / .tb) */
@@ -1541,6 +1543,8 @@ function gradeTo(id,code,incoming){
     const sal=salYr(id),over=sal/1e6-Math.max(.8,w*8);
     if(over>5){const yrs=Math.min(cy,6);burden=(over-5)*yrs/12*({small:1.4,mid:1,big:.6}[c.mkt])*(incoming?1:({allin:.2,contend:.6}[win]??1))*(teamIntel(code).shedding?(incoming?1.6:1.5):1)*(incoming?({down:1.2,up:.85}[orgStyle(code).pay]||1):1);if(incoming&&burden>.5)notes.push(`${M1(sal)} a year for ${yrs} more year${yrs===1?'':'s'}: more salary than production`)}
     if(incoming){
+      /* a club that is all in pays extra for a player who changes its season now */
+      if(win==='allin'&&w>=3.5){g+=2;notes.push('an impact player for a club that is going for it now')}
       const need=needAt(code,gp,id);
       if(wantsGrp(code,gp)&&w>=.8){g+=3;notes.push(`they're looking for ${WANT_TXT[gp]||gp}`)}
       else if(gp!=='DH'&&w>=need+1.5&&w>=1){g+=3;notes.push(`fills a need at ${gp}`)}
@@ -1580,6 +1584,7 @@ function gradeTo(id,code,incoming){
       if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
       if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him')}
       else if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
+      if(win==='allin'&&!(it&&it.status==='untouchable')){g-=2;notes.push('they are all in: prospects are what they pay with for big-league help')}
       if(pr.pros==='hoard'){g+=1.5;notes.push('this front office hoards prospects')}
       {const bs=orgStyle(code).build;if(bs==='home'&&rk&&rk<=10){g+=.75;notes.push('a draft-and-develop club: it builds from its own system')}else if(bs==='trade'&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=.75;notes.push('this club is built by trades and moves prospects freely')}}
       {const fr=farmRk(code);if(fr&&fr<=5&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=1;notes.push(`deep system (No. ${fr}), they can deal from it`)}else if(fr>=24&&rk&&rk<=5){g+=1;notes.push(`thin system (No. ${fr}), he matters more to them`)}}
@@ -1917,7 +1922,9 @@ function evalTrade(code,outSel,inSel,cashM){
   const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
   const mlbBack=rec.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5);
   R.needMLB=winNow&&mlbOut.length&&!mlbBack.length&&hIn.g<hOut.g+6;
-  const slack=(c.win==='rebuild'||c.win==='ascend'||c.win==='retool')&&rec.length>=2?6:4;
+  /* a club trying to win now will give a top prospect for a star: the headliner test is looser when a prospect goes out and an established 60+ player comes back */
+  const starBack=hOut.id&&hIn.id&&!established(hOut.id)&&established(hIn.id)&&hIn.g>=60;
+  const slack=((c.win==='rebuild'||c.win==='ascend'||c.win==='retool')&&rec.length>=2?6:4)+(starBack?(c.win==='allin'?4:c.win==='contend'?2:0):0);
   R.headOK=!hOut.g?true:hIn.g>=hOut.g-slack;
   const prem=prof(code).pros==='hoard'?.12:c.win==='rebuild'?.0:.06;
   R.ratio=R.give>0?R.recv/R.give:(R.recv>0||R.give<0?9:0);R.need=R.give>0?R.give*(1+prem):R.give;
@@ -3176,7 +3183,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122053440';
+const BUILD='20261122053946';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
