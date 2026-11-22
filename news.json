@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Sources: Mets, Skubal agree to 9-year, $450M contract",
+   "blurb": "Tarik Skubal and the New York Mets are in agreement on a nine-year, $450 million contract, sources told ESPN's Jeff Passan.",
+   "link": "https://www.espn.com/mlb/story/_/id/50565674/sources-mets-skubal-agree-9-year-450m-contract",
+   "time": "2026-11-22T22:04:03Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
+   "title": "Mets To Sign Tarik Skubal",
+   "blurb": "The Mets have made another blockbuster signing, as the New York Post&#8217;s Jon Heyman reports that the club has signed two-time AL Cy Young Award winner Tarik Skubal. The deal is a nine-year pact worth $450MM, according to ESPN&#8217;s Jeff Passan. Skubal is represented by the Boras Corporation. M",
+   "link": "https://www.mlbtraderumors.com/2026/11/mets-to-sign-tarik-skubal.html",
+   "time": "2026-11-22T22:00:27Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "Sources: Luis Gil agrees to deal with Tigers after Yankees nontender",
    "blurb": "Luis Gil and the Tigers are in agreement on a one-year, $2.3 million contract, sources told ESPN, as he lands a job just days after the Yankees nontendered him.",
    "link": "https://www.espn.com/mlb/story/_/id/50565569/sources-free-agent-luis-gil-agrees-deal-tigers",
@@ -3247,29 +3269,7 @@
    "teams": [
     "SFG"
    ]
-  },
-  {
-   "title": "San Francisco Giants selected the contract of RHP Josh Bostick from Eugene Emeralds.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SFG"
-   ]
-  },
-  {
-   "title": "Pittsburgh Pirates selected the contract of C Axiel Plaz from Greensboro Grasshoppers.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "PIT"
-   ]
   }
  ],
- "updated": "2026-11-22T21:57:46Z"
+ "updated": "2026-11-22T22:07:50Z"
 }
