@@ -2850,6 +2850,16 @@
    "summary": "New York Mets agreed to a three-year contract (2027-29) with LHP Darwinzon Hernández.",
    "src": "Roster Resource offseason tracker",
    "status": "official"
+  },
+  {
+   "type": "retire",
+   "name": "Anthony Rendon",
+   "team": "FA",
+   "pos": "3B",
+   "date": "2026-11-22",
+   "summary": "Anthony Rendon retired.",
+   "src": "Owner note",
+   "status": "official"
   }
  ],
  "live": "2026-11-21T15:14:26Z",

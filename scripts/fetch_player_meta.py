@@ -45,6 +45,13 @@ def main():
                             'th': (p.get('pitchHand') or {}).get('code'),
                             'h': (p.get('height') or '').replace(' ', '') or None, 'w': p.get('weight')})
             time.sleep(0.15)
+    # players the roster sweep cannot see (recent draft picks, posted players, unsigned free agents): kept in meta_extra.json
+    try:
+        for x in json.load(open(os.path.join(ROOT, 'meta_extra.json'), encoding='utf-8')).get('players', []):
+            if x.get('id') not in seen:
+                seen.add(x['id']); out.append(x)
+    except (OSError, ValueError) as e:
+        print('no meta_extra.json', e)
     if len(out) < 3000:
         print('Too few players fetched (%d); keeping the old file.' % len(out)); return 0
     meta = {'season': SEASON, 'source': 'MLB Stats API (personal, non-commercial use)', 'count': len(out),
