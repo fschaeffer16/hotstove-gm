@@ -1,115 +1,183 @@
 {
- "updated": "2026-11-21",
- "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it.",
+ "updated": "2026-11-22",
+ "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it.",
  "teams": {
   "LAD": {
    "wants": [
-    "2B",
     "RP",
-    "SP"
+    "SP",
+    "2B",
+    "SS"
    ],
-   "note": "Second base, bullpen and rotation depth (MLB.com, Nov. 7)"
+   "note": "Swept by the Brewers in the NLCS with a tax payroll near $385M; bullpen and getting younger are the stated needs, plus a right-handed middle infielder. Expected to work by trade before a possible lockout.",
+   "win": "allin",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/11/dodgers-notes-hernandez-vesia-phillips-infielders.html",
+    "https://www.mlb.com/news/dodgers-most-pressing-offseason-questions"
+   ]
   },
   "NYY": {
    "wants": [
-    "3B",
-    "2B",
     "RP",
-    "OF"
+    "3B",
+    "C",
+    "2B"
    ],
-   "note": "Third base, second base, bullpen, center field; have talked with Texas about Seager"
+   "note": "Won 93 games, lost the ALDS; Cashman calls the bullpen his top priority, is open-minded about a new third-base plan, and wants a right-handed catcher and a second baseman.",
+   "win": "contend",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-new-york-yankees-15.html",
+    "https://www.mlbtraderumors.com/2026/11/yankees-notes-infield-catcher-bullpen.html"
+   ]
   },
   "SEA": {
    "win": "contend",
    "wants": [
     "OF",
-    "SS",
     "RP"
    ],
-   "note": "Bounce-back contender with an elite rotation; would trade a starter to upgrade the offense (Arozarena and Crawford are free agents)"
+   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to Kansas City for Maikel Garcia; Dipoto has about $30-35M to spend and still wants a right-handed outfield bat and a left-handed reliever.",
+   "shedding": false,
+   "src": [
+    "https://mlb.com/news/maikel-garcia-traded-from-royals-to-mariners",
+    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-19"
+   ]
   },
   "BOS": {
    "wants": [
-    "SS",
+    "SP",
     "OF",
-    "RP"
+    "DH"
    ],
-   "note": "Shortstop, left field, power, bullpen; outfield logjam after signing Jake Bauers"
+   "note": "Playoff team and the most aggressive AL East club so far; still needs a starter and more power without growing payroll. The outfield logjam has Duran and Yoshida on the market.",
+   "win": "contend",
+   "src": [
+    "https://www.bostonglobe.com/2026/11/21/sports/american-league-east-offseason-moves/",
+    "https://www.mlbtraderumors.com/2026/11/red-sox-rumors-suzuki-jeffers-duran-breslow.html"
+   ]
   },
   "MIL": {
    "wants": [
+    "RP",
     "1B",
-    "SP",
-    "OF"
+    "C"
    ],
-   "note": "Reigning champions; first base, rotation depth, right field; trade players before free agency"
+   "note": "Defending World Series champion keeping its core; needs right-handed relief, a left-handed first baseman if Bauers leaves, and a backup catcher.",
+   "win": "contend",
+   "src": [
+    "https://www.mlb.com/news/brewers-2026-27-offseason-questions",
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-milwaukee-brewers-16.html"
+   ]
   },
   "CLE": {
    "wants": [
-    "1B",
     "SP",
     "RP"
    ],
-   "note": "First base, rotation depth, backup catcher, bullpen"
+   "note": "Lost the ALCS in six; Antonetti says payroll (lowest in MLB in 2026) will go up and a starter by trade or free agency is a primary goal.",
+   "win": "contend",
+   "shedding": false,
+   "src": [
+    "https://www.mlbtraderumors.com/2026/11/guardians-rumors-payroll-increase-starting-pitching-foster-griffin.html",
+    "https://www.mlb.com/news/guardians-want-to-add-starting-pitching-2026-27-offseason"
+   ]
   },
   "TBR": {
    "wants": [
-    "2B",
     "SP"
    ],
-   "note": "Second base and rotation; flip rising-salary pitchers for flexibility"
+   "note": "Won the pennant, lost the World Series; the rotation is the big question with Peralta and Martinez free agents. Some payroll flexibility under the new owner.",
+   "win": "contend",
+   "shedding": false,
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-tampa-bay-rays-16.html",
+    "https://www.mlbtraderumors.com/2026/11/rays-rumors-deluca-mcclanahan-pepiot-rasmussen.html"
+   ]
   },
   "MIN": {
    "wants": [
-    "SP",
     "RP",
+    "1B",
     "DH"
    ],
-   "note": "Rotation, bullpen and power; re-signed Ryan Jeffers, so catcher is covered"
+   "note": "Finished 77-85 but is buying: ownership vowed a higher payroll, Sonny Gray signed and Jeffers accepted the qualifying offer. The bullpen is the top need, then a middle-of-the-order bat.",
+   "win": "contend",
+   "shedding": false,
+   "src": [
+    "https://www.mlbtraderumors.com/2026/11/twins-sign-sonny-gray.html",
+    "https://www.mlb.com/news/twins-needs-before-2027-season"
+   ]
   },
   "TOR": {
    "wants": [
     "OF",
+    "SP",
     "2B",
-    "SP"
+    "SS",
+    "DH"
    ],
-   "note": "Working hard to find offense and willing to spend; interested in Ketel Marte"
+   "note": "Fell to 79-83 a year after the World Series; wants one or two power bats, long-term outfielders, a reshaped middle infield and back-end rotation help. No sign of cutting payroll.",
+   "win": "retool",
+   "src": [
+    "https://www.mlb.com/bluejays/news/examining-the-blue-jays-biggest-offseason-needs",
+    "https://www.mlbtraderumors.com/2026/11/blue-jays-notes-infield-outfield-rotation-bullpen-barger.html"
+   ]
   },
   "DET": {
    "wants": [
-    "OF",
+    "SP",
     "RP",
-    "SP"
+    "1B",
+    "2B"
    ],
-   "note": "Right-handed outfielders, defense, bullpen; rotation rebuilt after the Skubal trade; 'will listen to everything'"
+   "note": "Traded Skubal and Mize at the 2026 deadline but did not rebuild; expected to compete for the division around a young core. Signed Emilio Pagan and wants more relievers.",
+   "win": "retool",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-detroit-tigers-16.html",
+    "https://www.mlbtraderumors.com/2026/11/tigers-seeking-additional-relievers-after-pagan-signing.html"
+   ]
   },
   "PHI": {
    "wants": [
     "OF",
-    "3B",
-    "SP",
-    "RP"
+    "RP",
+    "3B"
    ],
-   "note": "Two outfielders, third base, rotation depth, bullpen; already the highest payroll"
+   "note": "Dombrowski must add an outfielder and a top setup man; third base is open. About $280M in tax commitments limits him, and the club is reported to want a shake-up.",
+   "win": "contend",
+   "shedding": false,
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-philadelphia-phillies-16.html",
+    "https://www.mlb.com/phillies/news/phillies-2026-offseason-priorities-gm-meetings"
+   ]
   },
   "ATL": {
    "wants": [
-    "SS",
     "SP",
+    "SS",
     "OF",
     "RP"
    ],
-   "note": "Shortstop, rotation, left field, bullpen; catching surplus with Drake Baldwin"
+   "note": "Won the NL East and returns its core; starting pitching is the clear top need, then shortstop, left field and the bullpen.",
+   "win": "contend",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-atlanta-braves-15.html",
+    "https://www.mlb.com/news/braves-choices-2026-27-offseason-needs"
+   ]
   },
   "PIT": {
    "wants": [
-    "3B",
+    "2B",
     "SP",
-    "RP",
-    "OF",
-    "DH"
+    "RP"
    ],
-   "note": "Third base, rotation depth, bullpen, outfield/DH; Skenes not being traded"
+   "note": "First winning season since 2018; Cherington says the club is not financially constrained and will attack free agency and trades.",
+   "win": "ascend",
+   "shedding": false,
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-pittsburgh-pirates-16.html",
+    "https://www.si.com/mlb/pirates/onsi/five-things-learned-pittsburgh-pirates-gm-meetings"
+   ]
   },
   "CHC": {
    "wants": [
@@ -117,128 +185,225 @@
     "RP",
     "OF"
    ],
-   "note": "All five end-of-season starters are free agents; rotation, bullpen, corner outfield"
+   "note": "Lost in the Wild Card round and has 15 free agents, including all five season-ending starters; Hoyer says pitching is the focus.",
+   "win": "contend",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-chicago-cubs-16.html",
+    "https://chicago.suntimes.com/cubs/2026/11/08/cubs-gm-meetings-offseason-mlb-lockout-free-agents-trades-rumors-jed-hoyer-pitching-rotation-pitchers"
+   ]
   },
   "HOU": {
    "wants": [
     "SP",
-    "RP",
     "OF"
    ],
-   "note": "Pitching, outfield, more pitching; new GM Randy Flores; could flip an infielder for pitching"
+   "note": "Won the AL West, swept in the Wild Card round; new GM Randy Flores. Owner Jim Crane does not expect a teardown. Thin in the outfield and rotation, with one infielder too many now that Correa is healthy.",
+   "win": "contend",
+   "src": [
+    "https://www.mlb.com/news/5-questions-facing-astros-in-2026-offseason",
+    "https://clutchpoints.com/mlb/houston-astros/astros-news-owner-jim-crane-downplays-trade-fire-sale-after-hiring-new-gm"
+   ]
   },
   "ATH": {
    "wants": [
     "SP",
-    "RP",
-    "2B"
+    "RP"
    ],
-   "note": "Pitching, second base, more pitching; final year before Las Vegas"
+   "note": "Young club with its hitters signed long term; the need is pitching: a proven starter and a closer.",
+   "win": "ascend",
+   "src": [
+    "https://www.mlb.com/athletics/news/five-big-questions-for-athletics-this-offseason"
+   ]
   },
   "BAL": {
    "wants": [
     "SP",
     "OF",
-    "2B"
+    "C"
    ],
-   "note": "Want a right-handed outfield bat and a left-handed starter; discussing Ketel Marte"
+   "note": "Missed the playoffs again and traded Rutschman at the deadline; reported to be listening on everyone except Pete Alonso while it looks for a starter, an outfielder and a catcher.",
+   "win": "retool",
+   "shedding": false,
+   "src": [
+    "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html",
+    "https://www.mlb.com/orioles/news/orioles-biggest-2026-27-offseason-needs"
+   ]
   },
   "TEX": {
    "wants": [
     "RP",
     "SP",
-    "OF"
+    "OF",
+    "C",
+    "1B"
    ],
    "shedding": true,
-   "note": "Payroll to stay near $190M; listening on Seager, deGrom, Eovaldi and fielding interest on Gore to create room"
+   "note": "Third straight losing season; Chris Young says payroll stays near $190M and he is very open-minded on trades, including stars. Reported to be exploring a way out of part of Corey Seager's contract.",
+   "win": "retool",
+   "src": [
+    "https://www.mlb.com/news/rangers-could-consider-trading-corey-seager-other-stars",
+    "https://www.mlb.com/news/chris-young-discusses-rangers-offseason-needs-ahead-of-gm-meetings"
+   ]
   },
   "CHW": {
    "wants": [
     "SP",
-    "RP",
-    "OF"
+    "OF",
+    "RP"
    ],
-   "note": "Big 2026 rebound; pitching staff needs outside help; middle-infield surplus"
+   "note": "A breakthrough 2026 has Getz talking about improving a contender early in its window; impact starting pitching is the top priority even after signing Dustin May.",
+   "win": "ascend",
+   "src": [
+    "https://chicago.suntimes.com/white-sox/2026/11/09/breaking-down-white-sox-offseason-needs-as-gm-meetings-open-in-las-vegas",
+    "https://www.mlbtraderumors.com/2026/11/white-sox-seeking-another-notable-starter-after-may-signing.html"
+   ]
   },
   "ARI": {
    "wants": [
-    "1B",
     "RP",
-    "OF"
+    "1B",
+    "SP"
    ],
-   "note": "First base, bullpen, left field; open to reshaping the roster, including Ketel Marte"
+   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. The Ketel Marte decision drives the winter.",
+   "win": "retool",
+   "shedding": true,
+   "src": [
+    "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs",
+    "https://www.mlb.com/news/questions-facing-d-backs-in-2026-offseason"
+   ]
   },
   "MIA": {
    "wants": [
     "SP",
     "RP",
-    "OF"
+    "C",
+    "OF",
+    "1B",
+    "3B"
    ],
-   "note": "Bullpen arms are the top priority; fielding offers on Lopez, Edwards and Stowers but want a lot"
+   "note": "Bendix wants to build on a promising 2026: at least one starter and one reliever, catching help, and he is open to an everyday corner bat.",
+   "win": "ascend",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-miami-marlins-14.html",
+    "https://www.mlb.com/news/peter-bendix-on-marlins-needs-heading-into-2027"
+   ]
   },
   "KCR": {
    "wants": [
-    "RP",
     "OF",
-    "SP"
+    "RP",
+    "SP",
+    "3B"
    ],
-   "note": "Historically weak bullpen; outfield and rotation"
+   "note": "Went 69-93 and is aiming for a 2027 rebound around Bobby Witt Jr.; about $30M is coming off the payroll to reinvest. Wants a right-handed outfielder; third base is open after the Maikel Garcia trade.",
+   "win": "retool",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/11/royals-in-market-for-right-handed-hitting-outfielder.html",
+    "https://www.mlb.com/news/royals-2027-outlook-after-disappointing-2026-season"
+   ]
   },
   "STL": {
    "wants": [
     "SP",
     "RP",
-    "3B",
-    "OF"
+    "3B"
    ],
-   "note": "Pitching, third base, center field; deep catching"
+   "note": "Still rebuilding under Chaim Bloom with a bottom-three payroll; only short-term veterans expected, rotation and bullpen first.",
+   "win": "rebuild",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html",
+    "https://www.mlb.com/news/questions-facing-cardinals-entering-2026-27-offseason"
+   ]
   },
   "WSN": {
    "wants": [
     "SP",
-    "RP",
-    "1B",
-    "3B"
+    "RP"
    ],
-   "note": "Rotation, bullpen, corner infield; bullish on its group and believes it can contend in 2027"
+   "note": "Went 77-85, the most wins since 2019; Toboni says pitching is the main need, rotation and late-inning arms.",
+   "win": "ascend",
+   "src": [
+    "https://www.mlb.com/news/paul-toboni-discusses-nationals-offseason-at-gm-meetings",
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-washington-nationals-15.html"
+   ]
   },
   "SDP": {
    "wants": [
-    "SP",
-    "1B",
-    "OF"
+    "SP"
    ],
-   "note": "Losing most of the rotation to free agency; looking everywhere for starting pitching; catching depth"
+   "note": "Nearly the whole rotation left in free agency; Preller wants several starters and points to new owners after two budget-limited winters.",
+   "win": "contend",
+   "shedding": false,
+   "src": [
+    "https://www.mlb.com/news/padres-takeaways-from-general-managers-meetings",
+    "https://www.mlb.com/news/padres-questions-to-address-this-offseason"
+   ]
   },
   "SFG": {
    "wants": [
     "SP",
-    "RP",
-    "C"
+    "RP"
    ],
    "shedding": true,
-   "note": "Scaling back; want to shed at least one big contract (Chapman most likely)"
+   "note": "Finished 65-97, but Posey says the core can turn it around quickly; wants a starter, a closer and a left-handed reliever. Reported to want out of at least one of its huge contracts (Devers, Adames, Chapman).",
+   "win": "retool",
+   "src": [
+    "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus",
+    "https://www.mlb.com/news/questions-facing-giants-in-2026-27-offseason"
+   ]
   },
   "LAA": {
-   "note": "No permanent GM or manager while ownership changes; long rebuild expected; open to moving controllable pieces"
+   "note": "Direction undecided: the club is being sold, and no GM or manager will be hired until the sale is approved. Needs a catcher, a center fielder, left-handed bats and bullpen help.",
+   "wants": [
+    "C",
+    "OF",
+    "RP"
+   ],
+   "shedding": false,
+   "src": [
+    "https://www.mlb.com/angels/news/five-big-questions-for-angels-this-offseason",
+    "https://www.mlb.com/news/angels-team-sale-ownership-change-faq"
+   ]
   },
   "CIN": {
    "wants": [
     "SP",
-    "RP",
     "C",
-    "3B"
+    "RP"
    ],
-   "note": "Pitching is the clear need; Hunter Greene likely out for 2027"
+   "note": "Finished last, but Krall says no rebuild and the aim is to contend in 2027; wants starting pitching, a No. 1 catcher and bullpen help, and is open to trading veterans.",
+   "win": "retool",
+   "src": [
+    "https://www.fox19.com/2026/11/11/reds-news-notes-mlb-gm-meetings/",
+    "https://www.mlbtraderumors.com/2026/09/offseason-outlook-cincinnati-reds-17.html"
+   ]
   },
   "COL": {
    "wants": [
     "SP",
     "RP"
    ],
-   "note": "Trying to compete in 2027: taking on salary for veteran arms (traded for Luis Castillo and Davis Martin); mid-market payroll, not a rebuild",
+   "note": "Won 58 games, 15 better than 2025; DePodesta's priority is starting pitching through trades and established free agents, says investment will be equal or larger and nothing is driven by money.",
    "win": "retool",
-   "shedding": false
+   "shedding": false,
+   "src": [
+    "https://www.mlb.com/news/paul-depodesta-discusses-rockies-plans-for-2027-offseason",
+    "https://www.mlbtraderumors.com/2026/11/rockies-notes-goodman-pitching-needs.html"
+   ]
+  },
+  "NYM": {
+   "win": "retool",
+   "wants": [
+    "SP",
+    "RP",
+    "1B"
+   ],
+   "shedding": false,
+   "note": "After selling at the 2026 deadline, Stearns says the rotation is the top priority, then the bullpen and a first baseman; expects Cohen's usual backing.",
+   "src": [
+    "https://www.mlbtraderumors.com/2026/09/offseason-outlook-new-york-mets-16.html",
+    "https://www.mlbtraderumors.com/2026/11/mets-rumors-tarik-skubal-meeting-free-agent.html"
+   ]
   }
  },
  "players": [
@@ -253,9 +418,9 @@
   {
    "name": "Dylan Crews",
    "team": "WSN",
-   "status": "listening",
-   "note": "Reportedly in trade talks (The Athletic); controlled through 2031",
-   "price": "high"
+   "status": "available",
+   "note": "The Nationals are taking calls on him; a deal would likely bring back pitching",
+   "src": "https://www.mlbtraderumors.com/2026/11/nationals-fielding-trade-interest-in-dylan-crews.html"
   },
   {
    "name": "Jacob Young",
@@ -267,13 +432,16 @@
    "name": "Jarren Duran",
    "team": "BOS",
    "status": "available",
-   "note": "'Clearly available'; no everyday spot after the Bauers signing; Padres, Mariners, Phillies doing work"
+   "note": "Boston is shopping him after the worst full season of his career, with no outfield spot left",
+   "src": "https://www.mlbtraderumors.com/2026/11/red-sox-rumors-suzuki-jeffers-duran-breslow.html"
   },
   {
    "name": "Masataka Yoshida",
    "team": "BOS",
    "status": "available",
-   "note": "No current spot in Boston"
+   "dump": true,
+   "note": "the club is open to moving him in the last year of his deal and would have to eat much of the salary",
+   "src": "https://www.mlbtraderumors.com/2026/11/red-sox-notes-story-arias-casas.html"
   },
   {
    "name": "Tanner Houck",
@@ -284,20 +452,27 @@
   {
    "name": "Corey Seager",
    "team": "TEX",
-   "status": "listening",
-   "note": "Texas listening to manage payroll; Yankees have talked; owed about $155M over five years"
+   "status": "available",
+   "dump": true,
+   "ntc": true,
+   "note": "the Rangers are exploring a way out of part of the $155M he is owed after his worst season; he can block any deal",
+   "src": "https://www.nbcsports.com/fantasy/baseball/player-news/2026-11-10/report-rangers-shopping-corey-seager"
   },
   {
    "name": "Jacob deGrom",
    "team": "TEX",
    "status": "listening",
-   "note": "In Texas trade talks; full no-trade clause"
+   "ntc": true,
+   "note": "Texas is taking calls, but he blocked a deadline deal and wants to stay",
+   "src": "https://roundtable.io/sports/mlb/rangers/players/rangers-taking-calls-on-two-players-with-no-trade-clauses"
   },
   {
    "name": "Nathan Eovaldi",
    "team": "TEX",
    "status": "listening",
-   "note": "In Texas trade talks"
+   "ntc": true,
+   "note": "Among the big contracts Texas would discuss; full no-trade rights",
+   "src": "https://www.mlb.com/news/rangers-could-consider-trading-corey-seager-other-stars"
   },
   {
    "name": "MacKenzie Gore",
@@ -321,39 +496,45 @@
    "name": "Emerson Hancock",
    "team": "SEA",
    "status": "listening",
-   "note": "A suitor would have to overwhelm Seattle",
-   "price": "high"
+   "note": "Seattle was open to moving him for a right-handed hitter, though Dipoto has since played down trading another starter",
+   "src": "https://www.nbcsports.com/fantasy/baseball/player-news/2026-07-23/rosenthal-mariners-open-to-moving-hancock"
   },
   {
    "name": "Nick Lodolo",
    "team": "CIN",
    "status": "listening",
-   "note": "Drawing interest; one year of control left"
+   "note": "Rosenthal: clubs seeking starters are interested; one year of control left",
+   "src": "https://sports.yahoo.com/articles/cincinnati-reds-nick-lodolo-drawing-193208616.html"
   },
   {
    "name": "Elly De La Cruz",
    "team": "CIN",
    "status": "listening",
-   "note": "'Never going to say never,' but no talks; would take a significant overpay",
-   "price": "high"
+   "price": "high",
+   "note": "No trade talks and three years of control, but Krall would not rule a deal out",
+   "src": "https://www.si.com/mlb/reds/onsi/reds-president-nick-krall-sends-non-committal-message-about-elly-de-la-cruz-s-future-01m76jp18ghv"
   },
   {
    "name": "William Contreras",
    "team": "MIL",
-   "status": "listening",
-   "note": "Drawing interest, but likely kept for his final year"
+   "status": "untouchable",
+   "note": "Milwaukee has told clubs he is staying; the focus is an extension",
+   "src": "https://sports.yahoo.com/articles/brewers-draw-hard-line-william-142357664.html"
   },
   {
    "name": "Trevor Megill",
    "team": "MIL",
-   "status": "available",
-   "note": "Final year before free agency; Ryan Walker acquisition makes him more expendable"
+   "status": "listening",
+   "note": "Passan: the Brewers will at least listen on their closer in his last arbitration year",
+   "src": "https://sports.yahoo.com/articles/brewers-listen-trade-offers-closer-170036563.html"
   },
   {
    "name": "Hunter Goodman",
    "team": "COL",
-   "status": "available",
-   "note": "Colorado open to dealing him; controlled through 2029"
+   "status": "listening",
+   "price": "high",
+   "note": "More available than at the deadline, but controlled through 2029 and the ask is big-league pitching",
+   "src": "https://www.mlbtraderumors.com/2026/11/rockies-notes-goodman-pitching-needs.html"
   },
   {
    "name": "Jake McCarthy",
@@ -364,8 +545,10 @@
   {
    "name": "Shea Langeliers",
    "team": "ATH",
-   "status": "available",
-   "note": "Could be made available; controlled through 2028"
+   "status": "listening",
+   "price": "high",
+   "note": "Named a trade candidate as the A's look for pitching; two years of control left",
+   "src": "https://www.yardbarker.com/mlb/articles/trade_candidate_shea_langeliers/s1_13237_44443844"
   },
   {
    "name": "Denzel Clarke",
@@ -383,46 +566,55 @@
   {
    "name": "Ketel Marte",
    "team": "ARI",
-   "status": "listening",
-   "note": "Arizona open to moving him; Orioles and Blue Jays interested; 10-and-5 rights (can veto)"
+   "status": "available",
+   "dump": true,
+   "ntc": true,
+   "note": "Hazen says a trade is back on the table; he went on the restricted list in August after not showing up at Fenway, and has full no-trade rights",
+   "src": "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs"
   },
   {
    "name": "Otto Lopez",
    "team": "MIA",
    "status": "listening",
-   "note": "Fielding offers but want a lot",
-   "price": "high"
+   "price": "high",
+   "note": "Not being shopped, but not untouchable; Miami would want a ton",
+   "src": "https://sports.yahoo.com/articles/marlins-reportedly-willing-listen-offers-151843092.html"
   },
   {
    "name": "Xavier Edwards",
    "team": "MIA",
    "status": "listening",
-   "note": "Fielding offers but want a lot",
-   "price": "high"
+   "price": "high",
+   "note": "Not being shopped; Miami would listen for a big offer",
+   "src": "https://sports.yahoo.com/articles/marlins-reportedly-willing-listen-offers-151843092.html"
   },
   {
    "name": "Kyle Stowers",
    "team": "MIA",
    "status": "listening",
-   "note": "Not shopping him, but open to offers"
+   "note": "Not being shopped, but Miami is open to offers",
+   "src": "https://sports.yahoo.com/articles/marlins-listening-offers-former-blue-055418437.html"
   },
   {
    "name": "Sandy Alcantara",
    "team": "MIA",
    "status": "untouchable",
-   "note": "Team signaled he won't be dealt"
+   "note": "Option exercised; no plans to trade him and mutual interest in an extension",
+   "src": "https://sports.yahoo.com/articles/marlins-pobo-makes-clear-stance-200627942.html"
   },
   {
    "name": "Shane McClanahan",
    "team": "TBR",
-   "status": "available",
-   "note": "Trade is a possibility; final arbitration year, forearm tightness late in 2026"
+   "status": "listening",
+   "note": "Trade candidate in his final arbitration year after forearm tightness",
+   "src": "https://www.mlbtraderumors.com/2026/11/rays-rumors-deluca-mcclanahan-pepiot-rasmussen.html"
   },
   {
    "name": "Ryan Pepiot",
    "team": "TBR",
-   "status": "available",
-   "note": "Trade is a possibility; missed 2026 after hip surgery"
+   "status": "listening",
+   "note": "A starter the Rays could move; missed 2026 after hip surgery",
+   "src": "https://www.mlbtraderumors.com/2026/11/rays-rumors-deluca-mcclanahan-pepiot-rasmussen.html"
   },
   {
    "name": "Nick Fortes",
@@ -434,19 +626,24 @@
    "name": "Griffin Jax",
    "team": "TBR",
    "status": "listening",
-   "note": "Tampa Bay shops pitchers with rising salaries"
+   "note": "Reliever in his final arbitration year, listed as a trade candidate",
+   "src": "https://www.mlbtraderumors.com/2026/10/offseason-outlook-tampa-bay-rays-16.html"
   },
   {
    "name": "Drew Rasmussen",
    "team": "TBR",
-   "status": "untouchable",
-   "note": "Neander: 'every intention' of keeping him; extension talks"
+   "status": "listening",
+   "price": "high",
+   "note": "Neander says the club has every intention of keeping him and wants an extension",
+   "src": "https://www.mlbtraderumors.com/2026/11/neander-rays-have-every-intention-right-now-of-holding-drew-rasmussen.html"
   },
   {
    "name": "Joe Ryan",
    "team": "MIN",
-   "status": "untouchable",
-   "note": "Team signaled he won't be dealt"
+   "status": "listening",
+   "price": "high",
+   "note": "Free agent after 2027; the club plans to keep him despite trade interest",
+   "src": "https://www.startribune.com/sonny-gray-contract-minnesota-twins-roster-2027-news-payroll-pohlad-family-mlb-free-agency-moves/601923475"
   },
   {
    "name": "Riley Greene",
@@ -464,7 +661,8 @@
    "name": "Ronald Acuña Jr.",
    "team": "ATL",
    "status": "untouchable",
-   "note": "Anthopoulos shut down a trade"
+   "note": "Anthopoulos: not trading him, no talks",
+   "src": "https://sports.yahoo.com/articles/braves-rumors-don-t-expect-182230742.html"
   },
   {
    "name": "Sean Murphy",
@@ -482,7 +680,8 @@
    "name": "Paul Skenes",
    "team": "PIT",
    "status": "untouchable",
-   "note": "Not being traded this winter"
+   "note": "Not expected to be moved this winter; under control through 2029",
+   "src": "https://www.si.com/mlb/pirates/onsi/insider-shuts-down-pittsburgh-pirates-paul-skenes-trade-thoughts"
   },
   {
    "name": "Spencer Horwitz",
@@ -499,14 +698,16 @@
   {
    "name": "Isaac Paredes",
    "team": "HOU",
-   "status": "listening",
-   "note": "Infield logjam; one year of control"
+   "status": "available",
+   "note": "Expected to be discussed in trades with Correa back at third base",
+   "src": "https://www.yardbarker.com/r/20261021/0/ar/44448780_127"
   },
   {
    "name": "Brandon Marsh",
    "team": "PHI",
    "status": "available",
-   "note": "No longer an everyday player"
+   "note": "Reported available; one year from free agency after a poor second half",
+   "src": "https://sports.yahoo.com/articles/phillies-reportedly-open-trading-trea-173751880.html"
   },
   {
    "name": "Orion Kerkering",
@@ -518,7 +719,8 @@
    "name": "Jimmy Crooks",
    "team": "STL",
    "status": "available",
-   "note": "Deep catching in St. Louis"
+   "note": "Drawing interest and more likely to be moved than the core players",
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html"
   },
   {
    "name": "Matt Shaw",
@@ -529,70 +731,86 @@
   {
    "name": "Freddy Fermin",
    "team": "SDP",
-   "status": "available",
-   "note": "Catching depth; chip for a back-end starter"
+   "status": "listening",
+   "note": "Part of the catcher surplus; could be moved for a starter",
+   "src": "https://www.mlb.com/news/padres-receiving-trade-interest-in-catchers-at-general-managers-meetings-2026"
   },
   {
    "name": "Jackson Holliday",
    "team": "BAL",
    "status": "listening",
-   "note": "Value in a Ketel Marte deal; won't be given away",
-   "price": "high"
+   "price": "high",
+   "note": "Not off limits, but Baltimore would have to be overwhelmed",
+   "src": "https://www.baltimorebaseball.com/sports/orioles-mlb/2026/11/10/checking-orioles-trade-possibilities-2-richdubroff/"
   },
   {
    "name": "Jordan Westburg",
    "team": "BAL",
    "status": "listening",
-   "note": "Other teams have called; missed 2026 after Tommy John surgery"
+   "note": "Multiple clubs have called after he missed 2026; third base is crowded",
+   "src": "https://sports.yahoo.com/articles/orioles-receive-trade-calls-former-165743564.html"
   },
   {
    "name": "Vinnie Pasquantino",
    "team": "KCR",
-   "status": "available",
-   "note": "Would open first base for Caglianone; want pitching or a right-handed outfield bat"
+   "status": "listening",
+   "note": "Named the Royals' trade candidate to land a starter or a right-handed outfielder",
+   "src": "https://www.mlb.com/news/trade-candidates-for-every-team-2026-27-offseason"
   },
   {
    "name": "Michael Wacha",
    "team": "KCR",
    "status": "listening",
-   "note": "Nobody met Kansas City's price at the deadline"
+   "price": "high",
+   "note": "The Royals kept a high asking price on him at the deadline",
+   "src": "https://www.mlbtraderumors.com/2026/07/royals-expected-to-maintain-high-asking-price-on-wacha-lugo.html"
   },
   {
    "name": "Colson Montgomery",
    "team": "CHW",
-   "status": "available",
-   "note": "Middle-infield surplus with Cholowsky coming; want pitching"
+   "status": "listening",
+   "price": "high",
+   "note": "Getz says dealing from the infield surplus is not something the club is entertaining right now",
+   "src": "https://www.mlbtraderumors.com/2026/11/al-central-notes-white-sox-twins-burg-guardians.html"
   },
   {
    "name": "Reid Detmers",
    "team": "LAA",
-   "status": "available",
-   "note": "Rebuilding club, value may peak now"
+   "status": "listening",
+   "note": "Most-discussed Angels starter at the 2026 deadline",
+   "src": "https://www.mlb.com/news/trade-candidates-for-every-team-2026-27-offseason"
   },
   {
    "name": "Zach Neto",
    "team": "LAA",
    "status": "listening",
-   "note": "Angels open to moving controllable pieces in a long rebuild",
-   "price": "high"
+   "price": "high",
+   "note": "A trade candidate only if the new owners choose to rebuild",
+   "src": "https://roundtable.io/sports/mlb/angels/news/zach-neto-is-a-rumor-subject-for-a-team-stuck-in-neutral"
   },
   {
    "name": "Teoscar Hernández",
    "team": "LAD",
    "status": "available",
-   "note": "Clears a path for Josue De Paula"
+   "note": "Reported on the trade block after a down 2026, to open left field for Josue De Paula",
+   "src": "https://dodgerblue.com/teoscar-hernandez-trade-dodgers-options/2026/11/15/"
   },
   {
    "name": "Matt Chapman",
    "team": "SFG",
    "status": "available",
-   "note": "Giants want to shed a big contract; has a no-trade clause"
+   "dump": true,
+   "ntc": true,
+   "note": "the main candidate as the Giants try to unload a big contract; had season-ending surgery in August and must approve any deal",
+   "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus"
   },
   {
    "name": "Steven Kwan",
    "team": "CLE",
    "status": "listening",
-   "note": "Cleveland expects him to contribute, but he's a year from free agency"
+   "price": "high",
+   "note": "One year from free agency, but Antonetti expects him to be a big part of a contender next year",
+   "src": "https://www.mlbtraderumors.com/2026/10/guardians-notes-kwan-velazquez-rotation.html"
   },
   {
    "name": "Charles McAdoo",
@@ -605,6 +823,309 @@
    "team": "FA",
    "pos": "SP",
    "note": "Starter: 44 of his 49 MLB games in 2024-26 were starts (MLB Stats API). Non-tendered by the Yankees Nov. 20, 2026."
+  },
+  {
+   "name": "Josue De Paula",
+   "team": "LAD",
+   "status": "untouchable",
+   "note": "Treated as a nonstarter in trade talks (deadline reporting); lined up for left field",
+   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable"
+  },
+  {
+   "name": "Eduardo Quintero",
+   "team": "LAD",
+   "status": "untouchable",
+   "note": "Named with De Paula as a nonstarter in trade talks (deadline reporting)",
+   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable"
+  },
+  {
+   "name": "Fernando Tatis Jr.",
+   "team": "SDP",
+   "status": "untouchable",
+   "ntc": true,
+   "note": "Preller: a Padre for life; full no-trade clause",
+   "src": "https://www.thescore.com/mlb/news/3624055/preller-squashes-idea-of-trading-machado-tatis-padres-for-life"
+  },
+  {
+   "name": "Manny Machado",
+   "team": "SDP",
+   "status": "untouchable",
+   "ntc": true,
+   "note": "Preller: a Padre for life; full no-trade clause",
+   "src": "https://www.thescore.com/mlb/news/3624055/preller-squashes-idea-of-trading-machado-tatis-padres-for-life"
+  },
+  {
+   "name": "Luis Campusano",
+   "team": "SDP",
+   "status": "listening",
+   "note": "Clubs are asking about the Padres' catchers; Preller would listen for rotation help",
+   "src": "https://www.mlb.com/news/padres-receiving-trade-interest-in-catchers-at-general-managers-meetings-2026"
+  },
+  {
+   "name": "Willy Adames",
+   "team": "SFG",
+   "status": "listening",
+   "dump": true,
+   "ntc": true,
+   "note": "one of the big contracts the club would move; must approve any deal",
+   "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus"
+  },
+  {
+   "name": "Rafael Devers",
+   "team": "SFG",
+   "status": "listening",
+   "dump": true,
+   "note": "the club was open to offers at the deadline and wants out of a big contract; he refused to come out for a pinch-runner in June",
+   "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus"
+  },
+  {
+   "name": "Jung Hoo Lee",
+   "team": "SFG",
+   "status": "listening",
+   "dump": true,
+   "note": "named as a contract the Giants would move but will find hard to",
+   "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus"
+  },
+  {
+   "name": "Logan Webb",
+   "team": "SFG",
+   "status": "untouchable",
+   "note": "No plans to trade him despite continued interest",
+   "src": "https://clutchpoints.com/mlb/san-francisco-giants/giants-rumors-logan-webb-trade-suitors-rejected"
+  },
+  {
+   "name": "Ryan Waldschmidt",
+   "team": "ARI",
+   "status": "untouchable",
+   "note": "Most asked-about player at the 2026 deadline; deals died because clubs wanted him",
+   "src": "https://arizonasports.com/mlb/arizona-diamondbacks/diamondbacks-gm-mike-hazen-ryan-waldschmidt-was-most-asked-about-player-at-trade-deadline"
+  },
+  {
+   "name": "Christian Walker",
+   "team": "HOU",
+   "status": "available",
+   "note": "Named with Paredes as an infielder expected to be discussed in trades; owed $20M in 2027",
+   "src": "https://www.yardbarker.com/r/20261021/0/ar/44448780_127"
+  },
+  {
+   "name": "Mike Trout",
+   "team": "LAA",
+   "status": "untouchable",
+   "ntc": true,
+   "note": "Full no-trade clause and wants to stay",
+   "src": "https://www.mlb.com/news/angels-trade-deadline-candidates-2026"
+  },
+  {
+   "name": "Edward Cabrera",
+   "team": "CHC",
+   "status": "available",
+   "note": "5.67 ERA and a move to the bullpen in 2026; the club is reported open to including him in deals",
+   "src": "https://bleacherreport.com/articles/25531928-every-mlb-teams-player-most-likely-be-traded-26-27-offseason"
+  },
+  {
+   "name": "Alec Burleson",
+   "team": "STL",
+   "status": "untouchable",
+   "note": "The Cardinals turned away trade interest; part of the long-term core",
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html"
+  },
+  {
+   "name": "Masyn Winn",
+   "team": "STL",
+   "status": "untouchable",
+   "note": "An inquiry on the shortstop was quickly rejected",
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html"
+  },
+  {
+   "name": "Pedro Pagés",
+   "team": "STL",
+   "status": "available",
+   "note": "Catching surplus makes him one of the Cardinals most likely to be traded",
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html"
+  },
+  {
+   "name": "Hunter Greene",
+   "team": "CIN",
+   "status": "listening",
+   "note": "Second Tommy John surgery in August 2026, will miss 2027; Krall has not ruled out a trade",
+   "src": "https://sports.yahoo.com/articles/could-reds-trade-hunter-greene-003145245.html"
+  },
+  {
+   "name": "Spencer Steer",
+   "team": "CIN",
+   "status": "listening",
+   "note": "Drew trade calls at the 2026 deadline; Krall did not rule a deal out",
+   "src": "https://www.mlbtraderumors.com/2026/07/reds-reportedly-receiving-trade-interest-in-spencer-steer.html"
+  },
+  {
+   "name": "Oneil Cruz",
+   "team": "PIT",
+   "status": "untouchable",
+   "note": "The Pirates are not willing to entertain offers",
+   "src": "https://bleacherreport.com/articles/25531928-every-mlb-teams-player-most-likely-be-traded-26-27-offseason"
+  },
+  {
+   "name": "Mitch Keller",
+   "team": "PIT",
+   "status": "listening",
+   "note": "The club's highest 2027 salary after a disappointing year; Cherington said no move can be ruled out",
+   "src": "https://www.si.com/mlb/pirates/onsi/ben-cherington-addresses-mitch-keller-future-pittsburgh-pirates"
+  },
+  {
+   "name": "Kodai Senga",
+   "team": "NYM",
+   "status": "listening",
+   "note": "Multiple teams have shown trade interest; 10-team no-trade list",
+   "src": "https://www.amazinavenue.com/new-york-mets-news/102651/2026-gm-meetings-kodai-senga-starter-trade-interest-bullpen"
+  },
+  {
+   "name": "Mark Vientos",
+   "team": "NYM",
+   "status": "listening",
+   "note": "The Mets have taken trade calls after a .212 season; out of options",
+   "src": "https://www.mlbtraderumors.com/2026/11/mets-have-received-trade-interest-in-mark-vientos.html"
+  },
+  {
+   "name": "Juan Soto",
+   "team": "NYM",
+   "status": "untouchable",
+   "note": "The Mets would not trade him (July 2026 report)",
+   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
+  },
+  {
+   "name": "Nolan McLean",
+   "team": "NYM",
+   "status": "untouchable",
+   "note": "A young player the Mets would not trade; a rotation lock for 2027",
+   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
+  },
+  {
+   "name": "Carson Benge",
+   "team": "NYM",
+   "status": "untouchable",
+   "note": "A young player the Mets would not trade; locked into right field",
+   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
+  },
+  {
+   "name": "Trea Turner",
+   "team": "PHI",
+   "status": "available",
+   "dump": true,
+   "ntc": true,
+   "note": "Nightengale: the Phillies are making him available, but he is owed about $191M over seven years and has a no-trade clause",
+   "src": "https://975thefanatic.com/2026/11/11/trea-turner-reportedly-available-in-a-trade/"
+  },
+  {
+   "name": "Bryce Harper",
+   "team": "PHI",
+   "status": "untouchable",
+   "note": "Reported to be staying put; Dombrowski is not looking to deal him",
+   "src": "https://sports.yahoo.com/articles/phillies-reportedly-making-two-veterans-172618398.html"
+  },
+  {
+   "name": "Kyle Schwarber",
+   "team": "PHI",
+   "status": "untouchable",
+   "note": "Reported to be staying put; Dombrowski is not looking to deal him",
+   "src": "https://sports.yahoo.com/articles/phillies-reportedly-making-two-veterans-172618398.html"
+  },
+  {
+   "name": "Daylen Lile",
+   "team": "WSN",
+   "status": "listening",
+   "price": "high",
+   "note": "Clubs have called, but the asking price is steep",
+   "src": "https://www.mlbtraderumors.com/2026/11/nationals-fielding-trade-interest-in-dylan-crews.html"
+  },
+  {
+   "name": "James Wood",
+   "team": "WSN",
+   "status": "untouchable",
+   "note": "No interest in trading him after a second straight 30-homer season",
+   "src": "https://heavy.com/sports/mlb/washington-nationals/nationals-make-opposite-decisions-trading-dylan-crews-james-wood/"
+  },
+  {
+   "name": "Ryan McMahon",
+   "team": "NYY",
+   "status": "available",
+   "dump": true,
+   "note": "Heyman: on the block after a 0.5-WAR year; the Yankees expect to pay down his $16M or take a bad contract back",
+   "src": "https://clutchpoints.com/mlb/new-york-yankees/yankees-rumors-ryan-mcmahon-trade-block-new-york-bad-contract"
+  },
+  {
+   "name": "Jasson Domínguez",
+   "team": "NYY",
+   "status": "listening",
+   "note": "Cashman says rival clubs are calling about him",
+   "src": "https://www.mlbtraderumors.com/2026/11/cashman-teams-calling-about-jasson-dominguez.html"
+  },
+  {
+   "name": "Ernie Clement",
+   "team": "TOR",
+   "status": "listening",
+   "note": "Clubs are calling as Toronto looks to shake up the middle infield",
+   "src": "https://www.mlbtraderumors.com/2026/11/blue-jays-rumors-valenzuela-clement-smith-schneider-pitching.html"
+  },
+  {
+   "name": "Brandon Valenzuela",
+   "team": "TOR",
+   "status": "listening",
+   "note": "The catcher is drawing trade interest",
+   "src": "https://www.mlbtraderumors.com/2026/11/blue-jays-rumors-valenzuela-clement-smith-schneider-pitching.html"
+  },
+  {
+   "name": "Pete Alonso",
+   "team": "BAL",
+   "status": "untouchable",
+   "note": "The one player Baltimore will not discuss",
+   "src": "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html"
+  },
+  {
+   "name": "Gunnar Henderson",
+   "team": "BAL",
+   "status": "listening",
+   "price": "high",
+   "note": "Not off limits, but it would take a very large return",
+   "src": "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html"
+  },
+  {
+   "name": "Coby Mayo",
+   "team": "BAL",
+   "status": "listening",
+   "note": "Part of the corner-infield surplus Baltimore could deal from for pitching",
+   "src": "https://www.bostonglobe.com/2026/11/21/sports/american-league-east-offseason-moves/"
+  },
+  {
+   "name": "Jonny DeLuca",
+   "team": "TBR",
+   "status": "available",
+   "note": "The Rays could make him available to open center field for Victor Mesa Jr.",
+   "src": "https://www.mlbtraderumors.com/2026/11/rays-rumors-deluca-mcclanahan-pepiot-rasmussen.html"
+  },
+  {
+   "name": "Seth Lugo",
+   "team": "KCR",
+   "status": "listening",
+   "price": "high",
+   "ntc": true,
+   "note": "Full no-trade clause; the Royals held a high asking price at the deadline",
+   "src": "https://www.mlbtraderumors.com/2026/07/royals-expected-to-maintain-high-asking-price-on-wacha-lugo.html"
+  },
+  {
+   "name": "Pablo López",
+   "team": "MIN",
+   "status": "listening",
+   "price": "high",
+   "note": "Returning from Tommy John surgery in the last year of his deal; the club plans to keep him",
+   "src": "https://www.startribune.com/sonny-gray-contract-minnesota-twins-roster-2027-news-payroll-pohlad-family-mlb-free-agency-moves/601923475"
+  },
+  {
+   "name": "Sonny Gray",
+   "team": "MIN",
+   "status": "untouchable",
+   "ntc": true,
+   "note": "Just signed for two years with a full no-trade clause",
+   "src": "https://www.startribune.com/sonny-gray-contract-minnesota-twins-roster-2027-news-payroll-pohlad-family-mlb-free-agency-moves/601923475"
   }
  ],
  "sources": [
@@ -615,6 +1136,7 @@
   "MLB Trade Rumors: Rays shopping Nick Fortes (Nov. 17, 2026)",
   "The Athletic via FOX19 / Bleacher Report: Krall on Elly De La Cruz (Nov. 10-11, 2026)",
   "FanSided / Robert Murray: Pirates will not trade Paul Skenes this winter",
-  "Owner note, Nov. 21, 2026: Rockies are adding veteran pitching and salary to compete"
+  "Owner note, Nov. 21, 2026: Rockies are adding veteran pitching and salary to compete",
+  "Club-by-club offseason review, 11/22/2026 (search summaries of MLB.com, MLB Trade Rumors and beat reports; each entry carries its link)"
  ]
 }
