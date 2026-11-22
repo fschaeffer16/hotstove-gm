@@ -1698,6 +1698,28 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
   const top=`${nm(hO)} is ${what(hO)}${isPro(hO)&&prof(code).pros==='hoard'&&(P[hO].t100||hsGrade(hO)>=55)?', and we do not move our best young players easily':''}.`;
   const mid=hI?` ${like}${others.length?`, and ${others.join(' and ')} ${others.length>1?'help':'helps'} us now`:pros?` and there is some depth behind him`:''}`:'';
   return `${top}${mid}${mid?(wor.length?`, but ${wor.slice(0,2).join(', and ')}.`:R.verdict==='counter'?', and we are nearly there.':', but that is not enough for a player like that.'):''}`}
+/* who a GM would really ask for (owner, 11/22: the counter has to be a name that makes sense, with a reason, not just the best grade).
+   Fit first: he fills a hole on their roster or a stated want, he matches their timeline, nobody blocks him. x = {id, notes} from gradeTo. */
+function askFit(x,code){const id=x.id,p=P[id],c=ctx(code),now=c.win==='allin'||c.win==='contend',est=established(id),gp=pgrp(id),nt=(x.notes||[]).join(' | ');let s=0,why='';
+  if(est){const rows=needRep(code).rows.filter(r=>r.need),N=rows.map(r=>r.k),f=fillsNeed(id,code),n=ctrl(id).length;
+    if(f>0){s+=2+2*f;
+      if(p.p){const r5=rows.find(r=>r.k==='rhSP');
+        why=gp==='SP'&&p.hand==='R'&&r5?`${r5.why.replace('the top five','their top five starters')}, and he is a right-hander`:gp==='SP'&&p.hand==='L'&&N.includes('lhSP')?'they have no left-handed starter':gp==='SP'?'their rotation needs a starter':N.includes('penL')&&p.hand==='L'?'they need a left-hander in the bullpen':N.includes('rp')?'their bullpen needs an arm':'their bullpen has trouble with right-handed hitters'}
+      else{const B=bRate(id),lg=needLg()[code]||{};
+        why=N.includes('p'+gp)?`they are thin at ${POSN[gp]||gp}`:N.includes('vL')&&B.L&&lg.vL!=null&&B.L.woba>lg.vL+.015?'their lineup struggles against left-handed pitching, and he hits it':'their lineup struggles against right-handed pitching, and he hits it'}}
+    else if(wantsGrp(code,gp)){s+=2;why=`they have been looking for ${WANT_TXT[gp]||gp}`}
+    if(now)s+=1;else if((p.age||30)<=26)s+=1.5;
+    if(/they already have|blocked by/.test(nt))s-=3;
+    if(/no fit for|older than their timeline/.test(nt))s-=4;
+    if(/expected to miss|opens 2027 on the injured/.test(nt))s-=2;
+    if(!why&&s>0)why=now?'he is a big leaguer who helps them win now':`he is ${Math.floor(p.age||0)} and under control for ${n} year${n===1?'':'s'}, which fits their timeline`}
+  else{const near=/^(MLB|AAA|AA)$/.test(p.lvl||''),role=ROLE(id,hsGrade(id)),an=(/^[aeiou]/i.test(role)?'an ':'a ')+role;
+    if(!now){s+=2;why=`they are building for later, and he is ${an}`}
+    else if(near){s+=1;why=`he is ${an} close to the majors, so he can help them soon`}
+    else s-=1;
+    if(/blocked by|other good|other 45\+|they already have/.test(nt))s-=2;
+    else if(now&&near&&needRep(code).rows.some(r=>r.need&&(r.k==='p'+gp||(gp==='SP'&&r.k==='sp')||(gp==='RP'&&r.k==='rp')))){s+=1;why=`he is ${an} close to the majors at a spot where they are thin`}}
+  return {s,why}}
 function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=needList(code).slice(0,2),want=nl.length?`We're looking for ${nl.join(' and ')}. `:'';
   if(E0.verdict==='locked')return "Nobody. The rules don't allow this deal as it's built.";
   if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
@@ -1710,6 +1732,7 @@ function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=need
   if(asked&&asked.length){const id=asked[0],E=evalTrade(code,outSel.concat([id]),inSel,cashM);
     return E.verdict==='accept'?`${nm(id)}? Yes. Add him and we have a deal: ${why(id)}.`:E.verdict==='counter'?`${nm(id)} gets us close, ${why(id)}. I'd still need a small piece with him.`:(E.untouch&&E.untouch.length?`${nm(id)}? ${why(id).replace(/^./,ch=>ch.toUpperCase())}, but ${nm(E.untouch[0].x.id)} only moves for a better player than that.`:`${nm(id)} doesn't get it done; ${why(id)}, and that's not enough for what you're asking.`)}
   const ok=pool.filter(x=>evalTrade(code,outSel.concat([x.id]),inSel,cashM).verdict==='accept').sort((a,b)=>(a.g-6*a.f)-(b.g-6*b.f));
+  if(E0.add){const i=ok.findIndex(x=>x.id===E0.add.id);if(i>0)ok.unshift(ok.splice(i,1)[0])}
   if(E0.untouch&&E0.untouch.length){const u=E0.untouch[0].x.id;return ok.length?`${nm(u)} is not a player we move for a package of pieces. One better player coming back is the only way, and from your side that's ${nm(ok[0].id)}; ${why(ok[0].id)}.${ok[1]?' '+nm(ok[1].id)+' would open it too.':''}`:`${nm(u)} isn't moving. It would take a better player coming back, and with what's on the table I don't see that player in your system. ${want}Ask me about someone else on our roster.`}
   if(ok.length){const a=ok[0],b=ok.find(x=>x.id!==a.id&&(established(x.id)!==established(a.id)||Math.abs(x.g-a.g)>=2))||ok[1];
     return `${want}Looking at your system and what's already on the table: add ${nm(a.id)} and I'd do it; ${why(a.id)}.${b?` If he's off limits, ${nm(b.id)} gets us there too.`:''}`}
@@ -1952,9 +1975,14 @@ function evalTrade(code,outSel,inSel,cashM){
     const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
     const src=R.needMLB?mlbPool:pool;src.sort((a,b)=>a.pts-b.pts);
-    R.add=src.find(x=>works([x])&&(!R.needMLB||true))||null;
+    R.add=src.find(x=>works([x]))||null;
+    if(R.add&&!_eatProbe){/* cost is judged by talent grade, so a star on a big contract is never the "cheap" ask */
+      const cand=src.filter(x=>works([x])).sort((x,y)=>x.g-y.g),g0=cand[0].g;let best=null;
+      for(const x of cand.slice(0,14)){const d=x.g-g0;if(d>4)break;const f=askFit(x,code),sc=f.s-1.1*d;if(!best||sc>best.sc)best={x,sc,why:f.why}}
+      if(best){R.add=best.x;R.addWhy=best.why}}
     if(!R.add){const top=src.slice(-14);let best=null;
-      for(let i=0;i<top.length;i++)for(let j=i+1;j<top.length;j++){const e=[top[j],top[i]];if(works(e)){const t=top[j].pts+top[i].pts;if(!best||t<best.t)best={a:top[j],b:top[i],t}}}
+      const fit=_eatProbe?null:top.map(x=>askFit(x,code));
+      for(let i=0;i<top.length;i++)for(let j=i+1;j<top.length;j++){const e=[top[j],top[i]];if(works(e)){const fs=fit?Math.max(-4,Math.min(6,fit[i].s+fit[j].s)):0,t=(top[j].pts+top[i].pts)*(1-.05*fs);if(!best||t<best.t)best={a:top[j],b:top[i],t,why:fit?(fit[j].s>=fit[i].s?[top[j].id,fit[j].why]:[top[i].id,fit[i].why]):null}}}
       R.add2=best}
     /* or take a piece off their side (not their headliner if that's the problem) */
     const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
@@ -2227,7 +2255,9 @@ function verdictHTML(E){
     else if(!E.headOK&&E.hOut.id)why=` The best player in this deal is ${nm(E.hOut)} (${esc(E.hOut.label)}). ${E.hIn.id?`${nm(E.hIn)} (${esc(E.hIn.label)}) isn't in his class, and depth doesn't make up for it.`:`Nothing coming back is in his class.`}`;
     else{const r=E.give?E.recv/E.give:0;why=r>=.9?` They are a small piece short.`:r>=.75?` They are one good piece short of what they are giving up.`:` What comes back is well short of what they are giving up.`}
     const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'&&!E.needMLB&&E.headOK?` No single player from your side closes that gap.${E.drop?'':' Ask for less.'}`:E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
-    const drop=(E.drop?` Or take ${nm(E.drop)} out of their side.`:'')+(E.eat?` Or eat ${M(E.eat.m*1e6)} of the ${M(E.eat.rem)} left on ${esc(P[E.eat.id].n)}'s contract (enter it as cash) and it works.`:'');
+    const cap1=t=>t.charAt(0).toUpperCase()+t.slice(1);
+    const whyAsk=E.add?(E.addWhy?` Why him: ${esc(E.addWhy)}.`:` He is the smallest piece in your system that closes the gap.`):E.add2&&E.add2.why&&E.add2.why[1]?` ${esc(P[E.add2.why[0]].n)} is the one they are after: ${esc(E.add2.why[1])}.`:'';
+    const drop=whyAsk+(E.drop?` Or take ${nm(E.drop)} out of their side.`:'')+(E.eat?` Or eat ${M(E.eat.m*1e6)} of the ${M(E.eat.rem)} left on ${esc(P[E.eat.id].n)}'s contract (enter it as cash) and it works.`:'');
     msg=lead+why+fix+drop}
   const chk=(E.checks||[]).map(([t,ok])=>`<span class="tchk ${ok?'ok':'no'}">${ok?'✓':'✗'} ${esc(t)}</span>`).join('');
   return `<div class="verdictbox ${V[1]}">
@@ -3184,7 +3214,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122054415';
+const BUILD='20261122055007';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
