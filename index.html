@@ -3314,7 +3314,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122213211';
+const BUILD='20261122224539';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3613,6 +3613,16 @@ function dropFrom(id,code){const t=D.teams[code];if(t)t.players=t.players.filter
 function moveP(id,to,forty){const from=P[id].team;if(from===to)return;dropFrom(id,from);D.fa=D.fa.filter(x=>x!==id);P[id].team=to;
   if(D.teams[to]&&!D.teams[to].players.includes(id))D.teams[to].players.push(id);
   if(forty){if(to==='NYM'){if(!D.forty.includes(id))D.forty.push(id)}else if(D.fortyBy[to]&&!D.fortyBy[to].includes(id))D.fortyBy[to].push(id)}}
+/* a big-league pitcher added by a real move takes his place on the depth chart (owner, 11/22: Skubal goes in at SP1):
+   a starter slots into the top five where his projection ranks, pushing the others down; a reliever replaces the weakest non-closer if he is better. */
+const TXARMS=[];
+function slotArm(B,id){const p=P[id];if(!B||!B.rot||!p||!p.p||![p.proj,p.pwar].some(x=>x!=null))return false;
+  if([...B.rot,...B.pen.map(x=>x[1])].includes(id))return false;const w=x=>x&&P[x]?(P[x].proj&&P[x].proj.war!=null?P[x].proj.war:P[x].pwar!=null?P[x].pwar:-9):-9;
+  if(pgrp(id)==='SP'){const i=B.rot.slice(0,5).findIndex(x=>w(id)>w(x));if(i<0)return false;B.rot.splice(i,0,id);return true}
+  let k=-1;B.pen.forEach((x,j)=>{if(x[0]!=='CL'&&(k<0||w(x[1])<w(B.pen[k][1])))k=j});if(k<0||w(id)<=w(B.pen[k][1]))return false;
+  const old=B.pen[k][1];B.pen[k][1]=id;if(B.pdep&&old)B.pdep.unshift(old);return true}
+/* the same for a save that was started before the move happened: once per player, so the user can move him afterwards */
+function txSlotMine(){if(!S||!S.rot)return;S.txSlot=S.txSlot||{};let ch=0;for(const id of TXARMS)if(owner(id)===ME&&!S.txSlot[id]){S.txSlot[id]=1;ensureDep();if(slotArm(S,id))ch=1}if(ch){tidyDepth();save()}}
 function applyTx(T){
   for(const t of (T.moves||[]))try{
     if(t.type==='trade'||t.type==='claim'){for(const m of (t.players||[{name:t.name,from:t.from,to:t.to,forty:t.forty,pos:t.pos}])){const id=findP(m.name,m.from)||mkP(m.name,m.from,m.pos);moveP(id,m.to,m.forty!==false&&t.type==='claim'?true:m.forty)}}
@@ -3620,6 +3630,7 @@ function applyTx(T){
       /* a free agent with the same name as another club's ranked prospect is a different man: the prospect was never a free agent */
       if(id&&P[id].team!==t.team&&P[id].team!=='FA'&&P[id].mlbp&&P[id].kind==='min'&&!D.fa.includes(id))id=null;
       if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);if(t.type==='sign'&&String(t.date||'')>='2026-10-01')TXSIGN.add(id);
+      if(t.type==='sign'&&P[id].p&&D.teams[t.team]){TXARMS.push(id);slotArm(t.team==='NYM'?D:D.base[t.team],id)}
       if(t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}})}if(t.type==='sign_minor')P[id].lvl=P[id].lvl==='MLB'?'AAA':P[id].lvl}
     else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
@@ -3633,7 +3644,7 @@ function switchTeam(code){
   IL60=new Set(D.il60By[code]||[]);
   BASE_METS=Object.keys(P).filter(id=>P[id].team===ME);
   S=baseline();BASE_T=cbt().total;
-  S=load()||S;userFA();HIST=[];seLoad();UI.sel=null;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
+  S=load()||S;userFA();txSlotMine();HIST=[];seLoad();UI.sel=null;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tCash=0;
   if(UI.tTeam===ME||!D.teams[UI.tTeam])UI.tTeam=ME==='NYM'?'ATL':'NYM';
   $('#teamPick').value=ME;$('#hTeam').textContent=MEN();document.title='Virtual Hot Stove GM · '+MEN();
   try{localStorage.setItem('gm-last-team',ME)}catch(e){}
