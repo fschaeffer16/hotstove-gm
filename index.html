@@ -1552,6 +1552,7 @@ function gradeTo(id,code,incoming){
       else if((win==='allin'||win==='contend')&&w>=2&&needAt(code,gp,id)<w-2){g+=3;notes.push(`trading him opens a hole at ${gp} they can't fill`)}
       if(cy<=1&&win!=='allin'){const sl=Math.max(pr.sell,win==='rebuild'?1:win==='retool'?.6:win==='ascend'?.4:0);if(sl>0){g-=2*sl;notes.push('they would rather get something now than lose him for nothing')}}
       const it=intelOf(id);
+      if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
       if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'&&it.price==='high'){g+=2;notes.push('they will listen, but the price is high'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'){g-=.5;notes.push('reported: they are listening on him'+(it.note?` (${it.note})`:''))}
@@ -1576,6 +1577,7 @@ function gradeTo(id,code,incoming){
     }else{
       const rk=orgPros(code).indexOf(id)+1;
       const it=intelOf(id);
+      if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
       if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him')}
       else if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
       if(pr.pros==='hoard'){g+=1.5;notes.push('this front office hoards prospects')}
@@ -1678,6 +1680,10 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
     const w=(gradeTo(id,code,true).notes||[]).find(t=>/worr|risk|pause|lucky|platoon|dropped|below average|down year/.test(t));if(w){const m=w.match(/^(.*?) (worry us|give us pause|is a risk we have to price in)$/);wor.push(m?`${nm(id)}'s ${m[1].replace(/^(\d+|one|two|three|four|five|six) /,(t)=>t)} ${m[2]==='give us pause'?'give us pause':m[2]==='worry us'?'worry us':'is a risk'}`:`with ${nm(id)}, ${w}`)}}
   const others=rec.filter(x=>x.id!==hI&&established(x.id)).sort((a,b)=>b.g-a.g).slice(0,2).map(x=>nm(x.id)),pros=rec.filter(x=>x.id!==hI&&isPro(x.id)).length;
   const like=hI?(established(hI)?`${nm(hI)} is ${an(gradeTo(hI,code,true).label)}${wantsGrp(code,pgrp(hI))?', and we have been looking for '+(WANT_TXT[pgrp(hI)]||'help at '+pgrp(hI)):''}`:`We like ${nm(hI)}, ${an(ROLE(hI,hsGrade(hI)))}`):'';
+  if(R.dump&&R.dump.length){const d=R.dump[0],dn=nm(d.id),M=v=>'$'+Math.round(v/1e6)+'M',why='';
+    if(R.dumpFull&&R.verdict==='accept')return `We are ready to move on from ${dn} and the ${M(d.rem)} left on his deal.${why} ${R.dumpBack<1e6?'You taking on the whole contract works for us':'Taking back '+M(R.dumpBack)+' is money we can live with'}${hI?`, and ${isPro(hI)?'we like '+nm(hI)+', '+an(ROLE(hI,hsGrade(hI))):nm(hI)+' helps us'}`:''}.`;
+    if(R.dumpFull&&!R.dumpAsset)return `We will move ${dn}, and we know what that takes: we eat some money back. But for taking ${M(R.dumpBack)} of it we need one real young player in the deal, not only contracts.`;
+    if(!R.dumpFull&&R.dumpShare<=1&&R.verdict!=='accept')return `We would move ${dn}, but the point for us is the money: he is owed ${M(d.rem)} and you are sending ${M(R.dumpBack)} back. Get that under ${M(d.rem*.45)} and add young talent, and we can talk.`}
   if(R.verdict==='accept')return hI?`${like}${others.length?', and '+others.join(' and ')+(others.length>1?' help':' helps')+' too':''}.${now&&established(hI)?' That makes us better this year.':!now&&isPro(hI)?' That is the kind of talent we are building around.':''}`:'That works for us.';
   if(R.needMLB)return `We are trying to win in 2027.${hO?' '+nm(hO)+' is part of that.':''}`;
   if(!R.headOK&&hO)return `Any deal for ${nm(hO)} starts with one player close to his level.`;
@@ -1854,12 +1860,30 @@ function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owne
     ${cb.length?cb.map(row).join(''):'<p class="hint">Neither club holds a Competitive Balance pick.</p>'}
     <label class="field" style="max-width:320px;margin-top:6px">International pool money<select id="tIfa">${opts.map(v=>`<option value="${v}"${v===(UI.tIfa||0)?' selected':''}>${v===0?'None':v>0?esc(MEN())+' send '+M1(v):esc(MEN())+' receive '+M1(-v)}</option>`).join('')}</select></label>
     <p class="hint" style="margin:4px 0 0">Pools (est.): ${esc(MEN())} ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · ${esc(D.teams[code].name)} ${M1(ifaPool(code))} of ${M1(ifaOriginal(code))}</p></div>`}
+/* a contract the club wants out of (owner, 11/22): reported in intel.json (`dump`), or a payroll-cutting club's big deal for a player past his prime.
+   Getting out of the money is the point of the trade for them, so he is not priced as an asset. */
+function dumpOf(id,code){const p=P[id];if(!p||!established(id)||owner(id)!==code)return null;const it=intelOf(id),rem=remGuar(id);
+  if(it&&it.dump&&rem>=12e6)return {rem,why:it.note||'',rep:true};
+  const tc=teamIntel(code),age=p.age||28,yrs=ctrl(id).length;
+  if(tc.shedding&&rem>=75e6&&age>=29&&yrs>=3&&valW(id).w<4&&!(it&&it.status==='untouchable'))return {rem,why:'',rep:false};
+  return null}
 function evalTrade(code,outSel,inSel,cashM){
   const c=ctx(code),R={code,ctx:c,reasons:[],locked:[],checks:[]};
   for(const id of [...outSel,...inSel])if(lockedFA(id))R.locked.push(P[id].n);
   const giv=inSel.map(id=>({id,...gradeTo(id,code,false)}));
   _leaving=new Set(inSel);const rec=outSel.map(id=>({id,...gradeTo(id,code,true)}));
   R.rec=rec;R.giv=giv;
+  /* salary dumps: how much of the unwanted money actually leaves. Taking back up to 45% of it (plus real talent) is a deal they make;
+     45-70% is a partial dump; more than that and it is an ordinary baseball trade. Cash they send along counts as money not shed. */
+  R.dump=[];{const D=giv.map(x=>({x,d:dumpOf(x.id,code)})).filter(o=>o.d);
+    if(D.length){const remD=D.reduce((t,o)=>t+o.d.rem,0),back=outSel.reduce((t,id)=>t+remGuar(id),0)+Math.max(0,-cashM)*1e6,share=back/remD,full=share<=.45,part=!full&&share<=.7;
+      R.dumpBack=back;R.dumpRem=remD;R.dumpShare=share;R.dumpFull=full;
+      for(const o of D){const x=o.x;R.dump.push({id:x.id,rem:o.d.rem,why:o.d.why,rep:o.d.rep});
+        if(full){x.g=Math.min(x.g,42);x.pts=Math.min(Math.max(x.pts,0),gpts(38));x.dump=true;x.notes.unshift(`they want out of the ${M1(o.d.rem)} left on his contract${o.d.why?' ('+o.d.why+')':''}`)}
+        else if(part){x.g-=6;x.pts=Math.max(0,x.pts)*.5;x.notes.unshift(`they would like out of his contract (${M1(o.d.rem)} left), but this sends a lot of money back`)}
+        else x.notes.unshift(`they would like out of his contract (${M1(o.d.rem)} left), but you are sending back about as much money`)}
+      /* in a real dump they have already agreed to eat some salary coming back: those contracts are not held against the players twice */
+      if(full)for(const x of rec)if(established(x.id))x.pts=Math.max(x.pts,.25*gpts(x.g))}}
   const X=tradeExtras(code,outSel,inSel,cashM);R.X=X;R.ruleErrs=X.errs;
   /* picks and pool money as pieces: a Competitive Balance pick is about a 45-50 prospect; pool money is small change */
   const pickPiece=p=>({pts:gpts(p.no<=40?49:p.no<=75?46:43),g:p.no<=40?49:p.no<=75?46:43});
@@ -1871,7 +1895,7 @@ function evalTrade(code,outSel,inSel,cashM){
   R.recv=pkg(all)+Math.max(0,cashPts);R.give=pkg(allG)+Math.max(0,-cashPts);
   {const tk=talkFor(code,outSel,inSel,cashM);if(tk&&tk.bonus&&R.recv>0){R.recv*=1+tk.bonus;R.talk=tk.bonus}}/* the user made his case to the GM (gmReply); never touches rules, payroll, untouchables or the headliner test */
   /* headliners: the best real asset on each side (a contract they're dumping is not a headliner) */
-  const hIn=rec.concat(recX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0}),hOut=giv.concat(givX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0});
+  const hIn=rec.concat(recX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0}),hOut=giv.concat(givX).filter(x=>x.pts>0&&!x.dump).reduce((m,x)=>x.g>m.g?x:m,{g:0});
   R.hIn=hIn;R.hOut=hOut;
   /* payroll */
   const base=teamCBTbase(code),after=teamCBT(code)+outSel.reduce((s,id)=>s+partnerCount(id),0)-inSel.reduce((s,id)=>s+partnerCount(id),0)-cashM*1e6;
@@ -1880,7 +1904,7 @@ function evalTrade(code,outSel,inSel,cashM){
   R.kMax=kMaxOf(code,c.win);{const inc=outSel.map(id=>({id,rem:remGuar(id)})).sort((a,b)=>b.rem-a.rem),remIn=inc.reduce((t,x)=>t+x.rem,0),remOut=inSel.reduce((t,id)=>t+remGuar(id),0);
     R.bigK=inc.length&&inc[0].rem>R.kMax&&remIn-remOut>R.kMax*.5?inc[0]:null}
   /* the club's questions, in order */
-  const untouch=giv.map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
+  const untouch=giv.filter(x=>!x.dump).map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
   R.untouch=untouch.filter(u=>u.why==='reported untouchable'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
   const winNow=(c.win==='allin'||c.win==='contend');
   const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
@@ -1891,11 +1915,14 @@ function evalTrade(code,outSel,inSel,cashM){
   const prem=prof(code).pros==='hoard'?.12:c.win==='rebuild'?.0:.06;
   R.ratio=R.give>0?R.recv/R.give:(R.recv>0||R.give<0?9:0);R.need=R.give>0?R.give*(1+prem):R.give;
   R.pkgOK=R.recv>=R.need&&(R.recv>0||R.give<0);
+  /* a dump still has to bring back something real: one prospect or player worth having */
+  R.dumpAsset=!R.dump.length||!R.dumpFull||R.dumpShare<=.2||rec.concat(recX).some(x=>x.g>=45);if(!R.dumpAsset)R.pkgOK=false;else if(R.dump.length&&R.dumpFull&&R.dumpShare<=.2&&!R.pkgOK&&R.recv>=0)R.pkgOK=true;/* the more of the money you take, the less talent they ask for: take 80%+ of it and they need nothing real back */
   R.checks=[
     ...(R.bigK?[['Contract size they will take on',false]]:[]),
     ['Headliner measures up',R.headOK],
     ...(winNow&&mlbOut.length?[['Big-league help back',!R.needMLB]]:[]),
     ...(untouch.length?[['No untouchables',!R.untouch.length]]:[]),
+    ...(R.dump.length?[['Gets them out of the contract',!!R.dumpFull]]:[]),
     ['Enough talent overall',R.pkgOK]];
   if(R.locked.length||X.errs.length)R.verdict='locked';
   else if(R.budget||R.bigK||R.untouch.length)R.verdict='reject';
@@ -3104,7 +3131,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261121230649';
+const BUILD='20261122001918';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
