@@ -49,8 +49,8 @@
     "OF",
     "DH"
    ],
-   "note": "Playoff team and the most aggressive AL East club so far; still needs a starter and more power without growing payroll. The outfield logjam has Duran and Yoshida on the market.",
-   "win": "contend",
+   "note": "All in: a big-market playoff team that has been the most aggressive AL East club this winter. Still needs a starter (four of its top five are left-handed) and more power. The outfield logjam has Duran and Yoshida on the market.",
+   "win": "allin",
    "src": [
     "https://www.bostonglobe.com/2026/11/21/sports/american-league-east-offseason-moves/",
     "https://www.mlbtraderumors.com/2026/11/red-sox-rumors-suzuki-jeffers-duran-breslow.html"
@@ -1126,6 +1126,13 @@
    "ntc": true,
    "note": "Just signed for two years with a full no-trade clause",
    "src": "https://www.startribune.com/sonny-gray-contract-minnesota-twins-roster-2027-news-payroll-pohlad-family-mlb-free-agency-moves/601923475"
+  },
+  {
+   "name": "Willson Contreras",
+   "team": "BOS",
+   "status": "available",
+   "note": "was unhappy that analytics set the lineups late in the playoffs",
+   "src": "Owner note, 11/22/2026"
   }
  ],
  "sources": [
