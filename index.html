@@ -2925,7 +2925,38 @@ function seSim(mode){if(!SE||SE.phase==='done')return;
 function seDeadline(){SE.phase='dl';seOdds(500);SE.win={};
   for(const c of SN.teams){const po=SE.od[c][0],b=D.teams[c].win||'retool',low=b==='rebuild'||b==='retool';
     SE.win[c]=po>=80?'allin':po>=38?'contend':po>=12?(low?'retool':'ascend'):(b==='rebuild'?'rebuild':'retool')}
-  seNews(ME,'info',`Trade deadline day, ${seDate(SE.day)}. Buyers and sellers are set by the standings.`)}
+  seNews(ME,'info',`Trade deadline day, ${seDate(SE.day)}. Buyers and sellers are set by the standings.`);
+  try{SE.calls=seCalls()}catch(e){SE.calls=[]}
+  if(SE.calls.length)seNews(ME,'info',`${SE.calls.length} club${SE.calls.length===1?' has':'s have'} called with a trade offer.`)}
+/* ---- deadline phone calls (owner, 11/22): other clubs call the user with real offers ----
+   Sellers call a buying user with a veteran who fills one of his needs and name the cheapest piece of his they would take.
+   Buyers call a selling user about his veterans and put their best acceptable prospect on the table.
+   Every offer is one the calling club accepts under evalTrade, the same test the user's own proposals face. */
+function seCalls(){const out=[],myW=SE.win[ME],buyer=myW==='allin'||myW==='contend',seller=myW==='retool'||myW==='rebuild',ok=E=>E&&E.verdict==='accept';
+  const mine=teamIds(ME).filter(id=>!lockedFA(id)&&!seOut(id));
+  /* what the user could pay with: prospects and young depth, cheapest first; his top two prospects are not offered up by a caller */
+  const myPros=orgPros(ME).slice(2).filter(id=>mine.includes(id)&&hsGrade(id)>=42).sort((a,b)=>hsGrade(a)-hsGrade(b)).slice(0,14);
+  if(!seller){const seen={},cands=seBlock().map(id=>({id,c:owner(id),fit:fillsNeed(id,ME)?1:0,w:P[id].proj.war})).filter(x=>x.fit||x.w>=2).sort((a,b)=>b.fit-a.fit||b.w-a.w);
+    for(const x of cands){if(out.length>=(buyer?4:2))break;if(seen[x.c])continue;let deal=null;
+      for(const a of myPros){if(ok(evalTrade(x.c,[a],[x.id],0))){deal=[a];break}}
+      if(!deal)for(let i=0;i<Math.min(8,myPros.length)&&!deal;i++)for(let j=i+1;j<Math.min(8,myPros.length);j++){if(ok(evalTrade(x.c,[myPros[i],myPros[j]],[x.id],0))){deal=[myPros[i],myPros[j]];break}}
+      if(deal){seen[x.c]=1;out.push({code:x.c,kind:'sell',get:[x.id],give:deal,fit:x.fit})}}}
+  if(!buyer){const vets=mine.filter(id=>established(id)&&P[id].proj.war>=1&&(P[id].age||30)>=27&&ctrl(id).length<=2).sort((a,b)=>P[b].proj.war-P[a].proj.war).slice(0,8),used={};
+    const buyers=Object.keys(SE.ai).filter(c=>SE.win[c]==='allin'||SE.win[c]==='contend').sort((a,b)=>SE.od[b][0]-SE.od[a][0]);
+    for(const c of buyers){if(out.filter(o=>o.kind==='buy').length>=(seller?5:2))break;
+      const v=vets.filter(id=>!used[id]).map(id=>({id,fit:fillsNeed(id,c)?2:0,up:P[id].proj.war-needAt(c,pgrp(id),id)})).filter(x=>x.fit||x.up>=1).sort((a,b)=>b.fit+b.up-a.fit-a.up)[0];if(!v)continue;
+      const pros=orgPros(c).filter(id=>!untouchable(id,c)&&hsGrade(id)>=42).slice(0,10);let deal=null;
+      for(const a of pros){if(ok(evalTrade(c,[v.id],[a],0))){deal=[a];break}}/* best prospect first: the most they will give */
+      if(deal){used[v.id]=1;out.push({code:c,kind:'buy',give:[v.id],get:deal,fit:v.fit})}}}
+  return out}
+function seCallLine(o){const nm=id=>P[id].n,c=o.code,who=o.kind==='sell'?o.get[0]:o.give[0],p=P[who],st=p.p?SE.ps[who]:SE.bs[who],line=st?(p.p?(st[2]?(st[5]*27/st[2]).toFixed(2):'-')+' ERA':f3(seOPS(st))+' OPS'):'',yrs=ctrl(who).length,ctl=yrs<=1?'a free agent after the season':`under control for ${yrs} years`;
+  const lst=a=>a.map(nm).join(' and ');
+  if(o.kind==='sell')return `The ${tnm(c)} are selling (${SE.od[c][0]}% playoff odds) and called about ${nm(who)}${line?', '+line+' this year':''}, ${ctl}.${o.fit?` He would help where you are short${WANT_TXT[pgrp(who)]?': '+WANT_TXT[pgrp(who)]:''}.`:''} They would do it for ${lst(o.give)}.`;
+  return `The ${tnm(c)} are buying (${SE.od[c][0]}% playoff odds) and want ${nm(who)}${line?', '+line+' this year':''}, ${ctl}.${WANT_TXT[pgrp(who)]?` They are after ${WANT_TXT[pgrp(who)]}.`:''} They are offering ${lst(o.get)}${o.get.length===1&&P[o.get[0]].fv?', '+(/^[aeiou]/i.test(ROLE(o.get[0],hsGrade(o.get[0])))?'an ':'a ')+ROLE(o.get[0],hsGrade(o.get[0])):''}.`}
+/* an offer goes stale when a player in it has moved */
+function seCallsLive(){return (SE.calls||[]).filter(o=>!o.pass&&o.give.every(id=>owner(id)===ME)&&o.get.every(id=>owner(id)===o.code))}
+function seCallsHTML(){const L=seCallsLive();if(!(SE.calls||[]).length)return '';
+  return `<h3 style="margin-top:12px">The phone is ringing</h3>${L.length?L.map(o=>`<div class="tsum" style="margin:6px 0"><p style="margin:0 0 6px">${esc(seCallLine(o))}</p><button class="btn sm primary" type="button" data-act="se-call" data-id="${SE.calls.indexOf(o)}">See the offer</button> <button class="btn sm" type="button" data-act="se-callpass" data-id="${SE.calls.indexOf(o)}">Pass</button></div>`).join(''):'<p class="hint">No offers left on the table. You can still call clubs yourself from the Trade tab.</p>'}`}
 function seBlock(){const out=[];for(const c in SE.ai){const w=SE.win[c];if(w!=='rebuild'&&w!=='retool')continue;
     for(const id of teamIds(c)){const p=P[id];if(!established(id)||lockedFA(id)||seOut(id)||p.proj.war<1||(p.age||30)<27||ctrl(id).length>(w==='rebuild'?3:2)||(w!=='rebuild'&&ctrl(id).length>1&&p.proj.war>=3.5)||untouchable(id,c))continue;out.push(id)}}
   return out.sort((a,b)=>P[b].proj.war-P[a].proj.war)}
@@ -2962,6 +2993,8 @@ function seAct(a,id){switch(a){
   case 'se-stv':UI.seStV=id;seRender();return;
   case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
   case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';render();return;
+  case 'se-call':{const o=SE.calls&&SE.calls[+id];if(!o)return;UI.tTeam=o.code;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};for(const id of o.give)UI.tOut.add(id);for(const id of o.get)UI.tIn.add(id);UI.tab='trade';render();window.scrollTo(0,0);return}
+  case 'se-callpass':{const o=SE.calls&&SE.calls[+id];if(o){o.pass=1;seSave();render()}return}
   case 'se-closedl':confirmBox('Close the trade deadline?','The other clubs make their deals, and no more trades are allowed this season.','Close the deadline',()=>{seCloseDL();render()});return;
   case 'se-box':seBoxModal(id);return;
   case 'se-end':confirmBox('End this season?','The season is thrown away. Your roster goes back to how it was before Opening Day, and the other clubs\' winter moves are undone.','End season',()=>{seDrop(true);UI.seView='home';commit()});return;
@@ -3016,6 +3049,7 @@ function seDeadlineHTML(){const lab={allin:'Buying hard',contend:'Buying',ascend
   const bl=seBlock().slice(0,40);
   return `<div class="tsum"><b>Trade deadline, ${seDate(SE.dl)}.</b> The sim is stopped so you can deal. Clubs are buyers or sellers by their playoff odds; buyers pay up for help right now (a rental costs them less of a discount), and sellers are moving veterans who are close to free agency. You are: <b>${lab[SE.win[ME]]}</b> (${SE.od[ME][0]}% playoff odds). Make trades in the Trade tab, then close the deadline: the other clubs make their deals and the season plays on.
   <div class="subh">Buyers</div><div>${grp(['allin','contend'])}</div><div class="subh">Sellers</div><div>${grp(['retool','rebuild'])}</div><div class="subh">Standing pat</div><div>${grp(['ascend'])}</div></div>
+  ${seCallsHTML()}
   <h3 style="margin-top:12px">On the trade block</h3><div class="scroll" style="max-height:420px;overflow-y:auto"><table class="list"><thead><tr><th>Player</th><th>Pos</th><th class="r">WAR</th><th class="r">Yrs</th><th></th></tr></thead><tbody>
   ${bl.map(id=>{const p=P[id],s=p.p?SE.ps[id]:SE.bs[id];return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span><br><span class="hint">${esc(tnm(owner(id)))} · age ${p.age||''} · ${partnerCount(id)?M1(partnerCount(id)):'pre-arb'}${s?' · '+(p.p?(s[2]?(s[5]*27/s[2]).toFixed(2):'-')+' ERA':f3(seOPS(s))+' OPS'):''}</span></td><td>${esc(p.pos)}</td><td class="r">${warB(p.proj.war)}</td><td class="r">${ctrl(id).length}</td><td class="r"><button class="btn sm" type="button" data-act="totrade" data-id="${id}">Trade for</button></td></tr>`}).join('')||'<tr><td class="hint">No sellers have a fit on the block.</td></tr>'}
   </tbody></table></div>`}
@@ -3133,7 +3167,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122003156';
+const BUILD='20261122013121';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
