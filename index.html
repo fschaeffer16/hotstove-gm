@@ -1206,13 +1206,15 @@ function mlbValue(id,code){
   return {v:sum/1e6,yrs:cy.length}}
 const FVT=[[80,150],[70,120],[65,90],[60,62],[55.5,48],[55,40],[50.5,30],[50,24],[45.5,12],[45,8],[40.5,4],[40,2],[35.5,.8],[0,.3]];
 /* his national rank: the average of the two lists when both have him */
-const top100=id=>{const p=P[id];return p?(p.t100&&p.p100?Math.round((p.t100+p.p100)/2):p.t100||p.p100||null):null};
+/* how much each list counts. Pipeline was fully updated after the 2026 season; FanGraphs' board is mid-update. Move these back toward even when FanGraphs finishes. */
+const LISTW={mlb:.7,fg:.3,fgOnly:.88,org:.22};
+const top100=id=>{const p=P[id];return p?(p.t100&&p.p100?Math.round(LISTW.mlb*p.p100+LISTW.fg*p.t100):p.p100||p.t100||null):null};
 function prospectValue(id,code,notes){
   const p=P[id],f=fvn(p.fv);let v=(FVT.find(x=>f>=x[0])||[0,.3])[1];
-  /* two national lists: FanGraphs and MLB Pipeline. When both rank him, the higher one counts 60% and the other 40%; a player on only Pipeline's list gets 92% of that rank's value. */
-  {const cv=r=>15+Math.pow(100-r,1.5)*.07,a=p.t100?cv(p.t100):0,b=p.p100?cv(p.p100):0,tv=a&&b?.6*Math.max(a,b)+.4*Math.min(a,b):a||b*.92;if(tv>v)v=tv;
+  /* two national lists. MLB Pipeline's is the current one (owner, 11/22: FanGraphs has only just started updating), so it leads: see LISTW. */
+  {const cv=r=>15+Math.pow(100-r,1.5)*.07,a=p.t100?cv(p.t100):0,b=p.p100?cv(p.p100):0,tv=a&&b?LISTW.mlb*b+LISTW.fg*a:b||a*LISTW.fgOnly;if(tv>v)v=tv;
     if(p.t100)notes.push(`Fangraphs Top 100 #${p.t100}`);if(p.p100)notes.push(`MLB Pipeline Top 100 #${p.p100}`)}
-  if(p.mlbp){let m=1;if(p.ork){m=Math.max(.85,Math.min(1.15,Math.pow(p.ork/p.mlbp,.15)))}
+  if(p.mlbp){let m=1;if(p.ork){m=Math.max(.8,Math.min(1.22,Math.pow(p.ork/p.mlbp,LISTW.org)))}
     notes.push(`MLB Pipeline #${p.mlbp} in org${p.ork?` (FG #${p.ork})`:''}`+(m>1.04?': Pipeline higher on him':m<.96?': Pipeline lower on him':''));v*=m}
   const g=pgrp(id);
   if(g==='SP')v*=.82;else if(g==='RP'){v*=.55;notes.push('reliever prospect')}
@@ -3296,7 +3298,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122202920';
+const BUILD='20261122203126';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
