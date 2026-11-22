@@ -895,13 +895,6 @@
    "src": "Jeff Passan, ESPN, 11/22/2026"
   },
   {
-   "name": "Juan Soto",
-   "team": "NYM",
-   "ntc": true,
-   "note": "Full no-trade clause in his 15-year, $765M contract",
-   "src": "Owner note, 11/22; contract terms reported at signing (Dec. 2024)"
-  },
-  {
    "name": "Spencer Jones",
    "team": "NYY",
    "status": "listening",
@@ -1013,7 +1006,8 @@
    "name": "Juan Soto",
    "team": "NYM",
    "status": "untouchable",
-   "note": "The Mets would not trade him (July 2026 report)",
+   "ntc": true,
+   "note": "The Mets would not trade him (July 2026 report); full no-trade clause in his 15-year, $765M contract (owner note, 11/22)",
    "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
   },
   {
