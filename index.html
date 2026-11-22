@@ -1729,7 +1729,7 @@ function askFit(x,code){const id=x.id,p=P[id],c=ctx(code),now=c.win==='allin'||c
     if(/no fit for|older than their timeline/.test(nt))s-=4;
     if(/expected to miss|opens 2027 on the injured/.test(nt))s-=2;
     if(!why&&s>0)why=now?'he is a big leaguer who helps them win now':`he is ${Math.floor(p.age||0)} and under control for ${n} year${n===1?'':'s'}, which fits their timeline`}
-  else{const near=/^(MLB|AAA|AA)$/.test(p.lvl||''),role=ROLE(id,hsGrade(id)),an=(/^[aeiou]/i.test(role)?'an ':'a ')+role;
+  else{const near=/^(MLB|AAA|AA)$/.test(p.lvl||'')||(p.eta&&p.eta<=2027),role=ROLE(id,hsGrade(id)),an=(/^[aeiou]/i.test(role)?'an ':'a ')+role;
     if(!now){s+=2;why=`they are building for later, and he is ${an}`}
     else if(near){s+=1;why=`he is ${an} close to the majors, so he can help them soon`}
     else s-=1;
@@ -2167,7 +2167,7 @@ function teamCBT(code){return teamCBTbase(code)+(S.teamAdj[code]||0)}
 function partnerCount(id){const k=kind(id);if(k==='guar'||k==='arb')return aav(id);return 0}
 function tradeRow(id,side){
   const set=side==='out'?UI.tOut:UI.tIn;const p=P[id];
-  const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',top100(id)?('#'+top100(id)+' T100'):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
+  const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',top100(id)?('#'+top100(id)+' T100'):'',p.eta&&p.fv&&!established(id)?('ETA '+p.eta):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
   const v=side==='out'?cbtOf(id):partnerCount(id);
   return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<button type="button" class="sbtn" data-scout="${id}" aria-label="Scouting card for ${esc(p.n)}">card</button><div class="meta">${esc(meta)}${established(id)&&scout(id).tags.length?' · '+esc(scout(id).tags.slice(0,2).join(' · ')):''}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
@@ -3296,7 +3296,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122202131';
+const BUILD='20261122202920';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
