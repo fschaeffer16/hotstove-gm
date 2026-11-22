@@ -3133,7 +3133,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122002246';
+const BUILD='20261122003156';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3440,7 +3440,7 @@ function applyTx(T){
     else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
     else if(t.type==='select'){const id=findP(t.name,t.team)||mkP(t.name,t.team,t.pos);moveP(id,t.team,true);if(t.team==='NYM'){if(!D.forty.includes(id))D.forty.push(id)}else if(!D.fortyBy[t.team].includes(id))D.fortyBy[t.team].push(id)}
-    else if(t.type==='retire'){const id=findP(t.name,t.team);if(id){dropFrom(id,P[id].team);P[id].team='REL'}}
+    else if(t.type==='retire'){const id=findP(t.name,t.team);if(id){dropFrom(id,P[id].team);D.fa=D.fa.filter(x=>x!==id);P[id].team='REL'}}/* a retired free agent leaves the free-agent pool too */
   }catch(e){console.warn('tx skipped',t,e)}
 }
 /* ---------- team switching ---------- */
