@@ -2881,6 +2881,33 @@
    },
    "src": "Jeff Passan, ESPN",
    "status": "reported"
+  },
+  {
+   "date": "2026-11-22",
+   "type": "sign",
+   "summary": "Mets sign LHP Tarik Skubal: 9 yrs, $450M, including a $45M signing bonus; no opt-outs, full no-trade clause",
+   "name": "Tarik Skubal",
+   "team": "NYM",
+   "pos": "SP",
+   "forty": true,
+   "contract": {
+    "aav": 50000000,
+    "desc": "9 yr, $450M (2027-35), $45M signing bonus, no opt-outs, full no-trade clause",
+    "yrs": {
+     "2027": 50000000,
+     "2028": 50000000,
+     "2029": 50000000,
+     "2030": 50000000,
+     "2031": 50000000,
+     "2032": 50000000,
+     "2033": 50000000,
+     "2034": 50000000,
+     "2035": 50000000,
+     "2036": "FREE AGENT"
+    }
+   },
+   "src": "Jeff Passan, ESPN",
+   "status": "reported"
   }
  ],
  "live": "2026-11-21T15:14:26Z",
