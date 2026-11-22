@@ -3314,7 +3314,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122224539';
+const BUILD='20261122225727';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3621,16 +3621,30 @@ function slotArm(B,id){const p=P[id];if(!B||!B.rot||!p||!p.p||![p.proj,p.pwar].s
   if(pgrp(id)==='SP'){const i=B.rot.slice(0,5).findIndex(x=>w(id)>w(x));if(i<0)return false;B.rot.splice(i,0,id);return true}
   let k=-1;B.pen.forEach((x,j)=>{if(x[0]!=='CL'&&(k<0||w(x[1])<w(B.pen[k][1])))k=j});if(k<0||w(id)<=w(B.pen[k][1]))return false;
   const old=B.pen[k][1];B.pen[k][1]=id;if(B.pdep&&old)B.pdep.unshift(old);return true}
+/* a hitter added by a real move: he takes the lineup spot (his own position first, DH last) where he is the biggest upgrade on the man there.
+   That man goes to the bench in place of its weakest bat if he is better, else to the depth list. A newcomer who beats no starter can still take a bench job. */
+function slotBat(B,id){const p=P[id];if(!B||!B.lineup||!p||p.p||![p.proj,p.pwar].some(x=>x!=null))return false;
+  if([...B.lineup,...B.bench].some(x=>x[1]===id))return false;const w=x=>x&&P[x]?(P[x].proj&&P[x].proj.war!=null?P[x].proj.war:P[x].pwar!=null?P[x].pwar:-9):-9;
+  const toBench=x=>{if(!x)return;const open=B.lineup.find(y=>!y[1]&&seElig(x,y[0]));if(open){open[1]=x;return}/* an open lineup spot he can play comes before the bench */let k=-1;B.bench.forEach((b,j)=>{if(k<0||w(b[1])<w(B.bench[k][1]))k=j});
+    if(k>=0&&w(x)>w(B.bench[k][1])&&(B.bench[k][0]!=='C'||seElig(x,'C'))){const old=B.bench[k][1];B.bench[k][1]=x;if(B.hdep&&old)B.hdep.unshift(old)}else if(B.hdep)B.hdep.unshift(x)};
+  /* his own position first: if he is an upgrade there (or it is open), that is his spot */
+  const own=String(p.pos||'').split('/')[0],OF=['LF','CF','RF','OF'];let best=-1,gain=0;
+  B.lineup.forEach((x,i)=>{if(x[0]!==own&&!(OF.includes(own)&&OF.includes(x[0])))return;const g=w(id)-w(x[1]);if(g>gain){gain=g;best=i}});
+  if(best<0)B.lineup.forEach((x,i)=>{if(!seElig(id,x[0]))return;const g=(w(id)-w(x[1]))-(x[0]==='DH'?.4:0);if(g>gain){gain=g;best=i}});
+  if(best>=0){const old=B.lineup[best][1];B.lineup[best][1]=id;toBench(old);return true}
+  let k=-1;B.bench.forEach((b,j)=>{if(b[0]==='C'&&!seElig(id,'C'))return;if(k<0||w(b[1])<w(B.bench[k][1]))k=j});
+  if(k>=0&&w(id)>w(B.bench[k][1])){const old=B.bench[k][1];B.bench[k][1]=id;if(B.hdep&&old)B.hdep.unshift(old);return true}return false}
+const slotIn=(B,id)=>P[id]&&P[id].p?slotArm(B,id):slotBat(B,id);
 /* the same for a save that was started before the move happened: once per player, so the user can move him afterwards */
-function txSlotMine(){if(!S||!S.rot)return;S.txSlot=S.txSlot||{};let ch=0;for(const id of TXARMS)if(owner(id)===ME&&!S.txSlot[id]){S.txSlot[id]=1;ensureDep();if(slotArm(S,id))ch=1}if(ch){tidyDepth();save()}}
+function txSlotMine(){if(!S||!S.rot)return;S.txSlot=S.txSlot||{};let ch=0;for(const id of TXARMS)if(owner(id)===ME&&!S.txSlot[id]){S.txSlot[id]=1;ensureDep();if(slotIn(S,id))ch=1}if(ch){tidyDepth();save()}}
 function applyTx(T){
   for(const t of (T.moves||[]))try{
-    if(t.type==='trade'||t.type==='claim'){for(const m of (t.players||[{name:t.name,from:t.from,to:t.to,forty:t.forty,pos:t.pos}])){const id=findP(m.name,m.from)||mkP(m.name,m.from,m.pos);moveP(id,m.to,m.forty!==false&&t.type==='claim'?true:m.forty)}}
+    if(t.type==='trade'||t.type==='claim'){for(const m of (t.players||[{name:t.name,from:t.from,to:t.to,forty:t.forty,pos:t.pos}])){const id=findP(m.name,m.from)||mkP(m.name,m.from,m.pos);moveP(id,m.to,m.forty!==false&&t.type==='claim'?true:m.forty);if(D.teams[m.to]&&P[id].proj&&P[id].proj.war>=.5){TXARMS.push(id);slotIn(m.to==='NYM'?D:D.base[m.to],id)}}}
     else if(t.type==='sign'||t.type==='sign_minor'){let id=findP(t.name,t.team);
       /* a free agent with the same name as another club's ranked prospect is a different man: the prospect was never a free agent */
       if(id&&P[id].team!==t.team&&P[id].team!=='FA'&&P[id].mlbp&&P[id].kind==='min'&&!D.fa.includes(id))id=null;
       if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);if(t.type==='sign'&&String(t.date||'')>='2026-10-01')TXSIGN.add(id);
-      if(t.type==='sign'&&P[id].p&&D.teams[t.team]){TXARMS.push(id);slotArm(t.team==='NYM'?D:D.base[t.team],id)}
+      if(t.type==='sign'&&D.teams[t.team]){TXARMS.push(id);slotIn(t.team==='NYM'?D:D.base[t.team],id)}
       if(t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}})}if(t.type==='sign_minor')P[id].lvl=P[id].lvl==='MLB'?'AAA':P[id].lvl}
     else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
