@@ -1728,6 +1728,13 @@ function gmReply(text,code,outSel,inSel,cashM){
   if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take/.test(tx)){
     const q=gmSuggest(code,outSel,inSel,cashM,E0,named(roster(ME).filter(id=>!outSel.includes(id))));T.log.push({me:text,gm:q,q:1});return q}
   /* health of their player */
+  /* money talk: eat / retain / pay down / kick in / cash considerations. A question with a real answer, so it does not use up a reply. */
+  if(/\beat(ing)?\b|retain|pay(ing)? (down|part|some|half)|kick(ing)? in|cash considerations|send (cash|money)|cover (some|part|half)|offset/.test(tx)){let gm;const M0=v=>'$'+Math.round(v/1e6)+'M';
+    if(E0.verdict==='accept')gm=cashM>0?`With the ${M0(cashM*1e6)} you are sending, this works for us as it stands.`:`You do not need to send money. This works for us as it stands.`;
+    else if(E0.eat)gm=`Now we are talking. ${nm(E0.eat.id)} is owed ${M0(E0.eat.rem)} and that is more than he gives us. Pay down ${M0(E0.eat.m*1e6)} of it and we have a deal. Put it in the cash box.`;
+    else if(E0.dump&&E0.dump.length)gm=`The money is the point for us here: we are trying to get out from under ${nm(E0.dump[0].id)}. We are not sending cash along with him, but we will take some salary back.`;
+    else{const big=mine.filter(id=>established(id)&&remGuar(id)>=8e6).sort((a,b)=>remGuar(b)-remGuar(a))[0];gm=big?`Money is not what is holding this up. Even if you paid down ${nm(big)}, we would still be short on talent.`:`There is no contract in this deal for you to pay down. This one comes down to the players.`}
+    T.log.push({me:text,gm,q:1});return gm}
   if(/injur|hurt|health|medical|\bil\b|surger|elbow|shoulder|fragile|durab|banged|missed time|tommy john/.test(tx)){const id=their(x=>(scout(x).inj||{r:0}).r);
     if(id){const s=scout(id),I=s.inj;
       if(s.od&&s.od.ret>20)hit('inj',.06,`I won't argue that. ${nm(id)} is coming off ${s.od.what.replace(/\s*\(.*\)$/,'').toLowerCase()} and ${s.od.ret>=999?"won't pitch in 2027":"won't be ready for Opening Day"}. That is in my price, but maybe not all of it.`);
@@ -1861,6 +1868,7 @@ function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owne
     <p class="hint" style="margin:4px 0 0">Pools (est.): ${esc(MEN())} ${M1(ifaPool(ME))} of ${M1(ifaOriginal(ME))} · ${esc(D.teams[code].name)} ${M1(ifaPool(code))} of ${M1(ifaOriginal(code))}</p></div>`}
 /* a contract the club wants out of (owner, 11/22): reported in intel.json (`dump`), or a payroll-cutting club's big deal for a player past his prime.
    Getting out of the money is the point of the trade for them, so he is not priced as an asset. */
+let _eatProbe=0;
 function dumpOf(id,code){const p=P[id];if(!p||!established(id)||owner(id)!==code)return null;const it=intelOf(id),rem=remGuar(id);
   if(it&&it.dump&&rem>=12e6)return {rem,why:it.note||'',rep:true};
   const tc=teamIntel(code),age=p.age||28,yrs=ctrl(id).length;
@@ -1942,6 +1950,10 @@ function evalTrade(code,outSel,inSel,cashM){
     /* or take a piece off their side (not their headliner if that's the problem) */
     const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut||R.headOK).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
     R.drop=tryDrop||null}
+  /* eating salary (owner, 11/22: real GM logic): when the user is sending a contract the club sees as more money than production,
+     find the smallest amount he could pay down (in $2M steps, then $5M, up to 80% of what is owed) that turns the answer into a yes. */
+  if(R.verdict!=='accept'&&R.verdict!=='locked'&&!R.untouch.length&&!_eatProbe){const pay=rec.filter(x=>established(x.id)&&x.burden>.3&&remGuar(x.id)>=8e6).sort((a,b)=>b.burden-a.burden)[0];
+    if(pay){const max=Math.floor(remGuar(pay.id)*.8/1e6);_eatProbe=1;try{for(let m=2;m<=max;m+=m<20?2:5){if(evalTrade(code,outSel,inSel,cashM+m).verdict==='accept'){R.eat={id:pay.id,m,rem:remGuar(pay.id)};break}}}finally{_eatProbe=0}}}
   R.quote=tradeQuote(R,code,c);
   _leaving=new Set();
   return R}
@@ -2206,7 +2218,7 @@ function verdictHTML(E){
     else if(!E.headOK&&E.hOut.id)why=` The best player in this deal is ${nm(E.hOut)} (${esc(E.hOut.label)}). ${E.hIn.id?`${nm(E.hIn)} (${esc(E.hIn.label)}) isn't in his class, and depth doesn't make up for it.`:`Nothing coming back is in his class.`}`;
     else{const r=E.give?E.recv/E.give:0;why=r>=.9?` They are a small piece short.`:r>=.75?` They are one good piece short of what they are giving up.`:` What comes back is well short of what they are giving up.`}
     const fix=ask?` ${E.needMLB?'Something like':'Add'} ${ask}${E.needMLB?' would work.':' and '+(E.verdict==='counter'?"it's done.":"we can talk.")}`:(E.verdict==='reject'&&!E.needMLB&&E.headOK?` No single player from your side closes that gap.${E.drop?'':' Ask for less.'}`:E.verdict==='reject'?' Nothing in your system gets it done right now.':'');
-    const drop=E.drop?` Or take ${nm(E.drop)} out of their side.`:'';
+    const drop=(E.drop?` Or take ${nm(E.drop)} out of their side.`:'')+(E.eat?` Or eat ${M(E.eat.m*1e6)} of the ${M(E.eat.rem)} left on ${esc(P[E.eat.id].n)}'s contract (enter it as cash) and it works.`:'');
     msg=lead+why+fix+drop}
   if(E.over&&E.verdict!=='locked')msg+=` This would put them at ${M(E.after)}, past their usual ${M(E.cap)} payroll. That does not stop the deal; they can make other moves.`;
   const chk=(E.checks||[]).map(([t,ok])=>`<span class="tchk ${ok?'ok':'no'}">${ok?'✓':'✗'} ${esc(t)}</span>`).join('');
@@ -3164,7 +3176,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122014026';
+const BUILD='20261122053440';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
