@@ -1848,8 +1848,7 @@ function tradeExtras(code,outSel,inSel,cashM){const X={recvV:0,giveV:0,lines:[],
   const onlyCash=(players,picks,ifaThisSide)=>!players.length&&!picks.length&&!ifaThisSide;
   if(X.picksOut.length&&onlyCash(inSel,X.picksIn,X.ifa<0)&&cashM<0)X.errs.push('A Competitive Balance pick cannot be traded for cash alone');
   if(X.picksIn.length&&onlyCash(outSel,X.picksOut,X.ifa>0)&&cashM>0)X.errs.push('A Competitive Balance pick cannot be traded for cash alone');
-  /* Rule 5 freeze: unprotected Rule 5-eligible minor leaguers can't be traded from the reserve-list deadline to the Rule 5 draft */
-  if(r5Frozen())for(const id of [...outSel,...inSel])if(r5Exposed(id))X.errs.push(`${P[id].n} is Rule 5-eligible and unprotected: he can't be traded between the ${RULES.r5.deadline} reserve-list deadline and the Rule 5 draft`);
+  /* No Rule 5 trade hold (owner, 11/22): Rule 5-eligible players can be traded before and after the Rule 5 draft, like anyone else. */
   return X}
 const hasExtras=()=>(UI.tPk&&UI.tPk.size)||UI.tIfa;
 function tradeExtrasHTML(code){const cb=cbPicks().filter(p=>p.owner===ME||p.owner===code);const I=RULES.ifa;
@@ -1931,10 +1930,9 @@ function evalTrade(code,outSel,inSel,cashM){
   else R.verdict='reject';
   /* what would get it done: name players from your system, the way a GM asks */
   if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){
-    const frozen=id=>r5Frozen()&&r5Exposed(id);
     const fitsMoney=id=>remGuar(id)<=R.kMax&&!(after+partnerCount(id)>cap&&after+partnerCount(id)>teamCBT(code));
-    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)&&fitsMoney(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
-    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!frozen(id)&&fitsMoney(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
     const src=R.needMLB?mlbPool:pool;src.sort((a,b)=>a.pts-b.pts);
     R.add=src.find(x=>works([x])&&(!R.needMLB||true))||null;
@@ -2370,7 +2368,6 @@ function r5AutoProt(code){if(R5AUTO[code])return R5AUTO[code];const f40=new Set(
 function r5Exposed(id){const p=P[id];if(p.lvl==='MLB'||p.team==='FA')return false;const o=owner(id);
   if(o===ME?status(id)==='40':(D.fortyBy[o]||[]).includes(id))return false;const r=r5Info(id);if(!(r&&r.eligibleNow))return false;
   if(o!==ME&&D.teams[o]&&r5AutoProt(o).has(id))return false;return true}
-const r5Frozen=()=>!(S.r5&&S.r5.done);
 /* ---------- Rule 5 draft: protection list, Major League phase, Minor League (Triple-A) phase ---------- */
 function r5Order(){if(!DR)return Object.keys(D.teams);const L=DR.order.lottery.slots.map(s=>s[0]),po=DR.order.playoff.order;return [...L,...po].filter((t,i,a)=>a.indexOf(t)===i)}
 function r5Count40(code){return code===ME?count40():(D.fortyBy[code]||[]).filter(id=>owner(id)===code).length+Object.keys(S.team).filter(id=>S.team[id]===code&&(S.r5mlb||{})[id]).length}
@@ -3167,7 +3164,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122013121';
+const BUILD='20261122014026';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
