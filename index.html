@@ -1205,9 +1205,13 @@ function mlbValue(id,code){
     sum+=(mv*wt-sal*sw)/Math.pow(1.08,t)});
   return {v:sum/1e6,yrs:cy.length}}
 const FVT=[[80,150],[70,120],[65,90],[60,62],[55.5,48],[55,40],[50.5,30],[50,24],[45.5,12],[45,8],[40.5,4],[40,2],[35.5,.8],[0,.3]];
+/* his national rank: the average of the two lists when both have him */
+const top100=id=>{const p=P[id];return p?(p.t100&&p.p100?Math.round((p.t100+p.p100)/2):p.t100||p.p100||null):null};
 function prospectValue(id,code,notes){
   const p=P[id],f=fvn(p.fv);let v=(FVT.find(x=>f>=x[0])||[0,.3])[1];
-  if(p.t100){const tv=15+Math.pow(100-p.t100,1.5)*.07;if(tv>v)v=tv;notes.push(`Fangraphs Top 100 #${p.t100}`)}
+  /* two national lists: FanGraphs and MLB Pipeline. When both rank him, the higher one counts 60% and the other 40%; a player on only Pipeline's list gets 92% of that rank's value. */
+  {const cv=r=>15+Math.pow(100-r,1.5)*.07,a=p.t100?cv(p.t100):0,b=p.p100?cv(p.p100):0,tv=a&&b?.6*Math.max(a,b)+.4*Math.min(a,b):a||b*.92;if(tv>v)v=tv;
+    if(p.t100)notes.push(`Fangraphs Top 100 #${p.t100}`);if(p.p100)notes.push(`MLB Pipeline Top 100 #${p.p100}`)}
   if(p.mlbp){let m=1;if(p.ork){m=Math.max(.85,Math.min(1.15,Math.pow(p.ork/p.mlbp,.15)))}
     notes.push(`MLB Pipeline #${p.mlbp} in org${p.ork?` (FG #${p.ork})`:''}`+(m>1.04?': Pipeline higher on him':m<.96?': Pipeline lower on him':''));v*=m}
   const g=pgrp(id);
@@ -1274,7 +1278,7 @@ function needAt(code,g,except){/* how much a club needs help at a group: WAR of 
 function orgPros(code){return roster(code).filter(x=>P[x].fv&&!established(x)).sort((a,b)=>hsValue(b)-hsValue(a))}
 function salYr(id){const v=isMets(id)?cbtOf(id):partnerCount(id);return v||.8e6}
 const ROLE=(id,g)=>{const p=P[id],gp=pgrp(id);
-  if(!established(id)&&p.t100)return p.t100<=10?'top-10 prospect in baseball':p.t100<=25?'top-25 prospect':p.t100<=50?'top-50 prospect':'top-100 prospect';
+  if(!established(id)&&top100(id)){const r=top100(id);return r<=10?'top-10 prospect in baseball':r<=25?'top-25 prospect':r<=50?'top-50 prospect':'top-100 prospect'}
   if(!established(id))return g>=62?'elite prospect':g>=57?'top-50 prospect':g>=52?'top-100 type prospect':g>=47?'solid prospect':g>=42?'org prospect':'depth prospect';
   if(gp==='SP')return g>=68?'ace':g>=62?'No. 1-2 starter':g>=56?'No. 2-3 starter':g>=50?'mid-rotation starter':g>=44?'back-end starter':'swingman';
   if(gp==='RP')return g>=62?'shutdown closer, one of the best relievers in baseball':g>=56?'elite closer':g>=50?'closer / top setup man':g>=45?'setup man':'middle reliever';
@@ -1570,7 +1574,7 @@ function gradeTo(id,code,incoming){
     /* 2026 results, splits, Statcast, WAR trend and injury history, as this club reads them */
     {const A=dataAdj(id,code,incoming,win,gp,w);g+=A.d;for(const n of A.notes)notes.push(n)}
   }else if(p.fv){
-    g=hsGrade(id);notes.push(`Hot Stove grade ${Math.round(g)}`+(p.t100?` · FG Top 100 #${p.t100}`:'')+(p.mlbp?` · MLB Pipeline #${p.mlbp} in org`:''));
+    g=hsGrade(id);notes.push(`Hot Stove grade ${Math.round(g)}`+(p.t100?` · FG Top 100 #${p.t100}`:'')+(p.p100?` · Pipeline Top 100 #${p.p100}`:'')+(p.mlbp?` · MLB Pipeline #${p.mlbp} in org`:''));
     const R=roster(code).filter(x=>x!==id);
     const ahead=gp!=='SP'&&gp!=='RP'&&R.find(x=>established(x)&&pgrp(x)===gp&&(P[x].age||30)<=29&&P[x].proj.war>=2.5&&ctrl(x).length>=3);
     const jam=R.filter(x=>P[x].fv&&!established(x)&&fvn(P[x].fv)>=45&&pgrp(x)===gp).length;
@@ -1684,7 +1688,7 @@ function talkFor(code,o,i,cash){const t=UI.tTalk;return t&&t.key===talkKey(code,
    about what comes back), never a club slogan */
 function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&&R.hIn.id,rec=(R.rec||[]).filter(x=>x.id&&P[x.id]),now=c.win==='allin'||c.win==='contend';
   const an=l=>(/^[aeiou]/i.test(l)?'an ':'a ')+l,isPro=id=>P[id].fv&&!established(id);
-  const what=id=>isPro(id)?(P[id].t100?`the No. ${P[id].t100} prospect in baseball`:an(ROLE(id,hsGrade(id)))+' in our system'):an(gradeTo(id,code,false).label)+` with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`;
+  const what=id=>isPro(id)?(top100(id)?`the No. ${top100(id)} prospect in baseball`:an(ROLE(id,hsGrade(id)))+' in our system'):an(gradeTo(id,code,false).label)+` with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`;
   /* honest worries about the players coming back */
   const wor=[];for(const x of rec.slice().sort((a,b)=>b.g-a.g)){const id=x.id;if(!established(id))continue;const n=ctrl(id).length,ag=Math.floor(P[id].age||0);
     if(ag>=32&&n>=3)wor.push(`${nm(id)} is ${ag} with ${n} years left on his deal`);
@@ -1699,7 +1703,7 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
   if(R.needMLB)return `We are trying to win in 2027.${hO?' '+nm(hO)+' is part of that.':''}`;
   if(!R.headOK&&hO)return `Any deal for ${nm(hO)} starts with one player close to his level.`;
   if(!hO)return like?like+'.':'I need to see more.';
-  const top=`${nm(hO)} is ${what(hO)}${isPro(hO)&&prof(code).pros==='hoard'&&(P[hO].t100||hsGrade(hO)>=55)?', and we do not move our best young players easily':''}.`;
+  const top=`${nm(hO)} is ${what(hO)}${isPro(hO)&&prof(code).pros==='hoard'&&(top100(hO)||hsGrade(hO)>=55)?', and we do not move our best young players easily':''}.`;
   const mid=hI?` ${like}${others.length?`, and ${others.join(' and ')} ${others.length>1?'help':'helps'} us now`:pros?` and there is some depth behind him`:''}`:'';
   return `${top}${mid}${mid?(wor.length?`, but ${wor.slice(0,2).join(', and ')}.`:R.verdict==='counter'?', and we are nearly there.':', but that is not enough for a player like that.'):''}`}
 /* who a GM would really ask for (owner, 11/22: the counter has to be a name that makes sense, with a reason, not just the best grade).
@@ -1738,7 +1742,7 @@ function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=need
   if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
   if(!inSel.length)return `${want}Tell me who you want from us first, then I'll tell you what it costs.`;
   const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${p.proj.war.toFixed(1)} WAR projected with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
-    const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${p.t100?', No. '+p.t100+' in the game':''}`};
+    const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${top100(id)?', No. '+top100(id)+' in the game':''}`};
   const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!noAsk(id)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
   /* a player the user asked about by name */
   if(asked&&asked.length){const id=asked[0],E=evalTrade(code,outSel.concat([id]),inSel,cashM);
@@ -1818,8 +1822,8 @@ function gmReply(text,code,outSel,inSel,cashM){
       else hit('agex',-.01,`${nm(t)} is ${Math.floor(ag)||'young'}${s.trend===1?' and still getting better':' and in his prime'}. Age is the reason he costs this much.`)}}
   /* prospect upside */
   if(/upside|ceiling|prospect|top[- ]?100|future|potential|tools|ranked|farm|high pick|first[- ]round/.test(tx)){const m=my(id=>P[id].fv&&!established(id)?hsGrade(id):0);
-    if(m&&P[m].fv&&!established(m)){const g=hsGrade(m),real=P[m].t100||g>=55;
-      if(real&&!now)hit('up',.05,`Our scouts like ${nm(m)} too: a ${Math.round(g)} on our board${P[m].t100?', No. '+P[m].t100+' in the game':''}. That's the kind of player we're collecting.`);
+    if(m&&P[m].fv&&!established(m)){const g=hsGrade(m),real=top100(m)||g>=55;
+      if(real&&!now)hit('up',.05,`Our scouts like ${nm(m)} too: a ${Math.round(g)} on our board${top100(m)?', No. '+top100(m)+' in the game':''}. That's the kind of player we're collecting.`);
       else if(real)hit('up',.01,`${nm(m)} might be very good in 2029. I need wins in 2027.`);
       else hit('upx',-.01,`Our scouts have ${nm(m)} as a ${ROLE(m,g)}, a ${Math.round(g)}. That's not the piece that moves me.`)}
     else hit('upx',0,`I don't see a prospect in this offer for me to dream on.`)}
@@ -2163,7 +2167,7 @@ function teamCBT(code){return teamCBTbase(code)+(S.teamAdj[code]||0)}
 function partnerCount(id){const k=kind(id);if(k==='guar'||k==='arb')return aav(id);return 0}
 function tradeRow(id,side){
   const set=side==='out'?UI.tOut:UI.tIn;const p=P[id];
-  const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',p.t100?('#'+p.t100+' T100'):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
+  const meta=[p.pos,p.lvl!=='MLB'?p.lvl:'',p.age?('age '+p.age):'',p.fv?('FV '+p.fv):'',top100(id)?('#'+top100(id)+' T100'):'',p.proj&&(p.lvl==='MLB'||p.lvl==='IL')?projTxt(id):''].filter(Boolean).join(' · ');
   const v=side==='out'?cbtOf(id):partnerCount(id);
   return `<div class="trow"><label><input type="checkbox" data-t${side}="${id}"${set.has(id)?' checked':''}><span><span class="nmb">${esc(p.n)}</span>${handTag(id)}${blockTag(id)}<button type="button" class="sbtn" data-scout="${id}" aria-label="Scouting card for ${esc(p.n)}">card</button><div class="meta">${esc(meta)}${established(id)&&scout(id).tags.length?' · '+esc(scout(id).tags.slice(0,2).join(' · ')):''}</div></span><span class="r">${v?M1(v):''}</span></label></div>`;
 }
@@ -2328,14 +2332,14 @@ function renderPros(){
     <select id="prTeam" aria-label="Team">${teams.map(t=>`<option${t===UI.prTeam?' selected':''}>${t}</option>`).join('')}</select>
     <select id="prPos" aria-label="Position">${['All','Hitters','Pitchers','C','1B','2B','3B','SS','OF','SP','RP'].map(t=>`<option${t===UI.prPos?' selected':''}>${t}</option>`).join('')}</select>
     <span class="hint">${ids.length} prospects · Hot Stove grade on the 20-80 scale · sort by wRC+ (150+ PA) or K-BB% (40+ IP)</span></div>
-  <div class="scroll"><table class="list"><thead><tr>${th('rank','HS #','r')}<th>Prospect</th><th>Team</th><th>Pos</th>${th('age','Age','r')}<th class="r">HS grade</th><th class="r">FG FV</th><th class="r">FG T100</th><th class="r">Pipeline</th>${th('wrc','wRC+')}${th('kbb','K-BB%')}<th>2026 line</th></tr></thead><tbody>
-  ${ids.slice(0,250).map(id=>{const p=P[id],s=p.st||{};return `<tr><td class="r">${r[id]}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}</td><td>${esc(D.teams[p.team]?p.team:p.team)}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="r">${s.pa>=150?s.wrc:''}</td><td class="r">${s.ip>=40?s.kbb:''}</td><td class="hint">${stTxt(id)}</td></tr>`}).join('')}
+  <div class="scroll"><table class="list"><thead><tr>${th('rank','HS #','r')}<th>Prospect</th><th>Team</th><th>Pos</th>${th('age','Age','r')}<th class="r">HS grade</th><th class="r">FG FV</th><th class="r">FG / MLB T100</th><th class="r">Pipeline</th>${th('wrc','wRC+')}${th('kbb','K-BB%')}<th>2026 line</th></tr></thead><tbody>
+  ${ids.slice(0,250).map(id=>{const p=P[id],s=p.st||{};return `<tr><td class="r">${r[id]}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}</td><td>${esc(D.teams[p.team]?p.team:p.team)}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}${p.p100?' <span class="hint">/ '+p.p100+'</span>':p.t100?'':''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="r">${s.pa>=150?s.wrc:''}</td><td class="r">${s.ip>=40?s.kbb:''}</td><td class="hint">${stTxt(id)}</td></tr>`}).join('')}
   </tbody></table></div>${ids.length>250?'<p class="hint">Showing the top 250. Filter by team or position to see more.</p>':''}`}
 function renderTop(){
   const live=S.top.filter(isMets).slice(0,50);
   return `<p class="hint" style="margin-top:0">Hot Stove rankings: one grade built from Fangraphs FV and Top 100 rank, MLB Pipeline's post-2026 rank, 2026 stats, age for level and pitcher risk. Traded prospects drop off; incoming ones slot in by grade.</p>
-  <div class="scroll"><table class="list"><thead><tr><th class="r">#</th><th>Prospect</th><th>Pos</th><th class="r">Age</th><th>Level</th><th class="r">HS grade</th><th class="r">FG FV</th><th class="r">FG T100</th><th class="r">Pipeline</th><th>2026</th><th>Status</th></tr></thead><tbody>
-  ${live.map((id,i)=>{const p=P[id];return `<tr><td class="r">${i+1}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}${p.team!==ME?'<span class="tag new">new</span>':''}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td>${esc(p.lvl)}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="hint">${stTxt(id)}</td><td>${status(id)==='40'?'<span class="tag">40-man</span>':''}</td></tr>`}).join('')}
+  <div class="scroll"><table class="list"><thead><tr><th class="r">#</th><th>Prospect</th><th>Pos</th><th class="r">Age</th><th>Level</th><th class="r">HS grade</th><th class="r">FG FV</th><th class="r">FG / MLB T100</th><th class="r">Pipeline</th><th>2026</th><th>Status</th></tr></thead><tbody>
+  ${live.map((id,i)=>{const p=P[id];return `<tr><td class="r">${i+1}</td><td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span>${META_IX&&r5Exposed(id)?'<span class="tag inj" title="Rule 5-eligible and not on the 40-man">R5</span>':''}${p.team!==ME?'<span class="tag new">new</span>':''}</td><td>${esc(p.pos)}</td><td class="r">${p.age??''}</td><td>${esc(p.lvl)}</td><td class="r"><b>${hsGrade(id).toFixed(0)}</b></td><td class="r">${fvB(p.fv)}</td><td class="r">${p.t100||''}${p.p100?' <span class="hint">/ '+p.p100+'</span>':p.t100?'':''}</td><td class="r">${p.mlbp?'#'+p.mlbp:''}</td><td class="hint">${stTxt(id)}</td><td>${status(id)==='40'?'<span class="tag">40-man</span>':''}</td></tr>`}).join('')}
   </tbody></table></div>`;
 }
 
@@ -2748,7 +2752,7 @@ function seDevInfo(id){const key=SE?SE.rs_+'|'+SE.team:'';if(_dvKey!==key){_dv={
   if(pj&&pj.s){const car=pj.car||[0,0],age=p.age||27,rook=car[0]<=130&&car[1]<=50,yng=p.p?age<=26.5&&car[1]<=260:age<=25.6&&car[0]<=900;
     if(rook||yng){const up=[],dn=[];let D=0;const add=(v,t)=>{D+=v;(v>0?up:dn).push([Math.abs(v),t])},pc=x=>Math.round(x*100)+'%',y=pj.y||{};
       /* scouting */
-      const fv=fvn(p.fv);if(p.t100&&p.t100<=30)add(.03,`he was a top-${p.t100<=10?10:30} prospect in baseball, and that talent is showing`);else if(p.t100||fv>=55)add(.02,'the scouts have always believed in the tools');else if(fv&&fv<=40)add(-.01,'the scouts saw a limited ceiling');
+      const fv=fvn(p.fv),tr=top100(id);if(tr&&tr<=30)add(.03,`he was a top-${tr<=10?10:30} prospect in baseball, and that talent is showing`);else if(tr||fv>=55)add(.02,'the scouts have always believed in the tools');else if(fv&&fv<=40)add(-.01,'the scouts saw a limited ceiling');
       /* age */
       if(age<=22.6)add(.02,`at ${Math.floor(age)} he is still growing into his game`);else if(age<=24)add(.01,`he is ${Math.floor(age)} and still improving`);else if(age>=25.6&&rook)add(-.01,`he is an older rookie at ${Math.floor(age)}, and there is less growth left`);
       if(!p.p){const xs=pj.xs&&pj.xs[2026],hs=pj.hs&&pj.hs[2026],ds=pj.ds&&pj.ds[2026],st=p.st,pd=p.pd;
@@ -3292,7 +3296,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122201809';
+const BUILD='20261122202131';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
