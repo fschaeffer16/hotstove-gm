@@ -1704,6 +1704,14 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
   return `${top}${mid}${mid?(wor.length?`, but ${wor.slice(0,2).join(', and ')}.`:R.verdict==='counter'?', and we are nearly there.':', but that is not enough for a player like that.'):''}`}
 /* who a GM would really ask for (owner, 11/22: the counter has to be a name that makes sense, with a reason, not just the best grade).
    Fit first: he fills a hole on their roster or a stated want, he matches their timeline, nobody blocks him. x = {id, notes} from gradeTo. */
+/* players of the user's that another GM never asks for (owner, 11/22): a full no-trade clause (in his contract, or 10-and-5 rights),
+   a player the user just signed to a multi-year extension, or a historic contract ($200M+ still owed). The user can still offer them himself. */
+function noAsk(id){const p=P[id],it=intelOf(id),k=S.contract[id];if(!p)return '';
+  if(it&&it.ntc)return 'ntc';
+  const svc=parseFloat(p.svc)||0,a=p.acq||'',m=a.match(/'(\d\d)/);if(svc>=10&&m&&(+m[1]<=21||/(Jan|Feb|Mar|Apr)'22/.test(a)))return 'ntc';
+  if(k&&k.terms&&p.team!=='FA'&&k.terms.years>=3)return 'ext';
+  if(remGuar(id)>=2e8)return 'big';
+  return ''}
 function askFit(x,code){const id=x.id,p=P[id],c=ctx(code),now=c.win==='allin'||c.win==='contend',est=established(id),gp=pgrp(id),nt=(x.notes||[]).join(' | ');let s=0,why='';
   if(est){const rows=needRep(code).rows.filter(r=>r.need),N=rows.map(r=>r.k),f=fillsNeed(id,code),n=ctrl(id).length;
     if(f>0){s+=2+2*f;
@@ -1731,7 +1739,7 @@ function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=need
   if(!inSel.length)return `${want}Tell me who you want from us first, then I'll tell you what it costs.`;
   const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${p.proj.war.toFixed(1)} WAR projected with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
     const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${p.t100?', No. '+p.t100+' in the game':''}`};
-  const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
+  const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!noAsk(id)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
   /* a player the user asked about by name */
   if(asked&&asked.length){const id=asked[0],E=evalTrade(code,outSel.concat([id]),inSel,cashM);
     return E.verdict==='accept'?`${nm(id)}? Yes. Add him and we have a deal: ${why(id)}.`:E.verdict==='counter'?`${nm(id)} gets us close, ${why(id)}. I'd still need a small piece with him.`:(E.untouch&&E.untouch.length?`${nm(id)}? ${why(id).replace(/^./,ch=>ch.toUpperCase())}, but ${nm(E.untouch[0].x.id)} only moves for a better player than that.`:`${nm(id)} doesn't get it done; ${why(id)}, and that's not enough for what you're asking.`)}
@@ -1974,9 +1982,8 @@ function evalTrade(code,outSel,inSel,cashM){
   else R.verdict='reject';
   /* what would get it done: name players from your system, the way a GM asks */
   if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){
-    const fitsMoney=id=>true;
-    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
-    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&fitsMoney(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
+    const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
     const src=R.needMLB?mlbPool:pool;src.sort((a,b)=>a.pts-b.pts);
     R.add=src.find(x=>works([x]))||null;
@@ -2984,7 +2991,7 @@ function seDeadline(){SE.phase='dl';seOdds(500);SE.win={};
    Buyers call a selling user about his veterans and put their best acceptable prospect on the table.
    Every offer is one the calling club accepts under evalTrade, the same test the user's own proposals face. */
 function seCalls(){const out=[],myW=SE.win[ME],buyer=myW==='allin'||myW==='contend',seller=myW==='retool'||myW==='rebuild',ok=E=>E&&E.verdict==='accept';
-  const mine=teamIds(ME).filter(id=>!lockedFA(id)&&!seOut(id));
+  const mine=teamIds(ME).filter(id=>!lockedFA(id)&&!seOut(id)&&!noAsk(id));
   /* what the user could pay with: prospects and young depth, cheapest first; his top two prospects are not offered up by a caller */
   const myPros=orgPros(ME).slice(2).filter(id=>mine.includes(id)&&hsGrade(id)>=42).sort((a,b)=>hsGrade(a)-hsGrade(b)).slice(0,14);
   if(!seller){const seen={},cands=seBlock().map(id=>({id,c:owner(id),fit:fillsNeed(id,ME)?1:0,w:P[id].proj.war})).filter(x=>x.fit||x.w>=2).sort((a,b)=>b.fit-a.fit||b.w-a.w);
@@ -3218,7 +3225,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261122200651';
+const BUILD='20261122201000';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
