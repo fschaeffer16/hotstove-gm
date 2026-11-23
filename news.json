@@ -1,6 +1,19 @@
 {
  "items": [
   {
+   "title": "Astros, Blue Jays, Padres Interested In Randy Arozarena",
+   "blurb": "The Astros, Blue Jays, and Padres are among the teams &#8220;monitoring&#8221; Randy Arozarena&#8217;s market, according to reporter Francys Romero. This trio of clubs joins the Orioles, Phillies, and Yankees as teams linked to the free agent outfielder to date. Arozarena hits the open market in adv",
+   "link": "https://www.mlbtraderumors.com/2026/11/astros-blue-jays-padres-interested-in-randy-arozarena.html",
+   "time": "2026-11-23T05:02:32Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "TOR",
+    "HOU",
+    "SDP"
+   ]
+  },
+  {
    "title": "Mets ink Skubal to record 9-year, $450M contract",
    "blurb": "Mets ink Skubal to record 9-year, $450M contract",
    "link": "https://www.espn.com/video/clip/_/id/50567971/mets-ink-skubal-record-9-year-450m-contract",
@@ -3256,18 +3269,7 @@
    "teams": [
     "MIL"
    ]
-  },
-  {
-   "title": "San Diego Padres selected the contract of RHP Tucker Musgrove from San Antonio Missions.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SDP"
-   ]
   }
  ],
- "updated": "2026-11-23T05:01:19Z"
+ "updated": "2026-11-23T05:11:24Z"
 }
