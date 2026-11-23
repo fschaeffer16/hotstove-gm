@@ -828,16 +828,16 @@ function mbPrep(d){const lb={},lp={};
 const mbB=(r,d)=>{const ab=r[7],pa=r[6],h=r[8],den=ab+r[12]+r[14]+r[15],obp=den?(h+r[12]+r[14])/den:0,slg=ab?(h+r[9]+2*r[10]+3*r[11])/ab:0,lg=d.lb[r[1]*8+r[2]]||[.33,.4];
   return {pa,age:r[4],avg:ab?h/ab:0,obp,slg,ops:obp+slg,hr:r[11],sb:r[16],bb:pa?r[12]/pa:0,k:pa?r[13]/pa:0,iso:ab?(r[9]+2*r[10]+3*r[11])/ab:0,idx:Math.round(100*(obp/lg[0]+slg/lg[1]-1)),g:r[5],r:r[18],rbi:r[19],d2:r[9],d3:r[10],cs:r[17]}};
 const mbP=(r,d)=>{const ip=r[7]/3,bf=r[15]||1,c=d.lp[r[1]*8+r[2]]||3.2;
-  return {ip,age:r[4],g:r[5],gs:r[6],era:ip?9*r[10]/ip:99,fip:ip?(13*r[11]+3*(r[12]+r[14])-2*r[13])/ip+c:99,whip:ip?(r[12]+r[8])/ip:99,k:r[13]/bf,bb:r[12]/bf,kbb:(r[13]-r[12])/bf,hr9:ip?9*r[11]/ip:0,sv:r[16],w:r[17],l:r[18],so:r[13],h:r[8]}};
+  return {ip,age:r[4],g:r[5],gs:r[6],era:ip?9*r[10]/ip:99,fip:ip?(13*r[11]+3*(r[12]+r[14])-2*r[13])/ip+c:99,whip:ip?(r[12]+r[8])/ip:99,k:r[13]/bf,bb:r[12]/bf,kbb:(r[13]-r[12])/bf,hr9:ip?9*r[11]/ip:0,sv:r[16],w:r[17],l:r[18],so:r[13],h:r[8],fb:(r[19]||0)/10}};
 const mbIP=v=>Math.floor(v+1e-9)+'.'+Math.round((v-Math.floor(v+1e-9))*3);
 const MBC={b:[['age','Age'],['pa','PA'],['avg','AVG'],['obp','OBP'],['slg','SLG'],['hr','HR'],['sb','SB'],['bb','BB%'],['k','K%'],['iso','ISO'],['idx','Lvl+']],
-  p:[['age','Age'],['ip','IP'],['era','ERA'],['fip','FIP'],['whip','WHIP'],['k','K%'],['bb','BB%'],['kbb','K-BB'],['hr9','HR/9'],['g','G'],['gs','GS'],['sv','SV']]};
+  p:[['age','Age'],['ip','IP'],['fb','FB mph'],['era','ERA'],['fip','FIP'],['whip','WHIP'],['k','K%'],['bb','BB%'],['kbb','K-BB'],['hr9','HR/9'],['g','G'],['gs','GS'],['sv','SV']]};
 const MBLOW={age:1,era:1,fip:1,whip:1,hr9:1},MBMIN={b:[0,50,100,200,400],p:[0,10,20,50,100]};
-const mbFmt=(k,v)=>k==='avg'||k==='obp'||k==='slg'||k==='iso'?f3(v):k==='bb'||k==='k'||k==='kbb'?(v*100).toFixed(1)+'%':k==='era'||k==='fip'||k==='whip'?(v>=99?'-':v.toFixed(2)):k==='hr9'?v.toFixed(1):k==='ip'?mbIP(v):v;
-function mbState(){return UI.mb||(UI.mb={k:'b',y:2,lv:-1,org:-2,q:'',min:{b:200,p:50},age:0,sort:{b:'idx',p:'kbb'},dir:{b:-1,p:-1},pg:0})}
+const mbFmt=(k,v)=>k==='avg'||k==='obp'||k==='slg'||k==='iso'?f3(v):k==='bb'||k==='k'||k==='kbb'?(v*100).toFixed(1)+'%':k==='era'||k==='fip'||k==='whip'?(v>=99?'-':v.toFixed(2)):k==='hr9'?v.toFixed(1):k==='fb'?(v?v.toFixed(1):''):k==='ip'?mbIP(v):v;
+function mbState(){return UI.mb||(UI.mb={k:'b',y:2,lv:-1,org:-2,q:'',min:{b:200,p:50},age:0,velo:0,sort:{b:'idx',p:'kbb'},dir:{b:-1,p:-1},pg:0})}
 function mbRows(){const U=mbState(),d=MB,k=U.k,q=nmz(U.q||''),f=k==='b'?mbB:mbP,out=[],org=U.org===-2?-1:U.org;
   for(const r of d[k]){if(U.y>=0&&r[1]!==U.y)continue;if(U.lv>=0&&r[2]!==U.lv)continue;if(org>=0&&d.tm[r[3]][1]!==org)continue;if(U.age&&(!r[4]||r[4]>U.age))continue;if(q&&!d.low[r[0]].includes(q))continue;
-    const x=f(r,d);if(!q&&(k==='b'?x.pa:x.ip)<U.min[k])continue;out.push([r,x])}
+    const x=f(r,d);if(k==='p'&&U.velo&&!(x.fb>=U.velo))continue;if(!q&&(k==='b'?x.pa:x.ip)<U.min[k])continue;out.push([r,x])}
   const s=U.sort[k],dir=U.dir[k];out.sort((a,b)=>s==='name'?dir*d.pl[a[0][0]][1].localeCompare(d.pl[b[0][0]][1]):dir*(a[1][s]-b[1][s])||b[1][k==='b'?'pa':'ip']-a[1][k==='b'?'pa':'ip']);return out}
 function mbTable(){const U=mbState(),d=MB,k=U.k,rows=mbRows(),per=50,pages=Math.max(1,Math.ceil(rows.length/per));if(U.pg>=pages)U.pg=pages-1;const cols=MBC[k],s=U.sort[k],arrow=c=>s===c?(U.dir[k]<0?' ▼':' ▲'):'';
   const th=(c,l)=>`<th class="num" data-mb="sort" data-v="${c}" style="cursor:pointer;white-space:nowrap" role="button">${l}${arrow(c)}</th>`;
@@ -849,12 +849,12 @@ function mbTable(){const U=mbState(),d=MB,k=U.k,rows=mbRows(),per=50,pages=Math.
 function renderMilb(){const U=mbState();if(!MB){mbLoad();return `<div id="mbAll"><h2 style="margin-top:0">Minor League Database</h2><p class="hint">${MBL===2?'The database did not load. Check your connection and open this screen again.':'Loading every minor leaguer…'}</p></div>`}
   const d=MB,k=U.k,sel=(key,opts,cur)=>`<select data-mbs="${key}" aria-label="${key}">${opts.map(([v,l])=>`<option value="${v}"${String(v)===String(cur)?' selected':''}>${l}</option>`).join('')}</select>`;
   return `<div id="mbAll"><h2 style="margin-top:0">Minor League Database</h2>
-  <p class="hint" style="margin:2px 0 8px">${d.pl.length.toLocaleString()} players, Triple-A down to the Dominican Summer League, 2024 to 2026. Lvl+ compares a hitter with the average at his level that season (100 = average). FIP is our own, set to each level's run environment.</p>
+  <p class="hint" style="margin:2px 0 8px">${d.pl.length.toLocaleString()} players, Triple-A down to the Dominican Summer League, 2024 to 2026. Lvl+ compares a hitter with the average at his level that season (100 = average). FIP is our own, set to each level's run environment. Fastball velocity shows only where a park tracks pitches: all of Triple-A, some of the lower levels.</p>
   <div class="seg" style="margin-bottom:8px"><button type="button" data-mb="kind" data-v="b" aria-pressed="${k==='b'}" class="${k==='b'?'on':''}">Hitters</button><button type="button" data-mb="kind" data-v="p" aria-pressed="${k==='p'}" class="${k==='p'?'on':''}">Pitchers</button></div>
   <div class="filters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px"><input type="search" id="mbQ" placeholder="Search any player…" value="${esc(U.q)}" aria-label="Search minor leaguers" style="flex:1 1 160px;min-width:0">
     ${sel('y',[[2,'2026'],[1,'2025'],[0,'2024'],[-1,'All years']],U.y)}${sel('lv',[[-1,'All levels'],...d.lv.map((l,i)=>[i,l==='CPX'?'Complex':l])],U.lv)}
     ${sel('org',[[-1,'All clubs'],...d.orgs.map((c,i)=>[i,c+(c===ME?' (yours)':'')])],U.org===-2?-1:U.org)}
-    ${sel('min',MBMIN[k].map(v=>[v,v?v+'+ '+(k==='b'?'PA':'IP'):'Any '+(k==='b'?'PA':'IP')]),U.min[k])}${sel('age',[[0,'Any age'],[18,'18 or younger'],[20,'20 or younger'],[22,'22 or younger'],[24,'24 or younger']],U.age)}</div>
+    ${sel('min',MBMIN[k].map(v=>[v,v?v+'+ '+(k==='b'?'PA':'IP'):'Any '+(k==='b'?'PA':'IP')]),U.min[k])}${sel('age',[[0,'Any age'],[18,'18 or younger'],[20,'20 or younger'],[22,'22 or younger'],[24,'24 or younger']],U.age)}${k==='p'?sel('velo',[[0,'Any fastball'],[93,'93+ mph'],[95,'95+ mph'],[97,'97+ mph']],U.velo||0):''}</div>
   <div id="mbT">${mbTable()}</div></div>`}
 function mbDraw(all){const el=$(all?'#mbAll':'#mbT');if(!el){render();return}if(all)el.outerHTML=renderMilb();else el.innerHTML=mbTable()}
 function mbModal(pi){const d=MB,pl=d.pl[pi],L=d.by[pi]||{b:[],p:[]},app=d.app[pl[0]],ord=(a,b)=>b[1]-a[1]||a[2]-b[2],last=[...L.b,...L.p].sort(ord)[0],o=last&&d.tm[last[3]][1]>=0?d.orgs[d.tm[last[3]][1]]:'';
@@ -3436,7 +3436,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123011448';
+const BUILD='20261123013742';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3529,6 +3529,10 @@ function renderExport(){
 }
 
 /* ---------- drawer ---------- */
+/* a pitcher's 2026 fastball velocity: the majors if he threw 10+ innings there, else Triple-A, else any tracked minor-league park */
+/* no 2026 reading in the majors (he missed the year): his latest earlier season with 10+ innings */
+function fbOld(id){const vs=P[id]&&P[id].proj&&P[id].proj.vs;if(!vs||(vs[2026]&&vs[2026][0]>=10))return null;for(const y of [2025,2024])if(vs[y]&&vs[y][0]>=10&&vs[y][1]&&!(P[id].mpa||P[id].mp&&P[id].mp[5]))return [+vs[y][1],y];return null}
+function fbVelo(id){const p=P[id];if(!p||!p.p)return 0;const v=p.proj&&p.proj.vs&&p.proj.vs[2026];if(v&&v[0]>=10&&v[1])return +v[1];const o=fbOld(id);if(o)return o[0];const a=p.mpa&&p.mpa[8];if(a&&(a.FA||a.SI)){const x=a.FA||a.SI;return +(Array.isArray(x)?x[0]:x)||0}return p.mp&&p.mp[5]?+p.mp[5]:0}
 function openDrawer(id){
   const p=P[id];const mets=isMets(id),st=mets?status(id):'',k=kind(id);
   const c=S.contract[id];
@@ -3549,7 +3553,7 @@ function openDrawer(id){
   else if(D.teams[owner(id)]){acts.push(`<button class="btn" data-act="totrade" data-id="${id}">Add to trade</button>`)}
   $('#drawer').innerHTML=`
     <div class="cardhead"><h2>${esc(p.n)}</h2><button class="x" type="button" data-act="closedrawer" aria-label="Close">×</button></div>
-    <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}${sizeOf(id)?`<span class="pill">${esc(sizeOf(id))}</span>`:''}${p.mlbp?`<span class="pill">No. ${p.mlbp} prospect in system</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
+    <div class="statline"><span class="pill">${esc(p.pos)}</span><span class="pill">${p.p?'Throws':'Bats'} ${esc(p.hand||'?')}</span>${p.age?`<span class="pill">Age ${p.age}</span>`:''}${sizeOf(id)?`<span class="pill">${esc(sizeOf(id))}</span>`:''}${p.mlbp?`<span class="pill">No. ${p.mlbp} prospect in system</span>`:''}${fbVelo(id)?`<span class="pill">Fastball ${fbVelo(id).toFixed(1)} mph${fbOld(id)?' ('+fbOld(id)[1]+')':''}</span>`:''}<span class="pill">${esc(owner(id)===ME?MEN():owner(id))}${mets?' · '+({'40':'40-man','IL60':'60-day IL','MiLB':'Minors'}[st]):''}</span>${p.fv?`<span class="pill">HS ${hsGrade(id).toFixed(0)} · #${hsRanks()[id]||'-'}</span><span class="pill">FG FV ${esc(p.fv)}</span>`:''}${note(id)?`<span class="pill bad">${esc(note(id))}</span>`:''}</div>
     <div class="dsec"><h3>Contract</h3><p style="margin:4px 0">${esc(c?c.desc:(p.contract||(p.team==='FA'?'Free agent':'Minor-league / pre-arb')))}</p>
       <div class="kv"><span>CBT figure (2027)</span><b>${mets?M(cbtOf(id)):M(partnerCount(id))}</b></div>
       ${(()=>{const ci=controlInfo(id),r=r5Info(id);return (ci.txt?`<div class="kv"><span>Team control</span><b style="text-align:right">${esc(ci.txt)}</b></div>`:'')+(p.opt&&p.opt!=='n/a'?`<div class="kv"><span>Options</span><b>${esc(String(p.opt))}</b></div>`:'')+(r&&p.lvl!=='MLB'?`<div class="kv"><span>Rule 5</span><b style="text-align:right">${r5Exposed(id)?'<span style="color:var(--bad)">Eligible and unprotected</span>':r.eligibleNow?'Eligible (protected on the 40-man)':'First eligible Dec '+r.first}${r.est?' (est.)':''}</b></div>`:'')+(p.qo&&p.team==='FA'?`<div class="kv"><span>Qualifying offer</span><b>Declined (${M1(RULES.qo.amount)})</b></div>`:'')})()}
