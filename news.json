@@ -1,6 +1,26 @@
 {
  "items": [
   {
+   "title": "MLB offers higher minimum salaries while union eyes local media revenue sharing",
+   "blurb": "MLB suggested more measures Monday to get players paid earlier in their careers while the players union agreed to share local media equally among the 30 teams.",
+   "link": "https://www.espn.com/mlb/story/_/id/50576198/mlb-offers-higher-minimum-player-salaries-lockout-looms",
+   "time": "2026-11-23T20:55:18Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Sources: Yankees agree to 1-year, $4M deal with reliever Suter",
+   "blurb": "The Yankees and left-handed reliever Brent Suter are in agreement on a one-year, $4 million contract with a club option for 2028, sources told ESPN's Jeff Passan on Monday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50576087/yankees-agree-1-year-4m-deal-reliever-suter",
+   "time": "2026-11-23T20:54:45Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
    "title": "Sources: Yankees agree to 1-year, $4M deal with reliver Suter",
    "blurb": "The Yankees and left-handed reliever Brent Suter are in agreement on a one-year, $4 million contract with a club option for 2028, sources told ESPN's Jeff Passan on Monday.",
    "link": "https://www.espn.com/mlb/story/_/id/50576087/yankees-agree-1-year-4m-deal-reliver-suter",
@@ -3232,30 +3252,7 @@
    "teams": [
     "BAL"
    ]
-  },
-  {
-   "title": "Baltimore Orioles selected the contract of RHP Levi Wells from Norfolk Tides.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL"
-   ]
-  },
-  {
-   "title": "Texas Rangers claimed RHP Josh White off waivers from Baltimore Orioles.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL",
-    "TEX"
-   ]
   }
  ],
- "updated": "2026-11-23T20:48:30Z"
+ "updated": "2026-11-23T20:58:35Z"
 }
