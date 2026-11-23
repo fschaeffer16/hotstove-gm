@@ -1198,7 +1198,7 @@ const PROFILE={
  ARI:{cap:205,capReady:230,sell:.3,pros:'neutral',defer:'some',note:'Mid-market contender stretching payroll'},
  BAL:{cap:195,capReady:235,sell:.4,pros:'hoard',defer:'light',note:'Deep farm, new owner spending more'},
  KCR:{cap:170,capReady:190,sell:.4,pros:'neutral',defer:'light',note:'Built around Bobby Witt Jr., spends in bursts'},
- MIN:{cap:155,sell:.7,pros:'neutral',defer:'light',note:'Payroll cuts; listening on veterans'},
+ MIN:{cap:155,sell:.3,pros:'neutral',defer:'light',note:'Ownership has promised a higher payroll; adding, not selling'},
  STL:{cap:145,capReady:190,sell:.7,pros:'hoard',defer:'light',note:'Resetting under new leadership; shedding veterans'},
  CIN:{cap:135,capReady:160,sell:.6,pros:'neutral',defer:'light',note:'Small budget, young pitching'},
  MIL:{cap:150,sell:1,pros:'hoard',defer:'light',note:'Trades stars a year or two before free agency and keeps winning'},
@@ -1803,7 +1803,7 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
     if(R.dumpFull&&!R.dumpAsset)return `We will move ${dn}, and we know what that takes: we eat some money back. But for taking ${M(R.dumpBack)} of it we need one real young player in the deal, not only contracts.`;
     if(!R.dumpFull&&R.dumpShare<=1&&R.verdict!=='accept')return `We would move ${dn}, but the point for us is the money: he is owed ${M(d.rem)} and you are sending ${M(R.dumpBack)} back. Get that under ${M(d.rem*.45)} and add young talent, and we can talk.`}
   if(R.verdict==='accept')return hI?`${like}${others.length?', and '+others.join(' and ')+(others.length>1?' help':' helps')+' too':''}.${now&&established(hI)?' That makes us better this year.':!now&&isPro(hI)?' That is the kind of talent we are building around.':''}`:'That works for us.';
-  if(R.needMLB)return `We are trying to win in 2027.${hO?' '+nm(hO)+' is part of that.':''}`;
+  if(R.needMLB){const L=R.mlbLead||hO;return `We are trying to win in 2027.${L?' '+nm(L)+' is part of that.':''}`}
   if(!R.headOK&&hO)return `Any deal for ${nm(hO)} starts with one player close to his level.`;
   if(!hO)return like?like+'.':'I need to see more.';
   const pb=intelOf(hO)&&intelOf(hO).problem;
@@ -1816,6 +1816,7 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
    a player the user just signed to a multi-year extension, or a historic contract ($200M+ still owed). The user can still offer them himself. */
 function noAsk(id){const p=P[id],it=intelOf(id),k=S.contract[id];if(!p)return '';
   if(it&&it.ntc)return 'ntc';
+  if(it&&(it.noask||it.status==='untouchable'))return 'ext';/* the user's club has him off the table (owner, 11/23: Ewing, just extended): no GM asks for him, whatever the save holds */
   const svc=parseFloat(p.svc)||0,a=p.acq||'',m=a.match(/'(\d\d)/);if(svc>=10&&m&&(+m[1]<=21||/(Jan|Feb|Mar|Apr)'22/.test(a)))return 'ntc';
   if(k&&k.terms&&p.team!=='FA'&&k.terms.years>=3)return 'ext';
   if(remGuar(id)>=2e8)return 'big';
@@ -1857,7 +1858,7 @@ function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=need
   if(ok.length){const a=ok[0],b=ok.find(x=>x.id!==a.id&&(established(x.id)!==established(a.id)||Math.abs(x.g-a.g)>=2))||ok[1];
     return `${want}Looking at your system and what's already on the table: add ${nm(a.id)} and I'd do it; ${why(a.id)}.${b?` If he's off limits, ${nm(b.id)} gets us there too.`:''}`}
   const near=pool.filter(x=>evalTrade(code,outSel.concat([x.id]),inSel,cashM).verdict==='counter').sort((a,b)=>b.g-a.g);
-  if(E0.needMLB){const m=pool.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5).sort((a,b)=>b.f-a.f||b.g-a.g)[0];return `${want}We're trying to win, so if ${nm(E0.hOut.id)} goes I need a big leaguer back, not just prospects.${m?' '+nm(m.id)+' is the kind of player I mean: '+why(m.id)+'.':''}`}
+  if(E0.needMLB){const m=pool.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5).sort((a,b)=>b.f-a.f||b.g-a.g)[0];return `${want}We're trying to win, so if ${nm(E0.mlbLead||E0.hOut.id)} goes I need a big leaguer back, not just prospects.${m?' '+nm(m.id)+' is the kind of player I mean: '+why(m.id)+'.':''}`}
   if(!E0.headOK&&E0.hOut&&E0.hOut.id){const top=pool[0];return `${want}The problem is the top of the deal. For ${nm(E0.hOut.id)} I need one player close to his level, and ${top?nm(top.id)+' is the one in your system who is; '+why(top.id):'I do not see him in your system'}. More small pieces won't do it.`}
   if(near.length)return `${want}Nobody closes it alone, but ${nm(near[0].id)} gets us close; ${why(near[0].id)}. Him plus one more real piece.`;
   return `${want}Honestly, I don't see the match for ${inSel.length>1?'those players':nm(inSel[0])} in your system right now. You'd have to ask for less.`}
@@ -1977,7 +1978,7 @@ function gmReply(text,code,outSel,inSel,cashM){
   if(E.verdict==='locked')end="The rules don't allow this one, though, so it is out of my hands.";
   else if(E.untouch&&E.untouch.length)end=`But ${nm(E.untouch[0].x.id)} isn't moving. Only a better player coming back changes that.`;
   else if(E.verdict==='accept')end=E0.verdict==='accept'?'We already had a deal.':"Alright. You've made your case. We can do this.";
-  else if(E.needMLB)end=`I still need big-league help back if ${nm(E.hOut.id)} leaves. We're trying to win.`;
+  else if(E.needMLB)end=`I still need big-league help back if ${nm(E.mlbLead||E.hOut.id)} leaves. We're trying to win.`;
   else if(!E.headOK&&E.hOut.id)end=`${delta>=.06?'Those are fair points and they count with me. ':delta>0?'That is a fair point and it counts with me. ':''}Where I am stuck is the top of the deal: ${nm(E.hOut.id)} is the best player in it, and ${E.hIn.id?nm(E.hIn.id)+' is a good player but not in his class':'nothing coming back is in his class'}. ${E.add&&E.add.id?'Someone like '+nm(E.add.id)+' at the front of your side would get us there.':'Put a piece closer to him at the front of your side and we can keep going.'}`;
   else if(E.verdict==='counter')end=delta>0?"That gets us closer. I still need a little more in the deal.":"We're close. One more piece would do it.";
   else end=delta>0?"I'll give you the point. We're still a real piece apart.":"I appreciate the case, but we are still well apart on the players.";
@@ -2099,6 +2100,7 @@ function evalTrade(code,outSel,inSel,cashM){
   const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
   const mlbBack=rec.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5);
   R.needMLB=winNow&&mlbOut.length&&!mlbBack.length&&hIn.g<hOut.g+6;
+  R.mlbLead=mlbOut.length?mlbOut.slice().sort((a,b)=>P[b.id].proj.war-P[a.id].proj.war)[0].id:null;/* the big leaguer whose loss hurts the 2027 club: he is the one the GM talks about, not a prospect who has not arrived (owner, 11/23) */
   /* a club trying to win now will give a top prospect for a star: the headliner test is looser when a prospect goes out and an established 60+ player comes back */
   const starBack=hOut.id&&hIn.id&&!established(hOut.id)&&established(hIn.id)&&hIn.g>=60;
   const slack=((c.win==='rebuild'||c.win==='ascend'||c.win==='retool')&&rec.length>=2?6:4)+(starBack?(c.win==='allin'?4:c.win==='contend'?2:0):0);
@@ -2406,7 +2408,7 @@ function verdictHTML(E){
   else{
     const lead=E.verdict==='counter'?`"${esc(E.quote)}" Close.`:`"${esc(E.quote)}" Not close.`;
     let why;
-    if(E.needMLB)why=` They're trying to win. If ${nm(E.hOut)} goes, they need big-league help back, not just prospects.`;
+    if(E.needMLB)why=` They're trying to win. If ${nm(E.mlbLead?{id:E.mlbLead}:E.hOut)} goes, they need big-league help back, not just prospects.`;
     else if(!E.headOK&&E.hOut.id)why=` The best player in this deal is ${nm(E.hOut)} (${esc(E.hOut.label)}). ${E.hIn.id?`${nm(E.hIn)} (${esc(E.hIn.label)}) isn't in his class, and depth doesn't make up for it.`:`Nothing coming back is in his class.`}`;
     else{const r=E.give?E.recv/E.give:0;why=r>=.9?` They are a small piece short.`:r>=.75?` They are one good piece short of what they are giving up.`:` What comes back is well short of what they are giving up.`}
     const pull=E.pull?` ${esc(P[E.pull.id].n)}'s contract is what holds this up: he is owed ${M(E.pull.rem)}. Take him out of the deal and ${E.pull.v==='accept'?'it works':'it is close'}.`:'';
@@ -3441,7 +3443,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123042656';
+const BUILD='20261123050423';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
