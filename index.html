@@ -1626,6 +1626,17 @@ function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.
       if(age>=30&&d1<=-.025&&d2<=-.025){m=-.3;why=`his strikeouts minus walks have dropped two years running (${tr})`}
       else if(age<=27&&d1>=.025&&d2>=.025){m=.3;why=`his strikeouts minus walks have climbed two years running (${tr})`}
       if(m){w+=m;parts.push(['Arm by season',`K-BB ${tr}: ${m>0?'+':''}${m.toFixed(1)}`]);notes.push(why)}}}
+  /* tools on defense (owner, 11/23: a catcher who cannot block, an outfielder with a weak arm, are priced accordingly). Small on purpose: projected WAR
+     already carries overall defense, so only a standout tool at either end counts, the total is held to +/-0.35 WAR, and a catcher is not marked twice
+     when the "Behind the plate" layer has already moved him the same way. */
+  {const d=defOf(id);if(d&&!(M0&&M0.war!=null)){let m=0;const why=[],sgn=(n,re)=>parts.some(z=>z[0]===n&&re.test(z[1])),cN=sgn('Behind the plate',/: -/),cP=sgn('Behind the plate',/: \+/),add=(v,t)=>{m+=v;why.push(t)},pc=x=>Math.round(x*100)+'%';
+    if(d.blk&&d.blk[4]){const b=d.blk,q=b[4]/b[5];if(q>=.9&&b[0]<=-8&&!cN)add(-.2,`he does not block the ball well (${b[1]} passed balls and wild pitches, ${b[2]} expected)`);else if(q<=.1&&b[0]>=8&&!cP)add(.2,`one of the best at blocking the ball (${b[0]} more blocks than an average catcher)`)}
+    if(d.cs&&d.cs[0]>=25){const c=d.cs,g=c[2]-c[3];if(g>=.06&&!cP)add(.15,`he shuts down the running game (${pc(c[2])} caught, ${pc(c[3])} for an average catcher)`);else if(g<=-.06&&!cN)add(-.15,`runners take advantage of him (${pc(c[2])} caught, ${pc(c[3])} for an average catcher)`)}
+    const a=d.arm,pp=String(p.pos||'').split('/')[0];
+    if(a&&a.of&&/^(OF|LF|CF|RF)$/.test(pp)){const q=a.of[1]/a.of[2],t=a.of[0].toFixed(1)+' mph';if(q<=.1)add(.15,`a plus arm in the outfield (${t})`);else if(q>=.9)add(pp==='LF'?-.1:-.15,`a weak arm for an outfielder (${t})`)}
+    if(a&&a.inf&&/^(SS|3B)$/.test(pp)){const q=a.inf[1]/a.inf[2],t=a.inf[0].toFixed(1)+' mph';if(q<=.1)add(.1,`a strong arm on the left side of the infield (${t})`);else if(q>=.9)add(-.1,`a light arm for the left side of the infield (${t})`)}
+    if(d.rng){const r=d.rng;if(r[0]>=15&&!sgn('Glove by season',/: \+/))add(.2,`elite range at ${r[1]} (+${r[0]} outs above average)`);else if(r[0]<=-10&&!sgn('Glove by season',/: -/))add(-.2,`limited range at ${r[1]} (${r[0]} outs above average)`)}
+    m=Math.max(-.35,Math.min(.35,m));if(m){w+=m;parts.push(['Tools on defense',`${why.join('; ')}: ${m>0?'+':''}${m.toFixed(2)}`]);for(const t of why)notes.push(t)}}}
   const M_=profOf(id);if(M_&&M_.war!=null){w=+M_.war;parts.push(['Profile correction',`${(+M_.war).toFixed(1)} WAR${M_.note?': '+M_.note:''}`]);if(M_.note)notes.push(M_.note)}
   const od=SN&&SN.od&&SN.od[id];let hf=1;if(od&&od.ret>=150){hf=.15;parts.push(['Health',`${od.what||'injured'}: expected to miss 2027`]);notes.push('he is expected to miss the 2027 season')}
     else if(od&&od.ret>=45){hf=Math.max(.5,1-od.ret/200);parts.push(['Health',`${od.what||'injured'}: out to start 2027`]);notes.push('he opens 2027 on the injured list')}
@@ -2571,7 +2582,7 @@ function controlInfo(id){const p=P[id],y=(S.contract[id]&&S.contract[id].yrs)||p
   return {txt:svc?`${svc.toFixed(3)} years of service`:'',svc}}
 /* ---- Rule 5 eligibility (needs player_meta.json: birth date, draft year, country from MLB Stats API) ---- */
 let META=null,META_IX=null;
-function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}if(D){fillFromMeta();render()}return META}).catch(()=>{META=false})}
+function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}_vw={};if(D){fillFromMeta();render()}return META}).catch(()=>{META=false})}
 /* height and weight from player_meta.json (MLB Stats API), e.g. 6'7", 282 lb */
 function sizeOf(id){const m=metaOf(id);return m&&m.h?m.h+(m.w?', '+m.w+' lb':''):''}
 function metaOf(id){if(!META_IX)return null;const p=P[id];return META_IX[nmz(p.n)+'|'+owner(id)]||META_IX[nmz(p.n)+'|'+p.team]||META_IX[nmz(p.n)]||null}
@@ -3466,7 +3477,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123063611';
+const BUILD='20261123064118';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3828,7 +3839,7 @@ fetch('data.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status
   try{const r=await fetch('transactions.json',{cache:'no-store'});if(r.ok){D.tx=await r.json();applyTx(D.tx)}}catch(e){D.tx=null}
   try{const r=await fetch('intel.json',{cache:'no-store'});if(r.ok){INTEL=await r.json();applyIntel()}}catch(e){INTEL=null}
   try{const r=await fetch('profiles.json',{cache:'no-store'});if(r.ok){PROFILES=await r.json();_vw={}}}catch(e){PROFILES=null}
-  try{const r=await fetch('defense.json',{cache:'no-cache'});if(r.ok)DEF=await r.json()}catch(e){DEF=null}
+  try{const r=await fetch('defense.json',{cache:'no-cache'});if(r.ok){DEF=await r.json();_vw={}}}catch(e){DEF=null}
   try{const r=await fetch('draft.json',{cache:'no-cache'});if(r.ok)drInit(await r.json())}catch(e){DR=null}
   try{const r=await fetch('season.json',{cache:'no-cache'});if(r.ok)SN=await r.json()}catch(e){SN=null}
   const imported=await importFromHash();
