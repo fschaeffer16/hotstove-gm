@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Fantasy baseball: Breaking down Tarik Skubal's fantasy value on the Mets",
+   "blurb": "What Tarik Skubal signing a nine-year deal with the Mets means for his fantasy value.",
+   "link": "https://www.espn.com/fantasy/baseball/story/_/id/50566837/tarik-skubal-new-york-mets-fantasy-reaction-2027",
+   "time": "2026-11-23T00:11:24Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "Tarik Skubal to Mets: Grading record $450 million contract",
    "blurb": "New York has landed this offseason's most prized free agent. How did the Mets fare in handing out the mind-boggling contract?",
    "link": "https://www.espn.com/mlb/story/_/id/50521081/tarik-skubal-new-york-mets-grade-record-contract",
@@ -3258,18 +3269,7 @@
    "teams": [
     "PIT"
    ]
-  },
-  {
-   "title": "Milwaukee Brewers selected the contract of LHP Tate Kuehner from Nashville Sounds.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "MIL"
-   ]
   }
  ],
- "updated": "2026-11-23T00:08:37Z"
+ "updated": "2026-11-23T00:18:41Z"
 }
