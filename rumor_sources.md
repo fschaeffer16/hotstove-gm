@@ -21,3 +21,4 @@ The beat writers for each of the 30 clubs at ESPN, The Athletic, MLB.com and the
 - Put the reporter and outlet in the note or `src` (for example "Rosenthal, The Athletic, Nov. 19").
 - Do not copy paywalled text. One short line in our own words.
 - "Wants a right-handed bat" or "needs a left-handed reliever" style details go in the club's `note`; `wants` keeps the position codes.
+- **Owner notes come first.** An entry in `intel.json` with `"owner": true` is the owner's own read (for example: Miami picked up Sandy Alcantara's option in order to trade him, whatever the club says in public). Never change its status, note or `src`, and never remove it, because of public reporting or a club's public comments. Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees, leave the entry alone and say so in your summary.

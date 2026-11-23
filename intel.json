@@ -1,6 +1,6 @@
 {
  "updated": "2026-11-22",
- "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it.",
+ "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary.",
  "teams": {
   "LAD": {
    "wants": [
@@ -570,7 +570,8 @@
    "ntc": true,
    "problem": true,
    "note": "Hazen says a trade is back on the table; he no-showed a game at Fenway and went on the restricted list, the club has suspended him twice in two years (owner note, 11/22), and he has full no-trade rights",
-   "src": "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs"
+   "src": "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs",
+   "owner": true
   },
   {
    "name": "Otto Lopez",
@@ -600,7 +601,8 @@
    "team": "MIA",
    "status": "available",
    "note": "Miami picked up his $20M option in order to trade him; the club is not going to pay one pitcher that much. Publicly it says it has no plans to move him. Owner note 11/23/2026: do not set him back to untouchable from the club's public comments.",
-   "src": "owner note (11/23/2026); public stance: https://sports.yahoo.com/articles/marlins-pobo-makes-clear-stance-200627942.html"
+   "src": "owner note (11/23/2026); public stance: https://sports.yahoo.com/articles/marlins-pobo-makes-clear-stance-200627942.html",
+   "owner": true
   },
   {
    "name": "Shane McClanahan",
@@ -877,7 +879,8 @@
    "dump": true,
    "problem": true,
    "note": "the club was open to offers at the deadline and wants out of a big contract; he refused to come out for a pinch-runner in June and has been a problem in the clubhouse (owner note, 11/22)",
-   "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus"
+   "src": "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus",
+   "owner": true
   },
   {
    "name": "Jung Hoo Lee",
@@ -1008,7 +1011,8 @@
    "status": "untouchable",
    "ntc": true,
    "note": "The Mets would not trade him (July 2026 report); full no-trade clause in his 15-year, $765M contract (owner note, 11/22)",
-   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
+   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html",
+   "owner": true
   },
   {
    "name": "Nolan McLean",
@@ -1150,7 +1154,8 @@
    "team": "BOS",
    "status": "available",
    "note": "was unhappy that analytics set the lineups late in the playoffs",
-   "src": "Owner note, 11/22/2026"
+   "src": "Owner note, 11/22/2026",
+   "owner": true
   }
  ],
  "sources": [
