@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Sources: Yankees agree to 1-year, $4M deal with reliver Suter",
+   "blurb": "The Yankees and left-handed reliever Brent Suter are in agreement on a one-year, $4 million contract with a club option for 2028, sources told ESPN's Jeff Passan on Monday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50576087/yankees-agree-1-year-4m-deal-reliver-suter",
+   "time": "2026-11-23T20:42:32Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
    "title": "The Best Fits For Teruaki Sato",
    "blurb": "MLBTR continues to give subscribers detailed looks at the markets for top free agents. In this edition, we look at Teruaki Sato, who is almost certainly going to sign very shortly. His 45-day posting window technically goes into the middle of December but a lockout is expected to begin on December 2",
    "link": "https://www.mlbtraderumors.com/2026/11/the-best-fits-for-teruaki-sato.html",
@@ -3244,19 +3255,7 @@
     "BAL",
     "TEX"
    ]
-  },
-  {
-   "title": "Baltimore Orioles traded RHP Yaqui Rivera to Athletics.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL",
-    "ATH"
-   ]
   }
  ],
- "updated": "2026-11-23T20:38:26Z"
+ "updated": "2026-11-23T20:48:30Z"
 }
