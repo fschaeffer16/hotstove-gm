@@ -1672,6 +1672,10 @@ function gradeTo(id,code,incoming){
     }
     /* 2026 results, splits, Statcast, WAR trend and injury history, as this club reads them */
     {const A=dataAdj(id,code,incoming,win,gp,w);g+=A.d;for(const n of A.notes)notes.push(n)}
+    /* a seller is not the only club at the table (owner, 11/23: Alcantara is available, not free). However keen a club is to move a useful player
+       (age against its timeline, a replacement ready, a walk year, on the block), other clubs are bidding, so its price stays within 5 grades of what
+       a contender would pay for him. Not for a contract that is a burden or a player the club wants gone; those have their own rules. */
+    if(!incoming&&w>=1.5&&burden<=.3){const it=intelOf(id);if(!(it&&(it.problem||it.dump))){const fl=raw-(cy<=1?3:cy===2?2:0)-5;if(g<fl){g=fl;notes.push('other clubs want him too, so they will not give him away')}}}
   }else if(p.fv){
     g=hsGrade(id);notes.push(`Hot Stove grade ${Math.round(g)}`+(p.t100?` · FG Top 100 #${p.t100}`:'')+(p.p100?` · Pipeline Top 100 #${p.p100}`:'')+(p.mlbp?` · MLB Pipeline #${p.mlbp} in org`:''));
     const R=roster(code).filter(x=>x!==id);
@@ -3436,7 +3440,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123013742';
+const BUILD='20261123023202';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
