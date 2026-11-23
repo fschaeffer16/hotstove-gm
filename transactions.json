@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21",
+ "updated": "2026-11-23",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -2933,9 +2933,20 @@
    },
    "src": "owner note (11/23/2026)",
    "owner": true
+  },
+  {
+   "date": "2026-11-23",
+   "type": "sign",
+   "summary": "Mets To Sign Paul Goldschmidt",
+   "name": "Paul Goldschmidt",
+   "team": "NYM",
+   "pos": "1B",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-21T15:14:26Z",
+ "live": "2026-11-23T15:05:56Z",
  "seen_sids": [
   950119,
   950220,
