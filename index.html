@@ -1816,7 +1816,8 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
    a player the user just signed to a multi-year extension, or a historic contract ($200M+ still owed). The user can still offer them himself. */
 function noAsk(id){const p=P[id],it=intelOf(id),k=S.contract[id];if(!p)return '';
   if(it&&it.ntc)return 'ntc';
-  if(it&&(it.noask||it.status==='untouchable'))return 'ext';/* the user's club has him off the table (owner, 11/23: Ewing, just extended): no GM asks for him, whatever the save holds */
+  if(it&&(it.noask||it.status==='untouchable'))return 'ext';
+  if(TXEXT.has(id))return 'ext';/* the user's club has him off the table (owner, 11/23: Ewing, just extended): no GM asks for him, whatever the save holds */
   const svc=parseFloat(p.svc)||0,a=p.acq||'',m=a.match(/'(\d\d)/);if(svc>=10&&m&&(+m[1]<=21||/(Jan|Feb|Mar|Apr)'22/.test(a)))return 'ntc';
   if(k&&k.terms&&p.team!=='FA'&&k.terms.years>=3)return 'ext';
   if(remGuar(id)>=2e8)return 'big';
@@ -1994,6 +1995,8 @@ function gmTalkHTML(E,code,outSel,inSel,cashM){if(E.verdict==='locked')return ''
 function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(id);
   if(it&&it.status==='untouchable')return 'reported untouchable';
   if(it&&it.status==='available')return '';
+  /* a club that has just bought out a young player's arbitration years and a year or two of free agency is building around him (owner, 11/23) */
+  if(TXEXT.has(id)&&(p.age||30)<=27&&ctrl(id).length>=4)return 'just extended';
   if(established(id)){if(it&&it.status==='listening')return (p.proj.war>=5.5&&ctrl(id).length>=2)?'franchise player':'';const w=p.proj.war,cy=ctrl(id).length,age=p.age||28;
     if(w>=5.5&&cy>=2)return 'franchise player';
     if(age<=27&&cy>=3&&w>=3.5)return 'young core player';
@@ -2009,6 +2012,7 @@ function pkg(list){const pos=list.filter(x=>x.pts>0).sort((a,b)=>b.pts-a.pts),ne
 /* kept for older callers: v = package points */
 function valueTo(id,code,incoming){const r=gradeTo(id,code,incoming);return {v:r.pts,notes:r.notes,g:r.g,label:r.label}}
 function sumW(vals){return pkg(vals.map(v=>({pts:v})))}
+const TXEXT=new Set();/* players whose club extended them in a real move this offseason (set in applyTx) */
 const TXSIGN=new Set();/* players signed to a big-league deal in a real move this offseason (set in applyTx) */
 function lockedFA(id){if(SE&&SE.day>=SE_JUN15)return false;const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&owner(id)!=='FA')||(TXSIGN.has(id)&&owner(id)!=='FA')}
 function sumW(vals){const pos=vals.filter(x=>x>0).sort((a,b)=>b-a),neg=vals.filter(x=>x<=0);const w=[1,.85,.7,.55,.45,.4];return pos.reduce((s,x,i)=>s+x*(w[i]??.35),0)+neg.reduce((s,x)=>s+x,0)}
@@ -2095,7 +2099,7 @@ function evalTrade(code,outSel,inSel,cashM){
     R.bigK=null}/* owner, 11/22 (twice): no payroll or contract-size limit of any kind. A club can always make other moves. Money counts only through contract burden and salary dumps. */
   /* the club's questions, in order */
   const untouch=giv.filter(x=>!x.dump).map(x=>({x,why:untouchable(x.id,code)})).filter(u=>u.why);
-  R.untouch=untouch.filter(u=>u.why==='reported untouchable'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
+  R.untouch=untouch.filter(u=>u.why==='reported untouchable'||u.why==='just extended'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
   const winNow=(c.win==='allin'||c.win==='contend');
   const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
   const mlbBack=rec.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5);
@@ -2403,7 +2407,7 @@ function verdictHTML(E){
   if(E.verdict==='locked')msg=[...(E.lockWhy||[]).map(esc),...(E.ruleErrs||[]).map(e=>esc(e)+'.')].filter(Boolean).join(' ');
   else if(E.bigK)msg=`"We don't take on contracts like ${esc(P[E.bigK.id].n)}'s." He has ${M(E.bigK.rem)} guaranteed left. ${esc(D.teams[E.code].name)} won't absorb more than about ${M(E.kMax)} for one player, unless a big contract goes back the other way.`;
   else if(E.budget)msg=`"That takes us past what ownership will spend." This puts them at ${M(E.after)}, over their ${M(E.cap)} limit. Take salary back or add cash.`;
-  else if(E.untouch&&E.untouch.length){const u=E.untouch[0],it=intelOf(u.x.id);msg=u.why==='reported untouchable'?`"${esc(P[u.x.id].n)} isn't available." ${it&&it.note?esc(it.note)+'.':''} That's not a conversation right now.`:`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
+  else if(E.untouch&&E.untouch.length){const u=E.untouch[0],it=intelOf(u.x.id);msg=u.why==='just extended'?`"${esc(P[u.x.id].n)} isn't available. We just signed him to a long extension because we are building around him."`:u.why==='reported untouchable'?`"${esc(P[u.x.id].n)} isn't available." ${it&&it.note?esc(it.note)+'.':''} That's not a conversation right now.`:`"${esc(P[u.x.id].n)} isn't available. He's our ${esc(u.why)}." It would take a better player than him coming back to even start that conversation.`}
   else if(E.verdict==='accept')msg=`"${esc(E.quote)} We can do this."`;
   else{
     const lead=E.verdict==='counter'?`"${esc(E.quote)}" Close.`:`"${esc(E.quote)}" Not close.`;
@@ -3443,7 +3447,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123050423';
+const BUILD='20261123051501';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3779,6 +3783,8 @@ function applyTx(T){
       if(!id)id=mkP(t.name,t.team,t.pos);moveP(id,t.team,t.type==='sign'&&t.forty!==false);if(t.type==='sign'&&String(t.date||'')>='2026-10-01')TXSIGN.add(id);
       if(t.type==='sign'&&D.teams[t.team]){TXARMS.push(id);slotIn(t.team==='NYM'?D:D.base[t.team],id)}
       if(t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}})}if(t.type==='sign_minor')P[id].lvl=P[id].lvl==='MLB'?'AAA':P[id].lvl}
+    else if(t.type==='extend'||t.type==='extension'){const id=findP(t.name,t.team);/* a club extends its own player: new contract, same club, no free-agent rules */
+      if(id&&P[id].team===t.team&&t.contract){Object.assign(P[id],{kind:'guar',aav:t.contract.aav||0,contract:t.contract.desc||'',yrs:t.contract.yrs||{}});if(String(t.date||'')>='2026-10-01')TXEXT.add(id)}}
     else if(t.type==='release'||t.type==='nontender'){const id=findP(t.name,t.team);if(id){if(P[id].kind==='guar'&&D.teams[t.team])D.teams[t.team].deadAdd=(D.teams[t.team].deadAdd||0)+(P[id].aav||0);dropFrom(id,t.team);toFA(id,t.team,t.type==='nontender')}}
     else if(t.type==='dfa'||t.type==='outright'){const id=findP(t.name,t.team);if(id){const c=t.team;if(D.fortyBy[c])D.fortyBy[c]=D.fortyBy[c].filter(x=>x!==id);if(c==='NYM')D.forty=D.forty.filter(x=>x!==id)}}
     else if(t.type==='select'){const id=findP(t.name,t.team)||mkP(t.name,t.team,t.pos);moveP(id,t.team,true);if(t.team==='NYM'){if(!D.forty.includes(id))D.forty.push(id)}else if(!D.fortyBy[t.team].includes(id))D.fortyBy[t.team].push(id)}
