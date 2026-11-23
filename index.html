@@ -2977,6 +2977,11 @@ function seLg4(){if(_lg4)return _lg4;const A={LL:[0,0,0,0,0],LR:[0,0,0,0,0],RL:[
   for(const id in P){const p=P[id];if(!p.p||!p.proj||p.proj.t!=='p'||!(p.proj.ip>=20)||p.team==='DUP')continue;const r=pRate(id);if(!r.L)continue;const h=p.hand==='L'?'L':'R',w=p.proj.ip;
     for(const s of ['L','R']){const a=A[h+s],v=r[s],ws=w*(s===(h==='L'?'L':'R')?(h==='L'?.2:.6):(h==='L'?.8:.4));a[0]+=v.k*ws;a[1]+=v.bb*ws;a[2]+=v.hr*ws;a[3]+=v.babip*ws;a[4]+=ws}}
   _lg4={};for(const k in A){const a=A[k];_lg4[k]=a[4]?{k:a[0]/a[4],bb:a[1]/a[4],hr:a[2]/a[4],babip:a[3]/a[4]}:{k:LGP[0],bb:LGP[1],hr:LGP[2],babip:LGP[3]}}return _lg4}
+/* standout defensive tools in the season sim (owner, 11/23): the same read the GMs use (valW "Tools on defense": blocking, throwing, arm strength,
+   range), turned into runs at 10 per WAR and added to his club's defense for the games he plays in the field. A DH adds nothing, and a catcher's
+   tools count only when he is catching. Small by design (at most 3.5 runs a season for one player), because his projection already carries his overall defense. */
+function seDefTool(id,pos){if(!pos||pos==='DH'||!P[id]||P[id].p)return 0;const isC=/^C/.test(P[id].pos||'');if(isC!==(pos==='C'))return 0;
+  const t=valW(id).parts.find(z=>z[0]==='Tools on defense');if(!t)return 0;const m=parseFloat(t[1].slice(t[1].lastIndexOf(': ')+2));return isFinite(m)?m*10:0}
 function sePA(b0,c,bh,home,park,dAdj,bd){
   const ph=c.hand,side=bh==='L'||bh==='R'?bh:(ph==='L'?'R':'L'),own=ph==='L'?b0.L:b0.R,b=own||b0,ps=side==='L'?c.r.L:c.r.R,p=ps||c.r,
     G=ps?seLg4()[(ph==='L'?'L':'R')+side]:{k:LGP[0],bb:LGP[1],hr:LGP[2],babip:LGP[3]};/* pitcher's own split is compared with the league line for that same matchup, so the platoon edge is counted once */
@@ -2993,7 +2998,7 @@ function sePA(b0,c,bh,home,park,dAdj,bd){
 /* ---- one full game. Returns the box score. ---- */
 function seGame(hc,ac,day,po){
   const Rs=[seRoster(ac),seRoster(hc)],sp=[sePickSP(ac,Rs[0],day,po),sePickSP(hc,Rs[1],day,po)],park=PARK[hc]||1;
-  const T=[0,1].map(i=>{const R=Rs[i],lu=seLineup(R,P[sp[1-i]].hand||'R',po),p0=seMkPit(sp[i],true);let d=17.5;lu.forEach(x=>d+=bRate(x.id).def);
+  const T=[0,1].map(i=>{const R=Rs[i],lu=seLineup(R,P[sp[1-i]].hand||'R',po),p0=seMkPit(sp[i],true);let d=17.5;lu.forEach(x=>d+=bRate(x.id).def+seDefTool(x.id,x.pos));
     return {code:R.code,lu:lu.map(x=>({id:x.id,pos:x.pos,pa:0,lob:0,r2:0,gd:0,s:[0,0,0,0,0,0,0,0,0,0,0]})),bi:0,pit:[p0],cur:p0,runs:0,hits:0,ls:[],lob:0,ra:0,rh:0,ev:[],
       pen:R.pen.filter(x=>x[1]!==sp[i]).map(x=>({role:x[0],id:x[1],ok:seAvail(x[1],day)})),dAdj:Math.max(-.012,Math.min(.012,-d/.8/4300))}});
   let wp=null,lp=null;const lead=i=>T[i].runs-T[1-i].runs;
@@ -3477,7 +3482,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123064118';
+const BUILD='20261123213925';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
