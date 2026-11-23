@@ -2342,7 +2342,7 @@ function execTrade(force){
   const E0=evalTrade(code,outSel,inSel,UI.tCash);
   if(!force&&E0.ruleErrs&&E0.ruleErrs.length){toast('MLB rules block this: '+E0.ruleErrs[0]+'. Force approve overrides it.');return}
   if(!force&&E0.verdict!=='accept'){toast('They have not agreed. Use Force approve to push it through.');return}
-  const n40=count40()-out40+add40.length;if(!force&&n40>40){toast(`That puts the 40-man at ${n40}/40. DFA, release or outright someone first, or use Force approve.`);return}
+  const n40=count40()-out40+add40.length;/* a 40-man over 40 never holds up a trade (owner, 11/23): make the deal, then clean up the roster */
   snap();
   const outV=outSel.reduce((s,id)=>s+cbtOf(id),0),inV=inSel.reduce((s,id)=>s+partnerCount(id),0),cash=UI.tCash*1e6;
   const pOut=outSel.reduce((s,id)=>s+partnerCount(id),0);
@@ -2625,7 +2625,7 @@ function drResultsText(){const g=drGrade(DS.team),L=[`Virtual Hot Stove GM · 20
 function drAct(a,id){
   switch(a){
     case 'dr-view':UI.drView=id;if(id==='r5')loadMeta();break;
-    case 'r5protect':{if(count40()>=40){toast('Your 40-man is full. DFA, release or outright someone first.');return}doSelect(id);return}
+    case 'r5protect':{doSelect(id);overToast();return}
     case 'r5want':{const [ph,pid]=id.split(':');const L=UI.r5Want[ph];const i=L.indexOf(pid);i>=0?L.splice(i,1):L.push(pid);break}
     case 'r5run':r5Run(id);return;
     case 'r5reset':confirmBox('Undo the Rule 5 draft?','Puts every Rule 5 move back. Your other moves stay.','Undo Rule 5',()=>{const R=S.r5||{};snap();for(const ph of ['mlb','milb'])for(const [c,pid,f] of (R[ph]||[])){S.team[pid]=f;if(f===ME){S.status[pid]='MiLB';insertProspect(pid)}else{unslot(pid);delete S.status[pid];S.top=S.top.filter(x=>x!==pid)}}S.r5=null;S.r5mlb={};commit()});return;
@@ -3345,7 +3345,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123001205';
+const BUILD='20261123002852';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
