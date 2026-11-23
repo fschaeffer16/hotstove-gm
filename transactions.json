@@ -3006,9 +3006,20 @@
      "2028": "FREE AGENT"
     }
    }
+  },
+  {
+   "date": "2026-11-23",
+   "type": "sign",
+   "summary": "Royals To Sign Caleb Thielbar",
+   "name": "Caleb Thielbar",
+   "team": "KCR",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-23T20:08:13Z",
+ "live": "2026-11-23T23:39:53Z",
  "seen_sids": [
   950119,
   950220,

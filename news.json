@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Royals To Sign Caleb Thielbar",
+   "blurb": "The Royals and left-hander Caleb Thielbar are in agreement on a one-year deal, reports Jorge Castillo of ESPN. The financial aspects of the deal haven&#8217;t been reported yet. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html",
+   "time": "2026-11-23T23:39:24Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "KCR"
+   ]
+  },
+  {
+   "title": "Nationals To Sign Luis Curvelo To Minor League Deal",
+   "blurb": "The Nationals have agreed to sign right-hander Luis Curvelo to a minor league deal, reports Kiley McDaniel of ESPN. The Ballengee Group client receives an invite to big league camp in spring training. Curvelo, 26, pitched for the Rangers in the two most recent big league seasons. Over those two camp",
+   "link": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-luis-curvelo-to-minor-league-deal.html",
+   "time": "2026-11-23T23:33:49Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
    "title": "MLB Offers To Raise Minimum Salary To $1MM In Latest Cap Proposal",
    "blurb": "Major League Baseball made its latest proposal on core economics on Monday. The league offered to raise the minimum salary to $1MM for all players, a modest increase over their previous proposal of a $900K minimum for those with less than two years of service time (links via Bob Nightengale of USA T",
    "link": "https://www.mlbtraderumors.com/2026/11/mlb-offers-to-raise-minimum-salary-to-1mm-in-latest-cap-proposal.html",
@@ -3225,30 +3247,7 @@
     "BAL",
     "ATL"
    ]
-  },
-  {
-   "title": "New York Yankees claimed RHP Chase Hampton off waivers from Baltimore Orioles.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL",
-    "NYY"
-   ]
-  },
-  {
-   "title": "Baltimore Orioles selected the contract of 2B Aron Estrada from Norfolk Tides.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL"
-   ]
   }
  ],
- "updated": "2026-11-23T23:29:38Z"
+ "updated": "2026-11-23T23:39:53Z"
 }
