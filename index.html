@@ -2623,8 +2623,8 @@ function renderR5(){
 /* ---------- 2027 draft: Hot Stove board, lottery and order, mock draft ---------- */
 let DR=null,DP={},DS=null;
 const DKEY='hs-draft-v1';
-const SLOTV=[[1,11.4],[2,10.6],[3,9.8],[4,9.1],[5,8.4],[6,7.8],[8,6.9],[10,6.2],[12,5.6],[15,4.9],[20,4.1],[25,3.5],[30,3],[35,2.6],[40,2.3],[50,1.85],[60,1.5],[75,1.08],[90,.85],[110,.68],[150,.45],[220,.28]];
-function pickVal(n){n=Math.max(1,n);for(let i=1;i<SLOTV.length;i++){const [a,va]=SLOTV[i-1],[b,vb]=SLOTV[i];if(n<=b){const t=(Math.log(n)-Math.log(a))/(Math.log(b)-Math.log(a));return va+(vb-va)*t}}return .28}
+const SLOTV=[[1,11.4],[2,10.6],[3,9.8],[4,9.1],[5,8.4],[6,7.8],[8,6.9],[10,6.2],[12,5.6],[15,4.9],[20,4.1],[25,3.5],[30,3],[35,2.6],[40,2.3],[50,1.85],[60,1.5],[75,1.08],[90,.85],[110,.68],[150,.45],[220,.28],[315,.2],[465,.16],[620,.15]];
+function pickVal(n){n=Math.max(1,n);for(let i=1;i<SLOTV.length;i++){const [a,va]=SLOTV[i-1],[b,vb]=SLOTV[i];if(n<=b){const t=(Math.log(n)-Math.log(a))/(Math.log(b)-Math.log(a));return va+(vb-va)*t}}return .15}
 const RDN={'1':'Round 1',CR1:'QO comp (after Rd 1)',CBA:'Comp Balance A','2':'Round 2',CBB:'Comp Balance B',CCBB:'QO comp (after CB-B)'};
 const tnm=c=>(D.teams[c]&&D.teams[c].name)||c;
 const dgB=g=>`<span class="fv ${g>=55?'f55':g>=50?'f50':g>=45?'f45':g>=40?'f40':''}">${Math.round(g)}</span>`;
@@ -2648,9 +2648,10 @@ function drBuildPicks(rounds){const O=DR.order,lot=lotNow(),rec=O.lottery.slots.
   const comps=slot=>Q.filter(q=>q.comp.slot===slot&&D.teams[q.from]).sort((a,b)=>rank(a.from)-rank(b.from)).map(q=>({rd:'C'+slot,t:q.from,comp:1,note:'for losing '+P[q.id].n}));
   let seq=order1.map(t=>({rd:'1',t})).concat(comps('R1'),O.cb.A.map(t=>({rd:'CBA',t})));
   if(rounds>1)seq=seq.concat(order2.map(t=>({rd:'2',t})),O.cb.B.map(t=>({rd:'CBB',t})),comps('CBB'));
+  for(let r=3;r<=rounds;r++)seq=seq.concat(order2.map(t=>({rd:String(r),t})));/* rounds 3+: worst record first, no extra picks */
   /* forfeits for signing a QO free agent: Nth-highest regular-round pick (CB and comp picks can't be forfeited) */
   DRF={};for(const q of Q)for(const n of q.forfeit.picks)(DRF[q.to]=DRF[q.to]||[]).push({n,who:P[q.id].n});
-  seq=seq.filter(p=>!((p.rd==='1'||p.rd==='2')&&(DRF[p.t]||[]).some(f=>f.n===+p.rd)));
+  seq=seq.filter(p=>!(/^\d+$/.test(p.rd)&&(DRF[p.t]||[]).some(f=>f.n===+p.rd)));
   /* CBT: $40M+ over in 2026 -> highest pick moves back 10; a top-6 pick is protected and the second-highest moves instead */
   for(const t of O.cbt_drop.teams){const idx=seq.map((p,i)=>p.t===t?i:-1).filter(i=>i>=0);if(!idx.length)continue;let i=idx[0];if(i<6){if(idx.length<2)continue;i=idx[1]}
     const [p]=seq.splice(i,1);p.pen=1;seq.splice(Math.min(i+10,seq.length),0,p)}
@@ -2749,10 +2750,10 @@ function drFilter(list){const q=(UI.drQ||'').toLowerCase(),ps=UI.drPos||'All',cl
 function drFilterHTML(n){return `<div class="filters"><input type="search" id="drQ" placeholder="Search name or school…" value="${esc(UI.drQ||'')}" aria-label="Search draft prospects">
   <select id="drPos" aria-label="Position">${['All','Hitters','Pitchers','C','IF','OF'].map(t=>`<option${t===(UI.drPos||'All')?' selected':''}>${t}</option>`).join('')}</select>
   <select id="drCls" aria-label="Class">${['All','College','High school'].map(t=>`<option${t===(UI.drCls||'All')?' selected':''}>${t}</option>`).join('')}</select><span class="hint">${n}</span></div>`}
-function drRow(p,btn,taken){return `<tr${taken?' class="gone"':''}><td class="r">${p.rk}</td><td class="wrap"><span class="nmb">${esc(p.n)}</span>${p.tag==='inj'?'<span class="tag inj" title="'+esc(p.note)+'">inj</span>':''}<br><span class="hint">${esc(p.sch)}${p.cls==='COL'?' · College':/HS/.test(p.sch)?'':' · HS'}${p.bt?' · '+p.bt:''}${taken?' · '+taken:''}${p.st?'<br>'+esc(p.st):''}</span></td><td>${esc(p.pos)}</td><td class="r">${dgB(p.g)}</td>${btn!=null?`<td class="r">${btn}</td>`:''}</tr>`}
+function drRow(p,btn,taken){return `<tr${taken?' class="gone"':''}><td class="r">${p.rk}</td><td class="wrap"><span class="nmb">${esc(p.n)}</span>${p.tag==='inj'?'<span class="tag inj" title="'+esc(p.note)+'">inj</span>':''}${p.own?'<span class="tag" title="Graded by us from his 2026 season">our grade</span>':''}<br><span class="hint">${esc(p.sch)}${p.cls==='COL'?' · College':/HS/.test(p.sch)?'':' · HS'}${p.bt?' · '+p.bt:''}${p.age?' · age '+p.age:''}${p.hw?' · '+esc(p.hw)+(/,/.test(p.hw)?' lb':''):''}${taken?' · '+taken:''}${p.st?'<br>'+esc(p.st):''}</span></td><td>${esc(p.pos)}</td><td class="r">${dgB(p.g)}</td>${btn!=null?`<td class="r">${btn}</td>`:''}</tr>`}
 function drBoardHTML(){const tk={};if(DS.phase!=='setup')DS.picks.forEach((p,i)=>{if(DS.made[i])tk[DS.made[i]]='#'+p.no+' '+p.t});
   const ps=drFilter(DR.players),inj=ps.filter(p=>p.note);
-  return `<p class="hint" style="margin-top:0">Hot Stove's own 2027 draft board, version 1: ${DR.players.filter(p=>p.cls==='COL').length} college players and the top ${DR.players.filter(p=>p.cls==='HS').length} high schoolers so far. Grades are on the 20-80 scale and come from a blend of public rankings, adjusted for position, handedness and injuries. The board grows toward 750 as more lists are added.</p>
+  return `<p class="hint" style="margin-top:0">Hot Stove's own 2027 draft board, version 2: ${DR.players.filter(p=>p.cls==='COL').length} college players and the top ${DR.players.filter(p=>p.cls==='HS').length} high schoolers so far. Grades are on the 20-80 scale. The best-known players are placed from a blend of public rankings, adjusted for position, handedness and injuries. Everyone marked <span class="tag">our grade</span> is graded by us from his 2026 season: on-base and power, strikeouts and walks, the level of competition, his age and his position. Ages are as of draft day, July 2027. A college player is listed only when we could confirm his birth date and that he is eligible in 2027.</p>
   ${drFilterHTML(ps.length+' players')}
   <div class="scroll"><table class="list"><thead><tr><th class="r">HS #</th><th>Player</th><th>Pos</th><th class="r">Grade</th></tr></thead><tbody>${ps.map(p=>drRow(p,null,tk[p.id])).join('')}</tbody></table></div>
   ${inj.map(p=>`<p class="hint">${esc(p.n)}: ${esc(p.note)}.</p>`).join('')}`}
@@ -2771,7 +2772,7 @@ function drMockHTML(){
   if(DS.phase==='setup'){const codes=Object.keys(D.teams).sort((a,b)=>tnm(a).localeCompare(tnm(b)));
     return `<p class="hint" style="margin-top:0">Run a club's 2027 draft. The other 29 front offices pick off the Hot Stove board with their own leans and farm-system needs. You get a grade at the end.</p>
     <div class="form" style="max-width:560px"><label class="field">Your club<select id="drTeam">${codes.map(c=>`<option value="${c}"${c===ME?' selected':''}>${esc(tnm(c))}</option>`).join('')}</select></label>
-    <label class="field">Length<select id="drRounds"><option value="2">Rounds 1-2 with Comp Balance picks (75 picks)</option><option value="1">Round 1 + Comp Balance A (38 picks)</option></select></label>
+    <label class="field">Length<select id="drRounds"><option value="2">Rounds 1-2 with Comp Balance picks (75 picks)</option><option value="1">Round 1 + Comp Balance A (38 picks)</option>${DR.players.length>=260?'<option value="5">Rounds 1-5 (about 165 picks)</option>':''}${DR.players.length>=420?'<option value="10">Rounds 1-10 (about 315 picks)</option>':''}${DR.players.length>=560?'<option value="15">Rounds 1-15 (about 465 picks)</option>':''}</select></label>
     <label class="field full">Pick trades<select id="drTr"><option value="real">Real MLB rules: no trades once the draft starts</option><option value="any">Fantasy (NFL-style): trade any pick</option></select></label></div>
     <p class="hint">Order: ${DS.lot?'your simulated lottery':'projected (no lottery run)'}. ${esc(tnm(lotNow()[0]))} pick first. Change it under Order &amp; lottery.</p>
     <div class="dact"><button class="btn primary" type="button" data-act="dr-start">Start the mock draft</button></div>`}
@@ -3440,7 +3441,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123023202';
+const BUILD='20261123042656';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
