@@ -2908,6 +2908,31 @@
    },
    "src": "Jeff Passan, ESPN",
    "status": "reported"
+  },
+  {
+   "date": "2026-11-23",
+   "type": "extend",
+   "summary": "Mets extend CF A.J. Ewing: 8 yrs, $95M (2027-34), buying out his arbitration years and his first two years of free agency",
+   "name": "A.J. Ewing",
+   "team": "NYM",
+   "pos": "CF",
+   "contract": {
+    "aav": 11875000,
+    "desc": "8 yr, $95M extension (2027-34); year-by-year salaries not reported, shown evenly",
+    "yrs": {
+     "2027": 11875000,
+     "2028": 11875000,
+     "2029": 11875000,
+     "2030": 11875000,
+     "2031": 11875000,
+     "2032": 11875000,
+     "2033": 11875000,
+     "2034": 11875000,
+     "2035": "FREE AGENT"
+    }
+   },
+   "src": "owner note (11/23/2026)",
+   "owner": true
   }
  ],
  "live": "2026-11-21T15:14:26Z",
