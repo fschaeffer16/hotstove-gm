@@ -2954,9 +2954,20 @@
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/dodgers-sign-robert-stephenson-reliever.html",
    "status": "reported"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jairo Iriarte",
+   "team": "CLE",
+   "pos": "RHP",
+   "date": "2026-11-23",
+   "summary": "Cleveland Guardians signed free agent RHP Jairo Iriarte to a minor league contract and invited him to spring training.",
+   "src": "MLB Stats API",
+   "sid": 950946,
+   "status": "official"
   }
  ],
- "live": "2026-11-23T16:26:27Z",
+ "live": "2026-11-23T19:17:49Z",
  "seen_sids": [
   950119,
   950220,
@@ -3157,6 +3168,7 @@
   950873,
   950875,
   950877,
-  950881
+  950881,
+  950946
  ]
 }

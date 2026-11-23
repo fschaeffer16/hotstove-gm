@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Cleveland Guardians signed free agent RHP Jairo Iriarte to a minor league contract and invited him to spring training.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-23T19:17:49Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
    "title": "Luis Gil agrees to deal with Tigers after Yankees nontender",
    "blurb": "Luis Gil agrees to deal with Tigers after Yankees nontender",
    "link": "https://www.espn.com/video/clip/_/id/50575217/luis-gil-agrees-deal-tigers-yankees-nontender",
@@ -3247,18 +3258,7 @@
    "teams": [
     "WSN"
    ]
-  },
-  {
-   "title": "Houston Astros sent LF Joey Loperfido outright to Sugar Land Space Cowboys.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "HOU"
-   ]
   }
  ],
- "updated": "2026-11-23T19:07:45Z"
+ "updated": "2026-11-23T19:17:49Z"
 }
