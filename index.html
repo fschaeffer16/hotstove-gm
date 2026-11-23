@@ -1492,7 +1492,11 @@ function plat3(id){const pj=P[id].proj||{},pl=pj.pl,pr=pj.pr,xs=pj.xs;if(!pl)ret
 function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.war||0,parts=[['2027 projection',proj.toFixed(1)+' WAR']],notes=[];let w=proj;
   const h=(pj.wh||[]).slice(-2),a=h[1],b=h[0],rec=a!=null&&b!=null?.6*a+.4*b:a!=null?a:null,age=p.age||28;
   const M0=profOf(id);if(rec!=null&&pgrp(id)!=='RP'&&!(M0&&M0.war!=null)){const d=rec-proj;let m=0;if(d>=.5)m=Math.min(2.5,.4*d);else if(d<=-.75&&age>=27)m=Math.max(-.8,.25*d);
-    if(m){w+=m;parts.push(['Track record',`${b!=null?b.toFixed(1)+' and ':''}${a.toFixed(1)} WAR the last ${b!=null?'two seasons':'season'}: ${m>0?'+':''}${m.toFixed(1)}`]);if(m>=.6)notes.push(`he has produced more than the projection gives him credit for (${a.toFixed(1)} WAR in 2026)`);else if(m<=-.4)notes.push(`his recent results are below the projection (${a.toFixed(1)} WAR in 2026)`)}}
+    /* a down year over a full season (owner, 11/23: a star coming off one is not priced like the star he was): the big year before it no longer lifts him,
+       and a veteran is marked down on the latest season alone. An injury-shortened year is not a down year; health has its own layer. */
+    const full=p.p?!!(pj.vs&&pj.vs[2026]&&pj.vs[2026][0]>=120):!!(pj.hs&&pj.hs[2026]&&pj.hs[2026][0]>=400),dn=full&&a!=null&&b!=null&&a<=b-2.5&&a<=proj-1;
+    if(dn){m=age>=27?Math.min(m,Math.max(-.8,.25*(a-proj))):Math.min(m,0);if(m<=-.4)notes.push(`2026 was a real step back over a full season (${b.toFixed(1)} WAR to ${a.toFixed(1)})`)}
+    if(m){w+=m;parts.push(['Track record',`${b!=null?b.toFixed(1)+' and ':''}${a.toFixed(1)} WAR the last ${b!=null?'two seasons':'season'}: ${m>0?'+':''}${m.toFixed(1)}`]);if(m>=.6)notes.push(`he has produced more than the projection gives him credit for (${a.toFixed(1)} WAR in 2026)`);else if(m<=-.4&&!dn)notes.push(`his recent results are below the projection (${a.toFixed(1)} WAR in 2026)`)}}
   {const hs=!p.p&&pj.hs,q=k=>hs&&hs[k]&&hs[k][0]>=250?hs[k]:null,a6=q('2026'),a5=q('2025'),a4=q('2024');
     if(a6&&a5&&a4&&!(M0&&M0.war!=null)){const tr=`${a4[1]}, ${a5[1]}, ${a6[1]} wRC+`;let m=0,why='';
       if(age>=30&&a5[1]<=a4[1]-8&&a6[1]<=a5[1]-8){m=-.3;why=`his bat has slipped two years running (${tr})`}
@@ -3368,7 +3372,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261123004252';
+const BUILD='20261123005949';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
