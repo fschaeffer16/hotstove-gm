@@ -1,6 +1,6 @@
 {
  "updated": "2026-11-22",
- "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary.",
+ "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary. An entry may carry \"until\": \"YYYY-MM-DD\"; it stops applying after that date, and a task may remove it then.",
  "teams": {
   "LAD": {
    "wants": [
@@ -1163,8 +1163,9 @@
    "status": "untouchable",
    "noask": true,
    "owner": true,
-   "note": "Signed an eight-year, $95M extension that buys out his arbitration years and his first two years of free agency; he reaches free agency at 30. A club does not trade a 22-year-old right after that",
-   "src": "owner note (11/22 and 11/23/2026)"
+   "note": "Signed an eight-year, $95M extension that buys out his arbitration years and his first two years of free agency. A club does not trade a player right after that; not available for the first year (until Nov. 23, 2027), after which he trades like anyone else",
+   "src": "owner note (11/22 and 11/23/2026)",
+   "until": "2027-11-23"
   }
  ],
  "sources": [
