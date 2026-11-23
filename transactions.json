@@ -2987,9 +2987,28 @@
    "src": "MLB Stats API",
    "sid": 950951,
    "status": "official"
+  },
+  {
+   "date": "2026-11-23",
+   "type": "sign",
+   "summary": "Yankees To Sign Brent Suter",
+   "name": "Brent Suter",
+   "team": "NYY",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 4000000,
+    "desc": "1 yr, $4M (2027-27)",
+    "yrs": {
+     "2027": 4000000,
+     "2028": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-23T19:58:07Z",
+ "live": "2026-11-23T20:08:13Z",
  "seen_sids": [
   950119,
   950220,
