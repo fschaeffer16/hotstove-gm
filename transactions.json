@@ -2965,9 +2965,31 @@
    "src": "MLB Stats API",
    "sid": 950946,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Marc Church",
+   "team": "WSN",
+   "pos": "RHP",
+   "date": "2026-11-23",
+   "summary": "Washington Nationals signed free agent RHP Marc Church to a minor league contract and invited him to spring training.",
+   "src": "MLB Stats API",
+   "sid": 950949,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jared Simpson",
+   "team": "WSN",
+   "pos": "LHP",
+   "date": "2026-11-23",
+   "summary": "Washington Nationals signed free agent LHP Jared Simpson to a minor league contract and invited him to spring training.",
+   "src": "MLB Stats API",
+   "sid": 950951,
+   "status": "official"
   }
  ],
- "live": "2026-11-23T19:17:49Z",
+ "live": "2026-11-23T19:58:07Z",
  "seen_sids": [
   950119,
   950220,
@@ -3169,6 +3191,8 @@
   950875,
   950877,
   950881,
-  950946
+  950946,
+  950949,
+  950951
  ]
 }

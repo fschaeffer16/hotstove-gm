@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Washington Nationals signed free agent RHP Marc Church to a minor league contract and invited him to spring training.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-23T19:58:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
+   "title": "Washington Nationals signed free agent LHP Jared Simpson to a minor league contract and invited him to spring training.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-23T19:58:07Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
    "title": "Cleveland Guardians signed free agent RHP Jairo Iriarte to a minor league contract and invited him to spring training.",
    "blurb": "",
    "link": "",
@@ -3236,29 +3258,7 @@
    "teams": [
     "NYM"
    ]
-  },
-  {
-   "title": "Washington Nationals selected the contract of RHP Jarlin Susana from Rochester Red Wings.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "WSN"
-   ]
-  },
-  {
-   "title": "Washington Nationals selected the contract of RHP Travis Sykora from Harrisburg Senators.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "WSN"
-   ]
   }
  ],
- "updated": "2026-11-23T19:48:03Z"
+ "updated": "2026-11-23T19:58:07Z"
 }
