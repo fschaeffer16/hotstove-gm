@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Dodgers, Robert Stephenson Agree To Minor League Deal",
+   "blurb": "The Dodgers and right-handed reliever Robert Stephenson are in agreement on a minor league contract, per Katie Woo and Ken Rosenthal of The Athletic. The Apex Baseball client missed all of the 2026 season due to elbow surgery and had a 2027 club option declined by the Angels earlier this offseason. ",
+   "link": "https://www.mlbtraderumors.com/2026/11/dodgers-sign-robert-stephenson-reliever.html",
+   "time": "2026-11-23T16:20:45Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
    "title": "Source: Mets agree to 1-year deal with veteran 1B Paul Goldschmidt",
    "blurb": "The New York Mets continued their spending spree Monday by coming to terms on a one-year deal with first baseman Paul Goldschmidt, a source told ESPN, a day after agreeing to give Tarik Skubal the largest contract ever to a pitcher.",
    "link": "https://www.espn.com/mlb/story/_/id/50573673/sources-mets-agree-deal-veteran-1b-paul-goldschmidt",
@@ -3252,18 +3263,7 @@
    "teams": [
     "ARI"
    ]
-  },
-  {
-   "title": "San Francisco Giants selected the contract of LHP Henry Lalane from Richmond Flying Squirrels.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SFG"
-   ]
   }
  ],
- "updated": "2026-11-23T16:16:23Z"
+ "updated": "2026-11-23T16:26:27Z"
 }

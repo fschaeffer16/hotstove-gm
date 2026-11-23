@@ -2944,9 +2944,19 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "date": "2026-11-23",
+   "type": "sign_minor",
+   "summary": "Dodgers, Robert Stephenson Agree To Minor League Deal",
+   "name": "Robert Stephenson",
+   "team": "LAD",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/dodgers-sign-robert-stephenson-reliever.html",
+   "status": "reported"
   }
  ],
- "live": "2026-11-23T15:05:56Z",
+ "live": "2026-11-23T16:26:27Z",
  "seen_sids": [
   950119,
   950220,
