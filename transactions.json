@@ -3053,9 +3053,20 @@
      "2033": "FREE AGENT"
     }
    }
+  },
+  {
+   "date": "2026-11-24",
+   "type": "sign",
+   "summary": "Guardians To Sign Kris Bubic",
+   "name": "Kris Bubic",
+   "team": "CLE",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-24T15:13:50Z",
+ "live": "2026-11-24T15:44:00Z",
  "seen_sids": [
   950119,
   950220,
