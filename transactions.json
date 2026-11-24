@@ -3228,9 +3228,20 @@
      "2032": "FREE AGENT"
     }
    }
+  },
+  {
+   "date": "2026-11-24",
+   "type": "sign",
+   "summary": "White Sox To Sign Tyrone Taylor",
+   "name": "Tyrone Taylor",
+   "team": "CHW",
+   "pos": "CF/LF/RF",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/white-sox-to-sign-tyrone-taylor.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-24T19:15:08Z",
+ "live": "2026-11-24T22:46:00Z",
  "seen_sids": [
   950119,
   950220,
