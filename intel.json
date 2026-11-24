@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22",
+ "updated": "2026-11-24",
  "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary. An entry may carry \"until\": \"YYYY-MM-DD\"; it stops applying after that date, and a task may remove it then.",
  "teams": {
   "LAD": {
@@ -9,11 +9,12 @@
     "2B",
     "SS"
    ],
-   "note": "Swept by the Brewers in the NLCS with a tax payroll near $385M; bullpen and getting younger are the stated needs, plus a right-handed middle infielder. Expected to work by trade before a possible lockout.",
+   "note": "Tax payroll near $385M; never made Skubal a formal offer (Gonzalez, ESPN) and not inclined to chase starters (Woo, The Athletic). Added Royce Lewis; bullpen and getting younger remain the needs.",
    "win": "allin",
    "src": [
     "https://www.mlbtraderumors.com/2026/11/dodgers-notes-hernandez-vesia-phillips-infielders.html",
-    "https://www.mlb.com/news/dodgers-most-pressing-offseason-questions"
+    "https://www.mlb.com/news/dodgers-most-pressing-offseason-questions",
+    "https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html"
    ]
   },
   "NYY": {
@@ -23,11 +24,12 @@
     "C",
     "2B"
    ],
-   "note": "Won 93 games, lost the ALDS; Cashman calls the bullpen his top priority, is open-minded about a new third-base plan, and wants a right-handed catcher and a second baseman.",
+   "note": "Bullpen is Cashman's top priority: added Loáisiga and LHP Brent Suter; weighing a big Morejón deal vs. spreading money over a reliever, Carson Kelly and Tyrone Taylor (Sherman, NY Post). Also bid big on Skubal (Nightengale).",
    "win": "contend",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-new-york-yankees-15.html",
-    "https://www.mlbtraderumors.com/2026/11/yankees-notes-infield-catcher-bullpen.html"
+    "https://www.mlbtraderumors.com/2026/11/yankees-notes-infield-catcher-bullpen.html",
+    "https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html"
    ]
   },
   "SEA": {
@@ -49,7 +51,7 @@
     "OF",
     "DH"
    ],
-   "note": "All in: a big-market playoff team that has been the most aggressive AL East club this winter. Still needs a starter (four of its top five are left-handed) and more power. The outfield logjam has Duran and Yoshida on the market.",
+   "note": "All in; still needs a starter (lost Gil to Detroit) and more power, and shortstop remains a need. The outfield logjam has Duran and Yoshida on the market (Cotillo/McAdam, MassLive).",
    "win": "allin",
    "src": [
     "https://www.bostonglobe.com/2026/11/21/sports/american-league-east-offseason-moves/",
@@ -74,12 +76,13 @@
     "SP",
     "RP"
    ],
-   "note": "Lost the ALCS in six; Antonetti says payroll (lowest in MLB in 2026) will go up and a starter by trade or free agency is a primary goal.",
+   "note": "Lost the ALCS in six; Antonetti said payroll will rise and a starter was a primary goal; signed Kris Bubic (1 yr, $17.5M, Passan, ESPN, 11/24).",
    "win": "contend",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/11/guardians-rumors-payroll-increase-starting-pitching-foster-griffin.html",
-    "https://www.mlb.com/news/guardians-want-to-add-starting-pitching-2026-27-offseason"
+    "https://www.mlb.com/news/guardians-want-to-add-starting-pitching-2026-27-offseason",
+    "https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html"
    ]
   },
   "TBR": {
@@ -98,29 +101,31 @@
    "wants": [
     "RP",
     "1B",
+    "2B",
     "DH"
    ],
-   "note": "Finished 77-85 but is buying: ownership vowed a higher payroll, Sonny Gray signed and Jeffers accepted the qualifying offer. The bullpen is the top need, then a middle-of-the-order bat.",
+   "note": "Buying after 77-85 (Gray signed, Jeffers took the QO); still wants one big add plus a smaller one: a right-side infielder (1B/2B) and a left-handed reliever (Hayes, The Athletic, Nov. 23).",
    "win": "contend",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/11/twins-sign-sonny-gray.html",
-    "https://www.mlb.com/news/twins-needs-before-2027-season"
+    "https://www.mlb.com/news/twins-needs-before-2027-season",
+    "https://www.mlbtraderumors.com/2026/11/twins-pursuing-right-side-infielder-left-handed-relief.html"
    ]
   },
   "TOR": {
    "wants": [
     "OF",
-    "SP",
     "2B",
-    "SS",
+    "SP",
     "DH"
    ],
-   "note": "Fell to 79-83 a year after the World Series; wants one or two power bats, long-term outfielders, a reshaped middle infield and back-end rotation help. No sign of cutting payroll.",
+   "note": "Lost Skubal (9-yr, $400M+ bid, Bannon) and Sato (to the Cubs, 11/24); wants a corner OF and 2B bat (offense the bigger need), plus a starter: Peralta a top priority (Morosi), also King, Taira (Nicholson-Smith, Sportsnet).",
    "win": "retool",
    "src": [
     "https://www.mlb.com/bluejays/news/examining-the-blue-jays-biggest-offseason-needs",
-    "https://www.mlbtraderumors.com/2026/11/blue-jays-notes-infield-outfield-rotation-bullpen-barger.html"
+    "https://www.mlbtraderumors.com/2026/11/blue-jays-notes-infield-outfield-rotation-bullpen-barger.html",
+    "https://www.mlbtraderumors.com/2026/11/blue-jays-interested-in-trevor-rogers-freddy-peralta.html"
    ]
   },
   "DET": {
@@ -130,7 +135,7 @@
     "1B",
     "2B"
    ],
-   "note": "Traded Skubal and Mize at the 2026 deadline but did not rebuild; expected to compete for the division around a young core. Signed Emilio Pagan and wants more relievers.",
+   "note": "Competing around a young core; signed Pagán (closer), extended Melton and added Luis Gil; Harris wants more right-handed relievers on big league deals (Stavenhagen, The Athletic).",
    "win": "retool",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-detroit-tigers-16.html",
@@ -182,14 +187,15 @@
   "CHC": {
    "wants": [
     "SP",
-    "RP",
-    "OF"
+    "RP"
    ],
-   "note": "Lost in the Wild Card round and has 15 free agents, including all five season-ending starters; Hoyer says pitching is the focus.",
+   "note": "Signed Trevor Rogers (5 yr, $120M, Rosenthal) and NPB slugger Teruaki Sato (6 yr, $120M, Passan, ESPN, 11/24), who goes to a corner OF spot; still wants a pitching addition or two and relievers (MLBTR, 11/24).",
    "win": "contend",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-chicago-cubs-16.html",
-    "https://chicago.suntimes.com/cubs/2026/11/08/cubs-gm-meetings-offseason-mlb-lockout-free-agents-trades-rumors-jed-hoyer-pitching-rotation-pitchers"
+    "https://chicago.suntimes.com/cubs/2026/11/08/cubs-gm-meetings-offseason-mlb-lockout-free-agents-trades-rumors-jed-hoyer-pitching-rotation-pitchers",
+    "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-trevor-rogers.html",
+    "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html"
    ]
   },
   "HOU": {
@@ -197,7 +203,7 @@
     "SP",
     "OF"
    ],
-   "note": "Won the AL West, swept in the Wild Card round; new GM Randy Flores. Owner Jim Crane does not expect a teardown. Thin in the outfield and rotation, with one infielder too many now that Correa is healthy.",
+   "note": "Won the AL West, swept in the Wild Card round; new GM Randy Flores. Owner Jim Crane does not expect a teardown. Thin in the outfield and rotation, with one infielder too many now that Correa is healthy. Rotation is thin behind Hunter Brown; wants at least one starter (Rosenthal, The Athletic; McTaggart, MLB.com).",
    "win": "contend",
    "src": [
     "https://www.mlb.com/news/5-questions-facing-astros-in-2026-offseason",
@@ -221,12 +227,13 @@
     "OF",
     "C"
    ],
-   "note": "Missed the playoffs again and traded Rutschman at the deadline; reported to be listening on everyone except Pete Alonso while it looks for a starter, an outfielder and a catcher.",
+   "note": "Missed the playoffs again and traded Rutschman at the deadline; listening on everyone except Pete Alonso. Lost Rogers, then landed Freddy Peralta (5 yr, $125M, ESPN, 11/24) to top the rotation; still wants an outfielder and a catcher.",
    "win": "retool",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html",
-    "https://www.mlb.com/orioles/news/orioles-biggest-2026-27-offseason-needs"
+    "https://www.mlb.com/orioles/news/orioles-biggest-2026-27-offseason-needs",
+    "https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html"
    ]
   },
   "TEX": {
@@ -264,12 +271,13 @@
     "1B",
     "SP"
    ],
-   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. The Ketel Marte decision drives the winter.",
+   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. Wants to move Marte before the lockout to clear payroll; still needs 1-2 starters and a reliever, Alex Vesia on its radar (Nightengale, USA Today).",
    "win": "retool",
    "shedding": true,
    "src": [
     "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs",
-    "https://www.mlb.com/news/questions-facing-d-backs-in-2026-offseason"
+    "https://www.mlb.com/news/questions-facing-d-backs-in-2026-offseason",
+    "https://clutchpoints.com/mlb/mlb-stories/mlb-rumors-blue-jays-rays-getting-serious-for-a-potential-ketel-marte-trade"
    ]
   },
   "MIA": {
@@ -295,11 +303,12 @@
     "SP",
     "3B"
    ],
-   "note": "Went 69-93 and is aiming for a 2027 rebound around Bobby Witt Jr.; about $30M is coming off the payroll to reinvest. Wants a right-handed outfielder; third base is open after the Maikel Garcia trade.",
+   "note": "Went 69-93 and is aiming for a 2027 rebound around Bobby Witt Jr.; about $30M is coming off the payroll. Wants a right-handed outfielder; 3B open after the Garcia trade. Added LHP RP Caleb Thielbar (1 yr; Castillo, ESPN).",
    "win": "retool",
    "src": [
     "https://www.mlbtraderumors.com/2026/11/royals-in-market-for-right-handed-hitting-outfielder.html",
-    "https://www.mlb.com/news/royals-2027-outlook-after-disappointing-2026-season"
+    "https://www.mlb.com/news/royals-2027-outlook-after-disappointing-2026-season",
+    "https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html"
    ]
   },
   "STL": {
@@ -329,14 +338,16 @@
   },
   "SDP": {
    "wants": [
-    "SP"
+    "SP",
+    "OF"
    ],
-   "note": "Nearly the whole rotation left in free agency; Preller wants several starters and points to new owners after two budget-limited winters.",
+   "note": "Missed on Skubal (offer near $400M with deferrals, Heyman); will 'do everything possible' to re-sign Michael King and wants Pivetta on a new structure, plus a corner OF: Suzuki or Duran (Sato went to the Cubs) (Nightengale, USA Today; Cassavell, MLB.com). Rotation interest also includes Peralta and Kaima Taira (MLB.com rumors, 11/23).",
    "win": "contend",
    "shedding": false,
    "src": [
     "https://www.mlb.com/news/padres-takeaways-from-general-managers-meetings",
-    "https://www.mlb.com/news/padres-questions-to-address-this-offseason"
+    "https://www.mlb.com/news/padres-questions-to-address-this-offseason",
+    "https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html"
    ]
   },
   "SFG": {
@@ -394,15 +405,17 @@
   "NYM": {
    "win": "retool",
    "wants": [
-    "SP",
     "RP",
-    "1B"
+    "1B",
+    "DH",
+    "SP"
    ],
    "shedding": false,
-   "note": "After selling at the 2026 deadline, Stearns says the rotation is the top priority, then the bullpen and a first baseman; expects Cohen's usual backing.",
+   "note": "Signed Skubal (9/$450M) and Goldschmidt (1/$8M, 1B platoon with Jared Young); still want relievers (only Williams and Hernández set), a DH bat and possibly a cheaper starter (DiComo, MLB.com, 11/23). MLBTR (Polishuk) and DiComo (MLB.com) still list a big 1B and/or DH bat as the top remaining need.",
    "src": [
     "https://www.mlbtraderumors.com/2026/09/offseason-outlook-new-york-mets-16.html",
-    "https://www.mlbtraderumors.com/2026/11/mets-rumors-tarik-skubal-meeting-free-agent.html"
+    "https://www.mlbtraderumors.com/2026/11/mets-rumors-tarik-skubal-meeting-free-agent.html",
+    "https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html"
    ]
   }
  },
@@ -821,12 +834,6 @@
    "note": "Fringe of the 40-man"
   },
   {
-   "name": "Luis Gil",
-   "team": "FA",
-   "pos": "SP",
-   "note": "Starter: 44 of his 49 MLB games in 2024-26 were starts (MLB Stats API). Non-tendered by the Yankees Nov. 20, 2026."
-  },
-  {
    "name": "Josue De Paula",
    "team": "LAD",
    "status": "untouchable",
@@ -1002,7 +1009,7 @@
    "name": "Mark Vientos",
    "team": "NYM",
    "status": "listening",
-   "note": "The Mets have taken trade calls after a .212 season; out of options",
+   "note": "The Mets have taken trade calls after a .212 season; out of options, and more expendable after the Goldschmidt signing (DiComo, MLB.com, 11/23)",
    "src": "https://www.mlbtraderumors.com/2026/11/mets-have-received-trade-interest-in-mark-vientos.html"
   },
   {
@@ -1166,6 +1173,30 @@
    "note": "Signed an eight-year, $95M extension that buys out his arbitration years and his first two years of free agency. A club does not trade a player right after that; not available for the first year (until Nov. 23, 2027), after which he trades like anyone else",
    "src": "owner note (11/22 and 11/23/2026)",
    "until": "2027-11-23"
+  },
+  {
+   "name": "Sean Sullivan",
+   "team": "CHW",
+   "status": "listening",
+   "pos": "SP",
+   "note": "Multiple clubs made offers two days after Chicago got him from Colorado; the White Sox may prefer to keep him (Rosenthal/Sammon, The Athletic, 11/21)",
+   "src": "Rosenthal and Sammon, The Athletic, via MLB Trade Rumors, 11/21/2026"
+  },
+  {
+   "name": "Nathan Lukes",
+   "team": "TOR",
+   "status": "listening",
+   "pos": "OF",
+   "note": "Drawing trade interest; likely stays unless Toronto adds an everyday outfielder (Chisholm, Toronto Star, 11/21)",
+   "src": "Gregor Chisholm, Toronto Star, via MLB Trade Rumors, 11/21/2026"
+  },
+  {
+   "name": "Casey Schmitt",
+   "team": "SFG",
+   "status": "listening",
+   "pos": "3B",
+   "note": "Giants aren't shopping him but would move him for pitching (Passan, ESPN; Murray, FanSided)",
+   "src": "Passan, ESPN; Robert Murray, FanSided, Nov. 18-19, 2026"
   }
  ],
  "sources": [
@@ -1177,6 +1208,20 @@
   "The Athletic via FOX19 / Bleacher Report: Krall on Elly De La Cruz (Nov. 10-11, 2026)",
   "FanSided / Robert Murray: Pirates will not trade Paul Skenes this winter",
   "Owner note, Nov. 21, 2026: Rockies are adding veteran pitching and salary to compete",
-  "Club-by-club offseason review, 11/22/2026 (search summaries of MLB.com, MLB Trade Rumors and beat reports; each entry carries its link)"
+  "Club-by-club offseason review, 11/22/2026 (search summaries of MLB.com, MLB Trade Rumors and beat reports; each entry carries its link)",
+  "MLB Trade Rumors: Latest Details On Tarik Skubal Bidding (Nov. 23, 2026)",
+  "MLB.com: Hot Stove rumors, Nov. 23, 2026",
+  "MLB Trade Rumors: Blue Jays Interested In Trevor Rogers, Freddy Peralta (Nov. 23, 2026)",
+  "MLB Trade Rumors: Yankees To Sign Brent Suter (Nov. 23, 2026)",
+  "MLB Trade Rumors: Royals To Sign Caleb Thielbar (Nov. 23, 2026)",
+  "USA Today (Nightengale, via ClutchPoints): Diamondbacks want to move Ketel Marte before lockout (Nov. 23, 2026)",
+  "MLB Trade Rumors: Cubs To Sign Trevor Rogers (Nov. 23, 2026)",
+  "MLB Trade Rumors: Twins Pursuing Right Side Infielder, Left-Handed Relief (Nov. 23, 2026)",
+  "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-trevor-rogers.html",
+  "https://www.mlbtraderumors.com/2026/11/astros-to-add-aaron-bates-j-p-martinez-to-coaching-staff.html",
+  "https://www.mlb.com/news/mlb-rumors-trades-and-signings",
+  "MLB Trade Rumors: Cubs To Sign Teruaki Sato (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html",
+  "MLB Trade Rumors: Orioles Nearing Deal With Freddy Peralta (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html",
+  "MLB Trade Rumors: Guardians To Sign Kris Bubic (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html"
  ]
 }

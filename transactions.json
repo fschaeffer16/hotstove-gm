@@ -3,6 +3,70 @@
  "baseline": "2026-11-14",
  "moves": [
   {
+   "type": "trade",
+   "players": [
+    {
+     "name": "Nate Eaton",
+     "from": "BOS",
+     "to": "ATH",
+     "forty": true,
+     "pos": "OF"
+    },
+    {
+     "name": "Jareth Rayo",
+     "from": "ATH",
+     "to": "BOS",
+     "forty": false,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-10-29",
+   "summary": "Athletics acquired OF/INF Nate Eaton from Boston Red Sox for SP Jareth Rayo.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Sawyer Gipson-Long",
+   "team": "DET",
+   "pos": "RHP",
+   "date": "2026-11-02",
+   "summary": "Detroit Tigers released RHP Sawyer Gipson-Long.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Bailey Horn",
+   "team": "DET",
+   "pos": "LHP",
+   "date": "2026-11-02",
+   "summary": "Detroit Tigers released LHP Bailey Horn.",
+   "src": "Roster Resource offseason tracker",
+   "status": "official"
+  },
+  {
+   "type": "release",
+   "name": "Peyton Williams",
+   "team": "TOR",
+   "date": "2026-11-13",
+   "summary": "Buffalo Bisons released 1B Peyton Williams.",
+   "src": "MLB Stats API",
+   "sid": 950220,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Sammy Peralta",
+   "team": "LAA",
+   "pos": "?",
+   "date": "2026-11-13",
+   "summary": "Los Angeles Angels signed free agent LHP Sammy Peralta to a minor league contract and invited him to spring training.",
+   "src": "MLB Stats API",
+   "sid": 950119,
+   "status": "official"
+  },
+  {
    "date": "2026-11-14",
    "type": "trade",
    "summary": "Mets trade RHP Juan Arnaud to the Rangers for $250K in international bonus pool space",
@@ -16,6 +80,17 @@
     }
    ],
    "src": "MLB transactions / MLB Trade Rumors"
+  },
+  {
+   "date": "2026-11-14",
+   "type": "sign_minor",
+   "summary": "Brewers sign Stiven Cruz to a minor league deal with a spring training invite",
+   "name": "Stiven Cruz",
+   "team": "MIL",
+   "pos": "?",
+   "src": "MLB transactions",
+   "status": "official",
+   "sid": 950300
   },
   {
    "date": "2026-11-15",
@@ -62,20 +137,7 @@
      "2028": "CLUB OPTION"
     }
    },
-   "src": "MLB Trade Rumors",
-   "status": "official",
-   "sid": 950957
-  },
-  {
-   "date": "2026-11-14",
-   "type": "sign_minor",
-   "summary": "Brewers sign Stiven Cruz to a minor league deal with a spring training invite",
-   "name": "Stiven Cruz",
-   "team": "MIL",
-   "pos": "?",
-   "src": "MLB transactions",
-   "status": "official",
-   "sid": 950300
+   "src": "MLB Trade Rumors"
   },
   {
    "date": "2026-11-15",
@@ -96,6 +158,160 @@
    "team": "PIT",
    "pos": "OF",
    "src": "FanGraphs Roster Resource"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Sawyer Gipson-Long",
+   "team": "DET",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Detroit Tigers signed free agent RHP Sawyer Gipson-Long to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950333,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jose Gonzalez",
+   "team": "HOU",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Houston Astros signed free agent RHP Jose Gonzalez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950338,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Bailey Horn",
+   "team": "DET",
+   "pos": "LHP",
+   "date": "2026-11-16",
+   "summary": "Detroit Tigers signed free agent LHP Bailey Horn to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950335,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Blake Hunt",
+   "team": "PHI",
+   "pos": "C",
+   "date": "2026-11-16",
+   "summary": "Philadelphia Phillies signed free agent C Blake Hunt to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950340,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "José Barrero",
+   "team": "BAL",
+   "pos": "SS",
+   "date": "2026-11-16",
+   "summary": "Baltimore Orioles signed free agent SS José Barrero to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950298,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Ismael Munguia",
+   "team": "ARI",
+   "pos": "OF",
+   "date": "2026-11-16",
+   "summary": "Arizona Diamondbacks signed free agent OF Ismael Munguia to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950329,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Darlin Pinales",
+   "team": "ATL",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Atlanta Braves signed free agent RHP Darlin Pinales to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950648,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Erick Mejia",
+   "team": "SFG",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "San Francisco Giants signed free agent RHP Erick Mejia to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950662,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Luke Williams",
+   "team": "ATL",
+   "pos": "SS",
+   "date": "2026-11-16",
+   "summary": "Atlanta Braves signed free agent SS Luke Williams to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950650,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Michael Arias",
+   "team": "BOS",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Boston Red Sox signed free agent RHP Michael Arias to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950653,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Celso Lopez",
+   "team": "CHC",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Chicago Cubs signed free agent RHP Celso Lopez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950750,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Enmanuel Mendoza",
+   "team": "COL",
+   "pos": "C",
+   "date": "2026-11-16",
+   "summary": "Colorado Rockies signed free agent C Enmanuel Mendoza to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950749,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Anderson Castillo",
+   "team": "CHC",
+   "pos": "RHP",
+   "date": "2026-11-16",
+   "summary": "Chicago Cubs signed free agent RHP Anderson Castillo to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950761,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Enexis Antunez",
+   "team": "COL",
+   "pos": "OF",
+   "date": "2026-11-16",
+   "summary": "Colorado Rockies signed free agent OF Enexis Antunez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950768,
+   "status": "official"
   },
   {
    "date": "2026-11-17",
@@ -138,27 +354,6 @@
    "src": "FanGraphs Roster Resource",
    "status": "official",
    "sid": 950321
-  },
-  {
-   "type": "release",
-   "name": "Peyton Williams",
-   "team": "TOR",
-   "date": "2026-11-13",
-   "summary": "Buffalo Bisons released 1B Peyton Williams.",
-   "src": "MLB Stats API",
-   "sid": 950220,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Sammy Peralta",
-   "team": "LAA",
-   "pos": "?",
-   "date": "2026-11-13",
-   "summary": "Los Angeles Angels signed free agent LHP Sammy Peralta to a minor league contract and invited him to spring training.",
-   "src": "MLB Stats API",
-   "sid": 950119,
-   "status": "official"
   },
   {
    "type": "dfa",
@@ -1439,6 +1634,182 @@
   },
   {
    "type": "sign_minor",
+   "name": "Vince Velasquez",
+   "team": "KCR",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Kansas City Royals signed free agent RHP Vince Velasquez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950579,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jheremy Vargas",
+   "team": "MIL",
+   "pos": "3B",
+   "date": "2026-11-17",
+   "summary": "Milwaukee Brewers signed free agent 3B Jheremy Vargas to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950586,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Ryan Murphy",
+   "team": "ATH",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Athletics signed free agent RHP Ryan Murphy to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950557,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Bryce Conley",
+   "team": "SEA",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Seattle Mariners signed free agent RHP Bryce Conley to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950598,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jose Espada",
+   "team": "MIN",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Minnesota Twins signed free agent RHP Jose Espada to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950589,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Brian Navarreto",
+   "team": "PHI",
+   "pos": "C",
+   "date": "2026-11-17",
+   "summary": "Philadelphia Phillies signed free agent C Brian Navarreto to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950592,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Johnathan Lavallee",
+   "team": "SEA",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Seattle Mariners signed free agent RHP Johnathan Lavallee to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950602,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Eric Vasquez",
+   "team": "TBR",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Tampa Bay Rays signed free agent RHP Eric Vasquez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950606,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Luke Little",
+   "team": "ATH",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "Athletics signed free agent LHP Luke Little to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950554,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Anderson Pilar",
+   "team": "DET",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Detroit Tigers signed free agent RHP Anderson Pilar to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950657,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Justin King",
+   "team": "NYM",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "New York Mets signed free agent LHP Justin King to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950864,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Bryan Magdaleno",
+   "team": "HOU",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "Houston Astros signed free agent LHP Bryan Magdaleno to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950860,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jerming Rosario",
+   "team": "PHI",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Philadelphia Phillies signed free agent RHP Jerming Rosario to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950868,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Adam Leverett",
+   "team": "MIA",
+   "pos": "RHP",
+   "date": "2026-11-17",
+   "summary": "Miami Marlins signed free agent RHP Adam Leverett to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950862,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Kala'i Rosario",
+   "team": "SDP",
+   "pos": "OF",
+   "date": "2026-11-17",
+   "summary": "San Diego Padres signed free agent OF Kala'i Rosario to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950873,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Julio Robaina",
+   "team": "TBR",
+   "pos": "LHP",
+   "date": "2026-11-17",
+   "summary": "Tampa Bay Rays signed free agent LHP Julio Robaina to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950875,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
    "name": "Junior Perez",
    "team": "BAL",
    "pos": "?",
@@ -1565,171 +1936,6 @@
   },
   {
    "type": "sign_minor",
-   "name": "Sawyer Gipson-Long",
-   "team": "DET",
-   "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "Detroit Tigers signed free agent RHP Sawyer Gipson-Long to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950333,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Jose Gonzalez",
-   "team": "HOU",
-   "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "Houston Astros signed free agent RHP Jose Gonzalez to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950338,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Bailey Horn",
-   "team": "DET",
-   "pos": "LHP",
-   "date": "2026-11-16",
-   "summary": "Detroit Tigers signed free agent LHP Bailey Horn to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950335,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Blake Hunt",
-   "team": "PHI",
-   "pos": "C",
-   "date": "2026-11-16",
-   "summary": "Philadelphia Phillies signed free agent C Blake Hunt to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950340,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "José Barrero",
-   "team": "BAL",
-   "pos": "SS",
-   "date": "2026-11-16",
-   "summary": "Baltimore Orioles signed free agent SS José Barrero to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950298,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Ismael Munguia",
-   "team": "ARI",
-   "pos": "OF",
-   "date": "2026-11-16",
-   "summary": "Arizona Diamondbacks signed free agent OF Ismael Munguia to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950329,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Vince Velasquez",
-   "team": "KCR",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Kansas City Royals signed free agent RHP Vince Velasquez to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950579,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Jheremy Vargas",
-   "team": "MIL",
-   "pos": "3B",
-   "date": "2026-11-17",
-   "summary": "Milwaukee Brewers signed free agent 3B Jheremy Vargas to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950586,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Ryan Murphy",
-   "team": "ATH",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Athletics signed free agent RHP Ryan Murphy to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950557,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Bryce Conley",
-   "team": "SEA",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Seattle Mariners signed free agent RHP Bryce Conley to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950598,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Jose Espada",
-   "team": "MIN",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Minnesota Twins signed free agent RHP Jose Espada to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950589,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Brian Navarreto",
-   "team": "PHI",
-   "pos": "C",
-   "date": "2026-11-17",
-   "summary": "Philadelphia Phillies signed free agent C Brian Navarreto to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950592,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Johnathan Lavallee",
-   "team": "SEA",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Seattle Mariners signed free agent RHP Johnathan Lavallee to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950602,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Eric Vasquez",
-   "team": "TBR",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Tampa Bay Rays signed free agent RHP Eric Vasquez to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950606,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Luke Little",
-   "team": "ATH",
-   "pos": "LHP",
-   "date": "2026-11-17",
-   "summary": "Athletics signed free agent LHP Luke Little to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950554,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
    "name": "Alex Carrillo",
    "team": "BAL",
    "pos": "RHP",
@@ -1763,57 +1969,46 @@
   },
   {
    "type": "sign_minor",
-   "name": "Darlin Pinales",
-   "team": "ATL",
+   "name": "TJ Shook",
+   "team": "COL",
    "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "Atlanta Braves signed free agent RHP Darlin Pinales to a minor league contract.",
+   "date": "2026-11-18",
+   "summary": "Colorado Rockies signed free agent RHP TJ Shook to a minor league contract.",
    "src": "MLB Stats API",
-   "sid": 950648,
+   "sid": 950858,
    "status": "official"
   },
   {
    "type": "sign_minor",
-   "name": "Erick Mejia",
-   "team": "SFG",
-   "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "San Francisco Giants signed free agent RHP Erick Mejia to a minor league contract.",
+   "name": "Josh Simpson",
+   "team": "PHI",
+   "pos": "LHP",
+   "date": "2026-11-18",
+   "summary": "Philadelphia Phillies signed free agent LHP Josh Simpson to a minor league contract.",
    "src": "MLB Stats API",
-   "sid": 950662,
+   "sid": 950871,
    "status": "official"
   },
   {
    "type": "sign_minor",
-   "name": "Luke Williams",
-   "team": "ATL",
-   "pos": "SS",
-   "date": "2026-11-16",
-   "summary": "Atlanta Braves signed free agent SS Luke Williams to a minor league contract.",
+   "name": "Cooper Johnson",
+   "team": "TEX",
+   "pos": "C",
+   "date": "2026-11-18",
+   "summary": "Texas Rangers signed free agent C Cooper Johnson to a minor league contract.",
    "src": "MLB Stats API",
-   "sid": 950650,
+   "sid": 950881,
    "status": "official"
   },
   {
    "type": "sign_minor",
-   "name": "Michael Arias",
-   "team": "BOS",
+   "name": "Dylan File",
+   "team": "TEX",
    "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "Boston Red Sox signed free agent RHP Michael Arias to a minor league contract.",
+   "date": "2026-11-18",
+   "summary": "Texas Rangers signed free agent RHP Dylan File to a minor league contract.",
    "src": "MLB Stats API",
-   "sid": 950653,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Anderson Pilar",
-   "team": "DET",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Detroit Tigers signed free agent RHP Anderson Pilar to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950657,
+   "sid": 950877,
    "status": "official"
   },
   {
@@ -1890,27 +2085,6 @@
    "status": "official"
   },
   {
-   "date": "2026-11-20",
-   "type": "sign",
-   "summary": "Mets, Darwinzon Hernández Agree To Three-Year Deal",
-   "name": "Darwinzon Hernández",
-   "team": "NYM",
-   "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-darwinzon-hernandez-agree-to-three-year-deal.html",
-   "status": "reported",
-   "forty": true,
-   "contract": {
-    "aav": 4000000,
-    "desc": "3 yr, $12M (2027-29)",
-    "yrs": {
-     "2027": 4000000,
-     "2028": 4000000,
-     "2029": 4000000,
-     "2030": "FREE AGENT"
-    }
-   }
-  },
-  {
    "type": "trade",
    "players": [
     {
@@ -1947,17 +2121,6 @@
    "src": "MLB Stats API",
    "sid": 950733,
    "status": "official"
-  },
-  {
-   "date": "2026-11-20",
-   "type": "sign",
-   "summary": "Sources: Jonathan Loáisiga returning to Yankees on 2-year deal",
-   "name": "Jonathan Loáisiga",
-   "team": "NYY",
-   "pos": "RP",
-   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal",
-   "status": "reported",
-   "forty": true
   },
   {
    "type": "sign_minor",
@@ -2015,48 +2178,62 @@
    "status": "official"
   },
   {
-   "type": "sign_minor",
-   "name": "Celso Lopez",
-   "team": "CHC",
-   "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "Chicago Cubs signed free agent RHP Celso Lopez to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950750,
+   "type": "trade",
+   "players": [
+    {
+     "name": "Carter Baumler",
+     "from": "TEX",
+     "to": "BAL",
+     "forty": false,
+     "pos": "RHP"
+    }
+   ],
+   "date": "2026-11-19",
+   "summary": "Texas Rangers returned Rule 5 pick RHP Carter Baumler to Baltimore Orioles.",
+   "src": "Roster Resource offseason tracker",
    "status": "official"
   },
   {
-   "type": "sign_minor",
-   "name": "Enmanuel Mendoza",
-   "team": "COL",
-   "pos": "C",
-   "date": "2026-11-16",
-   "summary": "Colorado Rockies signed free agent C Enmanuel Mendoza to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950749,
+   "type": "select",
+   "name": "Darwinzon Hernández",
+   "team": "NYM",
+   "pos": "LHP",
+   "date": "2026-11-19",
+   "summary": "New York Mets agreed to a three-year contract (2027-29) with LHP Darwinzon Hernández.",
+   "src": "Roster Resource offseason tracker",
    "status": "official"
   },
   {
-   "type": "sign_minor",
-   "name": "Anderson Castillo",
-   "team": "CHC",
-   "pos": "RHP",
-   "date": "2026-11-16",
-   "summary": "Chicago Cubs signed free agent RHP Anderson Castillo to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950761,
-   "status": "official"
+   "date": "2026-11-20",
+   "type": "sign",
+   "summary": "Mets, Darwinzon Hernández Agree To Three-Year Deal",
+   "name": "Darwinzon Hernández",
+   "team": "NYM",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-darwinzon-hernandez-agree-to-three-year-deal.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 4000000,
+    "desc": "3 yr, $12M (2027-29)",
+    "yrs": {
+     "2027": 4000000,
+     "2028": 4000000,
+     "2029": 4000000,
+     "2030": "FREE AGENT"
+    }
+   }
   },
   {
-   "type": "sign_minor",
-   "name": "Enexis Antunez",
-   "team": "COL",
-   "pos": "OF",
-   "date": "2026-11-16",
-   "summary": "Colorado Rockies signed free agent OF Enexis Antunez to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950768,
-   "status": "official"
+   "date": "2026-11-20",
+   "type": "sign",
+   "summary": "Sources: Jonathan Loáisiga returning to Yankees on 2-year deal",
+   "name": "Jonathan Loáisiga",
+   "team": "NYY",
+   "pos": "RP",
+   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal",
+   "status": "reported",
+   "forty": true
   },
   {
    "type": "dfa",
@@ -2665,175 +2842,6 @@
    "status": "official"
   },
   {
-   "type": "sign_minor",
-   "name": "Justin King",
-   "team": "NYM",
-   "pos": "LHP",
-   "date": "2026-11-17",
-   "summary": "New York Mets signed free agent LHP Justin King to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950864,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Bryan Magdaleno",
-   "team": "HOU",
-   "pos": "LHP",
-   "date": "2026-11-17",
-   "summary": "Houston Astros signed free agent LHP Bryan Magdaleno to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950860,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Jerming Rosario",
-   "team": "PHI",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Philadelphia Phillies signed free agent RHP Jerming Rosario to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950868,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Adam Leverett",
-   "team": "MIA",
-   "pos": "RHP",
-   "date": "2026-11-17",
-   "summary": "Miami Marlins signed free agent RHP Adam Leverett to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950862,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "TJ Shook",
-   "team": "COL",
-   "pos": "RHP",
-   "date": "2026-11-18",
-   "summary": "Colorado Rockies signed free agent RHP TJ Shook to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950858,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Josh Simpson",
-   "team": "PHI",
-   "pos": "LHP",
-   "date": "2026-11-18",
-   "summary": "Philadelphia Phillies signed free agent LHP Josh Simpson to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950871,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Kala'i Rosario",
-   "team": "SDP",
-   "pos": "OF",
-   "date": "2026-11-17",
-   "summary": "San Diego Padres signed free agent OF Kala'i Rosario to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950873,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Julio Robaina",
-   "team": "TBR",
-   "pos": "LHP",
-   "date": "2026-11-17",
-   "summary": "Tampa Bay Rays signed free agent LHP Julio Robaina to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950875,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Cooper Johnson",
-   "team": "TEX",
-   "pos": "C",
-   "date": "2026-11-18",
-   "summary": "Texas Rangers signed free agent C Cooper Johnson to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950881,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Dylan File",
-   "team": "TEX",
-   "pos": "RHP",
-   "date": "2026-11-18",
-   "summary": "Texas Rangers signed free agent RHP Dylan File to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 950877,
-   "status": "official"
-  },
-  {
-   "type": "trade",
-   "players": [
-    {
-     "name": "Nate Eaton",
-     "from": "BOS",
-     "to": "ATH",
-     "forty": true,
-     "pos": "OF"
-    },
-    {
-     "name": "Jareth Rayo",
-     "from": "ATH",
-     "to": "BOS",
-     "forty": false,
-     "pos": "RHP"
-    }
-   ],
-   "date": "2026-10-29",
-   "summary": "Athletics acquired OF/INF Nate Eaton from Boston Red Sox for SP Jareth Rayo.",
-   "src": "Roster Resource offseason tracker",
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Sawyer Gipson-Long",
-   "team": "DET",
-   "pos": "RHP",
-   "date": "2026-11-02",
-   "summary": "Detroit Tigers released RHP Sawyer Gipson-Long.",
-   "src": "Roster Resource offseason tracker",
-   "status": "official"
-  },
-  {
-   "type": "release",
-   "name": "Bailey Horn",
-   "team": "DET",
-   "pos": "LHP",
-   "date": "2026-11-02",
-   "summary": "Detroit Tigers released LHP Bailey Horn.",
-   "src": "Roster Resource offseason tracker",
-   "status": "official"
-  },
-  {
-   "type": "trade",
-   "players": [
-    {
-     "name": "Carter Baumler",
-     "from": "TEX",
-     "to": "BAL",
-     "forty": false,
-     "pos": "RHP"
-    }
-   ],
-   "date": "2026-11-19",
-   "summary": "Texas Rangers returned Rule 5 pick RHP Carter Baumler to Baltimore Orioles.",
-   "src": "Roster Resource offseason tracker",
-   "status": "official"
-  },
-  {
    "type": "select",
    "name": "Angel Zerpa",
    "team": "MIL",
@@ -2844,14 +2852,45 @@
    "status": "official"
   },
   {
-   "type": "select",
-   "name": "Darwinzon Hernández",
-   "team": "NYM",
-   "pos": "LHP",
-   "date": "2026-11-19",
-   "summary": "New York Mets agreed to a three-year contract (2027-29) with LHP Darwinzon Hernández.",
-   "src": "Roster Resource offseason tracker",
-   "status": "official"
+   "date": "2026-11-20",
+   "type": "extend",
+   "summary": "Padres sign 1B/DH Gavin Sheets to a 3-yr, $11M deal (2027-29), buying out his final arbitration year; player options for 2028 and 2029",
+   "name": "Gavin Sheets",
+   "team": "SDP",
+   "pos": "1B",
+   "contract": {
+    "aav": 3666667,
+    "desc": "3 yr, $11M (2027-29): $2.5M salary + $0.5M signing bonus in 2027, $4M player options for 2028 and 2029 (player options count in the CBT AAV)",
+    "yrs": {
+     "2027": 3000000,
+     "2028": 4000000,
+     "2029": 4000000,
+     "2030": "FREE AGENT"
+    }
+   },
+   "src": "MLB.com press release; MLB Trade Rumors (Murray, FanSided; Passan, ESPN)"
+  },
+  {
+   "date": "2026-11-21",
+   "type": "extend",
+   "summary": "Tigers extend RHP Troy Melton: 6 yrs, $46.5M (2027-32) with a 2033 club option; up to $80M with the option and bonuses",
+   "name": "Troy Melton",
+   "team": "DET",
+   "pos": "SP",
+   "contract": {
+    "aav": 7750000,
+    "desc": "6 yr, $46.5M extension (2027-32), club option for 2033; year-by-year salaries not reported, shown evenly",
+    "yrs": {
+     "2027": 7750000,
+     "2028": 7750000,
+     "2029": 7750000,
+     "2030": 7750000,
+     "2031": 7750000,
+     "2032": 7750000,
+     "2033": "CLUB OPTION"
+    }
+   },
+   "src": "MLB Trade Rumors (Passan, ESPN)"
   },
   {
    "type": "retire",
@@ -2893,8 +2932,8 @@
    "pos": "SP",
    "forty": true,
    "contract": {
-    "aav": 50000000,
-    "desc": "9 yr, $450M (2027-35), $45M signing bonus, no opt-outs, full no-trade clause",
+    "aav": 51200000,
+    "desc": "9 yr, $450M (2027-35), $45M signing bonus, $30M deferred (paid 2036-45, AP), no opt-outs, full no-trade clause. CBT AAV ~$51.2M: MLB values the deal just under $461M for luxury tax purposes, the union about $437.8M (MLB Trade Rumors, Nov. 23, with Rosenthal, The Athletic, on the ~$437-438M present value). Why MLB's tax value is above the $450M face value was not explained.",
     "yrs": {
      "2027": 50000000,
      "2028": 50000000,
@@ -2908,7 +2947,7 @@
      "2036": "FREE AGENT"
     }
    },
-   "src": "Jeff Passan, ESPN",
+   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html",
    "status": "reported"
   },
   {
@@ -2939,13 +2978,21 @@
   {
    "date": "2026-11-23",
    "type": "sign",
-   "summary": "Mets To Sign Paul Goldschmidt",
+   "summary": "Mets sign 1B Paul Goldschmidt: 1 yr, $8M",
    "name": "Paul Goldschmidt",
    "team": "NYM",
    "pos": "1B",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html",
+   "src": "Robert Murray, FanSided; Jorge Castillo, ESPN; Anthony DiComo, MLB.com; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html",
    "status": "reported",
-   "forty": true
+   "forty": true,
+   "contract": {
+    "aav": 8000000,
+    "desc": "1 yr, $8M (2027) (Jorge Castillo, ESPN, for the length; Anthony DiComo, MLB.com, for the salary; club has not confirmed)",
+    "yrs": {
+     "2027": 8000000,
+     "2028": "FREE AGENT"
+    }
+   }
   },
   {
    "date": "2026-11-23",
@@ -2993,16 +3040,16 @@
   {
    "date": "2026-11-23",
    "type": "sign",
-   "summary": "Yankees To Sign Brent Suter",
+   "summary": "Yankees sign LHP Brent Suter: 1 yr, $4M with a 2028 club option",
    "name": "Brent Suter",
    "team": "NYY",
    "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html",
+   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html",
    "status": "reported",
    "forty": true,
    "contract": {
     "aav": 4000000,
-    "desc": "1 yr, $4M (2027-27)",
+    "desc": "1 yr, $4M (2027) plus a club option for 2028; option value and buyout not reported (Jeff Passan, ESPN)",
     "yrs": {
      "2027": 4000000,
      "2028": "FREE AGENT"
@@ -3012,39 +3059,67 @@
   {
    "date": "2026-11-23",
    "type": "sign",
-   "summary": "Royals To Sign Caleb Thielbar",
+   "summary": "Royals sign LHP Caleb Thielbar: 1 yr, $3.25M",
    "name": "Caleb Thielbar",
    "team": "KCR",
    "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html",
+   "src": "Jorge Castillo, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html; RotoWire https://www.rotowire.com/baseball/headlines/caleb-thielbar-news-lands-one-year-deal-with-royals-1028585; ESPN https://www.espn.com/mlb/ (Sources: Royals sign LHP Caleb Thielbar to 1-year, $3.25 million contract)",
    "status": "official",
    "forty": true,
-   "sid": 950954
+   "contract": {
+    "aav": 3250000,
+    "desc": "1 yr, $3.25M (2027) (Jorge Castillo, ESPN; official in MLB transaction log Nov. 23). KC had an open 40-man spot (MLBTR).",
+    "yrs": {
+     "2027": 3250000,
+     "2028": "FREE AGENT"
+    }
+   }
   },
   {
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "type": "sign",
-   "summary": "Cubs To Sign Trevor Rogers",
+   "summary": "Cubs sign LHP Trevor Rogers: 5 yrs, $120M (pending physical); he had rejected the Orioles' qualifying offer",
    "name": "Trevor Rogers",
    "team": "CHC",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/cubs-to-sign-trevor-rogers.html",
-   "status": "reported",
-   "forty": true
+   "forty": true,
+   "contract": {
+    "aav": 24000000,
+    "desc": "5 yr, $120M (2027-31); includes deferrals (Passan, ESPN) and escalators (Levine, 670 The Score) not yet detailed, so the CBT AAV may come in under $24M; year-by-year salaries not reported, shown evenly",
+    "yrs": {
+     "2027": 24000000,
+     "2028": 24000000,
+     "2029": 24000000,
+     "2030": 24000000,
+     "2031": 24000000,
+     "2032": "FREE AGENT"
+    }
+   },
+   "src": "MLB Trade Rumors (Morosi, MLB Network; Rosenthal, The Athletic)",
+   "status": "reported"
+  },
+  {
+   "date": "2026-11-23",
+   "type": "sign_minor",
+   "summary": "Nationals sign RHP Luis Curvelo to a minor league deal with a spring training invite",
+   "name": "Luis Curvelo",
+   "team": "WSN",
+   "pos": "RP",
+   "src": "Kiley McDaniel, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-luis-curvelo-to-minor-league-deal.html",
+   "status": "reported"
   },
   {
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Cubs To Sign Teruaki Sato",
+   "summary": "Cubs sign NPB 3B/OF Teruaki Sato (Hanshin): 6 yrs, $120M (Passan, ESPN); expected to play corner outfield, not third base",
    "name": "Teruaki Sato",
    "team": "CHC",
-   "pos": "3B/RF",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html",
-   "status": "reported",
+   "pos": "OF/3B",
    "forty": true,
+   "status": "reported",
    "contract": {
     "aav": 20000000,
-    "desc": "6 yr, $120M (2027-32)",
+    "desc": "6 yr, $120M (2027-32); yearly salaries not reported, spread evenly. Posting fee to Hanshin (about $19.9M) does not count toward the CBT.",
     "yrs": {
      "2027": 20000000,
      "2028": 20000000,
@@ -3054,32 +3129,40 @@
      "2032": 20000000,
      "2033": "FREE AGENT"
     }
-   }
+   },
+   "src": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html"
   },
   {
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Guardians To Sign Kris Bubic",
+   "summary": "Guardians sign LHP Kris Bubic: 1 yr, $17.5M (Passan, ESPN)",
    "name": "Kris Bubic",
    "team": "CLE",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html",
+   "forty": true,
    "status": "reported",
-   "forty": true
+   "contract": {
+    "aav": 17500000,
+    "desc": "1 yr, $17.5M (2027)",
+    "yrs": {
+     "2027": 17500000,
+     "2028": "FREE AGENT"
+    }
+   },
+   "src": "MLB Trade Rumors (Nicholson-Smith, Sportsnet; Passan, ESPN) https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html"
   },
   {
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Orioles To Sign Freddy Peralta",
+   "summary": "Orioles sign RHP Freddy Peralta: 5 yrs, $125M (ESPN sources); pending physical",
    "name": "Freddy Peralta",
    "team": "BAL",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html",
-   "status": "reported",
    "forty": true,
+   "status": "reported",
    "contract": {
     "aav": 25000000,
-    "desc": "5 yr, $125M (2027-31)",
+    "desc": "5 yr, $125M (2027-31); year-by-year salaries, bonus and any deferrals or opt-outs not yet reported, shown evenly",
     "yrs": {
      "2027": 25000000,
      "2028": 25000000,
@@ -3088,7 +3171,8 @@
      "2031": 25000000,
      "2032": "FREE AGENT"
     }
-   }
+   },
+   "src": "ESPN sources; MLB Trade Rumors (Nicholson-Smith, Sportsnet) https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html"
   }
  ],
  "live": "2026-11-24T16:04:09Z",
