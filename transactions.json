@@ -62,7 +62,9 @@
      "2028": "CLUB OPTION"
     }
    },
-   "src": "MLB Trade Rumors"
+   "src": "MLB Trade Rumors",
+   "status": "official",
+   "sid": 950957
   },
   {
    "date": "2026-11-14",
@@ -3294,6 +3296,7 @@
   950946,
   950949,
   950951,
-  950954
+  950954,
+  950957
  ]
 }
