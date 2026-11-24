@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "What signings of Sato, Rogers mean for Cubs",
+   "blurb": "Cubs landed Teruaki Sato on a six-year, $120 million deal, one day after signing Trevor Rogers.",
+   "link": "https://www.espn.com/video/clip/_/id/50584713/what-signings-sato-rogers-mean-cubs",
+   "time": "2026-11-24T18:50:15Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
    "title": "Tigers To Sign Ha-Seong Kim",
    "blurb": "The Tigers and infielder Ha-Seong Kim have agreed to a one-year, $5MM deal, reports Jeff Passan of ESPN. Kim is represented by the Boras Corporation. Detroit has a full 40-man roster and will need to make a corresponding move once this becomes official. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/tigers-to-sign-ha-seong-kim.html",
@@ -3224,18 +3235,7 @@
    "teams": [
     "LAD"
    ]
-  },
-  {
-   "title": "Chicago White Sox designated C Joey Bart for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "CHW"
-   ]
   }
  ],
- "updated": "2026-11-24T18:24:54Z"
+ "updated": "2026-11-24T18:55:00Z"
 }
