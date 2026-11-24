@@ -1,6 +1,26 @@
 {
  "items": [
   {
+   "title": "One trade ESPN experts would make before MLB lockout",
+   "blurb": "An MLB lockout is looming. Our experts suggest some last-minute deals.",
+   "link": "https://www.espn.com/mlb/story/_/id/50541491/offseason-trades-lockout-red-sox-yankees",
+   "time": "2026-11-24T11:43:53Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "How Tarik Skubal boosts Mets' 2027 projections",
+   "blurb": "Only one team could land MLB's biggest free agent. Here's what that means for the Mets.",
+   "link": "https://www.espn.com/mlb/story/_/id/50574273/tarik-skubal-mets-projections-2027",
+   "time": "2026-11-24T11:42:44Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "José Suarez Signs With KBO’s Doosan Bears",
    "blurb": "Left-hander José Suarez signed with the Doosan Bears of the Korea Baseball Organization, the club announced. Ari Alexander of Boston 7 News first reported the move, noting that the ISE Baseball client will make a $1MM guarantee. Suarez heads to Asia after parts of eight seasons in the big leagues. H",
    "link": "https://www.mlbtraderumors.com/2026/11/jose-suarez-signs-with-kbos-doosan-bears.html",
@@ -3222,29 +3242,7 @@
    "teams": [
     "ATL"
    ]
-  },
-  {
-   "title": "Atlanta Braves selected the contract of RHP Cedric De Grandpre from Gwinnett Stripers.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATL"
-   ]
-  },
-  {
-   "title": "Miami Marlins selected the contract of SS Juan Matheus from Jacksonville Jumbo Shrimp.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "MIA"
-   ]
   }
  ],
- "updated": "2026-11-24T05:42:09Z"
+ "updated": "2026-11-24T12:03:17Z"
 }
