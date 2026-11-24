@@ -3015,8 +3015,9 @@
    "team": "KCR",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html",
-   "status": "reported",
-   "forty": true
+   "status": "official",
+   "forty": true,
+   "sid": 950954
   }
  ],
  "live": "2026-11-23T23:39:53Z",
@@ -3223,6 +3224,7 @@
   950881,
   950946,
   950949,
-  950951
+  950951,
+  950954
  ]
 }
