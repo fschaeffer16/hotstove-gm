@@ -3045,7 +3045,7 @@
    "team": "NYY",
    "pos": "RP",
    "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html",
-   "status": "reported",
+   "status": "official",
    "forty": true,
    "contract": {
     "aav": 4000000,
@@ -3054,7 +3054,8 @@
      "2027": 4000000,
      "2028": "FREE AGENT"
     }
-   }
+   },
+   "sid": 950958
   },
   {
    "date": "2026-11-23",
@@ -3381,6 +3382,7 @@
   950949,
   950951,
   950954,
-  950957
+  950957,
+  950958
  ]
 }
