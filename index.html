@@ -1346,7 +1346,9 @@ function hsRanks(){if(_rank)return _rank;const ids=Object.keys(P).filter(id=>P[i
 let INTEL=null,INTEL_P={};
 function applyIntel(){INTEL_P={};if(!INTEL)return;
   for(const [c,t] of Object.entries(INTEL.teams||{}))if(t.win&&D.teams[c]&&['allin','contend','ascend','retool','rebuild'].includes(t.win))D.teams[c].win=t.win;
-  for(const x of INTEL.players||[]){const id=findP(x.name,x.team);if(!id)continue;INTEL_P[id]=x;if(x.pos)P[id].pos=x.pos}}
+  for(const x of INTEL.players||[]){const id=findP(x.name,x.team);if(!id)continue;/* a club's public "he is not available" is not the owner's word (owner, 11/24: "Oneil Cruz is not untouchable ... that did not come from me").
+       Only an owner entry or a full no-trade clause is a hard no; anything else reported as untouchable means "not shopping him, it takes an overpay". */
+    const y=(x.status==='untouchable'&&!x.owner&&!x.ntc)?{...x,status:'listening',price:'high',pub:1}:x.denied?{...x,pub:1}:x;INTEL_P[id]=y;if(x.pos)P[id].pos=x.pos}}
 const intelOf=id=>INTEL_P[id]||null;
 const blockTag=id=>{const it=intelOf(id);if(!it||isMets(id))return '';if(it.status==='untouchable'&&intelOn(it))return `<span class="tag lst" title="${esc(it.note||'Not available')}">NOT AVAILABLE</span>`;return it.status==='available'?`<span class="tag blk" title="${esc(it.note||'Reported available')}">ON THE BLOCK</span>`:it.status==='listening'?`<span class="tag lst" title="${esc(it.note||'Club is listening')}">LISTENING</span>`:''};
 function intelLine(code){const t=teamIntel(code),on=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status==='available').sort((a,b)=>(INTEL_P[a].status==='available'?0:1)-(INTEL_P[b].status==='available'?0:1)).map(id=>P[id].n);
@@ -1689,7 +1691,7 @@ function gradeTo(id,code,incoming){
       if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
       if(it&&it.problem){if(incoming){g-=2.5;notes.push('he comes with baggage'+(it.note?` (${it.note})`:''))}else{g=Math.min(g-4,53);notes.push('the club wants to move on from him and is not holding out for full value'+(it.note?` (${it.note})`:''))}}
       else if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him'+(it.note?` (${it.note})`:''))}
-      else if(it&&it.status==='listening'&&it.price==='high'){g+=2;notes.push('they will listen, but the price is high'+(it.note?` (${it.note})`:''))}
+      else if(it&&it.status==='listening'&&it.price==='high'){g+=2;notes.push(it.pub?'they are not shopping him, so it takes an overpay to get them to move':'they will listen, but the price is high'+(it.note?` (${it.note})`:''))}
       else if(it&&it.status==='listening'){g-=.5;notes.push('reported: they are listening on him'+(it.note?` (${it.note})`:''))}
       if(win==='rebuild'&&age>=29){g-=3;notes.push('rebuilding: veterans are available')}
       else if(win==='retool'&&age>=31&&cy<=2){g-=2;notes.push('retooling: listening on veterans')}
@@ -2022,7 +2024,7 @@ function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(i
   if(it&&it.status==='available')return '';
   /* a club that has just bought out a young player's arbitration years and a year or two of free agency is building around him (owner, 11/23) */
   if(extFresh(id)&&(p.age||30)<=27&&ctrl(id).length>=4)return 'just extended';
-  if(established(id)){if(it&&it.status==='listening')return (p.proj.war>=5.5&&ctrl(id).length>=2)?'franchise player':'';const w=p.proj.war,cy=ctrl(id).length,age=p.age||28;
+  if(established(id)){if(it&&it.status==='listening'&&!it.pub)return (p.proj.war>=5.5&&ctrl(id).length>=2)?'franchise player':'';const w=p.proj.war,cy=ctrl(id).length,age=p.age||28;
     if(w>=5.5&&cy>=2)return 'franchise player';
     if(age<=27&&cy>=3&&w>=3.5)return 'young core player';
     if((c.win==='rebuild'||c.win==='ascend')&&age<=26&&cy>=4&&w>=2.5)return 'part of their young core';
@@ -3482,7 +3484,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261124164929';
+const BUILD='20261124171929';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
