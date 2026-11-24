@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "San Diego Padres signed free agent RHP Garrett Hawkins to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-24T19:15:08Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "Blue Jays To Sign Kaima Taira",
+   "blurb": "The Blue Jays and right-hander Kaima Taira have agreed to a five-year, $80MM deal, reports Jon Heyman of The New York Post. There&#8217;s an opt-out after the third year. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html",
+   "time": "2026-11-24T19:11:45Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
    "title": "Pirates To Re-Sign Noah Murdock",
    "blurb": "Right-hander Noah Murdock is headed back to the Pirates on a minor league deal, per reporter Alex Stumpf. Pittsburgh non-tendered Murdock last week. Murdock joined the organization on a minor league deal last winter. He had his contract selected in July and made three appearances with the Pirates. M",
    "link": "https://www.mlbtraderumors.com/2026/11/pirates-to-re-sign-noah-murdock.html",
@@ -3213,29 +3235,7 @@
    "teams": [
     "WSN"
    ]
-  },
-  {
-   "title": "Athletics designated RHP Hayden Juenger for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATH"
-   ]
-  },
-  {
-   "title": "Athletics designated RHP Yunior Tur for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATH"
-   ]
   }
  ],
- "updated": "2026-11-24T19:05:04Z"
+ "updated": "2026-11-24T19:15:08Z"
 }

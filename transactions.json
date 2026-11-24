@@ -3193,9 +3193,43 @@
      "2028": "FREE AGENT"
     }
    }
+  },
+  {
+   "type": "sign_minor",
+   "name": "Garrett Hawkins",
+   "team": "SDP",
+   "pos": "RHP",
+   "date": "2026-11-21",
+   "summary": "San Diego Padres signed free agent RHP Garrett Hawkins to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 950967,
+   "status": "official"
+  },
+  {
+   "date": "2026-11-24",
+   "type": "sign",
+   "summary": "Blue Jays To Sign Kaima Taira",
+   "name": "Kaima Taira",
+   "team": "TOR",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 16000000,
+    "desc": "5 yr, $80M (2027-31)",
+    "yrs": {
+     "2027": 16000000,
+     "2028": 16000000,
+     "2029": 16000000,
+     "2030": 16000000,
+     "2031": 16000000,
+     "2032": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-24T18:24:54Z",
+ "live": "2026-11-24T19:15:08Z",
  "seen_sids": [
   950119,
   950220,
@@ -3402,6 +3436,7 @@
   950951,
   950954,
   950957,
-  950958
+  950958,
+  950967
  ]
 }
