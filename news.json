@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Sources: Free agent Trevor Rogers, Cubs reach 5-year deal",
+   "blurb": "The Cubs have agreed to a 5-year contract with free agent pitcher Trevor Rogers, sources told ESPN's Jesse Rogers.",
+   "link": "https://www.espn.com/mlb/story/_/id/50579432/sources-free-agent-trevor-rogers-cubs-reach-5-year-deal",
+   "time": "2026-11-24T04:06:54Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
    "title": "Cubs To Sign Trevor Rogers",
    "blurb": "The Cubs are in agreement on a contract with free agent starter Trevor Rogers, reports Jon Morosi of The MLB Network. The southpaw rejected a qualifying offer from the Orioles and was arguably the second-best pitcher available this offseason. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-trevor-rogers.html",
@@ -3235,18 +3246,7 @@
    "teams": [
     "CHC"
    ]
-  },
-  {
-   "title": "Milwaukee Brewers selected the contract of 3B Luke Adams from Nashville Sounds.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "MIL"
-   ]
   }
  ],
- "updated": "2026-11-24T04:01:38Z"
+ "updated": "2026-11-24T04:11:43Z"
 }
