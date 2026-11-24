@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Sources: Japanese righty Kaima Taira, Blue Jays agree to 5-year, $80M deal",
+   "blurb": "Right-hander Kaima Taira and the Blue Jays have agreed to a five-year, $80 million deal with an opt-out after the third season, sources told ESPN's Jeff Passan.",
+   "link": "https://www.espn.com/mlb/story/_/id/50585003/sources-kaima-taira-blue-jays-agree-5-year-80m-deal",
+   "time": "2026-11-24T19:26:54Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Luis Ortiz's wife urged Guardians pitcher to 'delete the evidence,' texts say",
+   "blurb": "Guardians pitcher Luis Ortiz's wife told him to \"delete the evidence\" in texts sent after a game in which he allegedly rigged a pitch.",
+   "link": "https://www.espn.com/mlb/story/_/id/50584679/luis-ortiz-wife-text-messages-trial-evidence",
+   "time": "2026-11-24T19:26:36Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
    "title": "MLB drops contract escrow provision in salary cap proposal",
    "blurb": "MLB dropped its demand for an escrow provision in its salary cap proposal, instead saying that an overage or underpayment would be accounted for in future seasons.",
    "link": "https://www.espn.com/mlb/story/_/id/50584880/mlb-drops-contract-escrow-provision-salary-cap-proposal",
@@ -3211,29 +3233,7 @@
    "teams": [
     "DET"
    ]
-  },
-  {
-   "title": "Detroit Tigers designated SS Trey Sweeney for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "DET"
-   ]
-  },
-  {
-   "title": "Detroit Tigers designated CF Matt Vierling for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "DET"
-   ]
   }
  ],
- "updated": "2026-11-24T19:25:11Z"
+ "updated": "2026-11-24T19:35:15Z"
 }
