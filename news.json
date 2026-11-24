@@ -1,6 +1,15 @@
 {
  "items": [
   {
+   "title": "MLB drops contract escrow provision in salary cap proposal",
+   "blurb": "MLB dropped its demand for an escrow provision in its salary cap proposal, instead saying that an overage or underpayment would be accounted for in future seasons.",
+   "link": "https://www.espn.com/mlb/story/_/id/50584880/mlb-drops-contract-escrow-provision-salary-cap-proposal",
+   "time": "2026-11-24T19:22:34Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "San Diego Padres signed free agent RHP Garrett Hawkins to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3224,18 +3233,7 @@
    "teams": [
     "DET"
    ]
-  },
-  {
-   "title": "Washington Nationals designated RHP Josiah Gray for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "WSN"
-   ]
   }
  ],
- "updated": "2026-11-24T19:15:08Z"
+ "updated": "2026-11-24T19:25:11Z"
 }
