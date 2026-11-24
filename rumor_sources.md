@@ -22,3 +22,6 @@ The beat writers for each of the 30 clubs at ESPN, The Athletic, MLB.com and the
 - Do not copy paywalled text. One short line in our own words.
 - "Wants a right-handed bat" or "needs a left-handed reliever" style details go in the club's `note`; `wants` keeps the position codes.
 - **Owner notes come first.** An entry in `intel.json` with `"owner": true` is the owner's own read (for example: Miami picked up Sandy Alcantara's option in order to trade him, whatever the club says in public). Never change its status, note or `src`, and never remove it, because of public reporting or a club's public comments. Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees, leave the entry alone and say so in your summary.
+
+## Untouchable is the owner's call (owner, 11/24/2026)
+Never set a player's status to `untouchable` in `intel.json` from public reporting or a club's public comments. A club saying a player is not available, "not entertaining offers" or "not shopping him" is recorded as `"status": "listening", "price": "high", "denied": true`, with the quote in the note. `untouchable` is only for an entry the owner wrote (`"owner": true`) or a player with a full no-trade clause (`"ntc": true`). The app ignores any other `untouchable`.

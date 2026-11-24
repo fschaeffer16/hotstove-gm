@@ -1,6 +1,6 @@
 {
  "updated": "2026-11-24",
- "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = club has said he is not available. dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary. An entry may carry \"until\": \"YYYY-MM-DD\"; it stops applying after that date, and a task may remove it then.",
+ "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = ONLY for an entry the owner wrote (owner: true) or a player with a full no-trade clause (ntc: true). A club saying publicly that a player is not available is NOT untouchable: record it as listening with price high and \"denied\": true (owner, 11/24: clubs say things they do not mean). dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary. An entry may carry \"until\": \"YYYY-MM-DD\"; it stops applying after that date, and a task may remove it then.",
  "teams": {
   "LAD": {
    "wants": [
@@ -530,9 +530,11 @@
   {
    "name": "William Contreras",
    "team": "MIL",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Milwaukee has told clubs he is staying; the focus is an extension",
-   "src": "https://sports.yahoo.com/articles/brewers-draw-hard-line-william-142357664.html"
+   "src": "https://sports.yahoo.com/articles/brewers-draw-hard-line-william-142357664.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Trevor Megill",
@@ -675,9 +677,11 @@
   {
    "name": "Ronald Acuña Jr.",
    "team": "ATL",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Anthopoulos: not trading him, no talks",
-   "src": "https://sports.yahoo.com/articles/braves-rumors-don-t-expect-182230742.html"
+   "src": "https://sports.yahoo.com/articles/braves-rumors-don-t-expect-182230742.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Sean Murphy",
@@ -694,9 +698,11 @@
   {
    "name": "Paul Skenes",
    "team": "PIT",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Not expected to be moved this winter; under control through 2029",
-   "src": "https://www.si.com/mlb/pirates/onsi/insider-shuts-down-pittsburgh-pirates-paul-skenes-trade-thoughts"
+   "src": "https://www.si.com/mlb/pirates/onsi/insider-shuts-down-pittsburgh-pirates-paul-skenes-trade-thoughts",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Spencer Horwitz",
@@ -836,16 +842,20 @@
   {
    "name": "Josue De Paula",
    "team": "LAD",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Treated as a nonstarter in trade talks (deadline reporting); lined up for left field",
-   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable"
+   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Eduardo Quintero",
    "team": "LAD",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Named with De Paula as a nonstarter in trade talks (deadline reporting)",
-   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable"
+   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Fernando Tatis Jr.",
@@ -923,9 +933,11 @@
   {
    "name": "Ryan Waldschmidt",
    "team": "ARI",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Most asked-about player at the 2026 deadline; deals died because clubs wanted him",
-   "src": "https://arizonasports.com/mlb/arizona-diamondbacks/diamondbacks-gm-mike-hazen-ryan-waldschmidt-was-most-asked-about-player-at-trade-deadline"
+   "src": "https://arizonasports.com/mlb/arizona-diamondbacks/diamondbacks-gm-mike-hazen-ryan-waldschmidt-was-most-asked-about-player-at-trade-deadline",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Christian Walker",
@@ -952,16 +964,20 @@
   {
    "name": "Alec Burleson",
    "team": "STL",
-   "status": "untouchable",
+   "status": "listening",
    "note": "The Cardinals turned away trade interest; part of the long-term core",
-   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html"
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Masyn Winn",
    "team": "STL",
-   "status": "untouchable",
+   "status": "listening",
    "note": "An inquiry on the shortstop was quickly rejected",
-   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html"
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-reportedly-turned-away-trade-interest-in-burleson-winn.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Pedro Pagés",
@@ -987,9 +1003,11 @@
   {
    "name": "Oneil Cruz",
    "team": "PIT",
-   "status": "untouchable",
+   "status": "listening",
    "note": "The Pirates are not willing to entertain offers",
-   "src": "https://bleacherreport.com/articles/25531928-every-mlb-teams-player-most-likely-be-traded-26-27-offseason"
+   "src": "https://bleacherreport.com/articles/25531928-every-mlb-teams-player-most-likely-be-traded-26-27-offseason",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Mitch Keller",
@@ -1024,16 +1042,20 @@
   {
    "name": "Nolan McLean",
    "team": "NYM",
-   "status": "untouchable",
+   "status": "listening",
    "note": "A young player the Mets would not trade; a rotation lock for 2027",
-   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
+   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Carson Benge",
    "team": "NYM",
-   "status": "untouchable",
+   "status": "listening",
    "note": "A young player the Mets would not trade; locked into right field",
-   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html"
+   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Trea Turner",
@@ -1047,16 +1069,20 @@
   {
    "name": "Bryce Harper",
    "team": "PHI",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Reported to be staying put; Dombrowski is not looking to deal him",
-   "src": "https://sports.yahoo.com/articles/phillies-reportedly-making-two-veterans-172618398.html"
+   "src": "https://sports.yahoo.com/articles/phillies-reportedly-making-two-veterans-172618398.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Kyle Schwarber",
    "team": "PHI",
-   "status": "untouchable",
+   "status": "listening",
    "note": "Reported to be staying put; Dombrowski is not looking to deal him",
-   "src": "https://sports.yahoo.com/articles/phillies-reportedly-making-two-veterans-172618398.html"
+   "src": "https://sports.yahoo.com/articles/phillies-reportedly-making-two-veterans-172618398.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Daylen Lile",
@@ -1069,9 +1095,11 @@
   {
    "name": "James Wood",
    "team": "WSN",
-   "status": "untouchable",
+   "status": "listening",
    "note": "No interest in trading him after a second straight 30-homer season",
-   "src": "https://heavy.com/sports/mlb/washington-nationals/nationals-make-opposite-decisions-trading-dylan-crews-james-wood/"
+   "src": "https://heavy.com/sports/mlb/washington-nationals/nationals-make-opposite-decisions-trading-dylan-crews-james-wood/",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Ryan McMahon",
@@ -1105,9 +1133,11 @@
   {
    "name": "Pete Alonso",
    "team": "BAL",
-   "status": "untouchable",
+   "status": "listening",
    "note": "The one player Baltimore will not discuss",
-   "src": "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html"
+   "src": "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Gunnar Henderson",
