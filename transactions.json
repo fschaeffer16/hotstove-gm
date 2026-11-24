@@ -3064,9 +3064,32 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "date": "2026-11-24",
+   "type": "sign",
+   "summary": "Orioles To Sign Freddy Peralta",
+   "name": "Freddy Peralta",
+   "team": "BAL",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 25000000,
+    "desc": "5 yr, $125M (2027-31)",
+    "yrs": {
+     "2027": 25000000,
+     "2028": 25000000,
+     "2029": 25000000,
+     "2030": 25000000,
+     "2031": 25000000,
+     "2032": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-24T15:44:00Z",
+ "live": "2026-11-24T16:04:09Z",
  "seen_sids": [
   950119,
   950220,
