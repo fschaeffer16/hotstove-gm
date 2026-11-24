@@ -3174,9 +3174,28 @@
     }
    },
    "src": "ESPN sources; MLB Trade Rumors (Nicholson-Smith, Sportsnet) https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html"
+  },
+  {
+   "date": "2026-11-24",
+   "type": "sign",
+   "summary": "Tigers To Sign Ha-Seong Kim",
+   "name": "Ha-Seong Kim",
+   "team": "DET",
+   "pos": "SS",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/tigers-to-sign-ha-seong-kim.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 5000000,
+    "desc": "1 yr, $5M (2027-27)",
+    "yrs": {
+     "2027": 5000000,
+     "2028": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-24T16:04:09Z",
+ "live": "2026-11-24T18:24:54Z",
  "seen_sids": [
   950119,
   950220,
