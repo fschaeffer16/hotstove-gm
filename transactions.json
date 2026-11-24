@@ -3160,7 +3160,7 @@
    "team": "BAL",
    "pos": "SP",
    "forty": true,
-   "status": "reported",
+   "status": "official",
    "contract": {
     "aav": 25000000,
     "desc": "5 yr, $125M (2027-31); year-by-year salaries, bonus and any deferrals or opt-outs not yet reported, shown evenly",
@@ -3173,7 +3173,8 @@
      "2032": "FREE AGENT"
     }
    },
-   "src": "ESPN sources; MLB Trade Rumors (Nicholson-Smith, Sportsnet) https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html"
+   "src": "ESPN sources; MLB Trade Rumors (Nicholson-Smith, Sportsnet) https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html",
+   "sid": 950970
   },
   {
    "date": "2026-11-24",
@@ -3437,6 +3438,7 @@
   950954,
   950957,
   950958,
-  950967
+  950967,
+  950970
  ]
 }
