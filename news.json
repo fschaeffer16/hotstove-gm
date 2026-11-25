@@ -1,6 +1,72 @@
 {
  "items": [
   {
+   "title": "Pittsburgh Pirates signed free agent RHP Carlos Guzman to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T06:37:29Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PIT"
+   ]
+  },
+  {
+   "title": "Tampa Bay Rays signed free agent RHP Alexander Cornielle to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T06:37:29Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TBR"
+   ]
+  },
+  {
+   "title": "San Diego Padres signed free agent SS Jose Devers to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T06:37:29Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
+   "title": "Texas Rangers signed free agent C Darrien Miller to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T06:37:29Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TEX"
+   ]
+  },
+  {
+   "title": "Texas Rangers signed free agent RF Bryce Johnson to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T06:37:29Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TEX"
+   ]
+  },
+  {
+   "title": "Washington Nationals signed free agent RHP Hagen Danner to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T06:37:29Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "WSN"
+   ]
+  },
+  {
    "title": "Athletics signed free agent RHP Houston Roth to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3171,67 +3237,7 @@
    "teams": [
     "NYM"
    ]
-  },
-  {
-   "title": "Nationals To Sign Hagen Danner To Minor League Deal",
-   "blurb": "The Nationals are adding right-hander Hagen Danner on a minor league agreement, reports Spencer Nusbaum of The Athletic. He spent last season in the minors with the Reds and Angels. The 28-year-old Danner posted a 6.35 ERA in 37 appearances at Triple-A in 2026. He had a middling 22.1% strikeout rate",
-   "link": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-hagen-danner-to-minor-league-deal.html",
-   "time": "2026-11-18T15:32:43Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "WSN"
-   ]
-  },
-  {
-   "title": "Athletics signed free agent RHP Wilkin Ramos to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T15:17:03Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATH"
-   ]
-  },
-  {
-   "title": "Passan: 2026-27 MLB offseason preview, free agent updates",
-   "blurb": "The hot stove is about to get blazing hot. Here's what will shape the coming weeks of offseason moves.",
-   "link": "https://www.espn.com/mlb/story/_/id/50512111/passan-offseason-preview-2026-27-free-agent-updates",
-   "time": "2026-11-18T15:08:13Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "The Opener: Silver Sluggers, Qualifying Offers, May",
-   "blurb": "Tuesday was a wild one for transactions with the Rule 5 deadline in the evening. Virtually every team shuffled players on and off its 40-man roster. 1. Silver Sluggers announced The Silver Slugger Awards for both leagues were handed out last night. The crop included a pair of rookies (Kevin McGonigl",
-   "link": "https://www.mlbtraderumors.com/2026/11/the-opener-silver-sluggers-qualifying-offers-may.html",
-   "time": "2026-11-18T14:42:30Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Tarik Skubal free agency tracker: Latest on top MLB free agent",
-   "blurb": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-   "link": "https://www.espn.com/mlb/story/_/id/50453514/tarik-skubal-free-agency-updates",
-   "time": "2026-11-18T14:22:24Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "St. Louis Cardinals selected the contract of RHP Jacob Odle from Peoria Chiefs.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T05:56:24Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "STL"
-   ]
   }
  ],
- "updated": "2026-11-25T06:27:26Z"
+ "updated": "2026-11-25T06:37:29Z"
 }

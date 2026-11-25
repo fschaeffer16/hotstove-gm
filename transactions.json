@@ -3408,9 +3408,75 @@
    "src": "MLB Stats API",
    "sid": 951089,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Carlos Guzman",
+   "team": "PIT",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Pittsburgh Pirates signed free agent RHP Carlos Guzman to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951100,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Alexander Cornielle",
+   "team": "TBR",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Tampa Bay Rays signed free agent RHP Alexander Cornielle to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951103,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jose Devers",
+   "team": "SDP",
+   "pos": "SS",
+   "date": "2026-11-24",
+   "summary": "San Diego Padres signed free agent SS Jose Devers to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951105,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Darrien Miller",
+   "team": "TEX",
+   "pos": "C",
+   "date": "2026-11-24",
+   "summary": "Texas Rangers signed free agent C Darrien Miller to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951111,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Bryce Johnson",
+   "team": "TEX",
+   "pos": "RF",
+   "date": "2026-11-24",
+   "summary": "Texas Rangers signed free agent RF Bryce Johnson to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951109,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Hagen Danner",
+   "team": "WSN",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Washington Nationals signed free agent RHP Hagen Danner to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951107,
+   "status": "official"
   }
  ],
- "live": "2026-11-25T06:27:26Z",
+ "live": "2026-11-25T06:37:29Z",
  "seen_sids": [
   950119,
   950220,
@@ -3628,6 +3694,12 @@
   951091,
   951093,
   951095,
-  951098
+  951098,
+  951100,
+  951103,
+  951105,
+  951107,
+  951109,
+  951111
  ]
 }
