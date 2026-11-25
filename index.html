@@ -1889,14 +1889,14 @@ function askFit(x,code){const id=x.id,p=P[id],c=ctx(code),now=c.win==='allin'||c
     if(/blocked by|other good|other 45\+|they already have/.test(nt))s-=2;
     else if(now&&near&&needRep(code).rows.some(r=>r.need&&(r.k==='p'+gp||(gp==='SP'&&r.k==='sp')||(gp==='RP'&&r.k==='rp')))){s+=1;why=`he is ${an} close to the majors at a spot where they are thin`}}
   return {s,why}}
-function gmSuggest(code,outSel,inSel,cashM,E0,asked){const nm=id=>sn(id),nl=needList(code).slice(0,2),want=nl.length?`We're looking for ${nl.join(' and ')}. `:'';
+function gmSuggest(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const nm=id=>sn(id),nl=needList(code).slice(0,2),want=nl.length?`We're looking for ${nl.join(' and ')}. `:'';
   if(E0.verdict==='locked')return "Nobody. The rules don't allow this deal as it's built.";
   if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
   if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
   if(!inSel.length)return `${want}Tell me who you want from us first, then I'll tell you what it costs.`;
   const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${p.proj.war.toFixed(1)} WAR projected with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
     const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${top100(id)?', No. '+top100(id)+' in the game':''}`};
-  const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!noAsk(id,code)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
+  const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!skip[id]&&!noAsk(id,code)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
   /* a player the user asked about by name */
   if(asked&&asked.length){const id=asked[0],E=evalTrade(code,outSel.concat([id]),inSel,cashM);
     return E.verdict==='accept'?`${nm(id)}? Yes. Add him and we have a deal: ${why(id)}.`:E.verdict==='counter'?`${nm(id)} gets us close, ${why(id)}. I'd still need a small piece with him.`:(E.untouch&&E.untouch.length?`${nm(id)}? ${why(id).replace(/^./,ch=>ch.toUpperCase())}, but ${nm(E.untouch[0].x.id)} only moves for a better player than that.`:`${nm(id)} doesn't get it done; ${why(id)}, and that's not enough for what you're asking.`)}
@@ -1926,9 +1926,18 @@ function gmReply(text,code,outSel,inSel,cashM){
   /* tone */
   if(/idiot|stupid|dumb|moron|clown|\bjoke\b|pathetic|f[u*]ck|sh[i*]t|bullsh|garbage|trash|\bsuck/.test(tx)){T.done=true;T.bonus=Math.max(-.08,T.bonus-.04);
     const gm="We're done for today. Call me when you want to talk baseball.";T.log.push({me:text,gm});return gm}
+  /* "Not him": the user rules a player of his own out ("that piece isn't Christian Scott", "anyone but Tong", "Scott is off the table"; owner, 11/25:
+     the GM answered "Scott? Yes. Add him"). The GM remembers it for the rest of this conversation, never names him again, and says who else would do it. Free: it does not use up a reply. */
+  {const cand=named(roster(ME).filter(id=>!outSel.includes(id))),off=cand.filter(id=>{const l=sn(id).toLowerCase();let i=-1;while((i=tx.indexOf(l,i+1))>=0){const bf=tx.slice(Math.max(0,i-34),i),af=tx.slice(i+l.length,i+l.length+40);
+      if(/(\bnot\b|n[’']t\b|\bisnt\b|\bwont\b|\bno way\b|\bbut\b|\bbesides\b|\bexcept\b|\bother than\b|\bwithout\b|\bkeep(ing)?\b|\binstead of\b|\bnever\b)[^.?!]*$/.test(bf)||/^[^.?!]{0,12}(off limits|off the table|stays|is staying|untouchable|unavailable|not available|n[’']t available|not going anywhere|not for sale|is not (part|in|on|going|moving|included))/.test(af))return true}return false});
+    const again=off.length&&off.every(id=>T.off&&T.off[id]);
+    cand.forEach(id=>{if(!off.includes(id)&&T.off)delete T.off[id]});/* he brings a player back up himself: back on the table */
+    if(off.length){T.off=T.off||{};off.forEach(id=>T.off[id]=1)}
+    T._ask=cand.filter(id=>!(T.off&&T.off[id]));
+    if(off.length){const q=(again?`I heard you: ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} out, and I will not bring ${off.length>1?'them':'him'} up again. `:`Understood, ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} off the table. `)+gmSuggest(code,outSel,inSel,cashM,E0,T._ask,T.off);T.log.push({me:text,gm:q,q:1});return q}}
   /* a question: who do you want, what would it take. He looks at the user's system and at what is already on the table and names players. */
   if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take/.test(tx)){
-    const q=gmSuggest(code,outSel,inSel,cashM,E0,named(roster(ME).filter(id=>!outSel.includes(id))));T.log.push({me:text,gm:q,q:1});return q}
+    const q=gmSuggest(code,outSel,inSel,cashM,E0,T._ask,T.off);T.log.push({me:text,gm:q,q:1});return q}
   /* health of their player */
   /* money talk: eat / retain / pay down / kick in / cash considerations. A question with a real answer, so it does not use up a reply. */
   if(/\beat(ing)?\b|retain|pay(ing)? (down|part|some|half)|kick(ing)? in|cash considerations|send (cash|money)|cover (some|part|half)|offset/.test(tx)){let gm;const M0=v=>'$'+Math.round(v/1e6)+'M';
@@ -3504,7 +3513,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261125160235';
+const BUILD='20261125160559';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
