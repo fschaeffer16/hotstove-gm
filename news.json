@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Source: Marlins agree to 1-year deal with catcher Gary Sanchez",
+   "blurb": "The Miami Marlins are in agreement on a one-year, $6.5 million contract with catcher Gary Sanchez, a source told ESPN.",
+   "link": "https://www.espn.com/mlb/story/_/id/50598771/source-marlins-agree-one-year-deal-gary-sanchez",
+   "time": "2026-11-25T23:50:22Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "MIA"
+   ]
+  },
+  {
    "title": "Cubs' Crow-Armstrong to get record $3.5M from pre-arbitration bonus pool",
    "blurb": "Cubs center fielder Pete Crow-Armstrong will receive a record $3.5 million from Major League Baseball's pre-arbitration bonus pool.",
    "link": "https://www.espn.com/mlb/story/_/id/50598513/cubs-crow-armstrong-record-pre-arbitration-bonus-pool",
@@ -3220,18 +3231,7 @@
    "teams": [
     "ATH"
    ]
-  },
-  {
-   "title": "Baltimore Orioles signed free agent RHP Alex Carrillo to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL"
-   ]
   }
  ],
- "updated": "2026-11-25T23:42:44Z"
+ "updated": "2026-11-25T23:52:48Z"
 }
