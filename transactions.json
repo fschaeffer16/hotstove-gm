@@ -3571,8 +3571,9 @@
    "team": "MIL",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/brewers-sign-antonio-senzatela.html",
-   "status": "reported",
-   "forty": true
+   "status": "official",
+   "forty": true,
+   "sid": 951122
   }
  ],
  "live": "2026-11-25T19:11:26Z",
@@ -3806,6 +3807,7 @@
   951117,
   951119,
   951120,
-  951121
+  951121,
+  951122
  ]
 }
