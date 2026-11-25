@@ -3574,9 +3574,20 @@
    "status": "official",
    "forty": true,
    "sid": 951122
+  },
+  {
+   "type": "dfa",
+   "name": "Tyler Black",
+   "team": "MIL",
+   "pos": "DH",
+   "date": "2026-11-25",
+   "summary": "Milwaukee Brewers designated DH Tyler Black for assignment.",
+   "src": "MLB Stats API",
+   "sid": 951123,
+   "status": "official"
   }
  ],
- "live": "2026-11-25T19:11:26Z",
+ "live": "2026-11-25T19:41:36Z",
  "seen_sids": [
   950119,
   950220,
@@ -3808,6 +3819,7 @@
   951119,
   951120,
   951121,
-  951122
+  951122,
+  951123
  ]
 }

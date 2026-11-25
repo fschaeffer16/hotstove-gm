@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Milwaukee Brewers designated DH Tyler Black for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T19:41:36Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "MIL"
+   ]
+  },
+  {
    "title": "Brewers Sign Antonio Senzatela",
    "blurb": "The Brewers announced that they have signed right-hander Antonio Senzatela to a one-year contract. The financial terms of the deal for the Republik Sports client have not yet been reported. First baseman/outfielder Tyler Black has been designated for assignment to open a 40-man roster spot. More to ",
    "link": "https://www.mlbtraderumors.com/2026/11/brewers-sign-antonio-senzatela.html",
@@ -3221,19 +3232,7 @@
    "teams": [
     "MIN"
    ]
-  },
-  {
-   "title": "Tampa Bay Rays traded C Nick Fortes to Boston Red Sox for RHP Angel Roa.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BOS",
-    "TBR"
-   ]
   }
  ],
- "updated": "2026-11-25T19:11:26Z"
+ "updated": "2026-11-25T19:41:36Z"
 }
