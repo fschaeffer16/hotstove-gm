@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Sources: White Sox, OF Tyrone Taylor agree to 2-year, $17 million deal",
+   "blurb": "Tyrone Taylor, who had a monster second half last season, fills a hole in the White Sox's outfield.",
+   "link": "https://www.espn.com/mlb/story/_/id/50587577/white-sox-tyrone-taylor-agree-2-year-17-million-deal",
+   "time": "2026-11-25T00:35:36Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "CHW"
+   ]
+  },
+  {
    "title": "Scott Servais joins Rockies as senior director of baseball operations",
    "blurb": "The Rockies brought in former Seattle manager Scott Servais on Tuesday as senior director of baseball operations.",
    "link": "https://www.espn.com/mlb/story/_/id/50587110/scott-servais-joins-rockies-senior-director-baseball-operations",
@@ -3220,18 +3231,7 @@
    "teams": [
     "SFG"
    ]
-  },
-  {
-   "title": "San Francisco Giants designated SS Christian Koss for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SFG"
-   ]
   }
  ],
- "updated": "2026-11-24T23:46:09Z"
+ "updated": "2026-11-25T00:46:18Z"
 }
