@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24",
+ "updated": "2026-11-25",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -3309,9 +3309,108 @@
    "pos": "1B",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mariners-carlos-santana-agree-to-minor-league-deal.html",
    "status": "reported"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Houston Roth",
+   "team": "ATH",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Athletics signed free agent RHP Houston Roth to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951085,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Nestor Lorant",
+   "team": "HOU",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Houston Astros signed free agent RHP Nestor Lorant to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951093,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Braden Shewmake",
+   "team": "MIL",
+   "pos": "SS",
+   "date": "2026-11-24",
+   "summary": "Milwaukee Brewers signed free agent SS Braden Shewmake to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951095,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Eduardo Garcia",
+   "team": "CHW",
+   "pos": "SS",
+   "date": "2026-11-24",
+   "summary": "Chicago White Sox signed free agent SS Eduardo Garcia to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951091,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Adam Seminaris",
+   "team": "ATH",
+   "pos": "LHP",
+   "date": "2026-11-24",
+   "summary": "Athletics signed free agent LHP Adam Seminaris to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951087,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Sandy Gaston",
+   "team": "ARI",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Arizona Diamondbacks signed free agent RHP Sandy Gaston to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951081,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Ricardo Olivar",
+   "team": "PHI",
+   "pos": "C",
+   "date": "2026-11-24",
+   "summary": "Philadelphia Phillies signed free agent C Ricardo Olivar to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951098,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Brayan Buelvas",
+   "team": "ATH",
+   "pos": "CF",
+   "date": "2026-11-24",
+   "summary": "Athletics signed free agent CF Brayan Buelvas to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951083,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Bruno López",
+   "team": "CHC",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Chicago Cubs signed free agent RHP Bruno López to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951089,
+   "status": "official"
   }
  ],
- "live": "2026-11-25T03:16:52Z",
+ "live": "2026-11-25T06:27:26Z",
  "seen_sids": [
   950119,
   950220,
@@ -3520,6 +3619,15 @@
   950957,
   950958,
   950967,
-  950970
+  950970,
+  951081,
+  951083,
+  951085,
+  951087,
+  951089,
+  951091,
+  951093,
+  951095,
+  951098
  ]
 }
