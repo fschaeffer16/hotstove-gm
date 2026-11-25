@@ -2225,15 +2225,25 @@
    }
   },
   {
+   "status": "reported",
    "date": "2026-11-20",
    "type": "sign",
-   "summary": "Sources: Jonathan Loáisiga returning to Yankees on 2-year deal",
+   "summary": "Yankees re-sign RHP Jonathan Loáisiga: 2 yrs, $18M with a 2029 club option (Feinsand, MLB.com; Castillo, ESPN)",
    "name": "Jonathan Loáisiga",
    "team": "NYY",
    "pos": "RP",
-   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal",
-   "status": "reported",
-   "forty": true
+   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-jonathan-loaisiga.html",
+   "forty": true,
+   "contract": {
+    "aav": 9000000,
+    "desc": "2 yr, $18M (2027-28) plus a club option for 2029 (Jorge Castillo, ESPN; value per Feinsand, MLB.com); yearly salaries and any option buyout not reported, shown evenly. He pitched for Arizona in 2026.",
+    "yrs": {
+     "2027": 9000000,
+     "2028": 9000000,
+     "2029": "CLUB OPTION",
+     "2030": "FREE AGENT"
+    }
+   }
   },
   {
    "type": "dfa",
@@ -2871,6 +2881,16 @@
    "src": "MLB.com press release; MLB Trade Rumors (Murray, FanSided; Passan, ESPN)"
   },
   {
+   "date": "2026-11-20",
+   "type": "sign_minor",
+   "summary": "Orioles re-sign INF Luis Vázquez to a minor league deal with a spring training invite (Jorge Castillo, ESPN)",
+   "name": "Luis Vázquez",
+   "team": "BAL",
+   "pos": "INF",
+   "status": "reported",
+   "src": "Jorge Castillo, ESPN (Nov. 20, 2026), as logged in the artifact tracker"
+  },
+  {
    "date": "2026-11-21",
    "type": "extend",
    "summary": "Tigers extend RHP Troy Melton: 6 yrs, $46.5M (2027-32) with a 2033 club option; up to $80M with the option and bonuses",
@@ -2987,24 +3007,24 @@
    "owner": true
   },
   {
+   "status": "official",
+   "sid": 951113,
    "date": "2026-11-23",
    "type": "sign",
-   "summary": "Mets sign 1B Paul Goldschmidt: 1 yr, $8M",
+   "summary": "Mets sign 1B Paul Goldschmidt: 1 yr, $8M (official Nov. 25)",
    "name": "Paul Goldschmidt",
    "team": "NYM",
    "pos": "1B",
    "src": "Robert Murray, FanSided; Jorge Castillo, ESPN; Anthony DiComo, MLB.com; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html",
-   "status": "official",
    "forty": true,
    "contract": {
     "aav": 8000000,
-    "desc": "1 yr, $8M (2027) (Jorge Castillo, ESPN, for the length; Anthony DiComo, MLB.com, for the salary; club has not confirmed)",
+    "desc": "1 yr, $8M (2027) (Jorge Castillo, ESPN, for the length; Will Sammon, The Athletic, and Anthony DiComo, MLB.com, for the salary); club announced it Nov. 25; plus up to $2M in incentives (Sherman, NY Post), not counted until earned",
     "yrs": {
      "2027": 8000000,
      "2028": "FREE AGENT"
     }
-   },
-   "sid": 951113
+   }
   },
   {
    "date": "2026-11-23",
@@ -3169,14 +3189,14 @@
    "sid": 950970,
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Orioles sign RHP Freddy Peralta: 5 yrs, $125M (ESPN sources); pending physical",
+   "summary": "Orioles sign RHP Freddy Peralta: 5 yrs, $125M (ESPN sources)",
    "name": "Freddy Peralta",
    "team": "BAL",
    "pos": "SP",
    "forty": true,
    "contract": {
     "aav": 25000000,
-    "desc": "5 yr, $125M (2027-31); no deferred money and no opt-outs (MLBTR); year-by-year salaries not reported, shown evenly",
+    "desc": "5 yr, $125M (2027-31): $10M signing bonus plus $23M salaries each year (Noah Trister, AP, via MLBTR); no deferred money and no opt-outs (Rosenthal, The Athletic); bonus prorated over the 5 years, so the CBT AAV is $25M (shown evenly)",
     "yrs": {
      "2027": 25000000,
      "2028": 25000000,
@@ -3200,7 +3220,7 @@
    "forty": true,
    "contract": {
     "aav": 5000000,
-    "desc": "1 yr, $5M (2027); incentives/options not reported",
+    "desc": "1 yr, $5M (2027) plus up to $1M in incentives (Heyman, NY Post); incentives not counted until earned",
     "yrs": {
      "2027": 5000000,
      "2028": "FREE AGENT"
@@ -3278,37 +3298,6 @@
    "pos": "INF",
    "summary": "Mets sign INF Eddys Leonard to a minor league deal with a spring training invite (Will Sammon, The Athletic)",
    "src": "https://www.mlbtraderumors.com/2026/11/mets-sign-infielder-eddys-leonard.html",
-   "status": "reported"
-  },
-  {
-   "date": "2026-11-25",
-   "type": "sign",
-   "summary": "Reds To Re-Sign Tyler Stephenson To Three-Year Deal",
-   "name": "Tyler Stephenson",
-   "team": "CIN",
-   "pos": "C",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
-   "status": "reported",
-   "forty": true,
-   "contract": {
-    "aav": 10000000,
-    "desc": "3 yr, $30M (2027-29)",
-    "yrs": {
-     "2027": 10000000,
-     "2028": 10000000,
-     "2029": 10000000,
-     "2030": "FREE AGENT"
-    }
-   }
-  },
-  {
-   "date": "2026-11-25",
-   "type": "sign_minor",
-   "summary": "Mariners, Carlos Santana Agree To Minor League Deal",
-   "name": "Carlos Santana",
-   "team": "SEA",
-   "pos": "1B",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mariners-carlos-santana-agree-to-minor-league-deal.html",
    "status": "reported"
   },
   {
@@ -3475,6 +3464,37 @@
    "src": "MLB Stats API",
    "sid": 951107,
    "status": "official"
+  },
+  {
+   "status": "reported",
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Reds re-sign C Tyler Stephenson: 3 yrs, $30M with an opt-out after 2028 (Passan, ESPN); pending physical",
+   "name": "Tyler Stephenson",
+   "team": "CIN",
+   "pos": "C",
+   "src": "MLB Trade Rumors (Passan, ESPN) https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
+   "forty": true,
+   "contract": {
+    "aav": 10000000,
+    "desc": "3 yr, $30M (2027-29), opt-out after the 2028 season (Passan, ESPN); yearly salaries not reported, shown evenly. CIN had open 40-man spots, no corresponding move needed (MLBTR).",
+    "yrs": {
+     "2027": 10000000,
+     "2028": 10000000,
+     "2029": 10000000,
+     "2030": "FREE AGENT"
+    }
+   }
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign_minor",
+   "summary": "Mariners, Carlos Santana Agree To Minor League Deal",
+   "name": "Carlos Santana",
+   "team": "SEA",
+   "pos": "1B",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mariners-carlos-santana-agree-to-minor-league-deal.html",
+   "status": "reported"
   },
   {
    "date": "2026-11-25",

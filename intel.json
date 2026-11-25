@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24",
+ "updated": "2026-11-25",
  "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = ONLY for an entry the owner wrote (owner: true) or a player with a full no-trade clause (ntc: true). A club saying publicly that a player is not available is NOT untouchable: record it as listening with price high and \"denied\": true (owner, 11/24: clubs say things they do not mean). dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary. An entry may carry \"until\": \"YYYY-MM-DD\"; it stops applying after that date, and a task may remove it then.",
  "teams": {
   "LAD": {
@@ -24,13 +24,14 @@
     "C",
     "2B"
    ],
-   "note": "Bullpen is Cashman's top priority: added Loáisiga and LHP Brent Suter; weighing a big Morejón deal vs. spreading money over a reliever, Carson Kelly and Tyrone Taylor (Sherman, NY Post); Taylor has since signed with the White Sox (11/24). Also bid big on Skubal (Nightengale). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24).",
+   "note": "Bullpen is Cashman's top priority: added Loáisiga and LHP Brent Suter; weighing a big Morejón deal vs. spreading money over a reliever, Carson Kelly and Tyrone Taylor (Sherman, NY Post); Taylor has since signed with the White Sox (11/24). Also bid big on Skubal (Nightengale). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24). Still in on LHP Adrian Morejón (Heyman, NY Post, 11/24), though MLBTR calls them a long shot after the Loáisiga, Bednar, Hill and Suter adds.",
    "win": "contend",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-new-york-yankees-15.html",
     "https://www.mlbtraderumors.com/2026/11/yankees-notes-infield-catcher-bullpen.html",
     "https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html",
-    "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html"
+    "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html",
+    "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html"
    ]
   },
   "SEA": {
@@ -39,11 +40,12 @@
     "OF",
     "RP"
    ],
-   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to Kansas City for Maikel Garcia; Dipoto has about $30-35M to spend and still wants a right-handed outfield bat and a left-handed reliever.",
+   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to Kansas City for Maikel Garcia; Dipoto has about $30-35M to spend and still wants a right-handed outfield bat and a left-handed reliever. Dipoto: 'zero' chance of trading another starter; also wants a veteran infielder (Adam Jude, Seattle Times, 11/18).",
    "shedding": false,
    "src": [
     "https://mlb.com/news/maikel-garcia-traded-from-royals-to-mariners",
-    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-19"
+    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-19",
+    "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html"
    ]
   },
   "BOS": {
@@ -121,16 +123,18 @@
    "wants": [
     "OF",
     "2B",
-    "DH"
+    "DH",
+    "RP"
    ],
-   "note": "Signed NPB RHP Kaima Taira (5 yr, $80M, opt-out after yr 3, Heyman, NY Post, 11/24) after losing Skubal, Peralta (BAL) and Sato (CHC); still wants a corner OF and 2B bat, with offense the bigger need (Bannon, The Athletic). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24).",
+   "note": "Signed NPB RHP Kaima Taira (5 yr, $80M, opt-out after yr 3, Heyman, NY Post, 11/24) after losing Skubal, Peralta (BAL) and Sato (CHC); still wants a corner OF and 2B bat, with offense the bigger need (Bannon, The Athletic). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24). Was engaged on LHP reliever Adrian Morejón before the Taira deal (Bannon, The Athletic, 11/24).",
    "win": "retool",
    "src": [
     "https://www.mlb.com/bluejays/news/examining-the-blue-jays-biggest-offseason-needs",
     "https://www.mlbtraderumors.com/2026/11/blue-jays-notes-infield-outfield-rotation-bullpen-barger.html",
     "https://www.mlbtraderumors.com/2026/11/blue-jays-interested-in-trevor-rogers-freddy-peralta.html",
     "https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html",
-    "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html"
+    "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html",
+    "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html"
    ]
   },
   "DET": {
@@ -156,13 +160,14 @@
     "3B",
     "2B"
    ],
-   "note": "Dombrowski must add an outfielder and a top setup man; third base is open. About $280M in tax commitments limits him, and the club is reported to want a shake-up. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24).",
+   "note": "Dombrowski must add an outfielder and a top setup man; third base is open. About $280M in tax commitments limits him, and the club is reported to want a shake-up. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24). Not believed to be serious on Morejón (Gelb/Varnes, The Athletic, 11/24).",
    "win": "contend",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-philadelphia-phillies-16.html",
     "https://www.mlb.com/phillies/news/phillies-2026-offseason-priorities-gm-meetings",
-    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24"
+    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24",
+    "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html"
    ]
   },
   "ATL": {
@@ -285,14 +290,15 @@
     "1B",
     "SP"
    ],
-   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. Wants to move Marte before the lockout to clear payroll; still needs 1-2 starters and a reliever, Alex Vesia on its radar (Nightengale, USA Today). Arenado is working out at first base (Steve Gilbert, MLB.com).",
+   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. Wants to move Marte before the lockout to clear payroll; still needs 1-2 starters and a reliever, Alex Vesia on its radar (Nightengale, USA Today). Arenado is working out at first base (Steve Gilbert, MLB.com). Has gotten calls on SPs Eduardo Rodriguez and Merrill Kelly; any Kelly deal likely needs ARI to pay down salary (Rosenthal/Sammon, The Athletic, 11/24).",
    "win": "retool",
    "shedding": true,
    "src": [
     "https://www.mlb.com/news/mike-hazen-discusses-ketel-marte-d-backs-needs",
     "https://www.mlb.com/news/questions-facing-d-backs-in-2026-offseason",
     "https://clutchpoints.com/mlb/mlb-stories/mlb-rumors-blue-jays-rays-getting-serious-for-a-potential-ketel-marte-trade",
-    "https://www.mlbtraderumors.com/2026/11/nolan-arenado-working-out-at-first-base.html"
+    "https://www.mlbtraderumors.com/2026/11/nolan-arenado-working-out-at-first-base.html",
+    "https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html"
    ]
   },
   "MIA": {
@@ -398,14 +404,14 @@
   "CIN": {
    "wants": [
     "SP",
-    "C",
     "RP"
    ],
-   "note": "Finished last, but Krall says no rebuild and the aim is to contend in 2027; wants starting pitching, a No. 1 catcher and bullpen help, and is open to trading veterans.",
+   "note": "Finished last, but Krall says no rebuild and the aim is to contend in 2027; wants starting pitching, a No. 1 catcher and bullpen help, and is open to trading veterans. Filled catcher by re-signing Tyler Stephenson (3 yr, $30M, Passan, ESPN, 11/24). Still needs a back-end reliever, a rotation upgrade and a multi-position infielder (MLBTR, 11/24); ownership had not set a 2027 budget as of the GM Meetings (Wittenmyer, Cincinnati Enquirer).",
    "win": "retool",
    "src": [
     "https://www.fox19.com/2026/11/11/reds-news-notes-mlb-gm-meetings/",
-    "https://www.mlbtraderumors.com/2026/09/offseason-outlook-cincinnati-reds-17.html"
+    "https://www.mlbtraderumors.com/2026/09/offseason-outlook-cincinnati-reds-17.html",
+    "https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html"
    ]
   },
   "COL": {
@@ -430,7 +436,7 @@
     "SP"
    ],
    "shedding": false,
-   "note": "Signed Skubal (9/$450M) and Goldschmidt (1/$8M, 1B platoon with Jared Young); still want relievers (only Williams and Hernández set), a DH bat and possibly a cheaper starter (DiComo, MLB.com, 11/23). MLBTR (Polishuk) and DiComo (MLB.com) still list a big 1B and/or DH bat as the top remaining need. Want rotation flexibility: have discussed two-year deals with starters seeking three, after early talks with Tyler Mahle, Matthew Boyd and Shota Imanaga (Sammon, The Athletic, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24).",
+   "note": "Signed Skubal (9/$450M) and Goldschmidt (1/$8M, 1B platoon with Jared Young); still want relievers (only Williams and Hernández set), a DH bat and possibly a cheaper starter (DiComo, MLB.com, 11/23). MLBTR (Polishuk) and DiComo (MLB.com) still list a big 1B and/or DH bat as the top remaining need. Want rotation flexibility: have discussed two-year deals with starters seeking three, after early talks with Tyler Mahle, Matthew Boyd and Shota Imanaga (Sammon, The Athletic, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24). Interested in Michael King and Jazz Chisholm Jr., though Stearns says second base is not a current priority (MLB.com roundup: Feinsand; Murray, FanSided, 11/24).",
    "src": [
     "https://www.mlbtraderumors.com/2026/09/offseason-outlook-new-york-mets-16.html",
     "https://www.mlbtraderumors.com/2026/11/mets-rumors-tarik-skubal-meeting-free-agent.html",
@@ -518,20 +524,28 @@
    "name": "Logan Gilbert",
    "team": "SEA",
    "status": "listening",
-   "note": "Drawing interest; Dipoto prefers to keep his pitchers; free agent after 2027"
+   "note": "Dipoto says there is 'zero' chance Seattle trades another starter after the Bryce Miller deal (Adam Jude, Seattle Times, 11/18); free agent after 2027",
+   "price": "high",
+   "denied": true,
+   "src": "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html"
   },
   {
    "name": "George Kirby",
    "team": "SEA",
    "status": "listening",
-   "note": "Seattle would move a starter for offense, but prefers to keep its pitchers"
+   "note": "Dipoto says there is 'zero' chance Seattle trades another starter after the Bryce Miller deal (Adam Jude, Seattle Times, 11/18)",
+   "price": "high",
+   "denied": true,
+   "src": "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html"
   },
   {
    "name": "Emerson Hancock",
    "team": "SEA",
    "status": "listening",
-   "note": "Seattle was open to moving him for a right-handed hitter, though Dipoto has since played down trading another starter",
-   "src": "https://www.nbcsports.com/fantasy/baseball/player-news/2026-07-23/rosenthal-mariners-open-to-moving-hancock"
+   "note": "Seattle was open to moving him for a right-handed hitter in July (Rosenthal), but Dipoto now says 'zero' chance of trading another starter (Adam Jude, Seattle Times, 11/18)",
+   "src": "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html",
+   "price": "high",
+   "denied": true
   },
   {
    "name": "Nick Lodolo",
@@ -653,12 +667,6 @@
    "status": "listening",
    "note": "A starter the Rays could move; missed 2026 after hip surgery",
    "src": "https://www.mlbtraderumors.com/2026/11/rays-rumors-deluca-mcclanahan-pepiot-rasmussen.html"
-  },
-  {
-   "name": "Nick Fortes",
-   "team": "TBR",
-   "status": "available",
-   "note": "Being shopped to multiple teams before the tender deadline"
   },
   {
    "name": "Griffin Jax",
@@ -1248,6 +1256,22 @@
    "pos": "3B",
    "note": "Giants aren't shopping him but would move him for pitching (Passan, ESPN; Murray, FanSided)",
    "src": "Passan, ESPN; Robert Murray, FanSided, Nov. 18-19, 2026"
+  },
+  {
+   "name": "Eduardo Rodriguez",
+   "team": "ARI",
+   "status": "listening",
+   "pos": "SP",
+   "note": "Arizona has taken calls after his 2.89 ERA year; unclear how willing it is to move him; $19M in 2027 plus a vesting mutual option (Rosenthal/Sammon, The Athletic, 11/24)",
+   "src": "https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html"
+  },
+  {
+   "name": "Merrill Kelly",
+   "team": "ARI",
+   "status": "listening",
+   "pos": "SP",
+   "note": "Arizona has taken calls; owed $21M in 2027, so a deal likely needs ARI to eat salary or take a bad contract back (Rosenthal/Sammon, The Athletic, 11/24)",
+   "src": "https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html"
   }
  ],
  "sources": [
@@ -1281,6 +1305,10 @@
   "MLB Trade Rumors: Nationals Among Teams Interested In Jazz Chisholm Jr. (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/nationals-rumors-jazz-chisholm-free-agent.html",
   "MLB Trade Rumors: Tigers Interested In Bryan Abreu (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/tigers-interested-in-bryan-abreu.html",
   "MLB Trade Rumors: White Sox To Sign Tyrone Taylor (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/white-sox-to-sign-tyrone-taylor.html",
-  "MLB Trade Rumors: Multiple Teams Showing Interest In Tyler Austin (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html"
+  "MLB Trade Rumors: Multiple Teams Showing Interest In Tyler Austin (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html",
+  "MLB Trade Rumors: D-backs Have Gotten Calls On Eduardo Rodriguez, Merrill Kelly (Rosenthal/Sammon, The Athletic; Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html",
+  "MLB Trade Rumors: Latest On Adrian Morejon's Market (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html",
+  "MLB Trade Rumors: Reds To Re-Sign Tyler Stephenson (Passan, ESPN; Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
+  "MLB Trade Rumors: Dipoto: 'Zero' Chance Mariners Trade Another Starter (Adam Jude, Seattle Times; Nov. 18, 2026) https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html"
  ]
 }
