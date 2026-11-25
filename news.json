@@ -1,6 +1,18 @@
 {
  "items": [
   {
+   "title": "Paul Goldschmidt says time with Yankees prepared him for expectations Mets face",
+   "blurb": "Paul Goldschmidt knew Mets manager Andy Green from their time together with Arizona in 2015 and was eager make the move across town from the Yankees to reunite.",
+   "link": "https://www.espn.com/mlb/story/_/id/50594977/paul-goldschmidt-happy-reunite-andy-green-mets",
+   "time": "2026-11-25T17:32:39Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYM",
+    "NYY"
+   ]
+  },
+  {
    "title": "Sources: Yankees turn to former foe for bench coach, ex-O's coach Hyde",
    "blurb": "The New York Yankees are hiring Brandon Hyde as bench coach, sources told ESPN on Wednesday, going with a familiar foe as manager Aaron Boone's right-hand man.",
    "link": "https://www.espn.com/mlb/story/_/id/50595004/sources-yankees-hire-ex-o-manager-brandon-hyde-bench-coach",
@@ -3225,18 +3237,7 @@
    "teams": [
     "COL"
    ]
-  },
-  {
-   "title": "Twins reunite with veteran right-hander Sonny Gray on two-year deal",
-   "blurb": "The Twins have signed free agent right-hander Sonny Gray to a two-year contract, the team announced. The deal is for $55 million and includes an opt-out after the first season, sources told ESPN's Jeff Passan.",
-   "link": "https://www.espn.com/mlb/story/_/id/50523817/twins-sign-veteran-right-hander-sonny-gray-two-year-deal",
-   "time": "2026-11-18T21:27:14Z",
-   "source": "ESPN",
-   "kind": "report",
-   "teams": [
-    "MIN"
-   ]
   }
  ],
- "updated": "2026-11-25T17:30:52Z"
+ "updated": "2026-11-25T17:40:57Z"
 }
