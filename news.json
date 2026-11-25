@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Cubs' Crow-Armstrong to get record $3.5M from pre-arbitration bonus pool",
+   "blurb": "Cubs center fielder Pete Crow-Armstrong will receive a record $3.5 million from Major League Baseball's pre-arbitration bonus pool.",
+   "link": "https://www.espn.com/mlb/story/_/id/50598513/cubs-crow-armstrong-record-pre-arbitration-bonus-pool",
+   "time": "2026-11-25T23:33:49Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
    "title": "Tigers To Sign Kevin Gausman",
    "blurb": "The Tigers and right-hander Kevin Gausman have agreed to a one-year, $25MM contract, reports Jeff Passan of ESPN. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html",
@@ -3220,18 +3231,7 @@
    "teams": [
     "BAL"
    ]
-  },
-  {
-   "title": "San Diego Padres signed free agent OF Cal Stevenson to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SDP"
-   ]
   }
  ],
- "updated": "2026-11-25T23:32:41Z"
+ "updated": "2026-11-25T23:42:44Z"
 }
