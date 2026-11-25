@@ -3506,9 +3506,31 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-alec-bohm.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "type": "sign_minor",
+   "name": "Yonerson Garcia",
+   "team": "NYY",
+   "pos": "LHP",
+   "date": "2026-11-23",
+   "summary": "New York Yankees signed free agent LHP Yonerson Garcia to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951114,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Alan Rambalde",
+   "team": "SDP",
+   "pos": "OF",
+   "date": "2026-11-25",
+   "summary": "San Diego Padres signed free agent OF Alan Rambalde to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951115,
+   "status": "official"
   }
  ],
- "live": "2026-11-25T15:29:34Z",
+ "live": "2026-11-25T17:00:40Z",
  "seen_sids": [
   950119,
   950220,
@@ -3733,6 +3755,8 @@
   951107,
   951109,
   951111,
-  951113
+  951113,
+  951114,
+  951115
  ]
 }

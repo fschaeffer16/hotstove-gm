@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "New York Yankees signed free agent LHP Yonerson Garcia to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T17:00:40Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "San Diego Padres signed free agent OF Alan Rambalde to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T17:00:40Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
    "title": "Yankees To Hire Brandon Hyde As Bench Coach",
    "blurb": "The Yankees are hiring former Orioles skipper Brandon Hyde as their new bench coach, Ken Rosenthal of The Athletic reports. Manager Aaron Boone&#8217;s former bench coach, Brad Ausmus, was hired as the Astros&#8217; new skipper earlier this month. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/yankees-hire-brandon-hyde-bench-coach-former-orioles-manager.html",
@@ -3211,29 +3233,7 @@
     "BOS",
     "TBR"
    ]
-  },
-  {
-   "title": "Twins Sign Sonny Gray",
-   "blurb": "Sonny Gray is headed back to Minnesota. The Twins announced Wednesday that they&#8217;ve signed the free-agent righty to a two-year contract that&#8217;ll reportedly guarantee him $55MM and contains an opt-out opportunity following the 2027 season. Gray, a client of McKinnis Sports, starred for Minn",
-   "link": "https://www.mlbtraderumors.com/2026/11/twins-sign-sonny-gray.html",
-   "time": "2026-11-18T20:38:30Z",
-   "source": "MLB Trade Rumors",
-   "kind": "report",
-   "teams": [
-    "MIN"
-   ]
-  },
-  {
-   "title": "Athletics Add Trevor Amicone, Casey Weathers To Coaching Staff",
-   "blurb": "The Athletics announced a pair of new additions to their coaching staff Wednesday. Trevor Amicone has been hired as the team&#8217;s new hitting coach. He&#8217;d previously been an assistant hitting coach with the Twins. The A&#8217;s also named Casey Weathers their new pitching coach. He&#8217;d p",
-   "link": "https://www.mlbtraderumors.com/2026/11/athletics-hire-trevor-amicone-twins-casey-weathers-phillies-coaches.html",
-   "time": "2026-11-18T20:35:59Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "ATH"
-   ]
   }
  ],
- "updated": "2026-11-25T16:40:33Z"
+ "updated": "2026-11-25T17:00:40Z"
 }
