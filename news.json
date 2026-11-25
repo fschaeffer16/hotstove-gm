@@ -1,6 +1,27 @@
 {
  "items": [
   {
+   "title": "Superlatives for this MLB free agent class, from Lowe to Gausman",
+   "blurb": "Next best move for Mets? Best free agency timing? We have a yearbook's worth of awards for the top MLB free agents.",
+   "link": "https://www.espn.com/mlb/story/_/id/50575214/free-agent-class-superlatives",
+   "time": "2026-11-25T12:27:48Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
+   "title": "Ripple effects of Tarik Skubal signing on Mets, Dodgers and more",
+   "blurb": "The impact of the record deal for MLB's top free agent extends past his new team to the top suitors who missed out on him.",
+   "link": "https://www.espn.com/mlb/story/_/id/50575245/ripple-effects-skubal-signing-dodgers-padres-blue-jays",
+   "time": "2026-11-25T12:26:36Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "LAD",
+    "NYM"
+   ]
+  },
+  {
    "title": "Pittsburgh Pirates signed free agent RHP Carlos Guzman to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3214,30 +3235,7 @@
    "source": "MLB Trade Rumors",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Giants Open To Offers On Casey Schmitt In Search For Pitching Help",
-   "blurb": "As the Giants scour the market for pitching help, they&#8217;ve floated the possibility of trading infielder/outfielder Casey Schmitt, reports Jeff Passan of ESPN. There&#8217;s no indication any sort of deal is close, but Schmitt is the type of controllable infielder who could net them some needed ",
-   "link": "https://www.mlbtraderumors.com/2026/11/giants-trade-rumors-casey-schmitt-pitching-help.html",
-   "time": "2026-11-18T17:51:46Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "SFG"
-   ]
-  },
-  {
-   "title": "Royals, Mariners Swap Maikel Garcia For Bryce Miller In Six-Player Deal",
-   "blurb": "The Mariners and Royals have lined up on a six-player blockbuster, announcing Wednesday that infielder Maikel Garcia, reliever James McArthur and left-handed pitching prospect L.P. Langevin are going from Kansas City to Seattle in exchange for right-handed starters Bryce Miller and Logan Evans as we",
-   "link": "https://www.mlbtraderumors.com/2026/11/mariners-to-acquire-maikel-garcia.html",
-   "time": "2026-11-18T17:30:22Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "KCR",
-    "SEA"
-   ]
   }
  ],
- "updated": "2026-11-25T06:47:33Z"
+ "updated": "2026-11-25T12:28:37Z"
 }
