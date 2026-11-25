@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Sources: Reds catcher Tyler Stephenson staying on $30 million, 3-year deal",
+   "blurb": "The Reds are retaining catcher Tyler Stephenson on a three-year agreement worth $30 million, sources told ESPN.",
+   "link": "https://www.espn.com/mlb/story/_/id/50589047/reds-c-tyler-stephenson-staying-30-million-3-year-deal",
+   "time": "2026-11-25T03:15:29Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "CIN"
+   ]
+  },
+  {
+   "title": "Mariners, Carlos Santana Agree To Minor League Deal",
+   "blurb": "The Mariners are in agreement with veteran first baseman Carlos Santana on a minor league contract, reports Will Sammon of The Athletic. The Octagon client will presumably get an invite to MLB Spring Training. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/mariners-carlos-santana-agree-to-minor-league-deal.html",
+   "time": "2026-11-25T03:15:23Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "SEA"
+   ]
+  },
+  {
    "title": "Reds To Re-Sign Tyler Stephenson To Three-Year Deal",
    "blurb": "The Reds are re-signing free agent catcher Tyler Stephenson on a three-year, $30MM contract, reports Jeff Passan of ESPN. The deal also allows Stephenson, an ACES client, to opt out after the second season. The signing is pending a physical. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
@@ -3207,29 +3229,7 @@
    "teams": [
     "WSN"
    ]
-  },
-  {
-   "title": "Boston Red Sox signed free agent 1B Jake Bauers.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BOS"
-   ]
-  },
-  {
-   "title": "Washington Nationals designated LHP Carson Palmquist for assignment.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-17T23:53:48Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "WSN"
-   ]
   }
  ],
- "updated": "2026-11-25T01:56:31Z"
+ "updated": "2026-11-25T03:16:52Z"
 }
