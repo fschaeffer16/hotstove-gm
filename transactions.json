@@ -3586,9 +3586,20 @@
    "src": "MLB Stats API",
    "sid": 951123,
    "status": "official"
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Padres To Sign JoJo Romero",
+   "name": "JoJo Romero",
+   "team": "SDP",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-25T19:41:36Z",
+ "live": "2026-11-25T21:22:14Z",
  "seen_sids": [
   950119,
   950220,
