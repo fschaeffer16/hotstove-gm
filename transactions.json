@@ -3597,9 +3597,39 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Orioles, Luis Robert Jr. Reportedly Finalizing Contract",
+   "name": "Luis Robert Jr.",
+   "team": "BAL",
+   "pos": "CF/LF",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/orioles-luis-robert-jr-reportedly-finalizing-contract.html",
+   "status": "reported",
+   "forty": true
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Marlins To Sign Gary Sánchez",
+   "name": "Gary Sánchez",
+   "team": "MIA",
+   "pos": "C",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/marlins-to-sign-gary-sanchez.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 6500000,
+    "desc": "1 yr, $6.5M (2027-27)",
+    "yrs": {
+     "2027": 6500000,
+     "2028": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-25T21:22:14Z",
+ "live": "2026-11-25T23:02:32Z",
  "seen_sids": [
   950119,
   950220,
