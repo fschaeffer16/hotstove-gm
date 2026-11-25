@@ -1,6 +1,15 @@
 {
  "items": [
   {
+   "title": "MLB sues players' union, asking court to declare lockout legal",
+   "blurb": "Major League Baseball sued its players' association in federal court on Wednesday, asking that its contemplated lockout next week be declared legal",
+   "link": "https://www.espn.com/mlb/story/_/id/50595155/mlb-sues-players-union-asking-court-declare-lockout-legal",
+   "time": "2026-11-25T18:02:39Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "Latest On The Blue Jays’ Offseason Plans",
    "blurb": "The Blue Jays made one of several notable signings on Tuesday, landing Kaima Taira on a five-year, $80MM agreement. It&#8217;s the first big offseason strike for the team after they&#8217;ve been linked to basically every notable pitcher on the market. With Taira bolstering a rotation that includes ",
    "link": "https://www.mlbtraderumors.com/2026/11/latest-on-the-blue-jays-offseason-plans.html",
@@ -3225,19 +3234,7 @@
     "SEA",
     "KCR"
    ]
-  },
-  {
-   "title": "Detroit Tigers traded 3B Jace Jung to Los Angeles Angels for cash.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "LAA",
-    "DET"
-   ]
   }
  ],
- "updated": "2026-11-25T17:51:02Z"
+ "updated": "2026-11-25T18:11:08Z"
 }
