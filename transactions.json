@@ -3467,7 +3467,7 @@
    "status": "official"
   },
   {
-   "status": "reported",
+   "status": "official",
    "date": "2026-11-25",
    "type": "sign",
    "summary": "Reds re-sign C Tyler Stephenson: 3 yrs, $30M with an opt-out after 2028 (Passan, ESPN); pending physical",
@@ -3485,7 +3485,8 @@
      "2029": 10000000,
      "2030": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951124
   },
   {
    "date": "2026-11-25",
@@ -3820,6 +3821,7 @@
   951120,
   951121,
   951122,
-  951123
+  951123,
+  951124
  ]
 }
