@@ -3173,7 +3173,7 @@
    "team": "CLE",
    "pos": "SP",
    "forty": true,
-   "status": "reported",
+   "status": "official",
    "contract": {
     "aav": 17500000,
     "desc": "1 yr, $17.5M (2027)",
@@ -3182,7 +3182,8 @@
      "2028": "FREE AGENT"
     }
    },
-   "src": "MLB Trade Rumors (Nicholson-Smith, Sportsnet; Passan, ESPN) https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html"
+   "src": "MLB Trade Rumors (Nicholson-Smith, Sportsnet; Passan, ESPN) https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html",
+   "sid": 951121
   },
   {
    "status": "official",
@@ -3561,9 +3562,20 @@
    "src": "MLB Stats API",
    "sid": 951117,
    "status": "official"
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Brewers Sign Antonio Senzatela",
+   "name": "Antonio Senzatela",
+   "team": "MIL",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/brewers-sign-antonio-senzatela.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-25T17:20:46Z",
+ "live": "2026-11-25T19:11:26Z",
  "seen_sids": [
   950119,
   950220,
@@ -3793,6 +3805,7 @@
   951115,
   951117,
   951119,
-  951120
+  951120,
+  951121
  ]
 }
