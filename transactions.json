@@ -3528,9 +3528,42 @@
    "src": "MLB Stats API",
    "sid": 951115,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Diego Rincones",
+   "team": "NYY",
+   "pos": "LHP",
+   "date": "2026-11-23",
+   "summary": "New York Yankees signed free agent LHP Diego Rincones to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951120,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Eury Saldana",
+   "team": "TOR",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Toronto Blue Jays signed free agent RHP Eury Saldana to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951119,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Yeremy De Leon",
+   "team": "SDP",
+   "pos": "LHP",
+   "date": "2026-11-25",
+   "summary": "San Diego Padres signed free agent LHP Yeremy De Leon to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951117,
+   "status": "official"
   }
  ],
- "live": "2026-11-25T17:00:40Z",
+ "live": "2026-11-25T17:20:46Z",
  "seen_sids": [
   950119,
   950220,
@@ -3757,6 +3790,9 @@
   951111,
   951113,
   951114,
-  951115
+  951115,
+  951117,
+  951119,
+  951120
  ]
 }

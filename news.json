@@ -1,6 +1,39 @@
 {
  "items": [
   {
+   "title": "New York Yankees signed free agent LHP Diego Rincones to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T17:20:46Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays signed free agent RHP Eury Saldana to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T17:20:46Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "San Diego Padres signed free agent LHP Yeremy De Leon to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T17:20:46Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SDP"
+   ]
+  },
+  {
    "title": "New York Yankees signed free agent LHP Yonerson Garcia to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3201,39 +3234,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Rob Manfred: MLB will not compromise on salary cap and floor",
-   "blurb": "Rob Manfred: MLB will not compromise on salary cap and floor",
-   "link": "https://www.espn.com/video/clip/_/id/50523891/mlb-not-compromise-salary-cap-floor",
-   "time": "2026-11-18T21:10:55Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
-  },
-  {
-   "title": "Royals Designate Kyle Isbel For Assignment",
-   "blurb": "The Royals announced their six-player trade with the Mariners, which was reported earlier today. It was a three-for-three swap but all three players heading to Kansas City had 40-man roster spots, compared to just two of the players going to Seattle. The Royals therefore needed to open a 40-man spot",
-   "link": "https://www.mlbtraderumors.com/2026/11/royals-designate-kyle-isbel-for-assignment.html",
-   "time": "2026-11-18T21:05:50Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "KCR"
-   ]
-  },
-  {
-   "title": "Red Sox acquire catcher Nick Fortes in trade with Rays",
-   "blurb": "The Red Sox traded for catcher Nick Fortes, who started 78 games behind the plate for the Rays last season, while sending a minor league pitcher to Tampa Bay.",
-   "link": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
-   "time": "2026-11-18T20:38:46Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "BOS",
-    "TBR"
-   ]
   }
  ],
- "updated": "2026-11-25T17:00:40Z"
+ "updated": "2026-11-25T17:20:46Z"
 }
