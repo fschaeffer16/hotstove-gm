@@ -3643,9 +3643,49 @@
    "src": "MLB Stats API",
    "sid": 951130,
    "status": "official"
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Tigers To Sign Kevin Gausman",
+   "name": "Kevin Gausman",
+   "team": "DET",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 25000000,
+    "desc": "1 yr, $25M (2027-27)",
+    "yrs": {
+     "2027": 25000000,
+     "2028": "FREE AGENT"
+    }
+   }
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Guardians To Sign Foster Griffin",
+   "name": "Foster Griffin",
+   "team": "CLE",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 16000000,
+    "desc": "3 yr, $48M (2027-29)",
+    "yrs": {
+     "2027": 16000000,
+     "2028": 16000000,
+     "2029": 16000000,
+     "2030": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-25T23:22:37Z",
+ "live": "2026-11-25T23:32:41Z",
  "seen_sids": [
   950119,
   950220,

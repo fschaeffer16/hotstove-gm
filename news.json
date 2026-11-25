@@ -1,6 +1,39 @@
 {
  "items": [
   {
+   "title": "Tigers To Sign Kevin Gausman",
+   "blurb": "The Tigers and right-hander Kevin Gausman have agreed to a one-year, $25MM contract, reports Jeff Passan of ESPN. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html",
+   "time": "2026-11-25T23:30:50Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Guardians To Sign Foster Griffin",
+   "blurb": "The Guardians and left-hander Foster Griffin have agreed to a three-year, $48MM deal, reports Robert Murray of FanSided. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html",
+   "time": "2026-11-25T23:29:14Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
+   "title": "Mets Designate Jack Anderson, Yunior Tur For Assignment",
+   "blurb": "The Mets have designated right-hander Jack Anderson and Yunior Tur for assignment, according to the club&#8217;s transactions log at MLB.com. Those appear to be the corresponding moves to open 40-man roster spots to officially sign left-handers Tarik Skubal and Darwinzon Hernández. The Mets just ann",
+   "link": "https://www.mlbtraderumors.com/2026/11/mets-designate-jack-anderson-yunior-tur-for-assignment.html",
+   "time": "2026-11-25T23:26:52Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "New York Mets designated RHP Jack Anderson for assignment.",
    "blurb": "",
    "link": "",
@@ -3198,40 +3231,7 @@
    "teams": [
     "SDP"
    ]
-  },
-  {
-   "title": "Tulsa Drillers released C Griffin Lockwood-Powell.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "LAD"
-   ]
-  },
-  {
-   "title": "Iowa Cubs released RHP Tyler Santana.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "CHC"
-   ]
-  },
-  {
-   "title": "Knoxville Smokies released RHP Frankie Scalzo Jr..",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "CHC"
-   ]
   }
  ],
- "updated": "2026-11-25T23:22:37Z"
+ "updated": "2026-11-25T23:32:41Z"
 }
