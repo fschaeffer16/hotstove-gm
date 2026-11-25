@@ -2994,7 +2994,7 @@
    "team": "NYM",
    "pos": "1B",
    "src": "Robert Murray, FanSided; Jorge Castillo, ESPN; Anthony DiComo, MLB.com; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-sign-paul-goldschmidt.html",
-   "status": "reported",
+   "status": "official",
    "forty": true,
    "contract": {
     "aav": 8000000,
@@ -3003,7 +3003,8 @@
      "2027": 8000000,
      "2028": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951113
   },
   {
    "date": "2026-11-23",
@@ -3700,6 +3701,7 @@
   951105,
   951107,
   951109,
-  951111
+  951111,
+  951113
  ]
 }
