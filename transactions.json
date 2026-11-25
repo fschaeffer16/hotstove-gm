@@ -2211,7 +2211,7 @@
    "team": "NYM",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-darwinzon-hernandez-agree-to-three-year-deal.html",
-   "status": "reported",
+   "status": "official",
    "forty": true,
    "contract": {
     "aav": 4000000,
@@ -2222,10 +2222,11 @@
      "2029": 4000000,
      "2030": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951129
   },
   {
-   "status": "reported",
+   "status": "official",
    "date": "2026-11-20",
    "type": "sign",
    "summary": "Yankees re-sign RHP Jonathan Loáisiga: 2 yrs, $18M with a 2029 club option (Feinsand, MLB.com; Castillo, ESPN)",
@@ -2243,7 +2244,8 @@
      "2029": "CLUB OPTION",
      "2030": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951125
   },
   {
    "type": "dfa",
@@ -2979,7 +2981,8 @@
     }
    },
    "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html",
-   "status": "reported"
+   "status": "official",
+   "sid": 951128
   },
   {
    "date": "2026-11-23",
@@ -3129,7 +3132,8 @@
     }
    },
    "src": "MLB Trade Rumors (Morosi, MLB Network; Rosenthal, The Athletic)",
-   "status": "reported"
+   "status": "official",
+   "sid": 951126
   },
   {
    "date": "2026-11-23",
@@ -3149,7 +3153,7 @@
    "team": "CHC",
    "pos": "OF/3B",
    "forty": true,
-   "status": "reported",
+   "status": "official",
    "contract": {
     "aav": 20000000,
     "desc": "6 yr, $120M (2027-32); yearly salaries not reported, spread evenly. Posting fee to Hanshin (about $19.9M) does not count toward the CBT.",
@@ -3163,7 +3167,8 @@
      "2033": "FREE AGENT"
     }
    },
-   "src": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html"
+   "src": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html",
+   "sid": 951127
   },
   {
    "date": "2026-11-24",
@@ -3627,9 +3632,20 @@
      "2028": "FREE AGENT"
     }
    }
+  },
+  {
+   "type": "dfa",
+   "name": "Jack Anderson",
+   "team": "NYM",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "New York Mets designated RHP Jack Anderson for assignment.",
+   "src": "MLB Stats API",
+   "sid": 951130,
+   "status": "official"
   }
  ],
- "live": "2026-11-25T23:02:32Z",
+ "live": "2026-11-25T23:22:37Z",
  "seen_sids": [
   950119,
   950220,
@@ -3863,6 +3879,13 @@
   951121,
   951122,
   951123,
-  951124
+  951124,
+  951125,
+  951126,
+  951127,
+  951128,
+  951129,
+  951130,
+  951131
  ]
 }

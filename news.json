@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "New York Mets designated RHP Jack Anderson for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-25T23:22:37Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "Orioles, Luis Robert Jr. Reportedly Finalizing Contract",
    "blurb": "The Orioles and outfielder Luis Robert Jr. are reportedly finalizing a new contract, reports Francys Romero of BeisbolFR. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/orioles-luis-robert-jr-reportedly-finalizing-contract.html",
@@ -3220,18 +3231,7 @@
    "teams": [
     "CHC"
    ]
-  },
-  {
-   "title": "South Bend Cubs released RHP Adam Stone.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T21:54:07Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "CHC"
-   ]
   }
  ],
- "updated": "2026-11-25T23:02:32Z"
+ "updated": "2026-11-25T23:22:37Z"
 }
