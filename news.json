@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Sources: Yankees turn to former foe for bench coach, ex-O's coach Hyde",
+   "blurb": "The New York Yankees are hiring Brandon Hyde as bench coach, sources told ESPN on Wednesday, going with a familiar foe as manager Aaron Boone's right-hand man.",
+   "link": "https://www.espn.com/mlb/story/_/id/50595004/sources-yankees-hire-ex-o-manager-brandon-hyde-bench-coach",
+   "time": "2026-11-25T17:30:16Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYY"
+   ]
+  },
+  {
    "title": "New York Yankees signed free agent LHP Diego Rincones to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3225,16 +3236,7 @@
    "teams": [
     "MIN"
    ]
-  },
-  {
-   "title": "Rob Manfred says MLB owners won't compromise on salary cap",
-   "blurb": "Commissioner Rob Manfred said owners will not accept any deal without a salary cap, leaving MLB on track for a lockout that could threaten the 2027 season.",
-   "link": "https://www.espn.com/mlb/story/_/id/50523785/rob-manfred-says-mlb-owners-compromise-salary-cap",
-   "time": "2026-11-18T21:11:17Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-25T17:20:46Z"
+ "updated": "2026-11-25T17:30:52Z"
 }
