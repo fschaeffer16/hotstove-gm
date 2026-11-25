@@ -3278,9 +3278,30 @@
    "summary": "Mets sign INF Eddys Leonard to a minor league deal with a spring training invite (Will Sammon, The Athletic)",
    "src": "https://www.mlbtraderumors.com/2026/11/mets-sign-infielder-eddys-leonard.html",
    "status": "reported"
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Reds To Re-Sign Tyler Stephenson To Three-Year Deal",
+   "name": "Tyler Stephenson",
+   "team": "CIN",
+   "pos": "C",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 10000000,
+    "desc": "3 yr, $30M (2027-29)",
+    "yrs": {
+     "2027": 10000000,
+     "2028": 10000000,
+     "2029": 10000000,
+     "2030": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-24T22:46:00Z",
+ "live": "2026-11-25T01:56:31Z",
  "seen_sids": [
   950119,
   950220,
