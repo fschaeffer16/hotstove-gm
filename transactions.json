@@ -3475,9 +3475,20 @@
    "src": "MLB Stats API",
    "sid": 951107,
    "status": "official"
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Royals To Sign Alec Bohm",
+   "name": "Alec Bohm",
+   "team": "KCR",
+   "pos": "3B/1B",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-alec-bohm.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-25T06:37:29Z",
+ "live": "2026-11-25T15:29:34Z",
  "seen_sids": [
   950119,
   950220,
