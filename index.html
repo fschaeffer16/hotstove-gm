@@ -297,6 +297,11 @@ table.list{width:100%;border-collapse:collapse;font-size:13px}
 .list.frz th:first-child,.list.frz td:first-child{position:sticky;left:0;z-index:1;background:var(--card);box-shadow:1px 0 0 var(--line)}
 .list.frz thead th:first-child{background:var(--blue-soft)}
 .list.frz tr:hover td:first-child{background:var(--chip)}
+/* every wide table: the name column stays put while the rest scrolls sideways (owner, 11/25). Set by frzTables(). */
+.scroll .stk{position:sticky;left:0;z-index:1;background:var(--card);box-shadow:1px 0 0 var(--line)}
+.scroll thead .stk{background:var(--blue-soft);z-index:2}
+.scroll table.bx thead .stk,.scroll table:not(.list) thead .stk{background:var(--card)}
+.scroll tr:hover td.stk{background:var(--chip)}
 .list tr.gone td{opacity:.45}
 .list td.wrap{white-space:normal;min-width:118px}
 
@@ -1344,6 +1349,14 @@ function hsRanks(){if(_rank)return _rank;const ids=Object.keys(P).filter(id=>P[i
   ids.sort((a,b)=>hsValue(b)-hsValue(a));_rank={};ids.forEach((id,i)=>_rank[id]=i+1);_rank.__ids=ids;return _rank}
 /* ===== Trade intel: news a real GM knows (who is on the block, what clubs need, who is shedding salary) ===== */
 let INTEL=null,INTEL_P={};
+/* Wide tables keep the player's name in view (owner, 11/25: "any screens like this should scroll with the name moving").
+   For every table inside a sideways-scrolling box, the name column (the first header that says player / name / prospect / pitcher / hitter, else the first column)
+   is pinned to the left edge. Runs after every redraw. */
+function frzTables(){document.querySelectorAll('.scroll table').forEach(t=>{if(t.classList.contains('frz')||t.classList.contains('stand')||t._stk===t.rows.length)return;
+  const h=t.tHead&&t.tHead.rows[0];let ci=0;if(h){const k=[...h.cells].findIndex(c=>/player|name|prospect|pitcher|hitter|batter|reliever|starter/i.test(c.textContent));if(k>0&&k<=2&&![...h.cells].slice(0,k+1).some(c=>c.colSpan>1))ci=k}
+  for(const r of t.rows){if([...r.cells].some(c=>c.colSpan>1))continue;const c=r.cells[ci];if(c)c.classList.add('stk')}
+  t._stk=t.rows.length})}
+(function(){let q=0;const run=()=>{q=0;try{frzTables()}catch(e){}};new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true});document.addEventListener('DOMContentLoaded',run)})();
 function applyIntel(){INTEL_P={};if(!INTEL)return;
   for(const [c,t] of Object.entries(INTEL.teams||{}))if(t.win&&D.teams[c]&&['allin','contend','ascend','retool','rebuild'].includes(t.win))D.teams[c].win=t.win;
   for(const x of INTEL.players||[]){const id=findP(x.name,x.team);if(!id)continue;/* a club's public "he is not available" is not the owner's word (owner, 11/24: "Oneil Cruz is not untouchable ... that did not come from me").
@@ -3486,7 +3499,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261125001329';
+const BUILD='20261125154432';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
