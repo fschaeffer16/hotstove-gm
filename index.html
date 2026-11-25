@@ -1201,7 +1201,7 @@ const PROFILE={
  MIN:{cap:155,sell:.3,pros:'neutral',defer:'light',note:'Ownership has promised a higher payroll; adding, not selling'},
  STL:{cap:145,capReady:190,sell:.7,pros:'hoard',defer:'light',note:'Resetting under new leadership; shedding veterans'},
  CIN:{cap:135,capReady:160,sell:.6,pros:'neutral',defer:'light',note:'Small budget, young pitching'},
- MIL:{cap:150,sell:1,pros:'hoard',defer:'light',note:'Trades stars a year or two before free agency and keeps winning'},
+ MIL:{cap:150,sell:1,pros:'currency',defer:'light',note:'Develops a deep system and trades prospects from it to fill holes; moves stars a year or two before free agency and keeps winning'},
  TBR:{cap:140,sell:1,pros:'hoard',defer:'light',note:'Sells at peak value, deepest pipeline in baseball'},
  CLE:{cap:135,sell:.8,pros:'hoard',defer:'light',note:'Develops pitching, extends the core, sells before free agency'},
  PIT:{cap:140,capReady:160,sell:.6,pros:'hoard',defer:'light',note:'Built around Paul Skenes; rarely spends'},
@@ -1705,7 +1705,8 @@ function gradeTo(id,code,incoming){
   }else if(p.fv){
     g=hsGrade(id);notes.push(`Hot Stove grade ${Math.round(g)}`+(p.t100?` · FG Top 100 #${p.t100}`:'')+(p.p100?` · Pipeline Top 100 #${p.p100}`:'')+(p.mlbp?` · MLB Pipeline #${p.mlbp} in org`:''));
     const R=roster(code).filter(x=>x!==id);
-    const ahead=gp!=='SP'&&gp!=='RP'&&R.find(x=>established(x)&&pgrp(x)===gp&&(P[x].age||30)<=29&&P[x].proj.war>=2.5&&ctrl(x).length>=3);
+    /* a young regular the club has signed long-term blocks the position too, even before his projection catches up (owner, 11/25: Pratt is signed for 8 years at short) */
+    const ahead=gp!=='SP'&&gp!=='RP'&&R.find(x=>established(x)&&pgrp(x)===gp&&(P[x].age||30)<=29&&((P[x].proj.war>=2.5&&ctrl(x).length>=3)||(P[x].proj.war>=1.5&&ctrl(x).length>=5&&remGuar(x)>=30e6)));
     const jam=R.filter(x=>P[x].fv&&!established(x)&&fvn(P[x].fv)>=45&&pgrp(x)===gp).length;
     if(incoming){
       if(win==='rebuild'||win==='ascend'){g+=2;notes.push('young talent is what they want')}
@@ -1727,6 +1728,7 @@ function gradeTo(id,code,incoming){
       {const fr=farmRk(code);if(fr&&fr<=5&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=1;notes.push(`deep system (No. ${fr}), they can deal from it`)}else if(fr>=24&&rk&&rk<=5){g+=1;notes.push(`thin system (No. ${fr}), he matters more to them`)}}
       if(ahead){g-=3;notes.push(`blocked by ${P[ahead].n} at ${gp}`)}
       if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
+      else if(jam>=2&&!ahead&&gp!=='SP'&&gp!=='RP'){g-=1;notes.push(`${jam} other good ${gp} prospects in the org, and they cannot all play there`)}
     }
   }else{g=p.proj?Math.min(42,38+2*Math.max(0,p.proj.war)):36;notes.push('organizational depth')}
   g=Math.max(20,Math.min(80,g));
@@ -3484,7 +3486,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261124171929';
+const BUILD='20261125001329';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
