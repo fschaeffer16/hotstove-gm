@@ -1498,7 +1498,11 @@ function needRank(key,v,lo){if(v==null)return null;const all=Object.values(needL
 const NEEDROWS=[['vL','Lineup vs left-handed pitching','a right-handed bat',0,'woba'],['vR','Lineup vs right-handed pitching','a left-handed bat',0,'woba'],['sp','Rotation','a starter',0,'war'],['rp','Bullpen','a reliever',0,'war'],['penL','Bullpen vs left-handed hitters','a left-handed reliever',1,'woba'],['penR','Bullpen vs right-handed hitters','a right-handed reliever',1,'woba']];
 const POSN={C:'catcher','1B':'first base','2B':'second base','3B':'third base',SS:'shortstop',OF:'outfield'};
 /* the club's needs from a roster: each row has a value, a league rank and whether it is a need */
-function needRep(code,ids){const r=needRaw(ids||roster(code)),W=teamIntel(code).wants||[],out=[];
+/* While a GM is deciding what to ASK for, his needs are read as they would stand AFTER the offer on the table (owner, 11/26: the Astros GM said
+   "we are looking for a starter and a reliever" while three starters and a closer were already in the offer). NEED_AFTER = {code, ids}. */
+let NEED_AFTER=null;
+const afterIds=(code,outSel,inSel)=>roster(code).filter(id=>!inSel.includes(id)).concat(outSel.filter(id=>P[id]));
+function needRep(code,ids){const r=needRaw(ids||(NEED_AFTER&&NEED_AFTER.code===code?NEED_AFTER.ids:roster(code))),W=teamIntel(code).wants||[],out=[];
   for(const [k,label,fix,lo,unit] of NEEDROWS){const v=r[k],rk=needRank(k,v,lo);if(v==null)continue;
     let need=rk>=21,why='';
     if(k==='penL'&&r.lhRP===0){need=true;why='no left-hander in the bullpen'}else if(k==='penL'&&r.lhRP===1&&rk>=16){need=true;why='one left-hander in the bullpen'}
@@ -1889,7 +1893,18 @@ function askFit(x,code){const id=x.id,p=P[id],c=ctx(code),now=c.win==='allin'||c
     if(/blocked by|other good|other 45\+|they already have/.test(nt))s-=2;
     else if(now&&near&&needRep(code).rows.some(r=>r.need&&(r.k==='p'+gp||(gp==='SP'&&r.k==='sp')||(gp==='RP'&&r.k==='rp')))){s+=1;why=`he is ${an} close to the majors at a spot where they are thin`}}
   return {s,why}}
-function gmSuggest(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const nm=id=>sn(id),nl=needList(code).slice(0,2),want=nl.length?`We're looking for ${nl.join(' and ')}. `:'';
+function gmSuggest(code,outSel,inSel,cashM,E0,asked,skip){const _na=NEED_AFTER;try{return gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip)}finally{NEED_AFTER=_na}}
+function gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const nm=id=>sn(id),join=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'';
+  /* what he says he is looking for is read against the offer: what it already covers, and what it would open up */
+  NEED_AFTER=null;const before=needRep(code).rows.filter(x=>x.need);NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};const after=needRep(code).rows.filter(x=>x.need);
+  const grpOf=k=>/^(sp|rhSP|lhSP)$/.test(k)?'SP':/^(rp|penL|penR)$/.test(k)?'RP':k[0]==='p'?k.slice(1):'';
+  const sent=g=>outSel.filter(id=>P[id]&&P[id].proj&&pgrp(id)===g),spIn=sent('SP'),rpIn=sent('RP');
+  const had=g=>before.some(x=>grpOf(x.k)===g)||wantsGrp(code,g),cov=[];
+  if(spIn.length&&had('SP'))cov.push(`${join(spIn.map(nm))} ${spIn.length>1?'are starters':'is a starter'}`);
+  if(rpIn.length&&had('RP'))cov.push(`${join(rpIn.map(nm))} ${rpIn.length>1?'help':'helps'} our bullpen`);
+  const opened=after.filter(x=>!before.some(y=>y.k===x.k)&&x.k[0]==='p').map(x=>x.fix),still=after.filter(x=>before.some(y=>y.k===x.k)&&!((grpOf(x.k)==='SP'&&spIn.length)||(grpOf(x.k)==='RP'&&rpIn.length))).map(x=>x.fix).slice(0,2);
+  const nl=after.map(x=>x.fix).slice(0,2);
+  const want=cov.length?`You have the pitching side covered: ${cov.join(', and ')}. That is what we were looking for, so this is not about filling that hole any more. ${opened.length?`What it does is open up ${join(opened.slice(0,2))} for us with ${join(inSel.filter(id=>established(id)).map(nm).slice(0,2))} leaving. `:still.length?`We would still like ${join(still)}. `:''}`:(nl.length?`We're looking for ${nl.join(' and ')}. `:'');
   if(E0.verdict==='locked')return "Nobody. The rules don't allow this deal as it's built.";
   if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
   if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
@@ -2189,7 +2204,7 @@ function evalTrade(code,outSel,inSel,cashM){
   else if(R.ratio>=.75&&hIn.g>=hOut.g-slack-4)R.verdict='counter';
   else R.verdict='reject';
   /* what would get it done: name players from your system, the way a GM asks */
-  if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){
+  if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){const _na=NEED_AFTER;NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};try{
     const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id,code)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id,code)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
@@ -2205,7 +2220,7 @@ function evalTrade(code,outSel,inSel,cashM){
       R.add2=best}
     /* or take a piece off their side (not their headliner if that's the problem) */
     const tryDrop=giv.length<2?undefined:giv.filter(x=>x!==hOut).sort((a,b)=>a.pts-b.pts).find(x=>{const rest=allG.filter(y=>y!==x);const h=rest.reduce((m,y)=>Math.max(m,y.g),0);return R.recv>=pkg(rest)*(1+prem)&&hIn.g>=h-slack});
-    R.drop=tryDrop||null}
+    R.drop=tryDrop||null}finally{NEED_AFTER=_na}}
   /* eating salary (owner, 11/22: real GM logic): when the user is sending a contract the club sees as more money than production,
      find the smallest amount he could pay down (in $2M steps, then $5M, up to 80% of what is owed) that turns the answer into a yes. */
   if(R.verdict!=='accept'&&R.verdict!=='locked'&&!R.untouch.length&&!_eatProbe){const pay=rec.filter(x=>established(x.id)&&x.burden>.3&&remGuar(x.id)>=8e6).sort((a,b)=>b.burden-a.burden)[0];
@@ -3514,7 +3529,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261126095124';
+const BUILD='20261126100434';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
