@@ -3836,9 +3836,130 @@
    "src": "MLB Stats API",
    "sid": 951177,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Nelson Quiroz",
+   "team": "SDP",
+   "pos": "C",
+   "date": "2026-11-25",
+   "summary": "San Diego Padres signed free agent C Nelson Quiroz to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951196,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Liover Peguero",
+   "team": "SEA",
+   "pos": "SS",
+   "date": "2026-11-25",
+   "summary": "Seattle Mariners signed free agent SS Liover Peguero to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951199,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Jake Miller",
+   "team": "DET",
+   "pos": "LHP",
+   "date": "2026-11-25",
+   "summary": "Detroit Tigers signed free agent LHP Jake Miller to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951179,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Ryan Harvey",
+   "team": "MIN",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Minnesota Twins signed free agent RHP Ryan Harvey to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951183,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Moisés Chace",
+   "team": "PHI",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Philadelphia Phillies signed free agent RHP Moisés Chace to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951201,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Trey Sweeney",
+   "team": "DET",
+   "pos": "SS",
+   "date": "2026-11-25",
+   "summary": "Detroit Tigers signed free agent SS Trey Sweeney to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951181,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Matt Sauer",
+   "team": "HOU",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Houston Astros signed free agent RHP Matt Sauer to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951185,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Tink Hence",
+   "team": "LAD",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Los Angeles Dodgers signed free agent RHP Tink Hence to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951190,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Hayden Senger",
+   "team": "NYM",
+   "pos": "C",
+   "date": "2026-11-25",
+   "summary": "New York Mets signed free agent C Hayden Senger to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951194,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Eric Wagaman",
+   "team": "LAD",
+   "pos": "1B",
+   "date": "2026-11-25",
+   "summary": "Los Angeles Dodgers signed free agent 1B Eric Wagaman to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951192,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Joander Suarez",
+   "team": "HOU",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Houston Astros signed free agent RHP Joander Suarez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951188,
+   "status": "official"
   }
  ],
- "live": "2026-11-26T05:04:28Z",
+ "live": "2026-11-26T05:24:37Z",
  "seen_sids": [
   950119,
   950220,
@@ -4082,6 +4203,17 @@
   951131,
   951173,
   951175,
-  951177
+  951177,
+  951179,
+  951181,
+  951183,
+  951185,
+  951188,
+  951190,
+  951192,
+  951194,
+  951196,
+  951199,
+  951201
  ]
 }
