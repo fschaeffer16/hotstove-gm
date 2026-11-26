@@ -40,12 +40,13 @@
     "OF",
     "RP"
    ],
-   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to Kansas City for Maikel Garcia; Dipoto has about $30-35M to spend and still wants a right-handed outfield bat and a left-handed reliever. Dipoto: 'zero' chance of trading another starter; also wants a veteran infielder (Adam Jude, Seattle Times, 11/18).",
+   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to KC for Maikel Garcia; about $30-35M to spend. Seiya Suzuki is the top priority and expected to sign before the lockout; met with FA relievers Vesia, Abreu and Gregory Soto (wants a lefty), not in on Morejón (Adam Jude, Seattle Times, 11/25). Dipoto: 'zero' chance of trading another starter.",
    "shedding": false,
    "src": [
     "https://mlb.com/news/maikel-garcia-traded-from-royals-to-mariners",
     "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-19",
-    "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html"
+    "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html",
+    "https://www.mlbtraderumors.com/2026/11/mariners-rumors-vesia-abreu-soto-suzuki.html"
    ]
   },
   "BOS": {
@@ -79,13 +80,14 @@
     "SP",
     "RP"
    ],
-   "note": "Lost the ALCS in six; Antonetti said payroll will rise and a starter was a primary goal; signed Kris Bubic (1 yr, $17.5M, Passan, ESPN, 11/24).",
+   "note": "Lost the ALCS in six; Antonetti said payroll will rise and a starter was a primary goal; signed Kris Bubic (1 yr, $17.5M, Passan, ESPN, 11/24); added LHP Foster Griffin (3 yr, $48M, Murray, FanSided, 11/25).",
    "win": "contend",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/11/guardians-rumors-payroll-increase-starting-pitching-foster-griffin.html",
     "https://www.mlb.com/news/guardians-want-to-add-starting-pitching-2026-27-offseason",
-    "https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html"
+    "https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html",
+    "https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html"
    ]
   },
   "TBR": {
@@ -126,7 +128,7 @@
     "DH",
     "RP"
    ],
-   "note": "Signed NPB RHP Kaima Taira (5 yr, $80M, opt-out after yr 3, Heyman, NY Post, 11/24) after losing Skubal, Peralta (BAL) and Sato (CHC); still wants a corner OF and 2B bat, with offense the bigger need (Bannon, The Athletic). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24). Was engaged on LHP reliever Adrian Morejón before the Taira deal (Bannon, The Athletic, 11/24).",
+   "note": "Signed NPB RHP Kaima Taira (5 yr, $80M, Heyman, NY Post, 11/24); outfield and DH are now the top needs (a right-handed OF fits), with the infield set, and they may add a few more arms such as Michael Soroka (Bannon, The Athletic, 11/25). Watching Arozarena's market; among six clubs on Brandon Lowe (Morosi, 11/24) and five on ex-NPB 1B Tyler Austin (Sherman, NY Post, 11/24); was engaged on LHP Adrian Morejón (Bannon, 11/24).",
    "win": "retool",
    "src": [
     "https://www.mlb.com/bluejays/news/examining-the-blue-jays-biggest-offseason-needs",
@@ -134,7 +136,8 @@
     "https://www.mlbtraderumors.com/2026/11/blue-jays-interested-in-trevor-rogers-freddy-peralta.html",
     "https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html",
     "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html",
-    "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html"
+    "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html",
+    "https://www.mlbtraderumors.com/2026/11/latest-on-the-blue-jays-offseason-plans.html"
    ]
   },
   "DET": {
@@ -144,13 +147,14 @@
     "1B",
     "2B"
    ],
-   "note": "Competing around a young core; signed Pagán (closer), extended Melton, added Luis Gil and INF Ha-Seong Kim (1 yr, $5M, Passan, ESPN, 11/24); wants more right-handed relievers (Stavenhagen, The Athletic); interested in RHP Bryan Abreu but stuck on length, Abreu wants multi-year, DET prefers one year (Evan Petzold, Free Press, 11/24).",
+   "note": "Competing around a young core; signed Pagán (closer), extended Melton, added Luis Gil and INF Ha-Seong Kim (1 yr, $5M, Passan, ESPN, 11/24) and RHP Kevin Gausman (1 yr, $25M, Passan, ESPN, 11/25); wants more right-handed relievers (Stavenhagen, The Athletic); interested in RHP Bryan Abreu but stuck on length, Abreu wants multi-year, DET prefers one year (Evan Petzold, Free Press, 11/24).",
    "win": "retool",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-detroit-tigers-16.html",
     "https://www.mlbtraderumors.com/2026/11/tigers-seeking-additional-relievers-after-pagan-signing.html",
     "https://www.mlbtraderumors.com/2026/11/tigers-to-sign-ha-seong-kim.html",
-    "https://www.mlbtraderumors.com/2026/11/tigers-interested-in-bryan-abreu.html"
+    "https://www.mlbtraderumors.com/2026/11/tigers-interested-in-bryan-abreu.html",
+    "https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html"
    ]
   },
   "PHI": {
@@ -244,14 +248,16 @@
     "C",
     "2B"
    ],
-   "note": "Missed the playoffs again and traded Rutschman at the deadline; listening on everyone except Pete Alonso. Lost Rogers, then landed Freddy Peralta (5 yr, $125M, ESPN, 11/24) to top the rotation; still wants an outfielder and a catcher. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24).",
+   "note": "Listening on everyone except Pete Alonso. Landed Freddy Peralta (5 yr, $125M, 11/24); reportedly finalizing a deal to bring back OF Luis Robert Jr. (Francys Romero, via MLBTR, 11/25). Also eyeing OF Happ, Dubón, Straw (Rosenthal/Sammon, The Athletic). Still wants a catcher; on 2B Brandon Lowe (Morosi).",
    "win": "retool",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/11/report-orioles-open-to-trade-offers-on-majority-of-roster.html",
     "https://www.mlb.com/orioles/news/orioles-biggest-2026-27-offseason-needs",
     "https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html",
-    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24"
+    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24",
+    "https://www.mlbtraderumors.com/2026/11/orioles-rumors-ian-happ-mauricio-dubon-myles-straw.html",
+    "https://www.mlbtraderumors.com/2026/11/orioles-luis-robert-jr-reportedly-finalizing-contract.html"
    ]
   },
   "TEX": {
@@ -305,31 +311,31 @@
    "wants": [
     "SP",
     "RP",
-    "C",
     "OF",
     "1B",
     "3B"
    ],
-   "note": "Bendix wants to build on a promising 2026: at least one starter and one reliever, catching help, and he is open to an everyday corner bat.",
+   "note": "Bendix wants a starter, a reliever and is open to an everyday corner bat. C filled: Gary Sánchez, 1 yr, $6.5M (Passan, ESPN, 11/25).",
    "win": "ascend",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-miami-marlins-14.html",
-    "https://www.mlb.com/news/peter-bendix-on-marlins-needs-heading-into-2027"
+    "https://www.mlb.com/news/peter-bendix-on-marlins-needs-heading-into-2027",
+    "https://www.mlbtraderumors.com/2026/11/marlins-to-sign-gary-sanchez.html"
    ]
   },
   "KCR": {
    "wants": [
     "OF",
     "RP",
-    "SP",
-    "3B"
+    "SP"
    ],
-   "note": "Went 69-93 and is aiming for a 2027 rebound around Bobby Witt Jr.; about $30M is coming off the payroll. Wants a right-handed outfielder; 3B open after the Garcia trade. Added LHP RP Caleb Thielbar (1 yr; Castillo, ESPN).",
+   "note": "Went 69-93 and is aiming for a 2027 rebound around Bobby Witt Jr.; about $30M is coming off the payroll. Wants a right-handed outfielder. Filled 3B with Alec Bohm (2 yrs/$20M; Rosenthal, The Athletic). Added LHP RP Caleb Thielbar (1 yr; Castillo, ESPN).",
    "win": "retool",
    "src": [
     "https://www.mlbtraderumors.com/2026/11/royals-in-market-for-right-handed-hitting-outfielder.html",
     "https://www.mlb.com/news/royals-2027-outlook-after-disappointing-2026-season",
-    "https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html"
+    "https://www.mlbtraderumors.com/2026/11/royals-to-sign-caleb-thielbar.html",
+    "https://www.mlbtraderumors.com/2026/11/royals-to-sign-alec-bohm.html"
    ]
   },
   "STL": {
@@ -365,14 +371,16 @@
     "OF",
     "2B"
    ],
-   "note": "Missed on Skubal (offer near $400M with deferrals, Heyman); will 'do everything possible' to re-sign Michael King and wants Pivetta on a new structure, plus a corner OF: Suzuki or Duran (Sato went to the Cubs) (Nightengale, USA Today; Cassavell, MLB.com). Rotation targets Peralta (BAL) and Kaima Taira (TOR) signed elsewhere 11/24. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24).",
+   "note": "Missed on Skubal (offer near $400M with deferrals, Heyman); will 'do everything possible' to re-sign Michael King and wants Pivetta on a new structure, plus a corner OF: Suzuki or Duran (Sato went to the Cubs) (Nightengale, USA Today; Cassavell, MLB.com). Rotation targets Peralta (BAL) and Kaima Taira (TOR) signed elsewhere 11/24. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24). Agreed with LHP reliever JoJo Romero, 3 yrs/$21M (Passan, ESPN; Rosenthal, The Athletic, 11/25).",
    "win": "contend",
    "shedding": false,
    "src": [
     "https://www.mlb.com/news/padres-takeaways-from-general-managers-meetings",
     "https://www.mlb.com/news/padres-questions-to-address-this-offseason",
     "https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html",
-    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24"
+    "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24",
+    "https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html",
+    "https://www.mlb.com/news/jojo-romero-padres-contract"
    ]
   },
   "SFG": {
@@ -419,12 +427,13 @@
     "SP",
     "RP"
    ],
-   "note": "Won 58 games, 15 better than 2025; DePodesta's priority is starting pitching through trades and established free agents, says investment will be equal or larger and nothing is driven by money.",
+   "note": "Won 58 games, 15 better than 2025; DePodesta's priority is starting pitching through trades and established free agents, says investment will be equal or larger and nothing is driven by money. Signed LHP David Peterson (2 yr, $32M; Harding, MLB.com; Murray, FanSided, 11/25).",
    "win": "retool",
    "shedding": false,
    "src": [
     "https://www.mlb.com/news/paul-depodesta-discusses-rockies-plans-for-2027-offseason",
-    "https://www.mlbtraderumors.com/2026/11/rockies-notes-goodman-pitching-needs.html"
+    "https://www.mlbtraderumors.com/2026/11/rockies-notes-goodman-pitching-needs.html",
+    "https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html"
    ]
   },
   "NYM": {
@@ -1309,6 +1318,17 @@
   "MLB Trade Rumors: D-backs Have Gotten Calls On Eduardo Rodriguez, Merrill Kelly (Rosenthal/Sammon, The Athletic; Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html",
   "MLB Trade Rumors: Latest On Adrian Morejon's Market (Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html",
   "MLB Trade Rumors: Reds To Re-Sign Tyler Stephenson (Passan, ESPN; Nov. 24, 2026) https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
-  "MLB Trade Rumors: Dipoto: 'Zero' Chance Mariners Trade Another Starter (Adam Jude, Seattle Times; Nov. 18, 2026) https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html"
+  "MLB Trade Rumors: Dipoto: 'Zero' Chance Mariners Trade Another Starter (Adam Jude, Seattle Times; Nov. 18, 2026) https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html",
+  "MLB Trade Rumors: Royals To Sign Alec Bohm (Morosi, MLB Network; Rosenthal, The Athletic; Nov. 25, 2026) https://www.mlbtraderumors.com/2026/11/royals-to-sign-alec-bohm.html",
+  "MLB Trade Rumors: Orioles Interested In Ian Happ, Mauricio Dubón (Rosenthal/Sammon, The Athletic; Nov. 25, 2026) https://www.mlbtraderumors.com/2026/11/orioles-rumors-ian-happ-mauricio-dubon-myles-straw.html",
+  "MLB Trade Rumors: Latest On The Blue Jays' Offseason Plans (Mitch Bannon, The Athletic; Nov. 25, 2026) https://www.mlbtraderumors.com/2026/11/latest-on-the-blue-jays-offseason-plans.html",
+  "MLB Trade Rumors: Mariners Rumors: Vesia, Abreu, Soto, Suzuki (Adam Jude, Seattle Times; Nov. 25, 2026) https://www.mlbtraderumors.com/2026/11/mariners-rumors-vesia-abreu-soto-suzuki.html",
+  "MLB Trade Rumors: Padres To Sign JoJo Romero (Passan, ESPN; Nov. 25, 2026) https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html",
+  "MLB.com: JoJo Romero agrees to contract with Padres (Rosenthal, The Athletic, terms; Nov. 25, 2026) https://www.mlb.com/news/jojo-romero-padres-contract",
+  "MLBTR: Orioles, Luis Robert Jr. Reportedly Finalizing Contract (11/25)",
+  "MLBTR: Marlins To Sign Gary Sánchez (11/25)",
+  "MLBTR: Tigers To Sign Kevin Gausman (Passan, ESPN; 11/25) https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html",
+  "MLBTR: Guardians To Sign Foster Griffin (Murray, FanSided; 11/25) https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html",
+  "MLBTR: Rockies To Sign David Peterson (Harding, MLB.com; Murray, FanSided; 11/25) https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html"
  ]
 }

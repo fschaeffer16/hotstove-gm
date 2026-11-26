@@ -3,6 +3,7 @@
  "baseline": "2026-11-14",
  "moves": [
   {
+   "status": "official",
    "type": "trade",
    "players": [
     {
@@ -23,7 +24,7 @@
    "date": "2026-10-29",
    "summary": "Athletics acquired OF/INF Nate Eaton from Boston Red Sox for SP Jareth Rayo.",
    "src": "Roster Resource offseason tracker",
-   "status": "official"
+   "sid": 950817
   },
   {
    "type": "release",
@@ -79,7 +80,8 @@
      "pos": "RHP"
     }
    ],
-   "src": "MLB transactions / MLB Trade Rumors"
+   "src": "MLB transactions / MLB Trade Rumors",
+   "sid": 950817
   },
   {
    "date": "2026-11-14",
@@ -119,7 +121,8 @@
      "pos": "RHP"
     }
    ],
-   "src": "MLB transactions / MLB Trade Rumors"
+   "src": "MLB transactions / MLB Trade Rumors",
+   "sid": 950817
   },
   {
    "date": "2026-11-15",
@@ -2178,6 +2181,7 @@
    "status": "official"
   },
   {
+   "status": "official",
    "type": "trade",
    "players": [
     {
@@ -2191,7 +2195,7 @@
    "date": "2026-11-19",
    "summary": "Texas Rangers returned Rule 5 pick RHP Carter Baumler to Baltimore Orioles.",
    "src": "Roster Resource offseason tracker",
-   "status": "official"
+   "sid": 950817
   },
   {
    "type": "select",
@@ -2204,6 +2208,8 @@
    "status": "official"
   },
   {
+   "status": "reported",
+   "sid": 951129,
    "date": "2026-11-20",
    "type": "sign",
    "summary": "Mets, Darwinzon Hernández Agree To Three-Year Deal",
@@ -2211,7 +2217,6 @@
    "team": "NYM",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-darwinzon-hernandez-agree-to-three-year-deal.html",
-   "status": "official",
    "forty": true,
    "contract": {
     "aav": 4000000,
@@ -2222,30 +2227,29 @@
      "2029": 4000000,
      "2030": "FREE AGENT"
     }
-   },
-   "sid": 951129
+   }
   },
   {
    "status": "official",
+   "sid": 951125,
    "date": "2026-11-20",
    "type": "sign",
-   "summary": "Yankees re-sign RHP Jonathan Loáisiga: 2 yrs, $18M with a 2029 club option (Feinsand, MLB.com; Castillo, ESPN)",
+   "summary": "Yankees re-sign RHP Jonathan Loáisiga: 2 yrs, $19M guaranteed with a $9.5M 2029 club option ($500K buyout) (Castillo, ESPN); official Nov. 25 (MLB transaction log)",
    "name": "Jonathan Loáisiga",
    "team": "NYY",
    "pos": "RP",
-   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-jonathan-loaisiga.html",
+   "src": "ESPN https://www.espn.com/mlb/story/_/id/50540563/sources-jonathan-loaisiga-returning-yankees-2-year-deal; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/yankees-to-sign-jonathan-loaisiga.html; Nov. 25 update https://www.mlbtraderumors.com/2026/11/yankees-to-sign-jonathan-loaisiga.html",
    "forty": true,
    "contract": {
-    "aav": 9000000,
-    "desc": "2 yr, $18M (2027-28) plus a club option for 2029 (Jorge Castillo, ESPN; value per Feinsand, MLB.com); yearly salaries and any option buyout not reported, shown evenly. He pitched for Arizona in 2026.",
+    "aav": 9500000,
+    "desc": "2 yr, $19M guaranteed (2027-28), including a $500K buyout on a $9.5M 2029 club option, plus up to $750K a year in incentives (Jorge Castillo, ESPN, Nov. 25). Yearly salaries not reported, shown evenly; CBT AAV $9.5M. He pitched for Arizona in 2026.",
     "yrs": {
-     "2027": 9000000,
-     "2028": 9000000,
+     "2027": 9250000,
+     "2028": 9250000,
      "2029": "CLUB OPTION",
      "2030": "FREE AGENT"
     }
-   },
-   "sid": 951125
+   }
   },
   {
    "type": "dfa",
@@ -2957,9 +2961,11 @@
    "status": "reported"
   },
   {
+   "status": "official",
+   "sid": 951128,
    "date": "2026-11-22",
    "type": "sign",
-   "summary": "Mets sign LHP Tarik Skubal: 9 yrs, $450M, including a $45M signing bonus; no opt-outs, full no-trade clause",
+   "summary": "Mets sign LHP Tarik Skubal: 9 yrs, $450M, including a $45M signing bonus; no opt-outs, full no-trade clause; official Nov. 25 (MLB transaction log)",
    "name": "Tarik Skubal",
    "team": "NYM",
    "pos": "SP",
@@ -2980,9 +2986,7 @@
      "2036": "FREE AGENT"
     }
    },
-   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html",
-   "status": "official",
-   "sid": 951128
+   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html"
   },
   {
    "date": "2026-11-23",
@@ -3112,9 +3116,11 @@
    }
   },
   {
+   "status": "official",
+   "sid": 951126,
    "date": "2026-11-23",
    "type": "sign",
-   "summary": "Cubs sign LHP Trevor Rogers: 5 yrs, $120M (pending physical); he had rejected the Orioles' qualifying offer",
+   "summary": "Cubs sign LHP Trevor Rogers: 5 yrs, $120M (pending physical); he had rejected the Orioles' qualifying offer; official Nov. 25 (MLB transaction log)",
    "name": "Trevor Rogers",
    "team": "CHC",
    "pos": "SP",
@@ -3131,9 +3137,7 @@
      "2032": "FREE AGENT"
     }
    },
-   "src": "MLB Trade Rumors (Morosi, MLB Network; Rosenthal, The Athletic)",
-   "status": "official",
-   "sid": 951126
+   "src": "MLB Trade Rumors (Morosi, MLB Network; Rosenthal, The Athletic)"
   },
   {
    "date": "2026-11-23",
@@ -3146,14 +3150,37 @@
    "status": "reported"
   },
   {
+   "type": "sign_minor",
+   "name": "Yonerson Garcia",
+   "team": "NYY",
+   "pos": "LHP",
+   "date": "2026-11-23",
+   "summary": "New York Yankees signed free agent LHP Yonerson Garcia to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951114,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Diego Rincones",
+   "team": "NYY",
+   "pos": "LHP",
+   "date": "2026-11-23",
+   "summary": "New York Yankees signed free agent LHP Diego Rincones to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951120,
+   "status": "official"
+  },
+  {
+   "status": "official",
+   "sid": 951127,
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Cubs sign NPB 3B/OF Teruaki Sato (Hanshin): 6 yrs, $120M (Passan, ESPN); expected to play corner outfield, not third base",
+   "summary": "Cubs sign NPB 3B/OF Teruaki Sato (Hanshin): 6 yrs, $120M (Passan, ESPN); expected to play corner outfield, not third base; official Nov. 25 (MLB transaction log)",
    "name": "Teruaki Sato",
    "team": "CHC",
    "pos": "OF/3B",
    "forty": true,
-   "status": "official",
    "contract": {
     "aav": 20000000,
     "desc": "6 yr, $120M (2027-32); yearly salaries not reported, spread evenly. Posting fee to Hanshin (about $19.9M) does not count toward the CBT.",
@@ -3167,18 +3194,18 @@
      "2033": "FREE AGENT"
     }
    },
-   "src": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html",
-   "sid": 951127
+   "src": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-teruaki-sato.html"
   },
   {
+   "status": "official",
+   "sid": 951121,
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Guardians sign LHP Kris Bubic: 1 yr, $17.5M (Passan, ESPN)",
+   "summary": "Guardians sign LHP Kris Bubic: 1 yr, $17.5M (Passan, ESPN); official Nov. 25",
    "name": "Kris Bubic",
    "team": "CLE",
    "pos": "SP",
    "forty": true,
-   "status": "official",
    "contract": {
     "aav": 17500000,
     "desc": "1 yr, $17.5M (2027)",
@@ -3187,8 +3214,7 @@
      "2028": "FREE AGENT"
     }
    },
-   "src": "MLB Trade Rumors (Nicholson-Smith, Sportsnet; Passan, ESPN) https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html",
-   "sid": 951121
+   "src": "MLB Trade Rumors (Nicholson-Smith, Sportsnet; Passan, ESPN) https://www.mlbtraderumors.com/2026/11/guardians-sign-kris-bubic.html"
   },
   {
    "status": "official",
@@ -3472,26 +3498,37 @@
    "status": "official"
   },
   {
+   "type": "sign_minor",
+   "name": "Eury Saldana",
+   "team": "TOR",
+   "pos": "RHP",
+   "date": "2026-11-24",
+   "summary": "Toronto Blue Jays signed free agent RHP Eury Saldana to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951119,
+   "status": "official"
+  },
+  {
    "status": "official",
+   "sid": 951124,
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Reds re-sign C Tyler Stephenson: 3 yrs, $30M with an opt-out after 2028 (Passan, ESPN); pending physical",
+   "summary": "Reds re-sign C Tyler Stephenson: 3 yrs, $30M (2 yrs plus a 2029 player option) (Passan, ESPN); official Nov. 25",
    "name": "Tyler Stephenson",
    "team": "CIN",
    "pos": "C",
-   "src": "MLB Trade Rumors (Passan, ESPN) https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html",
+   "src": "MLB Trade Rumors (Passan, ESPN) https://www.mlbtraderumors.com/2026/11/reds-to-re-sign-tyler-stephenson-to-three-year-deal.html; MLB.com https://www.mlb.com/news (Reds bring back catcher Stephenson on 2-year deal with player option)",
    "forty": true,
    "contract": {
     "aav": 10000000,
-    "desc": "3 yr, $30M (2027-29), opt-out after the 2028 season (Passan, ESPN); yearly salaries not reported, shown evenly. CIN had open 40-man spots, no corresponding move needed (MLBTR).",
+    "desc": "3 yr, $30M guaranteed (2027-29): the club announced a 2-year deal with a player option for 2029, which counts as guaranteed (Passan, ESPN; MLBTR). Yearly salaries not reported, shown evenly; CBT AAV $10M. CIN had open 40-man spots.",
     "yrs": {
      "2027": 10000000,
      "2028": 10000000,
      "2029": 10000000,
      "2030": "FREE AGENT"
     }
-   },
-   "sid": 951124
+   }
   },
   {
    "date": "2026-11-25",
@@ -3504,26 +3541,24 @@
    "status": "reported"
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Royals To Sign Alec Bohm",
+   "summary": "Royals sign 3B Alec Bohm: 2 yrs, $20M (Rosenthal, The Athletic; Morosi, MLB Network first); pending physical",
    "name": "Alec Bohm",
    "team": "KCR",
    "pos": "3B/1B",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/royals-to-sign-alec-bohm.html",
-   "status": "reported",
-   "forty": true
-  },
-  {
-   "type": "sign_minor",
-   "name": "Yonerson Garcia",
-   "team": "NYY",
-   "pos": "LHP",
-   "date": "2026-11-23",
-   "summary": "New York Yankees signed free agent LHP Yonerson Garcia to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 951114,
-   "status": "official"
+   "src": "MLB Trade Rumors (Morosi, MLB Network; Rosenthal, The Athletic) https://www.mlbtraderumors.com/2026/11/royals-to-sign-alec-bohm.html",
+   "forty": true,
+   "contract": {
+    "aav": 10000000,
+    "desc": "2 yr, $20M (2027-28), pending a physical (Rosenthal, The Athletic). Yearly salaries, bonus and options not reported, shown evenly. Fills 3B after the Maikel Garcia trade.",
+    "yrs": {
+     "2027": 10000000,
+     "2028": 10000000,
+     "2029": "FREE AGENT"
+    }
+   }
   },
   {
    "type": "sign_minor",
@@ -3538,28 +3573,6 @@
   },
   {
    "type": "sign_minor",
-   "name": "Diego Rincones",
-   "team": "NYY",
-   "pos": "LHP",
-   "date": "2026-11-23",
-   "summary": "New York Yankees signed free agent LHP Diego Rincones to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 951120,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
-   "name": "Eury Saldana",
-   "team": "TOR",
-   "pos": "RHP",
-   "date": "2026-11-24",
-   "summary": "Toronto Blue Jays signed free agent RHP Eury Saldana to a minor league contract.",
-   "src": "MLB Stats API",
-   "sid": 951119,
-   "status": "official"
-  },
-  {
-   "type": "sign_minor",
    "name": "Yeremy De Leon",
    "team": "SDP",
    "pos": "LHP",
@@ -3570,63 +3583,89 @@
    "status": "official"
   },
   {
+   "status": "official",
+   "sid": 951122,
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Brewers Sign Antonio Senzatela",
+   "summary": "Brewers sign RHP Antonio Senzatela: 1 yr, $4.75M plus up to $3M in bonuses (Will Sammon, The Athletic, via MLBTR; club announcement). Milwaukee designated 1B/OF Tyler Black for assignment",
    "name": "Antonio Senzatela",
    "team": "MIL",
-   "pos": "RP",
+   "pos": "SP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/brewers-sign-antonio-senzatela.html",
-   "status": "official",
    "forty": true,
-   "sid": 951122
+   "contract": {
+    "aav": 4750000,
+    "desc": "1 yr, $4.75M (2027) plus up to $3M in incentives (Sammon, The Athletic); incentives count toward the CBT only if earned or deemed likely",
+    "yrs": {
+     "2027": 4750000,
+     "2028": "FREE AGENT"
+    }
+   }
   },
   {
+   "sid": 951123,
+   "status": "official",
+   "date": "2026-11-25",
    "type": "dfa",
    "name": "Tyler Black",
    "team": "MIL",
-   "pos": "DH",
-   "date": "2026-11-25",
-   "summary": "Milwaukee Brewers designated DH Tyler Black for assignment.",
-   "src": "MLB Stats API",
-   "sid": 951123,
-   "status": "official"
+   "pos": "1B",
+   "summary": "Milwaukee Brewers designated 1B/OF Tyler Black for assignment to open a 40-man spot for Antonio Senzatela.",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/brewers-sign-antonio-senzatela.html"
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Padres To Sign JoJo Romero",
+   "summary": "Padres sign LHP JoJo Romero: 3 yrs, $21M (Passan, ESPN, first; Rosenthal, The Athletic, terms); pending physical",
    "name": "JoJo Romero",
    "team": "SDP",
    "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html",
-   "status": "reported",
-   "forty": true
+   "forty": true,
+   "src": "MLB Trade Rumors (Passan, ESPN) https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html; MLB.com https://www.mlb.com/news/jojo-romero-padres-contract",
+   "contract": {
+    "aav": 7000000,
+    "desc": "3 yr, $21M (2027-29), pending a physical (Rosenthal, The Athletic; MLB.com). Yearly salaries, bonus and options not reported, shown evenly; CBT AAV $7M. No 40-man move reported.",
+    "yrs": {
+     "2027": 7000000,
+     "2028": 7000000,
+     "2029": 7000000,
+     "2030": "FREE AGENT"
+    }
+   }
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Orioles, Luis Robert Jr. Reportedly Finalizing Contract",
+   "summary": "Orioles re-sign OF Luis Robert Jr.: 1 yr, $12M (Passan, ESPN); the club had declined his $20M option. Expected to be the everyday center fielder",
    "name": "Luis Robert Jr.",
    "team": "BAL",
    "pos": "CF/LF",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/orioles-luis-robert-jr-reportedly-finalizing-contract.html",
-   "status": "reported",
-   "forty": true
+   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/orioles-luis-robert-jr-reportedly-finalizing-contract.html",
+   "forty": true,
+   "contract": {
+    "aav": 12000000,
+    "desc": "1 yr, $12M (2027) (Jeff Passan, ESPN). No options or incentives reported.",
+    "yrs": {
+     "2027": 12000000,
+     "2028": "FREE AGENT"
+    }
+   }
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Marlins To Sign Gary Sánchez",
+   "summary": "Marlins sign C Gary Sánchez: 1 yr, $6.5M (Passan, ESPN, via MLBTR); Miami had an open 40-man spot",
    "name": "Gary Sánchez",
    "team": "MIA",
    "pos": "C",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/marlins-to-sign-gary-sanchez.html",
-   "status": "reported",
    "forty": true,
    "contract": {
     "aav": 6500000,
-    "desc": "1 yr, $6.5M (2027-27)",
+    "desc": "1 yr, $6.5M (2027)",
     "yrs": {
      "2027": 6500000,
      "2028": "FREE AGENT"
@@ -3634,66 +3673,85 @@
    }
   },
   {
+   "sid": 951130,
+   "status": "official",
+   "date": "2026-11-25",
    "type": "dfa",
+   "summary": "New York Mets designated RHP Jack Anderson for assignment (40-man room for the Skubal/Goldschmidt signings).",
    "name": "Jack Anderson",
    "team": "NYM",
    "pos": "RHP",
-   "date": "2026-11-25",
-   "summary": "New York Mets designated RHP Jack Anderson for assignment.",
-   "src": "MLB Stats API",
-   "sid": 951130,
-   "status": "official"
+   "src": "MLB Stats API; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-designate-jack-anderson-yunior-tur-for-assignment.html"
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Tigers To Sign Kevin Gausman",
+   "summary": "Tigers sign RHP Kevin Gausman: 1 yr, $25M (Passan, ESPN); pending physical",
    "name": "Kevin Gausman",
    "team": "DET",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html",
-   "status": "reported",
    "forty": true,
    "contract": {
     "aav": 25000000,
-    "desc": "1 yr, $25M (2027-27)",
+    "desc": "1 yr, $25M (2027). No options or deferrals reported.",
     "yrs": {
      "2027": 25000000,
      "2028": "FREE AGENT"
     }
-   }
+   },
+   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/tigers-to-sign-kevin-gausman.html"
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Guardians To Sign Foster Griffin",
+   "summary": "Guardians sign LHP Foster Griffin: 3 yrs, $48M (Robert Murray, FanSided); Cleveland's 40-man is full, a corresponding move is needed",
    "name": "Foster Griffin",
    "team": "CLE",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html",
-   "status": "reported",
    "forty": true,
    "contract": {
     "aav": 16000000,
-    "desc": "3 yr, $48M (2027-29)",
+    "desc": "3 yr, $48M (2027-29); year-by-year salaries not reported, spread evenly. No options or deferrals reported.",
     "yrs": {
      "2027": 16000000,
      "2028": 16000000,
      "2029": 16000000,
      "2030": "FREE AGENT"
     }
-   }
+   },
+   "src": "Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html"
   },
   {
+   "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Rockies To Sign David Peterson",
+   "summary": "Rockies sign LHP David Peterson: 2 yrs, $32M (Thomas Harding, MLB.com, agreement; Robert Murray, FanSided, terms); Colorado's 40-man is full",
    "name": "David Peterson",
    "team": "COL",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html",
-   "status": "reported",
-   "forty": true
+   "forty": true,
+   "contract": {
+    "aav": 16000000,
+    "desc": "2 yr, $32M (2027-28); year-by-year salaries not reported, spread evenly. No options or deferrals reported.",
+    "yrs": {
+     "2027": 16000000,
+     "2028": 16000000,
+     "2029": "FREE AGENT"
+    }
+   },
+   "src": "Thomas Harding, MLB.com; Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html"
+  },
+  {
+   "date": "2026-11-25",
+   "type": "dfa",
+   "summary": "New York Mets designated RHP Yunior Tur for assignment (40-man room for the Skubal/Goldschmidt signings).",
+   "name": "Yunior Tur",
+   "team": "NYM",
+   "pos": "RHP",
+   "src": "MLB Stats API; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-designate-jack-anderson-yunior-tur-for-assignment.html",
+   "status": "official"
   }
  ],
  "live": "2026-11-26T00:02:52Z",
