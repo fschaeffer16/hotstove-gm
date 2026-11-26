@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Sources: Rockies agree to 2-year, $32M deal with David Peterson",
+   "blurb": "The Rockies agree to a two-year, $32 million deal with lefty David Peterson, the latest addition to a revamped starting rotation for Colorado.",
+   "link": "https://www.espn.com/mlb/story/_/id/50599272/sources-rockies-agree-2-year-32m-deal-lhp-peterson",
+   "time": "2026-11-26T00:21:45Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Dodgers' Ben Casparius has Tommy John surgery",
+   "blurb": "Dodgers right-hander Ben Casparius will miss the 2027 season after having Tommy John surgery on Wednesday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50599246/dodgers-ben-casparius-tommy-john-surgery",
+   "time": "2026-11-26T00:21:04Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "LAD"
+   ]
+  },
+  {
    "title": "Rockies To Sign David Peterson",
    "blurb": "The Rockies and left-hander David Peterson are in agreement on a two-year deal, reports Thomas Harding of MLB.com. It&#8217;s a $32MM guarantee for the CAA Sports client, reports Robert Murray of FanSided. Colorado has a full 40-man roster and will need to make a corresponding move to make this offi",
    "link": "https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html",
@@ -3209,29 +3231,7 @@
    "teams": [
     "MIN"
    ]
-  },
-  {
-   "title": "Philadelphia Phillies signed free agent C Brian Navarreto to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "PHI"
-   ]
-  },
-  {
-   "title": "Seattle Mariners signed free agent RHP Johnathan Lavallee to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SEA"
-   ]
   }
  ],
- "updated": "2026-11-26T00:02:52Z"
+ "updated": "2026-11-26T00:22:57Z"
 }
