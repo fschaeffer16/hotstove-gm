@@ -297,6 +297,8 @@ table.list{width:100%;border-collapse:collapse;font-size:13px}
 .list.frz th:first-child,.list.frz td:first-child{position:sticky;left:0;z-index:1;background:var(--card);box-shadow:1px 0 0 var(--line)}
 .list.frz thead th:first-child{background:var(--blue-soft)}
 .list.frz tr:hover td:first-child{background:var(--chip)}
+.list select[data-posp]{max-width:100%;font-size:15px;padding:6px 4px}
+
 /* every wide table: the name column stays put while the rest scrolls sideways (owner, 11/25). Set by frzTables(). */
 .scroll .stk{position:sticky;left:0;z-index:1;background:var(--card);box-shadow:1px 0 0 var(--line)}
 .scroll thead .stk{background:var(--blue-soft);z-index:2}
@@ -2983,7 +2985,18 @@ function seElig(id,pos){const ps=String(P[id].pos||'').split('/'),has=a=>ps.some
 const isSPp=id=>P[id].p&&(String(P[id].pos).includes('SP')||(P[id].proj&&P[id].proj.gs>=3));
 /* ---- today's roster for a club: the depth chart as set, with injured or departed players replaced from the bench, the depth chart, then the best ready player in the system ---- */
 function seBase(code){if(code===ME){ensureDep();return {lineup:S.lineup,bench:S.bench,rot:S.rot,pen:S.pen,hdep:S.hdep,pdep:S.pdep}}return SE.ai[code]}
-function seRoster(code){
+/* In the playoffs the user's club plays from his playoff plan (SE.po.my): the 26 he chose, in any split of hitters and pitchers, and the starter he
+   named for each game. seRoster0 is the everyday roster from the depth chart. */
+function seRoster(code){const R=seRoster0(code),m=code===ME&&SE&&SE.phase==='post'&&SE.po&&SE.po.my;return m&&m.rd===SE.po.rd?sePoApply(R,m):R}
+function sePoApply(R,m){const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id),ros=new Set((m.ros||[]).filter(ok)),inL=new Set(R.lineup.map(x=>x[1]).filter(Boolean));
+  const bench=[...ros].filter(id=>!P[id].p&&!inL.has(id));
+  let rot=[];for(const id of m.sp||[])if(ok(id)&&P[id].p&&!rot.includes(id))rot.push(id);if(!rot.length)rot=R.rot.slice(0,3);
+  const role={};for(const x of R.pen)role[x[1]]=x[0];
+  const arms=[...ros].filter(id=>P[id].p&&!rot.includes(id)),pen=R.pen.filter(x=>arms.includes(x[1])).map(x=>[x[0],x[1]]);
+  for(const id of arms)if(!pen.some(x=>x[1]===id))pen.push([isSPp(id)?'LR':'MD',id]);
+  if(pen.length&&!pen.some(x=>x[0]==='CL')){const b=pen.filter(x=>x[0]==='SU')[0]||pen.slice().sort((a,b)=>pQ(a[1])-pQ(b[1]))[0];b[0]='CL'}
+  return {code:R.code,lineup:R.lineup,bench,rot,pen,subs:R.subs}}
+function seRoster0(code){
   const B=seBase(code),ok=id=>id&&P[id]&&owner(id)===code&&!seOut(id),used=new Set(),subs=[];
   let orgH=null,orgP=null;
   const org=()=>{if(!orgH){const all=roster(code).filter(id=>ok(id)&&(P[id].proj||P[id].fv||P[id].lvl==='MLB'));orgH=all.filter(id=>!P[id].p).sort((a,b)=>hQ(b)-hQ(a));orgP=all.filter(id=>P[id].p).sort((a,b)=>pQ(a)-pQ(b))}};
@@ -3064,7 +3077,9 @@ function seDevHTML(){if(!SE||SE.day-SE.d0<20)return '';const R=seRoster(ME),ids=
 function seAvail(id,day){const u=SE.pu[id];if(!u)return true;const g=day-u[0];return g<=0?false:g===1?u[1]<=28&&u[2]<2:g===2?u[1]<=45:true}
 function sePickSP(code,R,day,po){const rot=R.rot;if(!rot.length)return R.pen.length?R.pen[R.pen.length-1][1]:null;
   const last=id=>SE.pu[id]?SE.pu[id][0]:-99,rested=id=>day-last(id)>=5;
-  if(po&&code===ME&&SE.po){const gs=SE.po.gs=SE.po.gs||{},id=sePoPick(rot,day,last,gs);gs[id]=(gs[id]||0)+1;return id}
+  if(po&&code===ME&&SE.po){const x=sePoMine(),m=SE.po.my,k=x?x.wa+x.wb:0,pick=m&&m.rd===SE.po.rd&&m.sp&&m.sp[k];
+    if(pick&&P[pick]&&P[pick].p&&owner(pick)===ME&&!seOut(pick))return pick;/* the starter the user named for this game starts it: never overridden for rest or for a better arm (owner, 11/26) */
+    const gs=SE.po.gs=SE.po.gs||{},id=sePoPick(rot,day,last,gs);gs[id]=(gs[id]||0)+1;return id}
   if(po)return rot.filter(rested).sort((a,b)=>pQ(a)-pQ(b))[0]||rot.slice().sort((a,b)=>last(a)-last(b))[0];
   const i=SE.ri[code]||0;for(let n=0;n<rot.length;n++){const id=rot[(i+n)%rot.length];if(rested(id)){SE.ri[code]=(i+n+1)%rot.length;return id}}
   return rot.slice().sort((a,b)=>last(a)-last(b))[0]}
@@ -3381,22 +3396,47 @@ function sePoDay(){const po=SE.po,d=SE.day,boxes=[];
 /* ---- playoff roster (owner, 11/22): before each round the user sets his lineup, rotation and bullpen ---- */
 const sePoMine=()=>SE&&SE.phase==='post'&&SE.po?SE.po.ser.find(x=>x.a===ME||x.b===ME):null;
 const sePoNeedSet=()=>{const x=sePoMine();return !!x&&x.wa+x.wb===0&&SE.po.ok!==SE.po.rd};
-function sePoDays(n){const out=[];let d=SE.day;for(let k=0;k<n;k++){out.push(d);const g=k+1;d+=(n===7&&(g===2||g===5))||(n===5&&(g===2||g===4))?2:1}return out}
-function sePoProb(n){const R=seRoster(ME),lastD={},gs={},last=id=>lastD[id]!=null?lastD[id]:SE.pu[id]?SE.pu[id][0]:-99;return sePoDays(n).map(d=>{const id=sePoPick(R.rot,d,last,gs);gs[id]=(gs[id]||0)+1;lastD[id]=d;return id})}
-function sePoSetHTML(){const x=sePoMine();if(!x)return '';const opp=x.a===ME?x.b:x.a,R=seRoster(ME),O=seRoster(opp),hd=id=>P[id].hand?` (${P[id].hand})`:'',nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>`;
-  const prob=sePoProb(x.n),home=SE_HOME[x.n].map(h=>(h?x.a:x.b)===ME),oS=O.rot.slice().sort((a,b)=>pQ(a)-pQ(b)).slice(0,4);
-  const late=R.rot.slice(0,4).filter((id,i)=>prob.indexOf(id)>i),out=Object.keys(SE.il).filter(id=>owner(id)===ME&&SE.il[id].ret>SE.day);
-  return `<div class="verdictbox warn" style="margin-top:0"><div class="vhead"><span class="vtag warn">Set your roster</span><b>${esc(x.nm)} vs the ${esc(tnm(opp))}</b><span class="hint">Best of ${x.n} · ${x.a===ME?'you have':'they have'} home field</span></div>
-    <p style="margin:6px 0">Set your lineup, rotation and bullpen for this round. Your lineup plays every game the way you set it, and SP1 to SP4 start in order.</p>
-    <div class="tradegrid"><div><div class="subh">Your starters</div>${prob.map((id,i)=>`<div class="kv"><span>Game ${i+1} <span class="hint">${home[i]?'home':'away'}${i>=(x.n+1)/2?', if needed':''}</span></span><b>${nm(id)}${hd(id)}</b></div>`).join('')}
-      ${late.length?`<p class="hint">${late.map(id=>esc(P[id].n)).join(' and ')} pitched too recently to go in ${late.length>1?'their':'his'} turn, so ${late.length>1?'they are':'he is'} pushed back.</p>`:''}
-      <div class="subh" style="margin-top:8px">Their starters</div><p class="hint" style="margin:2px 0">${oS.map(id=>esc(P[id].n)+hd(id)).join(', ')}</p></div>
-    <div><div class="subh">Your lineup</div>${R.lineup.filter(y=>y[1]).map((y,i)=>`<div class="kv"><span>${i+1}. ${nm(y[1])}${hd(y[1])}</span><b>${esc(y[0])}</b></div>`).join('')}
-      <div class="subh" style="margin-top:8px">Bench</div><p class="hint" style="margin:2px 0">${R.bench.map(id=>esc(P[id].n)).join(', ')||'none'}</p>
-      <div class="subh" style="margin-top:8px">Bullpen</div><p class="hint" style="margin:2px 0">${R.pen.map(y=>y[0]+' '+esc(P[y[1]].n)).join(', ')}</p>
-      ${out.length?`<div class="subh" style="margin-top:8px">Not available</div><p class="hint" style="margin:2px 0">${out.map(id=>esc(P[id].n)+' ('+esc(SE.il[id].what)+')').join(', ')}</p>`:''}</div></div>
-    <div class="dact"><button class="btn" type="button" data-act="se-poedit">${UI.poEdit?'Hide the depth chart':'Change lineup, rotation or bullpen'}</button><button class="btn primary" type="button" data-act="se-poset">Roster is set: start the series</button></div></div>
-  ${UI.poEdit?`<p class="hint">Changes save as you make them, and the summary above updates. The batting order is the lineup order, top to bottom.</p>${renderDepth()}`:''}`}
+function sePoDays(n,k0){const out=[];let d=SE.day;for(let k=k0||0;k<n;k++){out.push(d);const g=k+1;d+=(n===7&&(g===2||g===5))||(n===5&&(g===2||g===4))?2:1}return out}
+function sePoProb(n){const R=seRoster0(ME),lastD={},gs={},last=id=>lastD[id]!=null?lastD[id]:SE.pu[id]?SE.pu[id][0]:-99;return sePoDays(n).map(d=>{const id=sePoPick(R.rot,d,last,gs);gs[id]=(gs[id]||0)+1;lastD[id]=d;return id})}
+/* the other club's probable starters for the games still to play, by the same rule its manager uses (best rested arm, five days) */
+function sePoOppProb(opp,n,k0){const O=seRoster(opp),lastD={},last=id=>lastD[id]!=null?lastD[id]:SE.pu[id]?SE.pu[id][0]:-99;
+  return sePoDays(n,k0).map(d=>{const id=O.rot.filter(x=>d-last(x)>=5).sort((a,b)=>pQ(a)-pQ(b))[0]||O.rot.slice().sort((a,b)=>last(a)-last(b))[0];if(id)lastD[id]=d;return id})}
+/* PLAYOFF PLAN (owner, 11/26: "playoff rosters work different, you don't have to carry 13/13 ... the rotation should give spots for Game 1 through whatever,
+   and if you want a starter to throw Game 1 and Game 5 you should be able to put him in both ... change rotation and lineups from game to game ... know who is
+   scheduled to start for the other team ... even when I set my rotation you started Skubal over the person I had chosen").
+   SE.po.my = {rd, ros:[26 ids, any split], sp:[starter id per game]}. The roster is fixed once the series starts; starters and the lineup can change before any game. */
+const PO_MAX=26;
+function sePoMy(){const x=sePoMine();if(!x||!SE.po)return null;let m=SE.po.my;
+  if(!m||m.rd!==SE.po.rd){const R=seRoster0(ME);m=SE.po.my={rd:SE.po.rd,ros:R.lineup.map(y=>y[1]).filter(Boolean).concat(R.bench,R.rot,R.pen.map(y=>y[1])),sp:sePoProb(x.n)}}
+  /* keep it whole: lineup players and named starters are always on it, nobody hurt or gone stays on it, and it never passes 26 */
+  const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id),R=seRoster0(ME),lock=new Set(R.lineup.map(y=>y[1]).filter(Boolean));
+  m.sp=m.sp.slice(0,x.n);for(let i=0;i<x.n;i++)if(!ok(m.sp[i])||!P[m.sp[i]].p)m.sp[i]=R.rot[i%Math.max(1,Math.min(4,R.rot.length))]||R.rot[0];
+  m.sp.slice(x.wa+x.wb).forEach(id=>id&&lock.add(id));
+  m.ros=[...new Set(m.ros.filter(ok))];for(const id of lock)if(!m.ros.includes(id))m.ros.push(id);
+  while(m.ros.length>PO_MAX){const i=m.ros.map((id,k)=>lock.has(id)?-1:k).filter(k=>k>=0).pop();if(i==null)break;m.ros.splice(i,1)}
+  return m}
+function sePoCands(){const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id),all=roster(ME).filter(id=>ok(id)&&P[id].proj&&(P[id].lvl==='MLB'||P[id].lvl==='IL'||P[id].lvl==='AAA'||status(id)==='40'||established(id)));
+  return {h:all.filter(id=>!P[id].p).sort((a,b)=>hQ(b)-hQ(a)).slice(0,22),p:all.filter(id=>P[id].p).sort((a,b)=>pQ(a)-pQ(b)).slice(0,24)}}
+function sePoSetHTML(){const x=sePoMine();if(!x)return '';const m=sePoMy(),pre=sePoNeedSet(),opp=x.a===ME?x.b:x.a,R=seRoster(ME),k0=x.wa+x.wb,hd=id=>P[id]&&P[id].hand?` (${P[id].hand})`:'',nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>`;
+  const days=sePoDays(x.n,k0),oP=sePoOppProb(opp,x.n,k0),home=SE_HOME[x.n].map(h=>(h?x.a:x.b)===ME),need=(x.n+1)/2;
+  const arms=m.ros.filter(id=>P[id].p).sort((a,b)=>(isSPp(b)?1:0)-(isSPp(a)?1:0)||pQ(a)-pQ(b)),lastD={},last=id=>lastD[id]!=null?lastD[id]:SE.pu[id]?SE.pu[id][0]:-99;
+  const rows=[];for(let g=0;g<x.n;g++){if(g<k0){const r=x.g[g],mine=x.a===ME?r[0]:r[1],th=x.a===ME?r[1]:r[0];rows.push(`<tr><td>Game ${g+1}</td><td class="wrap"><b>${mine>th?'Won':'Lost'} ${mine}-${th}</b></td></tr>`);continue}
+    const id=m.sp[g],d=days[g-k0],rest=d-last(id)-1;lastD[id]=d;const o=oP[g-k0];
+    rows.push(`<tr><td>Game ${g+1}<br><span class="hint">${home[g]?'home':'away'}${g>=need?', if needed':''}</span></td><td class="wrap"><select data-posp="${g}" aria-label="Your starter, game ${g+1}">${arms.map(a=>`<option value="${a}"${a===id?' selected':''}>${esc(P[a].n)}${hd(a)}${isSPp(a)?'':' · reliever'}</option>`).join('')}</select>${rest<4&&rest<50?`<br><span class="hint" style="color:var(--bad)">${rest<=0?'pitched the day before':rest+' day'+(rest===1?'':'s')+' of rest'}: short rest, your call</span>`:''}<br><span class="hint">vs ${esc(opp)}: </span>${o?nm(o)+hd(o):'to be decided'}</td></tr>`)}
+  const hit=m.ros.filter(id=>!P[id].p),pit=m.ros.filter(id=>P[id].p),lock=new Set(R.lineup.map(y=>y[1]).filter(Boolean).concat(m.sp.slice(k0))),C=sePoCands(),out=Object.keys(SE.il).filter(id=>owner(id)===ME&&SE.il[id].ret>SE.day);
+  const chip=id=>{const on=m.ros.includes(id),lk=lock.has(id);return `<button type="button" class="btn${on?' primary':''}" style="margin:2px;padding:5px 9px;font-size:13px${lk?';opacity:.75':''}" data-act="se-poros" data-id="${id}" aria-pressed="${on}"${pre?'':' disabled'}>${esc(sn(id))}${lk?' ●':''}</button>`};
+  return `<div class="verdictbox ${pre?'warn':'good'}" style="margin-top:0"><div class="vhead"><span class="vtag ${pre?'warn':'good'}">${pre?'Set your roster':'Series in progress'}</span><b>${esc(x.nm)} vs the ${esc(tnm(opp))}</b><span class="hint">Best of ${x.n} · ${x.a===ME?'you have':'they have'} home field${k0?` · ${x.a===ME?x.wa:x.wb}-${x.a===ME?x.wb:x.wa}`:''}</span></div>
+    <p style="margin:6px 0">${pre?`Pick your ${PO_MAX} for this round and name a starter for every game. `:''}The starter you name for a game starts it: nobody is moved for rest or swapped for a better arm. You can put the same pitcher in more than one game, and change any game that has not been played${pre?'':', along with your lineup'}.</p>
+    <div class="subh">Starters, game by game</div><div class="scroll"><table class="list"><thead><tr><th>Game</th><th>Your starter, and the ${esc(tnm(opp))}' probable starter</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
+    <div class="subh" style="margin-top:10px">Playoff roster: ${m.ros.length} of ${PO_MAX} · ${hit.length} position players, ${pit.length} pitchers</div>
+    <p class="hint" style="margin:2px 0">${pre?`Any split works: a short series needs fewer starters, so you can carry an extra bat or an extra reliever. A starter who is not named for a game works out of the bullpen.`:'The roster is set for this series. It opens up again before the next round.'}${m.ros.length<PO_MAX&&pre?` <b style="color:var(--bad)">${PO_MAX-m.ros.length} open spot${PO_MAX-m.ros.length>1?'s':''}.</b>`:''}</p>
+    ${UI.poRos||!pre?'':`<p class="hint" style="margin:2px 0">Bench: ${R.bench.map(id=>esc(sn(id))).join(', ')||'none'}. Bullpen: ${R.pen.map(y=>y[0]+' '+esc(sn(y[1]))).join(', ')||'none'}.</p>`}
+    ${UI.poRos&&pre?`<div class="subh" style="margin-top:6px">Position players <span class="hint">(● = in your lineup)</span></div><div>${C.h.map(chip).join('')}</div><div class="subh" style="margin-top:6px">Pitchers <span class="hint">(● = named to start a game)</span></div><div>${C.p.map(chip).join('')}</div>`:''}
+    ${!pre?`<p class="hint" style="margin:2px 0">Bench: ${R.bench.map(id=>esc(sn(id))).join(', ')||'none'}. Bullpen: ${R.pen.map(y=>y[0]+' '+esc(sn(y[1]))).join(', ')||'none'}.</p>`:''}
+    ${out.length?`<p class="hint" style="margin:2px 0">Not available: ${out.map(id=>esc(P[id].n)+' ('+esc(SE.il[id].what)+')').join(', ')}.</p>`:''}
+    <div class="subh" style="margin-top:8px">Your lineup</div><p class="hint" style="margin:2px 0">${R.lineup.filter(y=>y[1]).map((y,i)=>`${i+1}. ${esc(sn(y[1]))} ${esc(y[0])}`).join(' · ')}</p>
+    <div class="dact">${pre?`<button class="btn" type="button" data-act="se-porosed">${UI.poRos?'Done choosing':'Choose who is on the roster'}</button>`:''}<button class="btn" type="button" data-act="se-poedit">${UI.poEdit?'Hide the depth chart':'Change the lineup or bullpen roles'}</button>${pre?'<button class="btn primary" type="button" data-act="se-poset">Roster is set: start the series</button>':seSimBar()}</div></div>
+  ${UI.poEdit?`<p class="hint">Changes save as you make them. The batting order is the lineup order, top to bottom. Starters are named game by game above, not here.</p>${renderDepth()}`:''}`}
 function sePost(mode){const r=SE.po.rd;do sePoDay();while(SE.phase==='post'&&!sePoNeedSet()&&(mode==='end'||(mode!=='game'&&SE.po.rd===r)))}
 /* ---- season screens ---- */
 function seAct(a,id){switch(a){
@@ -3406,7 +3446,12 @@ function seAct(a,id){switch(a){
   case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
   case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';else if(sePoNeedSet())UI.seView='post';render();if(sePoNeedSet())window.scrollTo(0,0);return;
   case 'se-poedit':UI.poEdit=!UI.poEdit;render();return;
-  case 'se-poset':if(SE.po){SE.po.ok=SE.po.rd;SE.po.gs={};UI.poEdit=false;seSave();render();toast('Roster set. Play ball.')}return;
+  case 'se-poset':if(SE.po){const m=sePoMy();if(m&&m.ros.length>PO_MAX){toast(`Your playoff roster has ${m.ros.length}. Take ${m.ros.length-PO_MAX} off first.`);return}SE.po.ok=SE.po.rd;SE.po.gs={};UI.poEdit=false;UI.poRos=false;seSave();render();toast('Roster set. Play ball.')}return;
+  case 'se-porosed':UI.poRos=!UI.poRos;render();return;
+  case 'se-poros':{const m=sePoMy(),x=sePoMine();if(!m||!x||!sePoNeedSet())return;const R=seRoster0(ME),i=m.ros.indexOf(id);
+    if(i>=0){if(R.lineup.some(y=>y[1]===id)){toast(`${P[id].n} is in your lineup. Take him out of the lineup first.`);return}if(m.sp.includes(id)){toast(`${P[id].n} is named to start a game. Give that game to someone else first.`);return}m.ros.splice(i,1)}
+    else{if(m.ros.length>=PO_MAX){toast(`The roster is full at ${PO_MAX}. Take someone off first.`);return}m.ros.push(id)}
+    seSave();render();return}
   case 'se-call':{const o=SE.calls&&SE.calls[+id];if(!o)return;UI.tTeam=o.code;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};for(const id of o.give)UI.tOut.add(id);for(const id of o.get)UI.tIn.add(id);UI.tab='trade';render();window.scrollTo(0,0);return}
   case 'se-callpass':{const o=SE.calls&&SE.calls[+id];if(o){o.pass=1;seSave();render()}return}
   case 'se-closedl':confirmBox('Close the trade deadline?','The other clubs make their deals, and no more trades are allowed this season.','Close the deadline',()=>{seCloseDL();render()});return;
@@ -3539,7 +3584,7 @@ function seBoxModal(key){const k=key.split(':'),bx=k[0]==='m'?SE.box[k[1]]:(SX.b
 function sePostHTML(){const po=SE.po,rn=['Wild Card round','Division Series','Championship Series','World Series'],ser=s=>{const over=s.wa>=(s.n+1)/2||s.wb>=(s.n+1)/2,me=s.a===ME||s.b===ME;
     return `<tr${me?' style="font-weight:600"':''}><td class="wrap"><span class="nmb">${esc(tnm(s.a))} ${s.wa}, ${esc(tnm(s.b))} ${s.wb}</span>${over?' <span class="tag off">final</span>':''}<br><span class="hint">${esc(s.nm)} · best of ${s.n}${s.g.length?' · '+s.g.map(g=>g[0]+'-'+g[1]).join(', '):''}</span></td></tr>`};
   const rounds=po.hist.concat(po.ser.length?[po.ser]:[]);
-  return `${sePoNeedSet()?sePoSetHTML():SE.phase==='post'?`<div class="dact" style="margin:0 0 10px">${seSimBar()}</div>`:''}${po.champ?`<div class="verdictbox good" style="margin-top:0"><div class="vhead"><span class="vtag good">Champions</span><b>${esc(tnm(po.champ))} win the 2027 World Series</b></div></div>`:''}
+  return `${SE.phase==='post'&&sePoMine()?sePoSetHTML():SE.phase==='post'?`<div class="dact" style="margin:0 0 10px">${seSimBar()}</div>`:''}${po.champ?`<div class="verdictbox good" style="margin-top:0"><div class="vhead"><span class="vtag good">Champions</span><b>${esc(tnm(po.champ))} win the 2027 World Series</b></div></div>`:''}
   <p class="hint">Seeds. AL: ${po.sd.AL.map((c,i)=>(i+1)+' '+esc(tnm(c))).join(', ')}. NL: ${po.sd.NL.map((c,i)=>(i+1)+' '+esc(tnm(c))).join(', ')}. Seeds 1 and 2 skip the Wild Card round.</p>
   ${rounds.map((r,i)=>`<h3 style="margin-top:12px">${rn[i]}</h3><div class="scroll"><table class="list"><tbody>${r.map(ser).join('')}</tbody></table></div>`).reverse().join('')}
   ${SX.last!=null&&SX.box[SX.last]&&SX.box[SX.last][0]&&SX.box[SX.last][0].po?`<h3 style="margin-top:12px">Latest playoff games</h3><div class="scroll"><table class="list"><tbody>${SX.box[SX.last].map((bx,i)=>seGameRow(bx,'x:'+SX.last+':'+i,null)).join('')}</tbody></table></div>`:''}`}
@@ -3583,7 +3628,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261126101223';
+const BUILD='20261126234109';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3802,6 +3847,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('change',e=>{
   const t=e.target;
+  if(t.dataset&&t.dataset.posp!=null){const m=sePoMy(),g=+t.dataset.posp;if(m&&P[t.value]){m.sp[g]=t.value;if(!m.ros.includes(t.value))m.ros.push(t.value);seSave();render()}return}
   if(t.dataset.lbl){snap();const k=t.dataset.lbl,i=+k.slice(1);if(k[0]==='L')S.lineup[i][0]=t.value;else if(k[0]==='B')S.bench[i][0]=t.value;else S.pen[i][0]=t.value;commit();return}
   if(t.id==='faPos'){UI.faPos=t.value;render();return}
   if(t.id==='prTeam'){UI.prTeam=t.value;render();return}
