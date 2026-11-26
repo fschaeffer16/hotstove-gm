@@ -4007,35 +4007,74 @@
    "status": "official"
   },
   {
+   "status": "reported",
    "date": "2026-11-26",
    "type": "sign",
-   "summary": "Twins To Sign Kevin Ginkel",
+   "summary": "Twins sign RHP Kevin Ginkel: 2 yrs, $18M (Mark Feinsand, MLB.com; ESPN sources); former Diamondbacks reliever",
    "name": "Kevin Ginkel",
    "team": "MIN",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
-   "status": "reported",
-   "forty": true
+   "forty": true,
+   "contract": {
+    "aav": 9000000,
+    "desc": "2 yr, $18M (2027-28); yearly split and options not reported, spread evenly",
+    "yrs": {
+     "2027": 9000000,
+     "2028": 9000000,
+     "2029": "FREE AGENT"
+    }
+   }
   },
   {
+   "status": "official",
+   "sid": 951223,
    "date": "2026-11-26",
    "type": "sign",
-   "summary": "Nationals To Sign A.J. Puk",
+   "summary": "Nationals sign LHP A.J. Puk: 1 yr, $5M plus up to $2.5M in incentives (Jeff Passan, ESPN, via MLBTR)",
    "name": "A.J. Puk",
    "team": "WSN",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-a-j-puk.html",
-   "status": "official",
    "forty": true,
    "contract": {
     "aav": 5000000,
-    "desc": "1 yr, $5M (2027-27)",
+    "desc": "1 yr, $5M (2027) plus up to $2.5M in incentives and an assignment bonus if traded; incentives count toward the CBT only when earned",
     "yrs": {
      "2027": 5000000,
      "2028": "FREE AGENT"
     }
-   },
-   "sid": 951223
+   }
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign_minor",
+   "name": "Jonah Bride",
+   "team": "HOU",
+   "pos": "INF",
+   "summary": "Astros agreed to a minor league deal with INF Jonah Bride, with an invite to big league camp (Jon Heyman, NY Post, via MLBTR).",
+   "src": "https://www.mlbtraderumors.com/2026/11/astros-agree-to-minor-league-deals-with-jonah-bride-matt-sauer.html",
+   "status": "reported"
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign_minor",
+   "name": "Charlie Barnes",
+   "team": "ATL",
+   "pos": "LHP",
+   "summary": "Braves agreed to a minor league deal with LHP Charlie Barnes, with an invite to big league camp (Jon Heyman, NY Post, via MLBTR).",
+   "src": "https://www.mlbtraderumors.com/2026/11/braves-agree-to-minor-league-deals-with-michael-helman-charlie-barnes.html",
+   "status": "reported"
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign_minor",
+   "summary": "Nationals agreed to a minor league deal with LHP Tom Cosgrove, with an invite to big league camp (Jon Heyman, NY Post, via MLBTR).",
+   "name": "Tom Cosgrove",
+   "team": "WSN",
+   "pos": "LHP",
+   "status": "reported",
+   "src": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-tom-cosgrove-to-minor-league-deal.html"
   }
  ],
  "live": "2026-11-26T05:34:41Z",
