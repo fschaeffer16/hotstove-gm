@@ -4025,7 +4025,7 @@
    "team": "WSN",
    "pos": "RP",
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-a-j-puk.html",
-   "status": "reported",
+   "status": "official",
    "forty": true,
    "contract": {
     "aav": 5000000,
@@ -4034,7 +4034,8 @@
      "2027": 5000000,
      "2028": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951223
   }
  ],
  "live": "2026-11-26T05:34:41Z",
@@ -4300,6 +4301,7 @@
   951212,
   951214,
   951217,
-  951219
+  951219,
+  951223
  ]
 }
