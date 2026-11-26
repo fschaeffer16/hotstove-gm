@@ -1081,10 +1081,11 @@
    "name": "Nolan McLean",
    "team": "NYM",
    "status": "listening",
-   "note": "A young player the Mets would not trade; a rotation lock for 2027",
-   "src": "https://www.mlbtraderumors.com/2026/07/mets-trade-rumors-wont-eat-salary-contracts.html",
+   "note": "The Mets are not trading him: a rotation lock they are building around (owner note, 11/26: \"McLean isn't going anywhere\"). Other GMs do not ask for him.",
+   "src": "owner note (11/26/2026)",
    "price": "high",
-   "denied": true
+   "owner": true,
+   "noask": true
   },
   {
    "name": "Carson Benge",
