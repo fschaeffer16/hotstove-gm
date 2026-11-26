@@ -3140,15 +3140,15 @@
    "src": "MLB Trade Rumors (Morosi, MLB Network; Rosenthal, The Athletic)"
   },
   {
+   "status": "reported",
+   "sid": 951208,
    "date": "2026-11-23",
    "type": "sign_minor",
    "summary": "Nationals sign RHP Luis Curvelo to a minor league deal with a spring training invite",
    "name": "Luis Curvelo",
    "team": "WSN",
    "pos": "RP",
-   "src": "Kiley McDaniel, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-luis-curvelo-to-minor-league-deal.html",
-   "status": "official",
-   "sid": 951208
+   "src": "Kiley McDaniel, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-luis-curvelo-to-minor-league-deal.html"
   },
   {
    "type": "sign_minor",
@@ -3707,7 +3707,7 @@
    "status": "reported",
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Guardians sign LHP Foster Griffin: 3 yrs, $48M (Robert Murray, FanSided); Cleveland's 40-man is full, a corresponding move is needed",
+   "summary": "Guardians re-sign LHP Foster Griffin: 3 yrs, $48M (Talk Nats first; Robert Murray, FanSided, terms); acquired from Washington at the deadline. Cleveland's 40-man is full, a corresponding move is needed",
    "name": "Foster Griffin",
    "team": "CLE",
    "pos": "SP",
@@ -3755,55 +3755,25 @@
    "status": "official"
   },
   {
-   "date": "2026-11-26",
+   "status": "reported",
+   "date": "2026-11-25",
    "type": "sign",
-   "summary": "Rockies, Patrick Sandoval Agree To Three-Year Deal",
+   "summary": "Rockies sign LHP Patrick Sandoval: 3 yrs, $42M (Jeff Passan, ESPN, via MLBTR); 30, 5.12 ERA in 70 1/3 IP for Boston in 2026 after UCL surgery",
    "name": "Patrick Sandoval",
    "team": "COL",
    "pos": "SP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-patrick-sandoval-agree-to-three-year-deal.html",
-   "status": "reported",
    "forty": true,
    "contract": {
     "aav": 14000000,
-    "desc": "3 yr, $42M (2027-29)",
+    "desc": "3 yr, $42M (2027-29); year-by-year salaries not reported, spread evenly. No options or deferrals reported.",
     "yrs": {
      "2027": 14000000,
      "2028": 14000000,
      "2029": 14000000,
      "2030": "FREE AGENT"
     }
-   }
-  },
-  {
-   "date": "2026-11-26",
-   "type": "sign",
-   "summary": "Twins To Sign Kevin Ginkel",
-   "name": "Kevin Ginkel",
-   "team": "MIN",
-   "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
-   "status": "reported",
-   "forty": true
-  },
-  {
-   "date": "2026-11-26",
-   "type": "sign",
-   "summary": "Nationals To Sign A.J. Puk",
-   "name": "A.J. Puk",
-   "team": "WSN",
-   "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-a-j-puk.html",
-   "status": "reported",
-   "forty": true,
-   "contract": {
-    "aav": 5000000,
-    "desc": "1 yr, $5M (2027-27)",
-    "yrs": {
-     "2027": 5000000,
-     "2028": "FREE AGENT"
-    }
-   }
+   },
+   "src": "Jeff Passan, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-patrick-sandoval-agree-to-three-year-deal.html"
   },
   {
    "type": "sign_minor",
@@ -4035,6 +4005,36 @@
    "src": "MLB Stats API",
    "sid": 951217,
    "status": "official"
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign",
+   "summary": "Twins To Sign Kevin Ginkel",
+   "name": "Kevin Ginkel",
+   "team": "MIN",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
+   "status": "reported",
+   "forty": true
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign",
+   "summary": "Nationals To Sign A.J. Puk",
+   "name": "A.J. Puk",
+   "team": "WSN",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-a-j-puk.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 5000000,
+    "desc": "1 yr, $5M (2027-27)",
+    "yrs": {
+     "2027": 5000000,
+     "2028": "FREE AGENT"
+    }
+   }
   }
  ],
  "live": "2026-11-26T05:34:41Z",
