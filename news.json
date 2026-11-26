@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Foster Griffin agrees to 3-year, $48 million deal to stay with Guardians",
+   "blurb": "Pitcher Foster Griffin will return to the Cleveland Guardians after agreeing to a three-year, $48 million contract, according to multiple reports.",
+   "link": "https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians",
+   "time": "2026-11-26T02:30:06Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
    "title": "Rockies, Patrick Sandoval Agree To Three-Year Deal",
    "blurb": "The Rockies are in agreement with free agent starter Patrick Sandoval on a three-year, $42MM contract, reports Jeff Passan of ESPN. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/rockies-patrick-sandoval-agree-to-three-year-deal.html",
@@ -3218,18 +3229,7 @@
    "teams": [
     "ARI"
    ]
-  },
-  {
-   "title": "Kansas City Royals signed free agent RHP Vince Velasquez to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "KCR"
-   ]
   }
  ],
- "updated": "2026-11-26T01:43:43Z"
+ "updated": "2026-11-26T02:33:53Z"
 }
