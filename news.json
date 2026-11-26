@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Mets owners 'thrilled' to add 'impressive' Tarik Skubal to rotation",
+   "blurb": "Tarik Skubal, a two-time Cy Young Award winner, has finalized a record $450 million, nine-year contract with the New York Mets.",
+   "link": "https://www.espn.com/mlb/story/_/id/50599216/mets-owners-steve-alex-cohen-thrilled-impressive-skubal-rotation",
+   "time": "2026-11-26T00:44:56Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "Sources: Orioles to bring Luis Robert Jr. back on 1-year, $12M deal",
    "blurb": "The Baltimore Orioles are in agreement with OF Luis Robert Jr. on a one-year, $12 million deal, sources told ESPN.",
    "link": "https://www.espn.com/mlb/story/_/id/50599469/sources-orioles-luis-robert-jr-agree-1-year-12m-deal",
@@ -3220,18 +3231,7 @@
    "teams": [
     "ATH"
    ]
-  },
-  {
-   "title": "Seattle Mariners signed free agent RHP Bryce Conley to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SEA"
-   ]
   }
  ],
- "updated": "2026-11-26T00:43:02Z"
+ "updated": "2026-11-26T00:53:06Z"
 }
