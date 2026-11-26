@@ -1,6 +1,15 @@
 {
  "items": [
   {
+   "title": "MLB Files Suit Against MLBPA",
+   "blurb": "Major League Baseball has sued the MLB Players Association in federal court in an effort to prevent the union from disclaiming its status as the players&#8217; sole bargaining representative, reports Jared Diamond of the Wall Street Journal. The league has reportedly been concerned that the union wi",
+   "link": "https://www.mlbtraderumors.com/2026/11/mlb-files-suit-against-mlbpa.html",
+   "time": "2026-11-26T03:34:45Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "Twins To Sign Kevin Ginkel",
    "blurb": "The Twins are signing reliever Kevin Ginkel to a two-year deal that guarantees $18MM, reports Mark Feinsand of MLB.com. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
@@ -3218,18 +3227,7 @@
    "teams": [
     "PHI"
    ]
-  },
-  {
-   "title": "Baltimore Orioles signed free agent SS José Barrero to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BAL"
-   ]
   }
  ],
- "updated": "2026-11-26T03:34:06Z"
+ "updated": "2026-11-26T03:44:10Z"
 }
