@@ -2988,7 +2988,7 @@ function seBase(code){if(code===ME){ensureDep();return {lineup:S.lineup,bench:S.
 /* In the playoffs the user's club plays from his playoff plan (SE.po.my): the 26 he chose, in any split of hitters and pitchers, and the starter he
    named for each game. seRoster0 is the everyday roster from the depth chart. */
 function seRoster(code){const R=seRoster0(code),m=code===ME&&SE&&SE.phase==='post'&&SE.po&&SE.po.my;return m&&m.rd===SE.po.rd?sePoApply(R,m):R}
-function sePoApply(R,m){const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id),ros=new Set((m.ros||[]).filter(ok)),inL=new Set(R.lineup.map(x=>x[1]).filter(Boolean));
+function sePoApply(R,m){const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id)&&!sePoInel(id),ros=new Set((m.ros||[]).filter(ok)),inL=new Set(R.lineup.map(x=>x[1]).filter(Boolean));
   const bench=[...ros].filter(id=>!P[id].p&&!inL.has(id));
   let rot=[];for(const id of m.sp||[])if(ok(id)&&P[id].p&&!rot.includes(id))rot.push(id);if(!rot.length)rot=R.rot.slice(0,3);
   const role={};for(const x of R.pen)role[x[1]]=x[0];
@@ -3405,18 +3405,28 @@ function sePoOppProb(opp,n,k0){const O=seRoster(opp),lastD={},last=id=>lastD[id]
    and if you want a starter to throw Game 1 and Game 5 you should be able to put him in both ... change rotation and lineups from game to game ... know who is
    scheduled to start for the other team ... even when I set my rotation you started Skubal over the person I had chosen").
    SE.po.my = {rd, ros:[26 ids, any split], sp:[starter id per game]}. The roster is fixed once the series starts; starters and the lineup can change before any game. */
-const PO_MAX=26;
+const PO_MAX=26,PO_PIT=13;
+/* MLB postseason roster rules (mlb.com glossary, read 11/26): 26 players, at most 13 pitchers; a new roster may be filed before each round; a player is
+   eligible if he was on the 40-man roster or 60-day IL on Sept. 1; anyone else who was in the organization can be added only by petition, one for each
+   player on the injured list; a player hurt DURING a series may be replaced (pitcher for pitcher, position player for position player) and is then
+   ineligible for the rest of that round and the next one. */
+const sePoInel=id=>!!(SE&&SE.po&&SE.po.inel&&SE.po.inel[id]!=null&&SE.po.inel[id]>=SE.po.rd);
+const sePo40=id=>{const st=status(id);return st==='40'||st==='IL60'||st==='IL'};
+const sePoPetN=()=>Object.keys(SE.il).filter(id=>owner(id)===ME&&SE.il[id].ret>SE.day&&P[id]&&sePo40(id)).length;
 function sePoMy(){const x=sePoMine();if(!x||!SE.po)return null;let m=SE.po.my;
   if(!m||m.rd!==SE.po.rd){const R=seRoster0(ME);m=SE.po.my={rd:SE.po.rd,ros:R.lineup.map(y=>y[1]).filter(Boolean).concat(R.bench,R.rot,R.pen.map(y=>y[1])),sp:sePoProb(x.n)}}
   /* keep it whole: lineup players and named starters are always on it, nobody hurt or gone stays on it, and it never passes 26 */
-  const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id),R=seRoster0(ME),lock=new Set(R.lineup.map(y=>y[1]).filter(Boolean));
+  const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id)&&!sePoInel(id),R=seRoster0(ME),lock=new Set(R.lineup.map(y=>y[1]).filter(id=>id&&!sePoInel(id)));
+  /* hurt during the series: off the roster, out for the rest of this round and the next, and the club may name a replacement of the same kind */
+  if(x.wa+x.wb>0||SE.po.ok===SE.po.rd)for(const id of m.ros)if(P[id]&&owner(id)===ME&&seOut(id)&&!sePoInel(id)){(SE.po.inel=SE.po.inel||{})[id]=SE.po.rd+1;(m.need=m.need||[]).push(P[id].p?'p':'h');(m.lost=m.lost||[]).push(id)}
   m.sp=m.sp.slice(0,x.n);for(let i=0;i<x.n;i++)if(!ok(m.sp[i])||!P[m.sp[i]].p)m.sp[i]=R.rot[i%Math.max(1,Math.min(4,R.rot.length))]||R.rot[0];
   m.sp.slice(x.wa+x.wb).forEach(id=>id&&lock.add(id));
   m.ros=[...new Set(m.ros.filter(ok))];for(const id of lock)if(!m.ros.includes(id))m.ros.push(id);
   while(m.ros.length>PO_MAX){const i=m.ros.map((id,k)=>lock.has(id)?-1:k).filter(k=>k>=0).pop();if(i==null)break;m.ros.splice(i,1)}
   return m}
-function sePoCands(){const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id),all=roster(ME).filter(id=>ok(id)&&P[id].proj&&(P[id].lvl==='MLB'||P[id].lvl==='IL'||P[id].lvl==='AAA'||status(id)==='40'||established(id)));
-  return {h:all.filter(id=>!P[id].p).sort((a,b)=>hQ(b)-hQ(a)).slice(0,22),p:all.filter(id=>P[id].p).sort((a,b)=>pQ(a)-pQ(b)).slice(0,24)}}
+function sePoCands(){const ok=id=>id&&P[id]&&owner(id)===ME&&!seOut(id)&&!sePoInel(id),all=roster(ME).filter(id=>ok(id)&&P[id].proj&&(sePo40(id)||P[id].lvl==='MLB'||P[id].lvl==='AAA'||P[id].lvl==='AA'||established(id)));
+  const srt=(a,f)=>a.sort((x,y)=>(sePo40(y)?1:0)-(sePo40(x)?1:0)||f(x,y));
+  return {h:srt(all.filter(id=>!P[id].p),(a,b)=>hQ(b)-hQ(a)).slice(0,24),p:srt(all.filter(id=>P[id].p),(a,b)=>pQ(a)-pQ(b)).slice(0,26)}}
 function sePoSetHTML(){const x=sePoMine();if(!x)return '';const m=sePoMy(),pre=sePoNeedSet(),opp=x.a===ME?x.b:x.a,R=seRoster(ME),k0=x.wa+x.wb,hd=id=>P[id]&&P[id].hand?` (${P[id].hand})`:'',nm=id=>`<span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>`;
   const days=sePoDays(x.n,k0),oP=sePoOppProb(opp,x.n,k0),home=SE_HOME[x.n].map(h=>(h?x.a:x.b)===ME),need=(x.n+1)/2;
   const arms=m.ros.filter(id=>P[id].p).sort((a,b)=>(isSPp(b)?1:0)-(isSPp(a)?1:0)||pQ(a)-pQ(b)),lastD={},last=id=>lastD[id]!=null?lastD[id]:SE.pu[id]?SE.pu[id][0]:-99;
@@ -3424,12 +3434,15 @@ function sePoSetHTML(){const x=sePoMine();if(!x)return '';const m=sePoMy(),pre=s
     const id=m.sp[g],d=days[g-k0],rest=d-last(id)-1;lastD[id]=d;const o=oP[g-k0];
     rows.push(`<tr><td>Game ${g+1}<br><span class="hint">${home[g]?'home':'away'}${g>=need?', if needed':''}</span></td><td class="wrap"><select data-posp="${g}" aria-label="Your starter, game ${g+1}">${arms.map(a=>`<option value="${a}"${a===id?' selected':''}>${esc(P[a].n)}${hd(a)}${isSPp(a)?'':' · reliever'}</option>`).join('')}</select>${rest<4&&rest<50?`<br><span class="hint" style="color:var(--bad)">${rest<=0?'pitched the day before':rest+' day'+(rest===1?'':'s')+' of rest'}: short rest, your call</span>`:''}<br><span class="hint">vs ${esc(opp)}: </span>${o?nm(o)+hd(o):'to be decided'}</td></tr>`)}
   const hit=m.ros.filter(id=>!P[id].p),pit=m.ros.filter(id=>P[id].p),lock=new Set(R.lineup.map(y=>y[1]).filter(Boolean).concat(m.sp.slice(k0))),C=sePoCands(),out=Object.keys(SE.il).filter(id=>owner(id)===ME&&SE.il[id].ret>SE.day);
-  const chip=id=>{const on=m.ros.includes(id),lk=lock.has(id);return `<button type="button" class="btn${on?' primary':''}" style="margin:2px;padding:5px 9px;font-size:13px${lk?';opacity:.75':''}" data-act="se-poros" data-id="${id}" aria-pressed="${on}"${pre?'':' disabled'}>${esc(sn(id))}${lk?' ●':''}</button>`};
+  const petN=sePoPetN(),petU=m.ros.filter(id=>!sePo40(id)).length;
+  const chip=id=>{const on=m.ros.includes(id),lk=lock.has(id),pt=!sePo40(id);return `<button type="button" class="btn${on?' primary':''}" style="margin:2px;padding:5px 9px;font-size:13px${lk?';opacity:.75':''}${pt&&!on?';border-style:dashed':''}" data-act="se-poros" data-id="${id}" aria-pressed="${on}"${pre?'':' disabled'} title="${pt?'Not on the 40-man: needs an injury petition':'On the 40-man'}">${esc(sn(id))}${lk?' ●':''}${pt?' ◇':''}</button>`};
+  const repl=(m.need||[]).length&&!pre?(()=>{const t=m.need[0],C0=sePoCands(),pool=(t==='p'?C0.p:C0.h).filter(id=>!m.ros.includes(id)).slice(0,10),who=(m.lost||[]).slice(-m.need.length).map(id=>esc(P[id].n)).join(' and ');return `<div class="subh" style="margin-top:10px;color:var(--bad)">Injury replacement</div><p class="hint" style="margin:2px 0">${who} ${m.need.length>1?'are':'is'} hurt and off the roster, and cannot return this round or the next. You may add ${t==='p'?'a pitcher':'a position player'} in his place (a pitcher for a pitcher, a position player for a position player).</p><div>${pool.map(id=>`<button type="button" class="btn" style="margin:2px;padding:5px 9px;font-size:13px" data-act="se-porep" data-id="${id}">${esc(sn(id))}</button>`).join('')||'<span class="hint">Nobody is available.</span>'}</div>`})():'';
   return `<div class="verdictbox ${pre?'warn':'good'}" style="margin-top:0"><div class="vhead"><span class="vtag ${pre?'warn':'good'}">${pre?'Set your roster':'Series in progress'}</span><b>${esc(x.nm)} vs the ${esc(tnm(opp))}</b><span class="hint">Best of ${x.n} · ${x.a===ME?'you have':'they have'} home field${k0?` · ${x.a===ME?x.wa:x.wb}-${x.a===ME?x.wb:x.wa}`:''}</span></div>
     <p style="margin:6px 0">${pre?`Pick your ${PO_MAX} for this round and name a starter for every game. `:''}The starter you name for a game starts it: nobody is moved for rest or swapped for a better arm. You can put the same pitcher in more than one game, and change any game that has not been played${pre?'':', along with your lineup'}.</p>
     <div class="subh">Starters, game by game</div><div class="scroll"><table class="list"><thead><tr><th>Game</th><th>Your starter, and the ${esc(tnm(opp))}' probable starter</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
-    <div class="subh" style="margin-top:10px">Playoff roster: ${m.ros.length} of ${PO_MAX} · ${hit.length} position players, ${pit.length} pitchers</div>
-    <p class="hint" style="margin:2px 0">${pre?`Any split works: a short series needs fewer starters, so you can carry an extra bat or an extra reliever. A starter who is not named for a game works out of the bullpen.`:'The roster is set for this series. It opens up again before the next round.'}${m.ros.length<PO_MAX&&pre?` <b style="color:var(--bad)">${PO_MAX-m.ros.length} open spot${PO_MAX-m.ros.length>1?'s':''}.</b>`:''}</p>
+    ${repl}
+    <div class="subh" style="margin-top:10px">Playoff roster: ${m.ros.length} of ${PO_MAX} · ${hit.length} position players, ${pit.length} pitchers <span class="hint">(13 pitchers at most)</span></div>
+    <p class="hint" style="margin:2px 0">${pre?`MLB rules: 26 players, no more than 13 of them pitchers, and you may file a new roster before every round. A short series needs fewer starters, so you can turn a starter's spot into a reliever or carry an extra bat. A starter who is not named for a game works out of the bullpen. Players on your 40-man are eligible; ◇ marks a player who is not, and he can be added only in place of an injured player (${petU} of ${petN} such spot${petN===1?'':'s'} used).`:'The roster is set for this series. It opens up again before the next round.'}${m.ros.length<PO_MAX&&pre?` <b style="color:var(--bad)">${PO_MAX-m.ros.length} open spot${PO_MAX-m.ros.length>1?'s':''}.</b>`:''}</p>
     ${UI.poRos||!pre?'':`<p class="hint" style="margin:2px 0">Bench: ${R.bench.map(id=>esc(sn(id))).join(', ')||'none'}. Bullpen: ${R.pen.map(y=>y[0]+' '+esc(sn(y[1]))).join(', ')||'none'}.</p>`}
     ${UI.poRos&&pre?`<div class="subh" style="margin-top:6px">Position players <span class="hint">(● = in your lineup)</span></div><div>${C.h.map(chip).join('')}</div><div class="subh" style="margin-top:6px">Pitchers <span class="hint">(● = named to start a game)</span></div><div>${C.p.map(chip).join('')}</div>`:''}
     ${!pre?`<p class="hint" style="margin:2px 0">Bench: ${R.bench.map(id=>esc(sn(id))).join(', ')||'none'}. Bullpen: ${R.pen.map(y=>y[0]+' '+esc(sn(y[1]))).join(', ')||'none'}.</p>`:''}
@@ -3446,12 +3459,17 @@ function seAct(a,id){switch(a){
   case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
   case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';else if(sePoNeedSet())UI.seView='post';render();if(sePoNeedSet())window.scrollTo(0,0);return;
   case 'se-poedit':UI.poEdit=!UI.poEdit;render();return;
-  case 'se-poset':if(SE.po){const m=sePoMy();if(m&&m.ros.length>PO_MAX){toast(`Your playoff roster has ${m.ros.length}. Take ${m.ros.length-PO_MAX} off first.`);return}SE.po.ok=SE.po.rd;SE.po.gs={};UI.poEdit=false;UI.poRos=false;seSave();render();toast('Roster set. Play ball.')}return;
+  case 'se-poset':if(SE.po){const m=sePoMy();if(m&&m.ros.length>PO_MAX){toast(`Your playoff roster has ${m.ros.length}. Take ${m.ros.length-PO_MAX} off first.`);return}if(m&&m.ros.filter(y=>P[y].p).length>PO_PIT){toast(`MLB allows ${PO_PIT} pitchers on a playoff roster. You have ${m.ros.filter(y=>P[y].p).length}.`);return}SE.po.ok=SE.po.rd;SE.po.gs={};UI.poEdit=false;UI.poRos=false;seSave();render();toast('Roster set. Play ball.')}return;
   case 'se-porosed':UI.poRos=!UI.poRos;render();return;
   case 'se-poros':{const m=sePoMy(),x=sePoMine();if(!m||!x||!sePoNeedSet())return;const R=seRoster0(ME),i=m.ros.indexOf(id);
     if(i>=0){if(R.lineup.some(y=>y[1]===id)){toast(`${P[id].n} is in your lineup. Take him out of the lineup first.`);return}if(m.sp.includes(id)){toast(`${P[id].n} is named to start a game. Give that game to someone else first.`);return}m.ros.splice(i,1)}
-    else{if(m.ros.length>=PO_MAX){toast(`The roster is full at ${PO_MAX}. Take someone off first.`);return}m.ros.push(id)}
+    else{if(m.ros.length>=PO_MAX){toast(`The roster is full at ${PO_MAX}. Take someone off first.`);return}
+      if(P[id].p&&m.ros.filter(y=>P[y].p).length>=PO_PIT){toast(`MLB allows ${PO_PIT} pitchers on a playoff roster. Take a pitcher off first.`);return}
+      if(!sePo40(id)&&m.ros.filter(y=>!sePo40(y)).length>=sePoPetN()){toast(`${P[id].n} is not on your 40-man. He can only replace a player on the injured list, and you have ${sePoPetN()?'used those spots':'nobody on it'}.`);return}
+      m.ros.push(id)}
     seSave();render();return}
+  case 'se-porep':{const m=sePoMy();if(!m||!(m.need||[]).length||!P[id])return;const t=m.need[0];if(!!P[id].p!==(t==='p')){toast(t==='p'?'A pitcher can only be replaced by a pitcher.':'A position player can only be replaced by a position player.');return}
+    if(m.ros.length>=PO_MAX)return;m.ros.push(id);m.need.shift();seSave();render();toast(`${P[id].n} is on the roster.`);return}
   case 'se-call':{const o=SE.calls&&SE.calls[+id];if(!o)return;UI.tTeam=o.code;UI.tOut.clear();UI.tIn.clear();UI.tAdd40.clear();UI.tPk.clear();UI.tIfa=0;UI.tCash=0;UI.tFold={out:false,in:false};for(const id of o.give)UI.tOut.add(id);for(const id of o.get)UI.tIn.add(id);UI.tab='trade';render();window.scrollTo(0,0);return}
   case 'se-callpass':{const o=SE.calls&&SE.calls[+id];if(o){o.pass=1;seSave();render()}return}
   case 'se-closedl':confirmBox('Close the trade deadline?','The other clubs make their deals, and no more trades are allowed this season.','Close the deadline',()=>{seCloseDL();render()});return;
@@ -3628,7 +3646,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261126234109';
+const BUILD='20261126234526';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
