@@ -3752,9 +3752,30 @@
    "pos": "RHP",
    "src": "MLB Stats API; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/mets-designate-jack-anderson-yunior-tur-for-assignment.html",
    "status": "official"
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign",
+   "summary": "Rockies, Patrick Sandoval Agree To Three-Year Deal",
+   "name": "Patrick Sandoval",
+   "team": "COL",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-patrick-sandoval-agree-to-three-year-deal.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 14000000,
+    "desc": "3 yr, $42M (2027-29)",
+    "yrs": {
+     "2027": 14000000,
+     "2028": 14000000,
+     "2029": 14000000,
+     "2030": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-26T00:02:52Z",
+ "live": "2026-11-26T01:33:32Z",
  "seen_sids": [
   950119,
   950220,
