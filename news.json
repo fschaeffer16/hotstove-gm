@@ -1,6 +1,83 @@
 {
  "items": [
   {
+   "title": "Philadelphia Phillies signed free agent 3B Brett Harris to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
+   "title": "San Francisco Giants signed free agent LHP Erik Rivera to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "San Francisco Giants signed free agent LF Victor Bericoto to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays signed free agent RHP Yeuris Jimenez to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "Philadelphia Phillies signed free agent RHP Andrew Hoffmann to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "PHI"
+   ]
+  },
+  {
+   "title": "Toronto Blue Jays signed free agent LF Rhylan Thomas to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
+   "title": "San Francisco Giants signed free agent CF Kenedy Corona to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:34:41Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "SFG"
+   ]
+  },
+  {
    "title": "San Diego Padres signed free agent C Nelson Quiroz to a minor league contract.",
    "blurb": "",
    "link": "",
@@ -3157,83 +3234,7 @@
    "source": "ESPN",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "San Francisco Giants signed free agent RHP Erick Mejia to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-19T14:48:50Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SFG"
-   ]
-  },
-  {
-   "title": "Atlanta Braves signed free agent SS Luke Williams to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-19T14:48:50Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATL"
-   ]
-  },
-  {
-   "title": "Boston Red Sox signed free agent RHP Michael Arias to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-19T14:48:50Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "BOS"
-   ]
-  },
-  {
-   "title": "Detroit Tigers signed free agent RHP Anderson Pilar to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-19T14:48:50Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "DET"
-   ]
-  },
-  {
-   "title": "The Opener: Skubal Meetings, Mariners/Royals Trade, Gray",
-   "blurb": "The offseason is starting to pick up. We could see a sprint to the finish line with a potential lockout looming in December. 1. Skubal sit-downs continue The Padres were scheduled to meet with Tarik Skubal yesterday (h/t Jon Heyman of the New York Post). That means four teams have now sat down with ",
-   "link": "https://www.mlbtraderumors.com/2026/11/the-opener-skubal-meetings-mariners-royals-trade-gray.html",
-   "time": "2026-11-19T14:42:09Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "KCR",
-    "SEA"
-   ]
-  },
-  {
-   "title": "Atlanta Braves signed free agent RHP Darlin Pinales to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-19T14:38:46Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATL"
-   ]
-  },
-  {
-   "title": "Skubal to ...? What about other big free agents? How MLB offseason dominoes fall",
-   "blurb": "Based on what ESPN's Jeff Passan is hearing, we predict where the top names available will land -- and how they impact each other.",
-   "link": "https://www.espn.com/mlb/story/_/id/50512061/offseason-free-agency-signings-predictions",
-   "time": "2026-11-19T12:13:14Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-26T05:24:37Z"
+ "updated": "2026-11-26T05:34:41Z"
 }

@@ -3147,7 +3147,8 @@
    "team": "WSN",
    "pos": "RP",
    "src": "Kiley McDaniel, ESPN; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-luis-curvelo-to-minor-league-deal.html",
-   "status": "reported"
+   "status": "official",
+   "sid": 951208
   },
   {
    "type": "sign_minor",
@@ -3957,9 +3958,86 @@
    "src": "MLB Stats API",
    "sid": 951188,
    "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Brett Harris",
+   "team": "PHI",
+   "pos": "3B",
+   "date": "2026-11-25",
+   "summary": "Philadelphia Phillies signed free agent 3B Brett Harris to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951203,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Erik Rivera",
+   "team": "SFG",
+   "pos": "LHP",
+   "date": "2026-11-25",
+   "summary": "San Francisco Giants signed free agent LHP Erik Rivera to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951219,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Victor Bericoto",
+   "team": "SFG",
+   "pos": "LF",
+   "date": "2026-11-25",
+   "summary": "San Francisco Giants signed free agent LF Victor Bericoto to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951214,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Yeuris Jimenez",
+   "team": "TOR",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Toronto Blue Jays signed free agent RHP Yeuris Jimenez to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951210,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Andrew Hoffmann",
+   "team": "PHI",
+   "pos": "RHP",
+   "date": "2026-11-25",
+   "summary": "Philadelphia Phillies signed free agent RHP Andrew Hoffmann to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951205,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Rhylan Thomas",
+   "team": "TOR",
+   "pos": "LF",
+   "date": "2026-11-25",
+   "summary": "Toronto Blue Jays signed free agent LF Rhylan Thomas to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951212,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Kenedy Corona",
+   "team": "SFG",
+   "pos": "CF",
+   "date": "2026-11-25",
+   "summary": "San Francisco Giants signed free agent CF Kenedy Corona to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951217,
+   "status": "official"
   }
  ],
- "live": "2026-11-26T05:24:37Z",
+ "live": "2026-11-26T05:34:41Z",
  "seen_sids": [
   950119,
   950220,
@@ -4214,6 +4292,14 @@
   951194,
   951196,
   951199,
-  951201
+  951201,
+  951203,
+  951205,
+  951208,
+  951210,
+  951212,
+  951214,
+  951217,
+  951219
  ]
 }
