@@ -3784,9 +3784,28 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign",
+   "summary": "Nationals To Sign A.J. Puk",
+   "name": "A.J. Puk",
+   "team": "WSN",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/nationals-to-sign-a-j-puk.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 5000000,
+    "desc": "1 yr, $5M (2027-27)",
+    "yrs": {
+     "2027": 5000000,
+     "2028": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-26T03:34:06Z",
+ "live": "2026-11-26T04:54:23Z",
  "seen_sids": [
   950119,
   950220,
