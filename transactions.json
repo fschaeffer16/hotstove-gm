@@ -3683,9 +3683,20 @@
      "2030": "FREE AGENT"
     }
    }
+  },
+  {
+   "date": "2026-11-25",
+   "type": "sign",
+   "summary": "Rockies To Sign David Peterson",
+   "name": "David Peterson",
+   "team": "COL",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-25T23:32:41Z",
+ "live": "2026-11-26T00:02:52Z",
  "seen_sids": [
   950119,
   950220,

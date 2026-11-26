@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Rockies To Sign David Peterson",
+   "blurb": "The Rockies and left-hander David Peterson are in agreement on a two-year deal, reports Thomas Harding of MLB.com. It&#8217;s a $32MM guarantee for the CAA Sports client, reports Robert Murray of FanSided. Colorado has a full 40-man roster and will need to make a corresponding move to make this offi",
+   "link": "https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html",
+   "time": "2026-11-25T23:57:59Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
+   "title": "Sources: Free agent Kevin Gausman, Tigers reach 1-year, $25M deal",
+   "blurb": "RHP Kevin Gausman and the Tigers have agreed to a one-year, $25M contract, pending a physical, sources told ESPN's Jeff Passan on Wednesday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50599090/sources-free-agent-kevin-gausman-tigers-reach-deal",
+   "time": "2026-11-25T23:55:18Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
    "title": "Source: Marlins agree to 1-year deal with catcher Gary Sanchez",
    "blurb": "The Miami Marlins are in agreement on a one-year, $6.5 million contract with catcher Gary Sanchez, a source told ESPN.",
    "link": "https://www.espn.com/mlb/story/_/id/50598771/source-marlins-agree-one-year-deal-gary-sanchez",
@@ -3209,29 +3231,7 @@
    "teams": [
     "SEA"
    ]
-  },
-  {
-   "title": "Tampa Bay Rays signed free agent RHP Eric Vasquez to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "TBR"
-   ]
-  },
-  {
-   "title": "Athletics signed free agent LHP Luke Little to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATH"
-   ]
   }
  ],
- "updated": "2026-11-25T23:52:48Z"
+ "updated": "2026-11-26T00:02:52Z"
 }
