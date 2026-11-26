@@ -1929,14 +1929,14 @@ function gmReply(text,code,outSel,inSel,cashM){
   /* "Not him": the user rules a player of his own out ("that piece isn't Christian Scott", "anyone but Tong", "Scott is off the table"; owner, 11/25:
      the GM answered "Scott? Yes. Add him"). The GM remembers it for the rest of this conversation, never names him again, and says who else would do it. Free: it does not use up a reply. */
   {const cand=named(roster(ME).filter(id=>!outSel.includes(id))),off=cand.filter(id=>{const l=sn(id).toLowerCase();let i=-1;while((i=tx.indexOf(l,i+1))>=0){const bf=tx.slice(Math.max(0,i-34),i),af=tx.slice(i+l.length,i+l.length+40);
-      if(/(\bnot\b|n[’']t\b|\bisnt\b|\bwont\b|\bno way\b|\bbut\b|\bbesides\b|\bexcept\b|\bother than\b|\bwithout\b|\bkeep(ing)?\b|\binstead of\b|\bnever\b)[^.?!]*$/.test(bf)||/^[^.?!]{0,12}(off limits|off the table|stays|is staying|untouchable|unavailable|not available|n[’']t available|not going anywhere|not for sale|is not (part|in|on|going|moving|included))/.test(af))return true}return false});
+      if(/(\bnot\b|n[’']t\b|\bisnt\b|\bwont\b|\bno way\b|\bbut\b|\bbesides\b|\bexcept\b|\bother than\b|\bwithout\b|\bkeep(ing)?\b|\binstead of\b|\bnever\b)[^.?!]*$/.test(bf)||/^[^.?!]{0,12}(off limits|off the table|stays|is staying|untouchable|unavailable|not available|not for sale|going nowhere)/.test(af)||/^\s*(is|was|will|would|can|does|did|'s|’s)?\s*(not|n[’']t|aint|ain[’']t|isnt|wont|cant|never)\b[^.?!]{0,30}(go|going|goes|leav|mov|trad|deal|available|part|includ|in (this|the|any)|on the table|for sale|happen|an option|touch|budg)/.test(af))return true}return false});
     const again=off.length&&off.every(id=>T.off&&T.off[id]);
     cand.forEach(id=>{if(!off.includes(id)&&T.off)delete T.off[id]});/* he brings a player back up himself: back on the table */
     if(off.length){T.off=T.off||{};off.forEach(id=>T.off[id]=1)}
     T._ask=cand.filter(id=>!(T.off&&T.off[id]));
     if(off.length){const q=(again?`I heard you: ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} out, and I will not bring ${off.length>1?'them':'him'} up again. `:`Understood, ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} off the table. `)+gmSuggest(code,outSel,inSel,cashM,E0,T._ask,T.off);T.log.push({me:text,gm:q,q:1});return q}}
   /* a question: who do you want, what would it take. He looks at the user's system and at what is already on the table and names players. */
-  if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take/.test(tx)){
+  if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take|try again|some(one|body) else|another (name|player|option|piece|guy)|other (name|player|option|piece)s?|different (name|player|piece)|give me (a|another) name/.test(tx)){
     const q=gmSuggest(code,outSel,inSel,cashM,E0,T._ask,T.off);T.log.push({me:text,gm:q,q:1});return q}
   /* health of their player */
   /* money talk: eat / retain / pay down / kick in / cash considerations. A question with a real answer, so it does not use up a reply. */
@@ -2025,9 +2025,10 @@ function gmReply(text,code,outSel,inSel,cashM){
     else hit('levx',-.02,`I understand you have other calls to make. So do I, and I see these players the same way either way.`)}
   if(!say.length){const t0=their(),m0=my(),h=[];if(t0){const s0=scout(t0);if(s0.inj&&s0.inj.r>=1.5)h.push(`${nm(t0)}'s health`);if(s0.luck===1)h.push(`whether ${nm(t0)}'s 2026 was real`);if(established(t0)&&ctrl(t0).length<=1)h.push(`${nm(t0)} being a year from free agency`)}
     if(m0&&established(m0))h.push(`where ${nm(m0)} fits on our club`);else if(m0)h.push(`what ${nm(m0)} becomes`);const nl=needList(code).slice(0,2);
-    T.idk=(T.idk||0)+1;const gm=[`I follow you, but I don't have a way to weigh that yet. ${h.length?'Push me on '+h.slice(0,2).join(' or ')+'. ':''}Or ask me who I'd want from your side.`,
-      `I'm listening, but I need a baseball reason.${nl.length?' We are looking for '+nl.join(' and ')+'; show me how this deal gets us that.':''}`,
-      `Ask me what it would take and I'll tell you. Otherwise ${h[0]||'the players'} is where the conversation is.`][(T.idk-1)%3];
+    /* nothing he can check: he still answers with something concrete, the players that would get it done (owner, 11/26: "this is after I explained it multiple times";
+       the old lines "I don't have a way to weigh that yet" / "I need a baseball reason" were non-answers) */
+    T.idk=(T.idk||0)+1;const lead=['Let me be specific about where I am. ','Here is what moves this for me. ','To be direct with you: '][(T.idk-1)%3];
+    const gm=lead+gmSuggest(code,outSel,inSel,cashM,E0,[],T.off)+(h.length&&T.idk===1?` Or push me on ${h[0]}.`:'');
     T.log.push({me:text,gm,q:1});return gm}
   T.bonus=Math.max(-.08,Math.min(.12,T.bonus+delta));
   /* where that leaves the deal */
@@ -2163,7 +2164,7 @@ function evalTrade(code,outSel,inSel,cashM){
   R.untouch=untouch.filter(u=>u.why==='reported untouchable'||u.why==='just extended'||hIn.g<u.x.g+4);/* only overwhelming offers pry them loose; a club that has publicly said no means no */
   const winNow=(c.win==='allin'||c.win==='contend');
   const mlbOut=giv.filter(x=>established(x.id)&&x.g>=50&&P[x.id].proj.war>=2);
-  const mlbBack=rec.filter(x=>established(x.id)&&P[x.id].proj.war>=1.5);
+  const mlbBack=rec.filter(x=>established(x.id)&&(P[x.id].proj.war>=1.5||(P[x.id].proj.war>=1&&x.g>=45)||x.g>=50));/* a rotation arm or a closer is big-league help even at a modest projection (owner, 11/26: Senga, Manaea, Williams and Baty were called \"just prospects\") */
   R.needMLB=winNow&&mlbOut.length&&!mlbBack.length&&hIn.g<hOut.g+6;
   R.mlbLead=mlbOut.length?mlbOut.slice().sort((a,b)=>P[b.id].proj.war-P[a.id].proj.war)[0].id:null;/* the big leaguer whose loss hurts the 2027 club: he is the one the GM talks about, not a prospect who has not arrived (owner, 11/23) */
   /* a club trying to win now will give a top prospect for a star: the headliner test is looser when a prospect goes out and an established 60+ player comes back */
@@ -3513,7 +3514,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261125160559';
+const BUILD='20261126095124';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
