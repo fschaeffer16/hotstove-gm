@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Sources: Orioles to bring Luis Robert Jr. back on 1-year, $12M deal",
+   "blurb": "The Baltimore Orioles are in agreement with OF Luis Robert Jr. on a one-year, $12 million deal, sources told ESPN.",
+   "link": "https://www.espn.com/mlb/story/_/id/50599469/sources-orioles-luis-robert-jr-agree-1-year-12m-deal",
+   "time": "2026-11-26T00:39:44Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "BAL"
+   ]
+  },
+  {
    "title": "Sources: Rockies agree to 2-year, $32M deal with David Peterson",
    "blurb": "The Rockies agree to a two-year, $32 million deal with lefty David Peterson, the latest addition to a revamped starting rotation for Colorado.",
    "link": "https://www.espn.com/mlb/story/_/id/50599272/sources-rockies-agree-2-year-32m-deal-lhp-peterson",
@@ -3220,18 +3231,7 @@
    "teams": [
     "SEA"
    ]
-  },
-  {
-   "title": "Minnesota Twins signed free agent RHP Jose Espada to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "MIN"
-   ]
   }
  ],
- "updated": "2026-11-26T00:22:57Z"
+ "updated": "2026-11-26T00:43:02Z"
 }
