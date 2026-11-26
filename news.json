@@ -1,6 +1,39 @@
 {
  "items": [
   {
+   "title": "Atlanta Braves signed free agent CF Michael Helman to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:04:28Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "ATL"
+   ]
+  },
+  {
+   "title": "Cincinnati Reds signed free agent SS Leo Balcazar to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:04:28Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CIN"
+   ]
+  },
+  {
+   "title": "Cleveland Guardians signed free agent C Andy Yerzy to a minor league contract.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-26T05:04:28Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "CLE"
+   ]
+  },
+  {
    "title": "Nationals To Sign A.J. Puk",
    "blurb": "The Nationals are in agreement with lefty reliever A.J. Puk on a one-year, $5MM contract, reports Jeff Passan of ESPN. The ISE Baseball client can earn an additional $2.5MM in performance incentives and would receive an assignment bonus if he&#8217;s traded midseason, Passan adds. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-a-j-puk.html",
@@ -3194,40 +3227,7 @@
    "source": "MLB Trade Rumors",
    "kind": "news",
    "teams": []
-  },
-  {
-   "title": "Detroit Tigers signed free agent RHP Sawyer Gipson-Long to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "DET"
-   ]
-  },
-  {
-   "title": "Houston Astros signed free agent RHP Jose Gonzalez to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "HOU"
-   ]
-  },
-  {
-   "title": "Detroit Tigers signed free agent LHP Bailey Horn to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "DET"
-   ]
   }
  ],
- "updated": "2026-11-26T04:54:23Z"
+ "updated": "2026-11-26T05:04:28Z"
 }

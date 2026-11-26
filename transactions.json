@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25",
+ "updated": "2026-11-26",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -3803,9 +3803,42 @@
      "2028": "FREE AGENT"
     }
    }
+  },
+  {
+   "type": "sign_minor",
+   "name": "Michael Helman",
+   "team": "ATL",
+   "pos": "CF",
+   "date": "2026-11-25",
+   "summary": "Atlanta Braves signed free agent CF Michael Helman to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951173,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Leo Balcazar",
+   "team": "CIN",
+   "pos": "SS",
+   "date": "2026-11-25",
+   "summary": "Cincinnati Reds signed free agent SS Leo Balcazar to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951175,
+   "status": "official"
+  },
+  {
+   "type": "sign_minor",
+   "name": "Andy Yerzy",
+   "team": "CLE",
+   "pos": "C",
+   "date": "2026-11-25",
+   "summary": "Cleveland Guardians signed free agent C Andy Yerzy to a minor league contract.",
+   "src": "MLB Stats API",
+   "sid": 951177,
+   "status": "official"
   }
  ],
- "live": "2026-11-26T04:54:23Z",
+ "live": "2026-11-26T05:04:28Z",
  "seen_sids": [
   950119,
   950220,
@@ -4046,6 +4079,9 @@
   951128,
   951129,
   951130,
-  951131
+  951131,
+  951173,
+  951175,
+  951177
  ]
 }
