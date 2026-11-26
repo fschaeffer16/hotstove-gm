@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Twins To Sign Kevin Ginkel",
+   "blurb": "The Twins are signing reliever Kevin Ginkel to a two-year deal that guarantees $18MM, reports Mark Feinsand of MLB.com. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
+   "time": "2026-11-26T03:23:50Z",
+   "source": "MLB Trade Rumors",
+   "kind": "report",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
    "title": "Foster Griffin agrees to 3-year, $48 million deal to stay with Guardians",
    "blurb": "Pitcher Foster Griffin will return to the Cleveland Guardians after agreeing to a three-year, $48 million contract, according to multiple reports.",
    "link": "https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians",
@@ -3218,18 +3229,7 @@
    "teams": [
     "BAL"
    ]
-  },
-  {
-   "title": "Arizona Diamondbacks signed free agent OF Ismael Munguia to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-18T22:06:00Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ARI"
-   ]
   }
  ],
- "updated": "2026-11-26T02:33:53Z"
+ "updated": "2026-11-26T03:34:06Z"
 }

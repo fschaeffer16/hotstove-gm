@@ -3773,9 +3773,20 @@
      "2030": "FREE AGENT"
     }
    }
+  },
+  {
+   "date": "2026-11-26",
+   "type": "sign",
+   "summary": "Twins To Sign Kevin Ginkel",
+   "name": "Kevin Ginkel",
+   "team": "MIN",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-kevin-ginkel.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-26T01:33:32Z",
+ "live": "2026-11-26T03:34:06Z",
  "seen_sids": [
   950119,
   950220,
