@@ -1893,10 +1893,9 @@ function askFit(x,code){const id=x.id,p=P[id],c=ctx(code),now=c.win==='allin'||c
     if(/blocked by|other good|other 45\+|they already have/.test(nt))s-=2;
     else if(now&&near&&needRep(code).rows.some(r=>r.need&&(r.k==='p'+gp||(gp==='SP'&&r.k==='sp')||(gp==='RP'&&r.k==='rp')))){s+=1;why=`he is ${an} close to the majors at a spot where they are thin`}}
   return {s,why}}
-function gmSuggest(code,outSel,inSel,cashM,E0,asked,skip){const _na=NEED_AFTER;try{return gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip)}finally{NEED_AFTER=_na}}
-function gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const nm=id=>sn(id),join=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'';
+function gmCover(code,outSel,inSel){const nm=id=>sn(id),join=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'';
   /* what he says he is looking for is read against the offer: what it already covers, and what it would open up */
-  NEED_AFTER=null;const before=needRep(code).rows.filter(x=>x.need);NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};const after=needRep(code).rows.filter(x=>x.need);
+  const _na=NEED_AFTER;try{NEED_AFTER=null;const before=needRep(code).rows.filter(x=>x.need);NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};const after=needRep(code).rows.filter(x=>x.need);
   const grpOf=k=>/^(sp|rhSP|lhSP)$/.test(k)?'SP':/^(rp|penL|penR)$/.test(k)?'RP':k[0]==='p'?k.slice(1):'';
   const sent=g=>outSel.filter(id=>P[id]&&P[id].proj&&pgrp(id)===g),spIn=sent('SP'),rpIn=sent('RP');
   const had=g=>before.some(x=>grpOf(x.k)===g)||wantsGrp(code,g),cov=[];
@@ -1904,7 +1903,60 @@ function gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const n
   if(rpIn.length&&had('RP'))cov.push(`${join(rpIn.map(nm))} ${rpIn.length>1?'help':'helps'} our bullpen`);
   const opened=after.filter(x=>!before.some(y=>y.k===x.k)&&x.k[0]==='p').map(x=>x.fix),still=after.filter(x=>before.some(y=>y.k===x.k)&&!((grpOf(x.k)==='SP'&&spIn.length)||(grpOf(x.k)==='RP'&&rpIn.length))).map(x=>x.fix).slice(0,2);
   const nl=after.map(x=>x.fix).slice(0,2);
-  const want=cov.length?`You have the pitching side covered: ${cov.join(', and ')}. That is what we were looking for, so this is not about filling that hole any more. ${opened.length?`What it does is open up ${join(opened.slice(0,2))} for us with ${join(inSel.filter(id=>established(id)).map(nm).slice(0,2))} leaving. `:still.length?`We would still like ${join(still)}. `:''}`:(nl.length?`We're looking for ${nl.join(' and ')}. `:'');
+  const text=cov.length?`You have the pitching side covered: ${cov.join(', and ')}. That is what we were looking for, so this is not about filling that hole any more. ${opened.length?`What it does is open up ${join(opened.slice(0,2))} for us with ${join(inSel.filter(id=>established(id)).map(nm).slice(0,2))} leaving. `:still.length?`We would still like ${join(still)}. `:''}`:(nl.length?`We're looking for ${nl.join(' and ')}. `:'');
+  return {text,covered:cov.length>0,opened}}finally{NEED_AFTER=_na}}
+const gmWhy=(id,code)=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id),n=ctrl(id).length,L=gradeTo(id,code,true).label;return f>0?`he helps us at ${gp==='SP'?'starter':gp==='RP'?'the back of the bullpen':(POSN[gp]||gp)}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${n} year${n===1?'':'s'} of control)`:wantsGrp(code,gp)?`we have been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(L)?'an':'a'} ${L}, ${p.proj.war.toFixed(1)} WAR projected with ${n} year${n===1?'':'s'} of control`}
+  const g=hsGrade(id),r=ROLE(id,g),gp=pgrp(id),nd=NEED_AFTER&&needRep(code).rows.some(x=>x.need&&x.k==='p'+gp);return `our scouts have him as ${/^[aeiou]/i.test(r)?'an':'a'} ${r}${top100(id)?', No. '+top100(id)+' in the game':''}${nd?`, and he plays ${POSN[gp]||gp}, where this deal leaves us short`:''}`};
+/* THE GM'S SIDE OF THE CONVERSATION (owner, 11/26: "this is where we need logic built in and not just answers that repeat and ignore the offer like it was never read").
+   gmPaths works out, from the offer on the table, (1) how he reads each side of it, (2) what it already covers for his club and what it would open up,
+   and (3) every way he sees it getting done: take a player off his side, a smaller deal for the one player the user really wants, a player to add (and a second
+   choice), money. Each has a key; gmTurn says only what has not been said yet in this conversation and, when everything is on the table, sums the options up
+   in one line. Nothing here is canned: every sentence comes from evalTrade on a real variation of the offer. */
+function gmPaths(code,outSel,inSel,cashM,E0,skip){skip=skip||{};const nm=id=>sn(id),join=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'',out=[],_na=NEED_AFTER;
+  try{const V=(o,i)=>{try{return evalTrade(code,o,i,cashM).verdict}catch(e){return ''}};
+    const rec=(E0.rec||[]).filter(x=>P[x.id]).slice().sort((a,b)=>b.g-a.g),giv=(E0.giv||[]).filter(x=>P[x.id]).slice().sort((a,b)=>b.g-a.g);
+    const role=x=>{const l=x.label||'a piece';return (/^[aeiou]/i.test(l)?'an ':'a ')+l},rent=id=>established(id)&&ctrl(id).length<=1?' on a one-year deal':'';
+    if(rec.length&&giv.length){const top=rec.slice(0,3).map(x=>`${nm(x.id)} as ${role(x)}${rent(x.id)}`),rest=rec.slice(3);
+      const mine=giv.map(x=>`${nm(x.id)} (${established(x.id)?P[x.id].proj.war.toFixed(1)+' WAR projected':role(x)})`),ratio=E0.need>0?E0.recv/E0.need:1;
+      out.push({k:'read',t:`Here is how I read your offer. I have ${join(top)}${rest.length?`, with ${join(rest.map(x=>nm(x.id)))} as depth`:''}. You are asking us for ${join(mine)}. ${!E0.headOK?`${nm(giv[0].id)} is the best player in the deal, and nobody coming back is in his class. `:''}${ratio>=.9?'On talent we are close.':ratio>=.65?'On talent we are one real piece apart.':'On talent we are a long way apart: quantity is not the problem, the quality at the top is.'}`})}
+    const cv=gmCover(code,outSel,inSel);if(cv.text)out.push({k:'cover',t:cv.text.trim()});
+    NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};
+    /* a smaller deal for the one player he wants most: the GM names the pieces he likes and hands the rest back */
+    let solo=null;const t=giv[0];
+    if(t&&inSel.length>1&&V(outSel,[t.id])==='accept'){let keep=outSel.slice();for(const id of outSel.slice().sort((a,b)=>gradeTo(a,code,true).g-gradeTo(b,code,true).g)){const tr=keep.filter(i=>i!==id);if(tr.length&&V(tr,[t.id])==='accept')keep=tr}
+      const back=outSel.filter(i=>!keep.includes(i));solo={keep,back};
+      out.push({k:'solo',s:`${nm(t.id)} alone for ${join(keep.map(nm))}`,t:`If ${nm(t.id)} is the one you really want, I can do that without ${join(inSel.filter(i=>i!==t.id).map(nm))} in it: ${join(keep.map(nm))} for ${nm(t.id)}${back.length?`, and you keep ${join(back.map(nm))}`:''}.`})}
+    if(inSel.length>1){let d=null;for(const x of giv.slice().sort((a,b)=>a.g-b.g)){if(solo&&inSel.length===2&&x.id!==t.id)continue;if(V(outSel,inSel.filter(i=>i!==x.id))==='accept'){d=x;break}}
+      if(d){const tg=inSel.filter(i=>i!==d.id);let keep=outSel.slice();/* and he does not take more than he needs: the pieces he likes least go back */
+        for(const id of outSel.slice().sort((a,b)=>gradeTo(a,code,true).g-gradeTo(b,code,true).g)){const tr=keep.filter(i=>i!==id);if(tr.length&&V(tr,tg)==='accept')keep=tr}
+        const back=outSel.filter(i=>!keep.includes(i));
+        out.push({k:'drop:'+d.id,s:`${join(tg.map(nm))} without ${nm(d.id)}, for ${join(keep.map(nm))}`,t:`Take ${nm(d.id)} out of what you are asking for and we have a deal: ${join(tg.map(nm))} for ${join(keep.map(nm))}${back.length?`. I would not need ${join(back.map(nm))} for that, so you keep ${back.length>1?'them':'him'}`:''}.`})}}
+    /* a player to add, chosen for what the deal would leave his club short of */
+    const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!skip[id]&&!lockedFA(id)&&!noAsk(id,code)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):(needRep(code).rows.some(x=>x.need&&x.k==='p'+pgrp(id))?.5:0)})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,40);
+    const vs=pool.map(x=>({x,v:V(outSel.concat([x.id]),inSel)})),ok=vs.filter(y=>y.v==='accept').map(y=>y.x).sort((a,b)=>(a.g-6*a.f)-(b.g-6*b.f));
+    if(ok.length){const a=ok[0],b=ok.find(x=>x.id!==a.id&&(established(x.id)!==established(a.id)||pgrp(x.id)!==pgrp(a.id)||Math.abs(x.g-a.g)>=2));
+      out.push({k:'add:'+a.id,s:`add ${nm(a.id)}`,t:`${inSel.length>1?'To keep all of '+join(inSel.map(nm))+' in it, add':'Add'} ${nm(a.id)} and I would do it: ${gmWhy(a.id,code)}.`});
+      if(b)out.push({k:'add:'+b.id,s:`add ${nm(b.id)} instead`,t:`If ${nm(a.id)} is more than you want to give, ${nm(b.id)} gets us there too: ${gmWhy(b.id,code)}.`})}
+    else{const near=vs.filter(y=>y.v==='counter').map(y=>y.x).sort((a,b)=>b.g-a.g)[0];
+      out.push(near?{k:'near:'+near.id,s:`${nm(near.id)} plus one more piece`,t:`Nobody in your system closes it alone. ${nm(near.id)} gets us close, ${gmWhy(near.id,code)}; it would be him plus one more real piece.`}:{k:'none',t:`I have been through your system and I do not see the player who closes this with what is on the table.${inSel.length>1?' Asking for one of ours instead of '+(inSel.length>2?'all of them':'both')+' is where I would start.':' You would have to ask for less.'}`})}
+    if(!ok.length&&E0.add2&&E0.add2.a&&E0.add2.b&&!skip[E0.add2.a.id]&&!skip[E0.add2.b.id])out.push({k:'pair:'+E0.add2.a.id+E0.add2.b.id,s:`add ${nm(E0.add2.a.id)} and ${nm(E0.add2.b.id)}`,t:`Two pieces would do what one cannot: add ${nm(E0.add2.a.id)} and ${nm(E0.add2.b.id)} and I would do it.`});
+    if(E0.eat){const M0=v=>'$'+Math.round(v/1e6)+'M';out.push({k:'eat',s:`pay down ${M0(E0.eat.m*1e6)} on ${nm(E0.eat.id)}`,t:`Money can do part of the work. ${nm(E0.eat.id)} is owed ${M0(E0.eat.rem)}, which is more than he gives us: pay down ${M0(E0.eat.m*1e6)} of it (put it in the cash box) and I would say yes.`})}
+    /* then, piece by piece, why each of the user's players grades the way it does for this club */
+    const us=t=>t.replace(/\bthey're\b/g,"we're").replace(/\bthey are\b/g,'we are').replace(/\bthey have\b/g,'we have').replace(/\bthey\b/g,'we').replace(/\btheir\b/g,'our').replace(/\bthem\b/g,'us');
+    for(const x of rec){const ns=(x.notes||[]).filter(n=>!/Hot Stove grade/.test(n)).slice(0,3).map(us);if(ns.length)out.push({k:'p:'+x.id,d:1,t:`On ${nm(x.id)}: ${ns.join('; ')}.`})}
+  }finally{NEED_AFTER=_na}
+  return out}
+function gmTurn(T,code,outSel,inSel,cashM,E0,pre){T.said=T.said||{};const all=gmPaths(code,outSel,inSel,cashM,E0,T.off),ps=all.filter(p=>!T.said[p.k]);
+  const opts=all.filter(p=>p.s).map(p=>p.s);
+  if(!ps.length){T.sum=(T.sum||0)+1;const o=opts.join('; or ');return (pre||'')+(opts.length?[`That is everything I have. The ways I see this working: ${o}. Tell me which one you want to work on, or change the offer and I will look at it fresh.`,`Nothing has moved on my side since you last asked. It is still: ${o}. Change one of those and we have something new to talk about.`,`I would rather not go around again. The quickest way to a yes is to ${opts[0]}.`][(T.sum-1)%3]:[`I have told you where I am: I do not see the match with these players. Ask for less and I will look at it fresh.`,`It is the same answer, because it is the same offer. Take one of our players out of it and send it back to me.`][(T.sum-1)%2])}
+  /* first the read and one real way forward; after that the remaining ways, then the piece-by-piece detail, two at a time */
+  const main=ps.filter(p=>!p.d),det=ps.filter(p=>p.d),take=main.length?main.slice(0,T.said.read?2:3):det.slice(0,2);
+  if(!T.said.read&&take.length===3&&!take.some(p=>p.s)){const w=main.find(p=>p.s);if(w)take[2]=w}
+  take.forEach(p=>T.said[p.k]=1);const left=ps.length-take.length;
+  return (pre||'')+take.map(p=>p.t).join(' ')+(!main.length&&opts.length&&left<=0?` So it comes back to the same choices: ${opts.join('; or ')}.`:'')}
+function gmSuggest(code,outSel,inSel,cashM,E0,asked,skip){const _na=NEED_AFTER;try{return gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip)}finally{NEED_AFTER=_na}}
+function gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const nm=id=>sn(id),join=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'';
+  const want=gmCover(code,outSel,inSel).text;NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};
   if(E0.verdict==='locked')return "Nobody. The rules don't allow this deal as it's built.";
   if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
   if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
@@ -1938,6 +1990,8 @@ function gmReply(text,code,outSel,inSel,cashM){
   const nearTo=(ids,re)=>{const ns=named(ids),m=re.exec(tx);if(!m||ns.length<2)return ns[0]||null;const ds=id=>{const d=m.index-tx.lastIndexOf(sn(id).toLowerCase(),m.index);return d>=0&&d<=m.index?d:1e4+tx.indexOf(sn(id).toLowerCase())};return ns.slice().sort((x,y)=>ds(x)-ds(y))[0]};/* a name before the argument first ("If X does not bounce back"), else the next one after it */
   let delta=0;const hit=(k,d,line)=>{if(T.used[k]){say.push(line.replace(/^[^.!?]*[.!?]\s*/,'')||line);return}T.used[k]=1;delta+=d;say.push(line)};
   const nm=id=>sn(id);
+  /* his turn: the offer read, then the next thing not yet said. A player asked about by name, or a deal that is locked, done or blocked by an untouchable, keeps its own direct answer. */
+  const gmSay=asked=>((asked&&asked.length)||!inSel.length||!(E0.verdict==='reject'||E0.verdict==='counter')||(E0.untouch&&E0.untouch.length))?gmSuggest(code,outSel,inSel,cashM,E0,asked,T.off):gmTurn(T,code,outSel,inSel,cashM,E0);
   /* tone */
   if(/idiot|stupid|dumb|moron|clown|\bjoke\b|pathetic|f[u*]ck|sh[i*]t|bullsh|garbage|trash|\bsuck/.test(tx)){T.done=true;T.bonus=Math.max(-.08,T.bonus-.04);
     const gm="We're done for today. Call me when you want to talk baseball.";T.log.push({me:text,gm});return gm}
@@ -1949,10 +2003,10 @@ function gmReply(text,code,outSel,inSel,cashM){
     cand.forEach(id=>{if(!off.includes(id)&&T.off)delete T.off[id]});/* he brings a player back up himself: back on the table */
     if(off.length){T.off=T.off||{};off.forEach(id=>T.off[id]=1)}
     T._ask=cand.filter(id=>!(T.off&&T.off[id]));
-    if(off.length){const q=(again?`I heard you: ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} out, and I will not bring ${off.length>1?'them':'him'} up again. `:`Understood, ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} off the table. `)+gmSuggest(code,outSel,inSel,cashM,E0,T._ask,T.off);T.log.push({me:text,gm:q,q:1});return q}}
+    if(off.length){const q=(again?`I heard you: ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} out, and I will not bring ${off.length>1?'them':'him'} up again. `:`Understood, ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} off the table. `)+gmSay(T._ask);T.log.push({me:text,gm:q,q:1});return q}}
   /* a question: who do you want, what would it take. He looks at the user's system and at what is already on the table and names players. */
   if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take|try again|some(one|body) else|another (name|player|option|piece|guy)|other (name|player|option|piece)s?|different (name|player|piece)|give me (a|another) name/.test(tx)){
-    const q=gmSuggest(code,outSel,inSel,cashM,E0,T._ask,T.off);T.log.push({me:text,gm:q,q:1});return q}
+    const q=gmSay(T._ask);T.log.push({me:text,gm:q,q:1});return q}
   /* health of their player */
   /* money talk: eat / retain / pay down / kick in / cash considerations. A question with a real answer, so it does not use up a reply. */
   if(/\beat(ing)?\b|retain|pay(ing)? (down|part|some|half)|kick(ing)? in|cash considerations|send (cash|money)|cover (some|part|half)|offset/.test(tx)){let gm;const M0=v=>'$'+Math.round(v/1e6)+'M';
@@ -2043,7 +2097,7 @@ function gmReply(text,code,outSel,inSel,cashM){
     /* nothing he can check: he still answers with something concrete, the players that would get it done (owner, 11/26: "this is after I explained it multiple times";
        the old lines "I don't have a way to weigh that yet" / "I need a baseball reason" were non-answers) */
     T.idk=(T.idk||0)+1;const lead=['Let me be specific about where I am. ','Here is what moves this for me. ','To be direct with you: '][(T.idk-1)%3];
-    const gm=lead+gmSuggest(code,outSel,inSel,cashM,E0,[],T.off)+(h.length&&T.idk===1?` Or push me on ${h[0]}.`:'');
+    const gm=gmSay([]);
     T.log.push({me:text,gm,q:1});return gm}
   T.bonus=Math.max(-.08,Math.min(.12,T.bonus+delta));
   /* where that leaves the deal */
@@ -3529,7 +3583,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261126100434';
+const BUILD='20261126101223';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
