@@ -3070,7 +3070,7 @@ function seOut(id){if(!SE)return false;const x=SE.il[id];return !!(x&&x.ret>SE.d
 const _br={},_pr={};
 function bRate(id){if(_br[id])return _br[id];const p=P[id],s=p&&p.proj&&p.proj.t==='b'&&p.proj.s;let r;
   if(s)r={bb:s[0],k:s[1],hr:s[2],t3:s[3],d2:s[4],s1:s[5],sbt:s[6],sbs:s[7],def:s[8],g:s[9],wrc:p.proj.wrc};
-  else{const q=p&&p.p?.45:.74+Math.min(.14,Math.max(0,(fvn(p&&p.fv)-40)*.012));r={bb:.07*q+.01,k:.222+(1-q)*.25,hr:.031*q*q,t3:.003*q,d2:.043*q,s1:.139*(.75+.25*q),sbt:.05,sbs:.7,def:0,g:110,wrc:Math.round(100*q*q)}}
+  else{const q=p&&p.p?.45:.74+Math.min(.14,Math.max(0,((fvn(p&&p.fv)||(p&&p.mxg)||40)-40)*.012));r={bb:.07*q+.01,k:.222+(1-q)*.25,hr:.031*q*q,t3:.003*q,d2:.043*q,s1:.139*(.75+.25*q),sbt:.05,sbs:.7,def:0,g:110,wrc:Math.round(100*q*q)}}
   r.babip=(r.s1+r.d2+r.t3)/Math.max(.3,1-r.bb-r.k-r.hr);
   r.vp=s&&p.proj.y&&p.proj.y.vp||null;
   {const y=s&&p.proj.y;r.gb=y&&y.gb?Math.min(.6,Math.max(.28,.44*y.gb/.412)):.44;r.fl=y&&y.fb?Math.min(.48,Math.max(.2,.34*y.fb/.391)):.34}/* ground-ball and fly-ball outs follow his real 2026 batted-ball mix */
@@ -3081,7 +3081,7 @@ function pRate(id){if(_pr[id])return _pr[id];const p=P[id],s=p&&p.proj&&p.proj.t
   if(s){r={k:s[0],bb:s[1],hr:s[2],babip:s[3],fip:p.proj.fip||4.6};const q=p.proj;if(q.sl&&q.sr){const mk=a=>({k:a[0],bb:a[1],hr:a[2],babip:a[3]});r.L=mk(q.sl);r.R=mk(q.sr)}}/* L / R: his own projected line vs left- and right-handed batters */
   if(s){const y=p.proj.y;r.mixL=y&&y.mixL||null;r.mixR=y&&y.mixR||null;r.mix=y&&(y.mix||(y.pp?Object.entries(y.pp).map(([k,v])=>[k,v[0],0]):null))||null;r.gbf=y&&y.gb?Math.min(1.35,Math.max(.7,y.gb/0.418)):1;
     const np=y&&y.mix?y.mix.filter(x=>x[1]>=.1).length:y&&y.pp?Math.max(2,Object.values(y.pp).filter(v=>v[0]>=.1).length+(1-Object.values(y.pp).reduce((t,v)=>t+v[0],0)>=.12?1:0)):3;r.tto=np<=2?1.5:np>=4?.7:1}/* a deep arsenal holds up better the third time through the order; a two-pitch pitcher fades faster *//* ground-ball pitchers get more grounders (and double plays), from his real 2026 batted-ball mix */
-  else{const f=p&&p.p?Math.min(10,Math.max(0,fvn(p.fv)-40)):-20;r={k:.185+f*.003,bb:.112-f*.0015,hr:.037-f*.0004,babip:.304,fip:5.4-f*.06}}
+  else{const f=p&&p.p?Math.min(10,Math.max(-4,(fvn(p.fv)||p.mxg||40)-40)):-20;r={k:.185+f*.003,bb:.112-f*.0015,hr:.037-f*.0004,babip:.304,fip:5.4-f*.06}}
   return _pr[id]=r}
 const pQ=id=>pRate(id).fip+({MLB:0,IL:0,AAA:.12,AA:.4}[P[id].lvl]??(P[id].proj?.2:1));
 const hQ=id=>bRate(id).wrc+({MLB:8,IL:8,AAA:4,AA:0}[P[id].lvl]??(P[id].proj?2:-15));
@@ -3184,6 +3184,83 @@ function seDevHTML(){if(!SE||SE.day-SE.d0<20)return '';const R=seRoster(ME),ids=
   if(!ids.length)return '';const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
   return `<h3 style="margin-top:14px">Young players</h3><div class="scroll"><table class="list"><tbody>${ids.map(id=>{const d=seDevInfo(id),f=seDevF(id),upx=f>1,big=Math.abs(f-1)>=.06;
     return `<tr><td class="wrap"><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span> <b style="color:var(--${upx?'good':'bad'})">${upx?'▲':'▼'} ${upx?(big?'Breaking out':'Getting better'):(big?'Going backwards':'The league has adjusted')}</b><br><span class="hint">${esc(d.why.length?cap(d.why.join('; '))+'.':upx?'Nothing in his record said this was coming. Some players just take a step.':'Nothing in his record said this was coming. Some young players stall.')}</span></td></tr>`}).join('')}</tbody></table></div>`}
+/* ---- the farm in season mode (owner, 11/27: "in season mode we need to simulate minor league stats to know who to call up") ----
+   Every player in the user's organization who is not on the active roster plays a minor-league season next to the big-league one. Each day he
+   plays is drawn from the same per-PA ratings the big-league sim uses (bRate / pRate), turned from big-league terms into what that talent does
+   at his level (SE_LF), with the same development move a young player gets in the majors (seDevF), so a prospect who is really improving shows
+   it in Triple-A first and keeps it when he is called up. SE.mn[id] = list of lines, one per level, newest last:
+     hitters  ['AAA', G, PA, AB, H, 2B, 3B, HR, BB, K, SB, CS]      pitchers ['AAA', G, GS, outs, H, R, ER, BB, K, HR, W, L]
+   SE.mnDay = the next day to play. Its dice are its own (seeded by player and day), so it never changes how the big-league games come out.
+   A player on the active roster or the injured list does not play that day. Standouts move up a level about once a month (SE.mlv). */
+const SE_LF={AAA:{hk:.86,hbb:1.26,hhr:1.3,hbab:.038,pk:1.17,pbb:1.02,phr:.95,pbab:.01,d0:3,d1:180},
+  AA:{hk:.87,hbb:1.43,hhr:1.2,hbab:.045,pk:1.4,pbb:.885,phr:.82,pbab:-.012,d0:10,d1:172},
+  'A+':{hk:.875,hbb:1.68,hhr:1.2,hbab:.05,pk:1.37,pbb:.9,phr:.78,pbab:-.012,d0:10,d1:165},
+  A:{hk:.9,hbb:1.86,hhr:.9,hbab:.052,pk:1.39,pbb:1,phr:.72,pbab:-.008,d0:10,d1:165},
+  Rk:{hk:.86,hbb:1.88,hhr:.95,hbab:.068,pk:1.36,pbb:1.02,phr:.7,pbab:0,d0:40,d1:118}},SE_LUP={Rk:'A',A:'A+','A+':'AA',AA:'AAA'},SE_LNM={AAA:'Triple-A',AA:'Double-A','A+':'High-A',A:'Single-A',Rk:'rookie ball'};
+function seMnLvl(id){if(SE&&SE.mlv&&SE.mlv[id])return SE.mlv[id];const p=P[id],l=p.lvl;if(SE_LF[l])return l;if(l==='MLB'||l==='IL'||l==='Inj')return 'AAA';
+  const m=p.ml&&p.ml[0];if(m)return m==='CPX'?'Rk':m==='HiA'?'A+':SE_LF[m]?m:'A';const a=p.age||22;return a<=19.5?'Rk':a<=21?'A':a<=22.6?'A+':'AA'}
+function seMnRnd(id,d){let t=((SE.mseed|0)^Math.imul(hashN(String(id))+1,0x9E3779B1)^Math.imul(d+11,0x85EBCA6B))|0;return ()=>{t=(t+0x6D2B79F5)|0;let x=Math.imul(t^t>>>15,t|1);x^=x+Math.imul(x^x>>>7,x|61);return ((x^x>>>14)>>>0)/4294967296}}
+function seMnLine(id,lv,pit){const M=SE.mn,a=M[id]||(M[id]=[]);let L=a[a.length-1];if(!L||L[0]!==lv){L=[lv,0,0,0,0,0,0,0,0,0,0,0];a.push(L)}return L}
+function seMnPlay(id,d){const p=P[id],lv=seMnLvl(id),F=SE_LF[lv];if(d<F.d0||d>F.d1)return;const R=seMnRnd(id,d),dv=seDevF(id);
+  if(!p.p){if(R()>.84)return;const b=bRate(id),L=seMnLine(id,lv),n=4+(R()<.32?1:0)-(R()<.2?1:0);
+    let k=b.k*F.hk,bb=b.bb*F.hbb,hr=b.hr*F.hhr,bab=b.babip+F.hbab;if(dv!==1){k*=Math.pow(dv,-.7);bb*=Math.pow(dv,.4);hr*=Math.pow(dv,1.6);bab*=Math.pow(dv,.4)}
+    L[1]++;for(let i=0;i<n;i++){const x=R();L[2]++;let on=0;
+      if(x<bb){L[8]++;on=1}else if(x<bb+k){L[3]++;L[9]++}else if(x<bb+k+hr){L[3]++;L[4]++;L[7]++}
+      else{L[3]++;if(R()<bab){L[4]++;const y=R()*(b.s1+b.d2+b.t3);if(y<b.s1)on=1;else if(y<b.s1+b.d2)L[5]++;else L[6]++}}
+      if(on&&R()<(b.sbt||.05)*1.25){if(R()<(b.sbs||.7))L[10]++;else L[11]++}}
+    return}
+  const sp=isSPp(id),r=pRate(id);if(sp?(d+hashN(String(id)))%6!==0:R()>.34)return;
+  const L=seMnLine(id,lv),k=r.k*F.pk*Math.pow(dv,.8),bb=r.bb*F.pbb*Math.pow(dv,-.8),hr=r.hr*F.phr*Math.pow(dv,-1.4),bab=(r.babip+F.pbab)*Math.pow(dv,-.25);
+  let bf=sp?17+Math.floor(R()*9):3+Math.floor(R()*4),outs=0,runs=0,o=0,b1=0,b2=0,b3=0;L[1]++;if(sp)L[2]++;
+  const adv=(n,walk)=>{if(walk){if(b1){if(b2){if(b3)runs++;b3=1}b2=1}b1=1;return}
+    if(n===4){runs+=1+b1+b2+b3;b1=b2=b3=0;return}if(n===3){runs+=b1+b2+b3;b1=b2=0;b3=1;return}
+    if(n===2){runs+=b2+b3;b3=0;if(b1){if(R()<.42)runs++;else b3=1}b2=1;b1=0;return}runs+=b3;b3=0;if(b2){if(R()<.64)runs++;else b3=1}b2=0;if(b1){if(!b3&&R()<.3)b3=1;else b2=1}b1=1};
+  while(bf-->0){const x=R();
+    if(x<bb){L[7]++;adv(0,1)}else if(x<bb+k){L[8]++;o++}else if(x<bb+k+hr){L[4]++;L[9]++;adv(4)}
+    else if(R()<bab){L[4]++;const y=R();adv(y<.76?1:y<.97?2:3)}else{o++;if(o%3!==0){if(b3&&R()<.42){runs++;b3=0}if(b2&&!b3&&R()<.3){b3=1;b2=0}if(b1&&!b2&&R()<.22){b2=1;b1=0}}}
+    if(o&&o%3===0&&o!==outs){b1=b2=b3=0}outs=o;if(sp&&runs>=7)break}
+  for(let i=0;i<o;i++)if(R()<.023)runs++;/* errors, wild pitches and steals the base model does not play out */
+  L[3]+=o;L[5]+=runs;L[6]+=Math.round(runs*.92);
+  if(sp){if(o>=15&&R()<(runs<=1?.7:runs<=3?.45:.15))L[10]++;else if(R()<(runs>=4?.6:runs>=2?.3:.08))L[11]++}}
+const seMnOPS=L=>{const ab=L[3]||1,pa=L[2]||1,b1=L[4]-L[5]-L[6]-L[7];return (L[4]+L[8])/pa+(b1+2*L[5]+3*L[6]+4*L[7])/ab};
+const seMnSlash=L=>{const ab=L[3]||1,pa=L[2]||1,b1=L[4]-L[5]-L[6]-L[7];return `${f3(L[4]/ab)}/${f3((L[4]+L[8])/pa)}/${f3((b1+2*L[5]+3*L[6]+4*L[7])/ab)}`};
+const seMnERA=L=>L[3]?L[6]*27/L[3]:99;
+function seMnOrg(){return roster(ME).filter(id=>P[id]&&!on26(id)&&P[id].kind!=='fa')}
+function seMnPromote(d){const day=d-SE.d0;if(day<40||day%28)return;SE.mlv=SE.mlv||{};
+  for(const id of seMnOrg()){const a=SE.mn[id],L=a&&a[a.length-1],lv=L&&L[0],up=SE_LUP[lv];if(!up||seOut(id))continue;const p=P[id];
+    if(!p.p){if(L[2]<190)continue;const bar={AA:.9,'A+':.875,A:.86,Rk:.86}[lv]-(p.age&&p.age<=21.5?.03:0)+(p.age>=25.5?.06:0);
+      if(seMnOPS(L)>=bar){SE.mlv[id]=up;seNews(ME,'call',`Farm: ${p.n} moves up to ${SE_LNM[up]} after hitting ${seMnSlash(L)} with ${L[7]} HR in ${L[2]} PA at ${SE_LNM[lv]}`)}}
+    else{const ip=L[3]/3,bf=L[3]+L[4]+L[7];if(ip<(L[2]>=6?50:24))continue;
+      if(seMnERA(L)<=(p.age>=25.5?2.4:3.05)&&(L[8]-L[7])/bf>=.17){SE.mlv[id]=up;seNews(ME,'call',`Farm: ${p.n} moves up to ${SE_LNM[up]} (${seMnERA(L).toFixed(2)} ERA, ${L[8]} strikeouts in ${ipf(L[3])} innings at ${SE_LNM[lv]})`)}}}}
+function seMnReport(d){const day=d-SE.d0;if(day<28||day%21)return;const up=seMnOrg().filter(id=>{const a=SE.mn[id],L=a&&a[a.length-1];return L&&(L[0]==='AAA'||L[0]==='AA')&&!seOut(id)}),last=id=>SE.mn[id][SE.mn[id].length-1];
+  const h=up.filter(id=>!P[id].p&&last(id)[2]>=day*2.4).sort((a,b)=>seMnOPS(last(b))-seMnOPS(last(a)))[0],pt=up.filter(id=>P[id].p&&last(id)[3]/3>=(isSPp(id)?day*.5:day*.16)).sort((a,b)=>seMnERA(last(a))-seMnERA(last(b)))[0],x=[];
+  if(h){const L=last(h);x.push(`${P[h].n} is hitting ${seMnSlash(L)} with ${L[7]} HR at ${SE_LNM[L[0]]}`)}if(pt){const L=last(pt);x.push(`${P[pt].n} has a ${seMnERA(L).toFixed(2)} ERA and ${L[8]} strikeouts in ${ipf(L[3])} innings at ${SE_LNM[L[0]]}`)}
+  if(x.length)seNews(ME,'info','Farm report: '+x.join('; ')+'.')}
+function seMnCatch(){if(!SE||!SE.team||SE.team!==ME)return;if(!SE.mn){SE.mn={};SE.mnDay=SE.d0;SE.mseed=(SE.rs_^0x5F3759DF)|0}
+  const end=Math.min(SE.day,SE.end);if(SE.mnDay>=end)return;const org=seMnOrg();
+  for(let d=SE.mnDay;d<end;d++){for(const id of org)if(!seOut(id))seMnPlay(id,d);seMnPromote(d+1);seMnReport(d+1)}
+  SE.mnDay=end}
+function seMnCardHTML(id){if(!SE||!SE.mn||!SE.mn[id])return '';const p=P[id];return SE.mn[id].filter(L=>p.p?L[3]:L[2]).map(L=>{if(!p.p)return `<div class="kv"><span>${SE_LNM[L[0]]} · ${L[1]} G, ${L[2]} PA</span><b>${seMnSlash(L)}, ${L[7]} HR, ${L[10]} SB</b></div><div class="kv"><span>Strikeouts / walks</span><b>${(100*L[9]/(L[2]||1)).toFixed(1)}% / ${(100*L[8]/(L[2]||1)).toFixed(1)}%</b></div>`;
+    const bf=L[3]+L[4]+L[7]||1;return `<div class="kv"><span>${SE_LNM[L[0]]} · ${L[1]} G${L[2]?', '+L[2]+' GS':''}, ${ipf(L[3])} IP</span><b>${seMnERA(L).toFixed(2)} ERA, ${((L[4]+L[7])*3/(L[3]||1)).toFixed(2)} WHIP</b></div><div class="kv"><span>Strikeouts / walks</span><b>${(100*L[8]/bf).toFixed(1)}% / ${(100*L[7]/bf).toFixed(1)}%</b></div>`}).join('')}
+function seFarmHTML(){seMnCatch();const k=UI.fmK||'bat',lv=UI.fmLv||'all',org=seMnOrg().filter(id=>SE.mn[id]&&(k==='pit')===!!P[id].p),day=Math.max(1,SE.mnDay-SE.d0);
+  const last=id=>SE.mn[id][SE.mn[id].length-1],rows=org.filter(id=>lv==='all'||last(id)[0]===lv).filter(id=>k==='bat'?last(id)[2]>0:last(id)[3]>0);
+  const H={bat:[['pa','PA'],['avg','AVG'],['obp','OBP'],['slg','SLG'],['ops','OPS'],['hr','HR'],['sb','SB'],['k','K%'],['bb','BB%'],['g','G'],['age','Age']],pit:[['ip','IP'],['era','ERA'],['whip','WHIP'],['k','K%'],['bb','BB%'],['hr','HR'],['wl','W-L'],['g','G'],['gs','GS'],['age','Age']]}[k];
+  const val=id=>{const L=last(id),p=P[id];if(k==='bat'){const ab=L[3]||1,pa=L[2]||1,b1=L[4]-L[5]-L[6]-L[7];return {pa:L[2],avg:L[4]/ab,obp:(L[4]+L[8])/pa,slg:(b1+2*L[5]+3*L[6]+4*L[7])/ab,ops:seMnOPS(L),hr:L[7],sb:L[10],k:L[9]/pa,bb:L[8]/pa,g:L[1],age:p.age||0}}
+    const bf=L[3]+L[4]+L[7]||1;return {ip:L[3],era:seMnERA(L),whip:(L[4]+L[7])*3/(L[3]||1),k:L[8]/bf,bb:L[7]/bf,hr:L[9],wl:L[10]-L[11],g:L[1],gs:L[2],age:p.age||0}};
+  const srt=UI.fmS&&H.some(h=>h[0]===UI.fmS)?UI.fmS:k==='bat'?'ops':'era',low={era:1,whip:1,age:1,bb:k==='pit'?1:0,k:k==='bat'?1:0},dir=(UI.fmD||0)||(low[srt]?1:-1);
+  const V={};rows.forEach(id=>V[id]=val(id));const minQ=id=>k==='bat'?V[id].pa>=day*1.6:V[id].ip/3>=(isSPp(id)?day*.42:day*.13);
+  rows.sort((a,b)=>(minQ(b)-minQ(a))||dir*(V[a][srt]-V[b][srt]));
+  const fm=(c,v,id)=>c==='avg'||c==='obp'||c==='slg'||c==='ops'?f3(v):c==='k'||c==='bb'?(v*100).toFixed(1)+'%':c==='era'||c==='whip'?(v>=99?'-':v.toFixed(2)):c==='ip'?ipf(v):c==='wl'?`${last(id)[10]}-${last(id)[11]}`:c==='age'?(v?v.toFixed(1):''):v;
+  const tag=id=>`${forty.has(id)?' <span class="tag" title="On the 40-man">40</span>':''}${seDevTag(id)}${seOut(id)?'<span class="tag inj">IL</span>':''}${SE.mn[id].length>1?' <span class="tag" title="Promoted this season">↑</span>':''}`;
+  const nmr=id=>`<td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span>${tag(id)}<br><span class="hint">${esc(P[id].pos||'')} · ${last(id)[0]}${P[id].mlbp?' · #'+P[id].mlbp+' in system':''}</span></td>`;
+  const tbl=rows.length?`<div class="scroll"><table class="list frz"><thead><tr><th>Player</th>${H.map(([c,l])=>`<th class="r" data-act="se-fsort" data-id="${c}" role="button" style="cursor:pointer;white-space:nowrap">${l}${c===srt?(dir<0?' ▼':' ▲'):''}</th>`).join('')}</tr></thead><tbody>${rows.map(id=>`<tr${minQ(id)?'':' style="opacity:.62"'}>${nmr(id)}${H.map(([c])=>`<td class="r"${c===srt?' style="font-weight:700"':''}>${fm(c,V[id][c],id)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<p class="hint">Nobody at this level has played yet.</p>';
+  /* knocking on the door: the best lines in Triple-A and Double-A, with enough playing time to mean something */
+  const all=seMnOrg().filter(id=>SE.mn[id]&&!seOut(id)&&['AAA','AA'].includes(last(id)[0])),kh=all.filter(id=>!P[id].p&&last(id)[2]>=day*2.2).sort((a,b)=>seMnOPS(last(b))-seMnOPS(last(a))).slice(0,3),kp=all.filter(id=>P[id].p&&last(id)[3]/3>=(isSPp(id)?day*.5:day*.15)).sort((a,b)=>seMnERA(last(a))-seMnERA(last(b))).slice(0,3);
+  const kn=day>=14&&(kh.length||kp.length)?`<div class="card" style="margin:8px 0;padding:10px 12px"><div class="subh" style="margin-top:0">Knocking on the door</div>${kh.map(id=>{const L=last(id);return `<div class="kv"><span><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span> <span class="hint">${esc(P[id].pos)} · ${L[0]}</span></span><b>${seMnSlash(L)}, ${L[7]} HR</b></div>`}).join('')}${kp.map(id=>{const L=last(id);return `<div class="kv"><span><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(P[id].n)}</span> <span class="hint">${esc(P[id].pos)} · ${L[0]}</span></span><b>${seMnERA(L).toFixed(2)} ERA, ${L[8]} K in ${ipf(L[3])} IP</b></div>`}).join('')}</div>`:'';
+  const chip=(act,v,l,on)=>`<button class="btn sm${on?' primary':''}" type="button" data-act="${act}" data-id="${v}" aria-pressed="${on}">${l}</button>`;
+  return `<h3 style="margin:6px 0 2px">Your farm system, 2027</h3><p class="hint" style="margin:0 0 6px">Everyone in your organization who is not on the active roster plays a minor-league season alongside yours. To call someone up, tap his name and choose "Place in a slot".</p>${kn}
+  <div class="filters">${chip('se-fk','bat','Hitters',k==='bat')}${chip('se-fk','pit','Pitchers',k==='pit')}<span style="width:8px"></span>${[['all','All levels'],['AAA','AAA'],['AA','AA'],['A+','A+'],['A','A'],['Rk','Rk']].map(([v,l])=>chip('se-flv',v,l,lv===v)).join('')}</div>${tbl}
+  <p class="hint">Faded rows have too little playing time to trust. ▲ ▼ mark young players whose real ability is moving this year: it carries over when you call them up. Minor-league numbers run higher than what the same player would do in the majors.</p>`}
 function seAvail(id,day){const u=SE.pu[id];if(!u)return true;const g=day-u[0];return g<=0?false:g===1?u[1]<=28&&u[2]<2:g===2?u[1]<=45:true}
 function sePickSP(code,R,day,po){const rot=R.rot;if(!rot.length)return R.pen.length?R.pen[R.pen.length-1][1]:null;
   const last=id=>SE.pu[id]?SE.pu[id][0]:-99,rested=id=>day-last(id)>=5;
@@ -3429,6 +3506,7 @@ function seSimDay(){const d=SE.day,T=SN.teams,sc=[],boxes=[];
   for(const id in SE.il){const x=SE.il[id];if(x.ret===SE.day){seNews(owner(id),'ret',`${P[id].n} is back from the IL`);delete SE.il[id]}}
   for(const id in SE.cap)if(!SE.il[id]&&SE.ps[id]&&SE.ps[id][2]/3>=SE.cap[id]){SE.il[id]={ret:999,what:'shut down (innings limit after surgery)',t:owner(id),d0:d};seNews(owner(id),'inj',`${P[id].n} shut down for the year at his innings limit`)}
   if((SE.day-SE.d0)%7===0)for(const c in SE.ai)seManage(c);
+  try{seMnCatch()}catch(e){}
   if(SE.day>=SE.end)seEndReg()}
 const seMineG=d=>SN.days[d]&&SN.days[d].find(g=>SN.teams[g[0]]===ME||SN.teams[g[1]]===ME);
 function seSim(mode){if(!SE||SE.phase==='done')return;
@@ -3565,6 +3643,9 @@ function sePost(mode){const r=SE.po.rd;do sePoDay();while(SE.phase==='post'&&!se
 function seAct(a,id){switch(a){
   case 'se-view':UI.seView=id;seRender();return;
   case 'se-stat':UI.seStat=id;seRender();return;
+  case 'se-fk':UI.fmK=id;UI.fmS=null;UI.fmD=0;seRender();return;
+  case 'se-flv':UI.fmLv=id;seRender();return;
+  case 'se-fsort':if(UI.fmS===id)UI.fmD=-(UI.fmD||({era:1,whip:1,age:1}[id]?1:-1));else{UI.fmS=id;UI.fmD=0}seRender();return;
   case 'se-stv':UI.seStV=id;seRender();return;
   case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
   case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';else if(sePoNeedSet())UI.seView='post';render();if(sePoNeedSet())window.scrollTo(0,0);return;
@@ -3592,9 +3673,9 @@ const f3=x=>isFinite(x)?x.toFixed(3).replace(/^0/,''):'.000';
 function renderSeason(){
   if(!SN)return '<p class="hint">The season data did not load. Reload the page to try again.</p>';
   if(!SE)return seHeroHTML()+seSetupHTML();
-  const tabs=[['home','Season'],['stand','Standings'],['stats','Stats'],['games','Games']];if(SE.phase==='post'||SE.phase==='done')tabs.push(['post','Playoffs'],['report','Report']);
+  const tabs=[['home','Season'],['stand','Standings'],['stats','Stats'],['farm','Farm'],['games','Games']];if(SE.phase==='post'||SE.phase==='done')tabs.push(['post','Playoffs'],['report','Report']);
   const v=tabs.some(t=>t[0]===UI.seView)?UI.seView:'home';
-  return seHeroHTML()+`<div class="filters">${tabs.map(([k,l])=>`<button class="btn sm${v===k?' primary':''}" type="button" data-act="se-view" data-id="${k}" aria-pressed="${v===k}">${l}</button>`).join('')}</div>`+({home:seHomeHTML,stand:seStandHTML,stats:seStatsHTML,games:seGamesHTML,post:sePostHTML,report:seReportHTML})[v]()}
+  return seHeroHTML()+`<div class="filters">${tabs.map(([k,l])=>`<button class="btn sm${v===k?' primary':''}" type="button" data-act="se-view" data-id="${k}" aria-pressed="${v===k}">${l}</button>`).join('')}</div>`+({home:seHomeHTML,stand:seStandHTML,stats:seStatsHTML,farm:seFarmHTML,games:seGamesHTML,post:sePostHTML,report:seReportHTML})[v]()}
 function seSetupHTML(){const a=active26(),sp=S.rot.slice(0,5).filter(Boolean).length,lu=S.lineup.filter(x=>x[1]).length,w=[];
   if(lu<9)w.push(`${9-lu} open lineup spot${9-lu===1?'':'s'}`);if(sp<5)w.push(`only ${sp} of 5 rotation spots filled`);if(a.length!==26)w.push(`${a.length} players on the 26-man`);
   return `<h2 style="margin-bottom:6px">Play the 2027 season</h2>
@@ -3756,7 +3837,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127090834';
+const BUILD='20261127093520';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -3883,6 +3964,7 @@ function openDrawer(id){_drw=id;
     ${pj&&pj.y&&pj.t==='b'?`<div class="dsec"><h3>2026 season</h3><div class="kv"><span>AVG / OBP / SLG</span><b>${f3(pj.y.avg)} / ${f3(pj.y.obp)} / ${f3(pj.y.slg)}</b></div><div class="kv"><span>PA · wRC+</span><b>${pj.y.pa} · ${pj.y.wrc}</b></div><div class="kv"><span>K% / BB%</span><b>${(pj.y.k*100).toFixed(1)} / ${(pj.y.bb*100).toFixed(1)}</b></div>${pj.y.xwoba?`<div class="kv"><span>wOBA / expected</span><b>${f3(pj.y.woba)} / ${f3(pj.y.xwoba)}</b></div><div class="kv"><span>Hard-hit · barrel</span><b>${(pj.y.hard*100).toFixed(0)}% · ${(pj.y.brl*100).toFixed(1)}%</b></div><div class="kv"><span>Exit velo (max)</span><b>${pj.y.ev} (${pj.y.maxev})</b></div>`:''}${pj.y.gb?`<div class="kv"><span>GB / FB / LD</span><b>${(pj.y.gb*100).toFixed(0)} / ${(pj.y.fb*100).toFixed(0)} / ${(pj.y.ld*100).toFixed(0)}%</b></div>`:''}${pj.y.bat?`<div class="kv"><span>Bat speed</span><b>${pj.y.bat} mph</b></div>`:''}${pj.y.chase?`<div class="kv"><span>Chase / contact / whiff</span><b>${(pj.y.chase*100).toFixed(0)}% / ${(pj.y.con*100).toFixed(0)}% / ${(pj.y.swstr*100).toFixed(0)}%</b></div>`:''}${pj.y.vp?Object.entries(pj.y.vp).sort((a,b)=>b[1][0]-a[1][0]).map(([k,v])=>`<div class="kv"><span>vs ${({FA:'4-seam',FT:'2-seam',FC:'cutters',FS:'splitters',SI:'sinkers',SL:'sliders',CU:'curves',KC:'knuckle curves',CH:'changeups'})[k]||k} (${v[0]} ${v[1]==null?'pitches':'PA'})</span><b>${v[1]==null?(v[3]>0?'+':'')+v[3].toFixed(1)+' runs per 100':f3(v[1])}</b></div>`).join(''):''}${[['vl','vs LHP'],['vr','vs RHP']].map(([k,l])=>{if(!pj.y[k])return '';const x=pj.y[k+'x'];return `<div class="kv"><span>${l} (${pj.y[k][0]} PA)</span><b>${f3(pj.y[k][1])} / ${f3(pj.y[k][2])} / ${f3(pj.y[k][3])}</b></div>`+(x?`<p class="hint" style="margin:0 0 4px">${[x[0]!=null?x[0]+' wRC+':'',x[1]!=null?(x[1]*100).toFixed(0)+'% K':'',x[2]!=null?(x[2]*100).toFixed(0)+'% hard-hit':'',x[3]!=null?f3(x[3])+' expected wOBA':''].filter(Boolean).join(' · ')}</p>`:'')}).join('')}</div>`:''}
     ${pj&&pj.wh?`<div class="dsec"><h3>WAR by season</h3><div class="kv">${pj.wh.map((w,i)=>`<span style="text-align:center"><span class="hint">${2022+i}</span><br><b>${w==null?'–':w.toFixed(1)}</b></span>`).join('')}</div></div>`:''}
     ${defHTML(id)?`<div class="dsec"><h3>Defense</h3>${defHTML(id)}</div>`:''}<div class="dsec"><h3>2027 projection</h3>${pj?(pj.t==='b'?`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>wRC+</span><b>${pj.wrc}</b></div><div class="kv"><span>PA / HR</span><b>${pj.pa} / ${pj.hr}</b></div><div class="kv"><span>OPS</span><b>${pj.ops}</b></div>${pj.sl?`<div class="kv"><span>vs LHP / vs RHP (wOBA)</span><b>${f3(bRate(id).L.woba)} / ${f3(bRate(id).R.woba)}</b></div>`:''}`:`<div class="kv"><span>WAR</span><b>${pj.war}</b></div><div class="kv"><span>ERA / FIP</span><b>${pj.era} / ${pj.fip}</b></div>${pj.sl?`<div class="kv"><span>K% vs LHB / vs RHB</span><b>${(pj.sl[0]*100).toFixed(1)} / ${(pj.sr[0]*100).toFixed(1)}</b></div>`:''}<div class="kv"><span>IP / GS</span><b>${pj.ip} / ${pj.gs}</b></div><div class="kv"><span>K-BB%</span><b>${pj.kbb}%</b></div>`):'<p class="hint">No 2027 projection.</p>'}</div>
+    ${seMnCardHTML(id)?`<div class="dsec"><h3>2027 in the minors (this season)</h3>${seMnCardHTML(id)}</div>`:''}
     ${milbRec?`<div class="dsec"><h3>Minor-league record</h3>${milbRec}</div>`:''}
     <div class="dsec"><h3>Status</h3>
       <div class="kv"><span>Options</span><b>${esc(p.opt||'—')}</b></div><div class="kv"><span>Service time</span><b>${esc(p.svc||'—')}</b></div><div class="kv"><span>Level</span><b>${esc(p.lvl)}</b></div>${p.acq?`<div class="kv"><span>Acquired</span><b style="font-family:var(--body);font-weight:500">${esc(p.acq)}</b></div>`:''}</div>
