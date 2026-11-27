@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "A.J. Ewing finalizes 8-year, $95 million deal with Mets",
+   "blurb": "Center fielder A.J. Ewing and the New York Mets finalized their eight-year, $95 million contract on Friday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50612781/aj-ewing-finalizes-8-year-95-million-deal-mets",
+   "time": "2026-11-27T18:07:50Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "NYM"
+   ]
+  },
+  {
    "title": "Kansas City Royals designated RHP Mitch Spence for assignment.",
    "blurb": "",
    "link": "",
@@ -3216,19 +3227,7 @@
     "CHW",
     "COL"
    ]
-  },
-  {
-   "title": "Chicago White Sox traded RHP Luis Castillo and RHP Davis Martin to Colorado Rockies for LHP Sean Sullivan and C Douglas Veliz.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-20T02:31:33Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "CHW",
-    "COL"
-   ]
   }
  ],
- "updated": "2026-11-27T17:51:39Z"
+ "updated": "2026-11-27T18:11:47Z"
 }
