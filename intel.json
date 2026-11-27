@@ -131,12 +131,11 @@
   "TOR": {
    "wants": [
     "OF",
-    "2B",
     "DH",
     "RP",
     "SP"
    ],
-   "note": "Signed NPB RHP Kaima Taira (5 yr, $80M, Heyman, 11/24); OF and DH are the top needs (a right-handed OF fits; fewest HR in MLB), one of the 'big three' on Arozarena and Suzuki (Morosi, MLB Network, 11/25). Still shopping starters: King, Mahle, Holmes, N. Martinez on the radar (Nicholson-Smith, Sportsnet, 11/25). In on Morejón (Morosi); on Lowe and Tyler Austin.",
+   "note": "Signed NPB RHP Kaima Taira (5 yr, $80M, Heyman, 11/24) and 2B Jazz Chisholm Jr. (1 yr + 2028 player/club option, $6M bonus; Murray, FanSided; Feinsand, MLB.com, 11/27). OF and DH are the top needs (a right-handed OF fits; fewest HR in MLB), one of the 'big three' on Arozarena and Suzuki (Morosi, MLB Network, 11/25). Still shopping starters: King, Mahle, Holmes, N. Martinez on the radar (Nicholson-Smith, Sportsnet, 11/25). In on Morejón (Morosi) and Tyler Austin.",
    "win": "retool",
    "src": [
     "https://www.mlb.com/bluejays/news/examining-the-blue-jays-biggest-offseason-needs",
@@ -145,7 +144,8 @@
     "https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html",
     "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html",
     "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html",
-    "https://www.mlbtraderumors.com/2026/11/latest-on-the-blue-jays-offseason-plans.html"
+    "https://www.mlbtraderumors.com/2026/11/latest-on-the-blue-jays-offseason-plans.html",
+    "https://www.mlbtraderumors.com/2026/11/blue-jays-nearing-deal-with-jazz-chisholm-j.html"
    ]
   },
   "DET": {
@@ -370,7 +370,7 @@
     "RP",
     "2B"
    ],
-   "note": "Went 77-85; Toboni says pitching is the main need, rotation and late-inning arms. Added LHP A.J. Puk (1 yr, $5M; Passan, ESPN, 11/25). Engaged with free agent 2B Jazz Chisholm Jr., no deal close; their 2B spot had an MLB-worst .577 OPS (Murray, FanSided, 11/24).",
+   "note": "Went 77-85; Toboni says pitching is the main need, rotation and late-inning arms. Added LHP A.J. Puk (1 yr, $5M; Passan, ESPN, 11/25). Had been engaged with 2B Jazz Chisholm Jr. (Murray, 11/24), who is signing with Toronto (11/27); their 2B spot had an MLB-worst .577 OPS.",
    "win": "ascend",
    "src": [
     "https://www.mlb.com/news/paul-toboni-discusses-nationals-offseason-at-gm-meetings",
@@ -465,7 +465,7 @@
     "OF"
    ],
    "shedding": false,
-   "note": "Signed Skubal (9/$450M) and Goldschmidt (1/$8M, 1B platoon with Jared Young); still want relievers, a 1B/DH bat and possibly a starter, now more opportunistically: McLean and Christian Scott are locked in, the last two spots open to Manaea, Senga, Megill, Thornton and Tong (Sammon, The Athletic, 11/26). Want a right-handed bench outfielder, since Soto, Ewing and Benge all hit lefty (Sammon; Rosenthal, The Athletic). Earlier talks with Mahle, Boyd and Imanaga (Sammon, 11/24); interested in Tyler Austin (Sherman, NY Post), Michael King and Jazz Chisholm Jr. (MLB.com, 11/24).",
+   "note": "Signed Skubal (9/$450M) and Goldschmidt (1/$8M, 1B platoon with Jared Young); still want relievers, a 1B/DH bat and possibly a starter, now more opportunistically: McLean and Christian Scott are locked in, the last two spots open to Manaea, Senga, Megill, Thornton and Tong (Sammon, The Athletic, 11/26). Want a right-handed bench outfielder, since Soto, Ewing and Benge all hit lefty (Sammon; Rosenthal, The Athletic). Earlier talks with Mahle, Boyd and Imanaga (Sammon, 11/24); interested in Tyler Austin (Sherman, NY Post), Michael King (MLB.com, 11/24); Chisholm signing with Toronto (11/27).",
    "src": [
     "https://www.mlbtraderumors.com/2026/09/offseason-outlook-new-york-mets-16.html",
     "https://www.mlbtraderumors.com/2026/11/mets-rumors-tarik-skubal-meeting-free-agent.html",
@@ -1395,6 +1395,7 @@
   "MLB.com: Which righty starter could balance Red Sox's rotation? (Ian Browne; 11/27) https://www.mlb.com/news/red-sox-options-for-right-handed-starters-on-free-agent-market",
   "MLB.com: Woodruff sets sights on pitching in '27 (Adam McCalvy; 11/27) https://www.mlb.com/news/brandon-woodruff-plans-to-pitch-in-2027",
   "MLBTR: Pirates Trade Henry Davis To Diamondbacks (Passan, ESPN; 11/27) https://www.mlbtraderumors.com/2026/11/pirates-trade-henry-davis-to-diamondbacks.html",
-  "MLB.com: Which free-agent starters are on Braves' wish list? (Mark Bowman; 11/27) https://www.mlb.com/news/braves-free-agent-starting-pitcher-options-ahead-of-2027"
+  "MLB.com: Which free-agent starters are on Braves' wish list? (Mark Bowman; 11/27) https://www.mlb.com/news/braves-free-agent-starting-pitcher-options-ahead-of-2027",
+  "MLBTR: Blue Jays Nearing Deal With Jazz Chisholm Jr. (Murray, FanSided; Feinsand, MLB.com; Heyman, NY Post; 11/27) https://www.mlbtraderumors.com/2026/11/blue-jays-nearing-deal-with-jazz-chisholm-j.html"
  ]
 }
