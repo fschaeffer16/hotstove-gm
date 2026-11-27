@@ -607,7 +607,8 @@ function commit(){R5AUTO={};userFA();if(S&&S.rot)tidyDepth();save();render()}
 /* ---------- player helpers ---------- */
 const fvn=f=>{if(!f)return 0;const n=parseFloat(f);return n+(String(f).includes('+')?.5:0)};
 const owner=id=>S.team[id]??P[id].team;
-const aav=id=>S.contract[id]?S.contract[id].aav:(P[id].aav||0);
+/* a minor-league deal (S.contract[id].minor) costs nothing against the tax until he is on the 40-man or the active roster; then it is the salary he was promised */
+const aav=id=>{const c=S.contract[id];if(c)return c.minor&&!(S.status[id]==='40'||S.status[id]==='IL60'||on26(id))?0:c.aav;return P[id].aav||0};
 const kind=id=>S.contract[id]?'guar':P[id].kind;
 const forty=new Set();
 function status(id){if(S.status[id])return S.status[id];return forty.has(id)?'40':IL60.has(id)?'IL60':'MiLB'}
@@ -1113,12 +1114,39 @@ function renderFA(){
 }
 function qoNote(id,total){const p=P[id],nth=((S.qo||[]).filter(q=>q.to===ME)).length,f=qoForfeit(ME,nth),cp=qoComp(p.prev,total),prev=D.teams[p.prev]?D.teams[p.prev].name:p.prev;
   return `<div class="verdict warn">Qualifying offer attached (${M1(RULES.qo.amount)}, declined). Signing him costs the ${esc(MEN())} their ${f.picks.map(ordN).join(' and ')}-highest 2027 draft pick${f.picks.length>1?'s':''}${f.ifa?' and '+M1(f.ifa)+' of international bonus pool':''} (${esc(f.why)}${nth?', and this is QO signing #'+(nth+1):''}). The ${esc(prev)} get a ${esc(cp.label)}.</div>`}
+/* ---- Minor-league deals with a spring training invite (owner, 11/27: "also need option to offer MiLB contracts with ST invites") ----
+   A non-roster invitee: no 40-man spot and nothing on the tax until he makes the club, at a salary agreed now, usually with a date he can leave if
+   he has not been called up. Who takes one is decided the way an agent would: a player with big-league offers does not; a fringe player takes
+   one only where he can see a job and with an out; a player with no market takes it.  c = {sal ($M if he makes the club), opt: 'none'|'st'|'jun'|'jul'} */
+const MIN_SAL=.82,MOPT={none:'no opt-out',st:'an opt-out at the end of spring training',jun:'an opt-out on June 1',jul:'an opt-out on July 1'};
+function minorEval(id,c){const p=P[id],w=p.pwar!=null?p.pwar:(p.proj?p.proj.war:0),mt=p.mt||0,my=p.my||1,su=faSuitors(id),n=su.length,age=p.age||29,svc=parseFloat(p.svc)||0,nm=sn(id);
+  const clubs=su.slice(0,3).map(z=>D.teams[z.code].name).join(', ');
+  if(p.qo)return {v:'no',say:`"He turned down a qualifying offer. A minor-league deal is not a conversation we are having."`};
+  if(w>=1.2||mt>=5e6||(w>=.8&&n>=2))return {v:'no',say:`"${nm} has major-league offers${clubs?' ('+clubs+')':''}. He is not signing a minor-league deal. Make a big-league offer and we can talk."`};
+  const vet=age>=30||svc>=6,wantOpt=vet||w>=.4;
+  if(w>=.4||mt>=1.5e6){/* fringe big leaguer: needs real money if he makes it, an out, and a job he can see */
+    const sal=Math.min(3.5,Math.max(1,Math.round(mt/my*.75/1e5)/10)),path=p.proj?fillsNeed(id,ME)>0:false,g=pgrp(id);
+    if(!path&&n>=1)return {v:'no',say:`"He would take a minor-league deal from a club with an opening. He does not see one with you at ${g==='SP'?'starter':g==='RP'?'reliever':'his position'}, and the ${clubs} can offer him a guaranteed spot."`};
+    if(c.sal<sal-.001||c.opt==='none')return {v:'counter',counter:{sal:Math.max(c.sal,sal),opt:c.opt==='none'?'st':c.opt},say:`"He will come to camp on a minor-league deal, but it has to be worth it if he makes the club: $${Math.max(c.sal,sal)}M in the majors${c.opt==='none'?', and '+MOPT.st+' so he is not stuck in Triple-A':''}."`};
+    return {v:'yes',say:`"That works. He will be in camp competing for a job${path?', and he likes that you have a need he fills':''}."`}}
+  if(c.sal<MIN_SAL-.001)return {v:'counter',counter:{sal:MIN_SAL,opt:c.opt},say:`"The salary in the majors cannot be below the minimum. $${MIN_SAL}M if he makes the club."`};
+  if(wantOpt&&c.opt==='none')return {v:'counter',counter:{sal:c.sal,opt:'st'},say:`"He has ${svc>=6?'six years in the majors':'been around long enough'}. He will sign, but he wants ${MOPT.st}."`};
+  return {v:'yes',say:`"Deal. He will be in camp${n?'':'; nobody else was offering more than this'}."`}}
+function minorDesc(c){return `Minor-league deal with a spring training invite; $${c.sal}M if he makes the club${c.opt&&c.opt!=='none'?'; '+MOPT[c.opt]:''}`}
+function signMinor(id,c,force){const p=P[id];snap();S.contract[id]={aav:c.sal*1e6,desc:minorDesc(c),yrs:{2027:c.sal*1e6},terms:{years:1,total:c.sal,minor:1,opt:c.opt},minor:1};
+  S.team[id]=ME;S.status[id]='MiLB';addLog(force?'MINOR-LEAGUE DEAL (forced)':'MINOR-LEAGUE DEAL',`Signed ${p.n} to a minor-league deal with a spring training invite: $${c.sal}M if he makes the club${c.opt!=='none'?', '+MOPT[c.opt]:''}. No 40-man spot and nothing on the tax until he is added.`,0,0);
+  closeModal();commit();toast(`${p.n} signed to a minor-league deal · in camp as a non-roster invitee`)}
 function contractModal(id,mode){
   const p=P[id];const yrs=p.my||(mode==='ext'?3:1),tot=p.mt?p.mt/1e6:(mode==='ext'?30:5);
   $('#modal').innerHTML=`
     <h2>${mode==='ext'?'Extension offer:':'Offer:'} ${esc(p.n)}</h2>
     <p class="hint" style="margin:4px 0 0">${esc(p.pos)} · age ${p.age} · ${projTxt(id)}${p.mt?` · market ${p.my} yr / ${M1(p.mt)} (${M1(p.maav)} AAV)`:''}${mode==='ext'?` · current 2027 CBT ${M(aav(id))}`:''}</p>
-    <div class="form">
+    ${mode==='ext'?'':`<div class="filters" style="margin:10px 0 0"><button class="btn sm primary" type="button" id="cKindMaj" aria-pressed="true">Major-league contract</button><button class="btn sm" type="button" id="cKindMin" aria-pressed="false">Minor-league deal + spring invite</button></div>
+    <div id="cMin" hidden><p class="hint" style="margin:8px 0 0">A non-roster invitee: no 40-man spot and nothing on the tax until you add him. If he makes the club he is paid the salary below.</p>
+      <div class="form"><label class="field">Salary if he makes the club ($M)<input id="mS" type="number" min="${MIN_SAL}" step="0.05" value="${Math.min(3.5,Math.max(MIN_SAL,p.mt?Math.round(p.mt/(p.my||1)*.75/1e5)/10:MIN_SAL))}"></label>
+      <label class="field">Opt-out<select id="mO"><option value="none">None</option><option value="st" selected>End of spring training</option><option value="jun">June 1</option><option value="jul">July 1</option></select></label></div>
+      <button class="btn offer" type="button" id="mOffer">Offer the minor-league deal</button><div class="decision" id="mDec" hidden></div></div>`}
+    <div id="cMaj"><div class="form">
       <label class="field">Years<input id="cY" type="number" min="1" max="15" step="1" value="${yrs}"></label>
       <label class="field">Total value ($M)<input id="cT" type="number" min="0" step="0.5" value="${tot}"></label>
       <label class="field">Signing bonus ($M, part of total)<input id="cB" type="number" min="0" step="0.5" value="0"></label>
@@ -1131,7 +1159,7 @@ function contractModal(id,mode){
     </div>
     <div class="calc" id="cOut"></div>
     <button class="btn offer" type="button" id="cOffer">Make offer</button>
-    <div class="decision" id="cDec" hidden></div>
+    <div class="decision" id="cDec" hidden></div></div>
     <div class="dact" style="justify-content:flex-end;margin-top:12px"><button class="btn" type="button" data-act="closemodal">Cancel</button></div>`;
   openModal();
   const read=()=>{const Y=+$('#cY').value||1,S0=+$('#cS').value||2027;return {years:Y,total:+$('#cT').value||0,bonus:+$('#cB').value||0,start:S0,deferred:+$('#cD').value||0,rate:+$('#cR').value,payStart:+$('#cPS').value||(S0+Y),payYears:+$('#cPN').value||1,notes:$('#cN').value}};
@@ -1165,6 +1193,17 @@ function contractModal(id,mode){
   };
   $('#modal').querySelectorAll('input').forEach(i=>i.addEventListener('input',upd));upd();
   $('#cOffer').onclick=offer;
+  if(mode!=='ext'){const kind_=m=>{$('#cMin').hidden=!m;$('#cMaj').hidden=m;$('#cKindMin').classList.toggle('primary',m);$('#cKindMaj').classList.toggle('primary',!m);$('#cKindMin').setAttribute('aria-pressed',m);$('#cKindMaj').setAttribute('aria-pressed',!m)};
+    $('#cKindMaj').onclick=()=>kind_(false);$('#cKindMin').onclick=()=>kind_(true);
+    const mread=()=>({sal:Math.round((+$('#mS').value||0)*100)/100,opt:$('#mO').value});
+    const moffer=()=>{const c=mread(),R=minorEval(id,c),d=$('#mDec'),ok=R.v==='yes';d.hidden=false;d.className='decision '+(ok?'good':R.v==='counter'?'warn':'bad');
+      d.innerHTML=`<span class="dtag">${ok?'ACCEPTED':R.v==='counter'?'COUNTER':'NOT INTERESTED'}</span><span class="hint" style="margin-left:8px">${esc(p.n)}'s agent</span><p class="say">${esc(R.say)}</p>
+        <div class="dact">${R.counter?'<button class="btn" type="button" id="mCounter">Take their counter</button>':''}${ok?'':'<button class="btn danger" type="button" id="mForce">Force sign</button>'}${ok?`<button class="btn primary" type="button" id="mGo">Sign ${esc(p.n)}</button>`:''}</div>`;
+      if(R.counter)$('#mCounter').onclick=()=>{$('#mS').value=R.counter.sal;$('#mO').value=R.counter.opt;moffer()};
+      if(!ok)$('#mForce').onclick=()=>{const c2=mread();confirmBox('Force this signing?','His agent has not agreed. Forcing it records the signing as forced in your transaction log.','Force sign',()=>signMinor(id,c2,true))};
+      if(ok)$('#mGo').onclick=()=>signMinor(id,c,false);d.scrollIntoView({block:'nearest'})};
+    $('#mOffer').onclick=moffer;$('#mS').addEventListener('input',()=>{$('#mDec').hidden=true});$('#mO').addEventListener('change',()=>{$('#mDec').hidden=true});
+    {const w0=p.pwar!=null?p.pwar:(p.proj?p.proj.war:0);if(!p.qo&&w0<.4&&!(p.mt>=1.5e6))kind_(true)}/* a player with no big-league market opens on the minor-league deal */}
   const doSign=(force,pre)=>{
     const c=pre||read(),r=contractCalc(c);
     if(!force&&UI.negOK!==JSON.stringify(c)){toast('His agent has not agreed. Use their counter or Force sign.');return}
@@ -2208,7 +2247,7 @@ const appDate=()=>{const x=(typeof SE!=='undefined'&&SE&&SE.phase&&SE.phase!=='d
 const extFresh=id=>{const d=TXEXT.get(id);if(!d)return false;return appDate()<(+d.slice(0,4)+1)+d.slice(4)};
 const intelOn=it=>!!it&&!(it.until&&appDate()>it.until);/* an intel entry with an "until" date stops applying after it */
 const TXSIGN=new Set();/* players signed to a big-league deal in a real move this offseason (set in applyTx) */
-function lockedFA(id){if(SE&&SE.day>=SE_JUN15)return false;const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&owner(id)!=='FA')||(TXSIGN.has(id)&&owner(id)!=='FA')}
+function lockedFA(id){if(SE&&SE.day>=SE_JUN15)return false;if(S.contract[id]&&S.contract[id].minor)return false;/* minor-league deals are exempt from the June 15 rule */const a=P[id].acq||'';return (/Free Agent/.test(a)&&/(Nov|Dec)'26/.test(a))||(P[id].team==='FA'&&owner(id)!=='FA')||(TXSIGN.has(id)&&owner(id)!=='FA')}
 function sumW(vals){const pos=vals.filter(x=>x>0).sort((a,b)=>b-a),neg=vals.filter(x=>x<=0);const w=[1,.85,.7,.55,.45,.4];return pos.reduce((s,x,i)=>s+x*(w[i]??.35),0)+neg.reduce((s,x)=>s+x,0)}
 function hashN(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))%9973;return h}
 /* ---- picks + international pool space as trade assets ---- */
@@ -3855,7 +3894,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127173451';
+const BUILD='20261127173934';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
