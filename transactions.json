@@ -4077,14 +4077,24 @@
    "src": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-tom-cosgrove-to-minor-league-deal.html"
   },
   {
+   "date": "2026-11-26",
+   "type": "sign_minor",
+   "summary": "Cardinals re-signed RHP Max Rajcic (non-tendered Nov. 20) to a minor league deal with an invite to big league camp (Jon Heyman, NY Post, via MLBTR)",
+   "name": "Max Rajcic",
+   "team": "STL",
+   "pos": "RHP",
+   "status": "reported",
+   "src": "https://www.mlbtraderumors.com/2026/11/cardinals-re-sign-max-rajcic.html"
+  },
+  {
+   "status": "reported",
    "date": "2026-11-27",
    "type": "sign_minor",
-   "summary": "Rangers To Sign Joe Jiménez To Minor League Deal",
+   "summary": "Rangers agreed to a minor league deal with RHP Joe Jiménez (Ken Rosenthal and Jesús Cano, The Athletic). He missed 2025-26 after multiple knee surgeries; had a 2.62 ERA in 69 games for Atlanta in 2024.",
    "name": "Joe Jiménez",
    "team": "TEX",
-   "pos": "RP",
-   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rangers-to-sign-joe-jimenez-to-minor-league-deal.html",
-   "status": "reported"
+   "pos": "RHP",
+   "src": "https://www.mlbtraderumors.com/2026/11/rangers-to-sign-joe-jimenez-to-minor-league-deal.html"
   }
  ],
  "live": "2026-11-27T15:41:03Z",

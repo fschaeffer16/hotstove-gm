@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26",
+ "updated": "2026-11-27",
  "about": "Trade intel the opposing GMs use: who is on the block, what each club is looking for, who is shedding salary, and each club's posture. status: available = shopping him or clearly available; listening = open to offers (price high = they want an overpay); untouchable = ONLY for an entry the owner wrote (owner: true) or a player with a full no-trade clause (ntc: true). A club saying publicly that a player is not available is NOT untouchable: record it as listening with price high and \"denied\": true (owner, 11/24: clubs say things they do not mean). dump = the club is reported to want out of the contract or to move a problem player (the trade engine then treats the deal as a salary dump); ntc = full no-trade clause. Team 'win' overrides the window when reporting shows the baseline is wrong. Master copy lives in the public repo; the daily task refreshes it. OWNER NOTES: an entry with \"owner\": true is the owner's own read of a situation. Never change its status, note or src, and never remove it, because of public reporting or a club's public comments (clubs say things they do not mean). Only a completed move (he is traded, signed elsewhere or retires) takes it off. If new reporting disagrees with an owner entry, leave the entry alone and mention the disagreement in your summary. An entry may carry \"until\": \"YYYY-MM-DD\"; it stops applying after that date, and a task may remove it then.",
  "teams": {
   "LAD": {
@@ -25,7 +25,7 @@
     "C",
     "2B"
    ],
-   "note": "Bullpen is Cashman's top priority: added Loáisiga and LHP Brent Suter; weighing a big Morejón deal vs. spreading money over a reliever, Carson Kelly and Tyrone Taylor (Sherman, NY Post); Taylor has since signed with the White Sox (11/24). Also bid big on Skubal (Nightengale). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24). Still in on LHP Adrian Morejón (Heyman, NY Post, 11/24), though MLBTR calls them a long shot after the Loáisiga, Bednar, Hill and Suter adds. Have shown interest in FA LHP Alex Vesia and want a right-handed-hitting catcher to pair with Austin Wells; Carson Kelly the top option (Kuty/Sammon, The Athletic, 11/26).",
+   "note": "Bullpen is Cashman's top priority: added Loáisiga and LHP Brent Suter; weighing a big Morejón deal vs. spreading money over a reliever, Carson Kelly and Tyrone Taylor (Sherman, NY Post); Taylor has since signed with the White Sox (11/24). Also bid big on Skubal (Nightengale). Also among six clubs interested in Brandon Lowe (Morosi, MLB Network, 11/24). Among five clubs (Mets, Yankees, Cubs, Blue Jays, Rays) interested in ex-NPB 1B Tyler Austin, likely on a minor league deal (Sherman, NY Post, 11/24). Still in on LHP Adrian Morejón (Heyman, NY Post, 11/24), though MLBTR calls them a long shot after the Loáisiga, Bednar, Hill and Suter adds. Have shown interest in FA LHP Alex Vesia and want a right-handed-hitting catcher to pair with Austin Wells; Carson Kelly the top option (Kuty/Sammon, The Athletic, 11/26). Thought to be interested in Padres RH-hitting C Luis Campusano or Freddy Fermin to platoon with Wells (Heyman, NY Post, 11/27). Have had preliminary talks with Texas on Corey Seager, with contract and injury concerns, and are linked to 2B options Brandon Lowe, Luis Arraez and Xavier Edwards (Bryan Hoch, MLB.com, 11/27).",
    "win": "contend",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-new-york-yankees-15.html",
@@ -33,7 +33,9 @@
     "https://www.mlbtraderumors.com/2026/11/yankees-to-sign-brent-suter.html",
     "https://www.mlbtraderumors.com/2026/11/multiple-teams-showing-interest-in-tyler-austin.html",
     "https://www.mlbtraderumors.com/2026/11/latest-on-adrian-morejons-market.html",
-    "https://www.mlbtraderumors.com/2026/11/yankees-have-shown-interest-in-alex-vesia.html"
+    "https://www.mlbtraderumors.com/2026/11/yankees-have-shown-interest-in-alex-vesia.html",
+    "https://www.mlbtraderumors.com/2026/11/yankees-reportedly-considering-luis-campusano-freddy-fermin.html",
+    "https://www.mlb.com/news/yankees-2027-roster-outlook-offseason-needs"
    ]
   },
   "SEA": {
@@ -42,13 +44,14 @@
     "OF",
     "RP"
    ],
-   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to KC for Maikel Garcia; about $30-35M to spend. Seiya Suzuki is the top priority and expected to sign before the lockout; met with FA relievers Vesia, Abreu and Gregory Soto (wants a lefty), not in on Morejón (Adam Jude, Seattle Times, 11/25). Dipoto: 'zero' chance of trading another starter.",
+   "note": "After a 76-86 year, traded Bryce Miller, Ferrer and Evans to KC for Maikel Garcia; about $30-35M to spend. Seiya Suzuki is the top priority and expected to sign before the lockout; met with FA relievers Vesia, Abreu and Gregory Soto (wants a lefty), not in on Morejón (Adam Jude, Seattle Times, 11/25). Suzuki's camp wants to top Sato's $120M (Heyman, NY Post, 11/26). Dipoto: 'zero' chance of trading another starter.",
    "shedding": false,
    "src": [
     "https://mlb.com/news/maikel-garcia-traded-from-royals-to-mariners",
     "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-19",
     "https://www.mlbtraderumors.com/2026/11/mariners-rumors-zero-chance-trade-another-starter-dipoto.html",
-    "https://www.mlbtraderumors.com/2026/11/mariners-rumors-vesia-abreu-soto-suzuki.html"
+    "https://www.mlbtraderumors.com/2026/11/mariners-rumors-vesia-abreu-soto-suzuki.html",
+    "https://www.mlbtraderumors.com/2026/11/seiya-suzuki-reportedly-asking-for-more-than-120mm.html"
    ]
   },
   "BOS": {
@@ -57,11 +60,12 @@
     "OF",
     "DH"
    ],
-   "note": "All in; still needs a starter (lost Gil to Detroit) and more power, and shortstop remains a need. The outfield logjam has Duran and Yoshida on the market (Cotillo/McAdam, MassLive).",
+   "note": "All in; still needs a starter (lost Gil to Detroit) and more power, and shortstop remains a need. The outfield logjam has Duran and Yoshida on the market (Cotillo/McAdam, MassLive). Breslow says the Bauers deal dented the shopping list and hinted at smaller moves; a right-handed starter fits, since the top four starters are lefties (Ian Browne, MLB.com, 11/27).",
    "win": "allin",
    "src": [
     "https://www.bostonglobe.com/2026/11/21/sports/american-league-east-offseason-moves/",
-    "https://www.mlbtraderumors.com/2026/11/red-sox-rumors-suzuki-jeffers-duran-breslow.html"
+    "https://www.mlbtraderumors.com/2026/11/red-sox-rumors-suzuki-jeffers-duran-breslow.html",
+    "https://www.mlb.com/news/red-sox-options-for-right-handed-starters-on-free-agent-market"
    ]
   },
   "MIL": {
@@ -70,11 +74,12 @@
     "1B",
     "C"
    ],
-   "note": "Defending World Series champion keeping its core; needs right-handed relief, a left-handed first baseman if Bauers leaves, and a backup catcher.",
+   "note": "Defending World Series champion keeping its core; needs right-handed relief, a left-handed first baseman if Bauers leaves, and a backup catcher. FA RHP Brandon Woodruff says he is healthy and talking with teams, including the Brewers (Adam McCalvy, MLB.com, 11/27).",
    "win": "contend",
    "src": [
     "https://www.mlb.com/news/brewers-2026-27-offseason-questions",
-    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-milwaukee-brewers-16.html"
+    "https://www.mlbtraderumors.com/2026/10/offseason-outlook-milwaukee-brewers-16.html",
+    "https://www.mlb.com/news/brandon-woodruff-plans-to-pitch-in-2027"
    ]
   },
   "CLE": {
@@ -376,7 +381,7 @@
     "OF",
     "2B"
    ],
-   "note": "Missed on Skubal (offer near $400M with deferrals, Heyman); will 'do everything possible' to re-sign Michael King and wants Pivetta on a new structure, plus a corner OF: Suzuki or Duran (Sato went to the Cubs) (Nightengale, USA Today; Cassavell, MLB.com). Rotation targets Peralta (BAL) and Kaima Taira (TOR) signed elsewhere 11/24. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24). One of the 'big three' on Arozarena and Suzuki, either could play LF (Morosi, MLB Network, 11/25); Morosi doesn't expect a Morejón return. Agreed with LHP reliever JoJo Romero, 3 yrs/$21M (Passan, ESPN; Rosenthal, The Athletic, 11/25).",
+   "note": "Missed on Skubal (offer near $400M with deferrals, Heyman); will 'do everything possible' to re-sign Michael King and wants Pivetta on a new structure, plus a corner OF: Suzuki or Duran (Sato went to the Cubs) (Nightengale, USA Today; Cassavell, MLB.com). Rotation targets Peralta (BAL) and Kaima Taira (TOR) signed elsewhere 11/24. One of six clubs interested in 2B Brandon Lowe (Morosi, MLB Network, 11/24). One of the 'big three' on Arozarena and Suzuki, either could play LF (Morosi, MLB Network, 11/25); Morosi doesn't expect a Morejón return. Agreed with LHP reliever JoJo Romero, 3 yrs/$21M (Passan, ESPN; Rosenthal, The Athletic, 11/25). Yankees thought to be interested in C Campusano or Fermin (Heyman, NY Post, 11/27); San Diego wants to clear catching time for Ethan Salas (MLBTR).",
    "win": "contend",
    "shedding": false,
    "src": [
@@ -385,7 +390,8 @@
     "https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html",
     "https://www.mlb.com/news/mlb-rumors-and-2026-27-free-agent-news-november-24",
     "https://www.mlbtraderumors.com/2026/11/padres-to-sign-jojo-romero.html",
-    "https://www.mlb.com/news/jojo-romero-padres-contract"
+    "https://www.mlb.com/news/jojo-romero-padres-contract",
+    "https://www.mlbtraderumors.com/2026/11/yankees-reportedly-considering-luis-campusano-freddy-fermin.html"
    ]
   },
   "SFG": {
@@ -516,7 +522,7 @@
    "status": "available",
    "dump": true,
    "ntc": true,
-   "note": "the Rangers are exploring a way out of part of the $155M he is owed after his worst season; he can block any deal",
+   "note": "the Rangers are exploring a way out of part of the $155M he is owed after his worst season; he can block any deal; the Yankees have had preliminary talks with Texas (Bryan Hoch, MLB.com, 11/27)",
    "src": "https://www.nbcsports.com/fantasy/baseball/player-news/2026-11-10/report-rangers-shopping-corey-seager"
   },
   {
@@ -803,8 +809,8 @@
    "name": "Freddy Fermin",
    "team": "SDP",
    "status": "listening",
-   "note": "Part of the catcher surplus; could be moved for a starter",
-   "src": "https://www.mlb.com/news/padres-receiving-trade-interest-in-catchers-at-general-managers-meetings-2026"
+   "note": "Yankees thought to be interested (Heyman, NY Post, 11/27); catcher surplus, could go for a starter",
+   "src": "https://www.mlbtraderumors.com/2026/11/yankees-reportedly-considering-luis-campusano-freddy-fermin.html"
   },
   {
    "name": "Jackson Holliday",
@@ -927,8 +933,8 @@
    "name": "Luis Campusano",
    "team": "SDP",
    "status": "listening",
-   "note": "Clubs are asking about the Padres' catchers; Preller would listen for rotation help",
-   "src": "https://www.mlb.com/news/padres-receiving-trade-interest-in-catchers-at-general-managers-meetings-2026"
+   "note": "Yankees thought to be interested (Heyman, NY Post, 11/27); Padres would deal a catcher for rotation help",
+   "src": "https://www.mlbtraderumors.com/2026/11/yankees-reportedly-considering-luis-campusano-freddy-fermin.html"
   },
   {
    "name": "Willy Adames",
@@ -1379,6 +1385,11 @@
   "MLBTR: Marlins Receiving Trade Interest In Kyle Stowers (Barry Jackson, Miami Herald; 11/26) https://www.mlbtraderumors.com/2026/11/marlins-receiving-trade-interest-in-kyle-stowers.html",
   "MLBTR: Yankees Have Shown Interest In Alex Vesia (Kuty/Sammon, The Athletic; 11/26) https://www.mlbtraderumors.com/2026/11/yankees-have-shown-interest-in-alex-vesia.html",
   "MLBTR: Orioles Reportedly Willing To Trade Infielders For Starting Pitchers (Rosenthal/Sammon, The Athletic; Sherman, NY Post; 11/26) https://www.mlbtraderumors.com/2026/11/orioles-reportedly-willing-to-trade-infielders-for-starting-pitchers.html",
-  "MLBTR: Mets Rumors: Rotation, Manaea, Senga, Outfield (Sammon, The Athletic; 11/26) https://www.mlbtraderumors.com/2026/11/mets-rumors-rotation-manaea-senga-outfield.html"
+  "MLBTR: Mets Rumors: Rotation, Manaea, Senga, Outfield (Sammon, The Athletic; 11/26) https://www.mlbtraderumors.com/2026/11/mets-rumors-rotation-manaea-senga-outfield.html",
+  "MLBTR: Seiya Suzuki Reportedly Asking For More Than $120MM (Heyman, NY Post; 11/26) https://www.mlbtraderumors.com/2026/11/seiya-suzuki-reportedly-asking-for-more-than-120mm.html",
+  "MLBTR: Yankees Reportedly Considering Luis Campusano, Freddy Fermin (Heyman, NY Post; 11/27) https://www.mlbtraderumors.com/2026/11/yankees-reportedly-considering-luis-campusano-freddy-fermin.html",
+  "MLB.com: Where Yankees' roster stands (Bryan Hoch; 11/27) https://www.mlb.com/news/yankees-2027-roster-outlook-offseason-needs",
+  "MLB.com: Which righty starter could balance Red Sox's rotation? (Ian Browne; 11/27) https://www.mlb.com/news/red-sox-options-for-right-handed-starters-on-free-agent-market",
+  "MLB.com: Woodruff sets sights on pitching in '27 (Adam McCalvy; 11/27) https://www.mlb.com/news/brandon-woodruff-plans-to-pitch-in-2027"
  ]
 }
