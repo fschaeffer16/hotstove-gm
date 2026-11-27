@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Detroit Tigers designated RHP Beau Brieske for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-27T22:12:47Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
+   "title": "Detroit Tigers designated SS Tsung-Che Cheng for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-27T22:12:47Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "DET"
+   ]
+  },
+  {
    "title": "Tigers Designate Beau Brieske, Tsung-Che Cheng For Assignment",
    "blurb": "The Tigers officially announced their deals with right-hander Luis Gil and infielder Ha-Seong Kim this afternoon. To make room for those two on the 40-man roster, right-hander Beau Brieske and Tsung-Che Cheng have been designated for assignment. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/tigers-designate-beau-brieske-tsung-che-cheng-for-assignment.html",
@@ -3205,30 +3227,7 @@
    "teams": [
     "MIA"
    ]
-  },
-  {
-   "title": "Athletics signed free agent C Brian Serven to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-20T14:53:58Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "ATH"
-   ]
-  },
-  {
-   "title": "Lance Broadway, ex-White Sox, Mets pitcher who turned to acting, dies at 43",
-   "blurb": "Lance Broadway, a former MLB first-round pick who became an actor following his baseball career, has died. He was 43.",
-   "link": "https://www.espn.com/mlb/story/_/id/50540724/pitcher-turned-actor-lance-broadway-dies-age-43",
-   "time": "2026-11-20T13:56:56Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": [
-    "CHW",
-    "NYM"
-   ]
   }
  ],
- "updated": "2026-11-27T22:02:43Z"
+ "updated": "2026-11-27T22:12:47Z"
 }

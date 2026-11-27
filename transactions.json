@@ -2958,7 +2958,8 @@
     }
    },
    "src": "Jeff Passan, ESPN",
-   "status": "reported"
+   "status": "official",
+   "sid": 951281
   },
   {
    "status": "official",
@@ -3242,7 +3243,7 @@
    "src": "ESPN sources; MLB Trade Rumors (Nicholson-Smith, Sportsnet) https://www.mlbtraderumors.com/2026/11/orioles-sign-freddy-peralta.html"
   },
   {
-   "status": "reported",
+   "status": "official",
    "date": "2026-11-24",
    "type": "sign",
    "summary": "Tigers sign INF Ha-Seong Kim: 1 yr, $5M (Passan, ESPN); Detroit needs a 40-man move",
@@ -3258,7 +3259,8 @@
      "2027": 5000000,
      "2028": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951280
   },
   {
    "status": "official",
@@ -4143,9 +4145,31 @@
    "pos": "2B",
    "forty": true,
    "src": "https://www.mlbtraderumors.com/2026/11/blue-jays-nearing-deal-with-jazz-chisholm-j.html"
+  },
+  {
+   "type": "dfa",
+   "name": "Beau Brieske",
+   "team": "DET",
+   "pos": "RHP",
+   "date": "2026-11-27",
+   "summary": "Detroit Tigers designated RHP Beau Brieske for assignment.",
+   "src": "MLB Stats API",
+   "sid": 951282,
+   "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Tsung-Che Cheng",
+   "team": "DET",
+   "pos": "SS",
+   "date": "2026-11-27",
+   "summary": "Detroit Tigers designated SS Tsung-Che Cheng for assignment.",
+   "src": "MLB Stats API",
+   "sid": 951283,
+   "status": "official"
   }
  ],
- "live": "2026-11-27T21:22:25Z",
+ "live": "2026-11-27T22:12:47Z",
  "seen_sids": [
   950119,
   950220,
@@ -4414,6 +4438,10 @@
   951258,
   951260,
   951269,
-  951271
+  951271,
+  951280,
+  951281,
+  951282,
+  951283
  ]
 }
