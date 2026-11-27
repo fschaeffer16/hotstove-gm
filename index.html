@@ -1683,7 +1683,7 @@ function gradeTo(id,code,incoming){
   if(established(id)){
     const cy=ctrl(id).length,V=valW(id),w=valFor(id,cy);
     g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(64,40+5*rv.w*(V.hf<1?valFor(id,cy)/Math.max(.1,V.w):1))}if(rv&&rv.role==='closer'){const fl=rv.strong||rv.elite?54:51;if(g<fl){g=fl;notes.push('a closer: he has the ninth inning')}}g+=V.adj;var raw=g;
-    notes.push(`${p.proj.war.toFixed(1)} proj WAR · ${cy} yr${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);for(const n of V.notes)notes.push(n);
+    notes.push(`${gmDesc(id)}; ${cy} year${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);for(const n of V.notes)notes.push(n);
     if(cy<=1&&incoming&&SE&&SE.win&&(win==='allin'||win==='contend')){g+=1;notes.push('deadline: a contender pays up for help right now')}/* season sim, deadline day: buyers pay more for rentals */
     else if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
     else if(cy===2)g-=2;else if(cy>=5&&age<=29)g+=2;
@@ -1758,6 +1758,11 @@ function gradeTo(id,code,incoming){
 const PITCHN={FA:'4-seam',FT:'2-seam',FC:'cutter',FS:'splitter',FO:'forkball',SI:'sinker',SL:'slider',CU:'curve',KC:'knuckle curve',EP:'eephus',CH:'changeup',SC:'screwball',KN:'knuckleball'};
 const pct=(x,d)=>x==null?'–':(x*100).toFixed(d||0)+'%';
 const stags=(id,n)=>scout(id).tags.slice(0,n||9).map(t=>`<span class="tag stg${/risk|Hurt|Out for|surgery|Declining|lucky|beat the contact|below average|Platoon|specialist/.test(t)?' warn':''}">${esc(t)}</span>`).join('');
+/* How a GM talks about a player: what he did and what he is, not a WAR figure (owner, 11/27: "we keep deciding trades based on WAR").
+   Last season's line when he has one, else what he projects to do; with his age. */
+function gmDesc(id){const p=P[id],pj=p.proj;if(!pj)return '';const y=pj.y,a=p.age?`, ${Math.floor(p.age)} years old`:'';
+  if(pj.t==='b')return (y&&y.pa>=150?`hit ${f3(y.avg)}/${f3(y.obp)}/${f3(y.slg)} in ${y.pa} trips to the plate last year`:pj.ops?`projects for a ${pj.ops} OPS`:'a bat we have limited looks at')+a;
+  const sp=isSPp(id);return (y&&y.ip>=(sp?60:25)?`${y.era.toFixed(2)} ERA over ${Math.round(y.ip)} innings last year${y.k?`, striking out ${pct(y.k)}`:''}`:pj.era?`projects for a ${(+pj.era).toFixed(2)} ERA${sp&&pj.ip?` over ${Math.round(pj.ip)} innings`:''}`:'an arm we have limited looks at')+a}
 function line26(id){const pj=P[id].proj,y=pj&&pj.y;if(!y)return '';
   if(pj.t==='b')return `${f3(y.avg)}/${f3(y.obp)}/${f3(y.slg)} · ${y.wrc} wRC+ · ${y.pa} PA`;
   return y.ip?`${y.era.toFixed(2)} ERA · ${y.fip.toFixed(2)} FIP · ${y.ip} IP`:`${pct(y.k)} K · ${pct(y.bb)} BB · ${y.tbf} batters faced`}
@@ -1907,7 +1912,7 @@ function gmCover(code,outSel,inSel){const nm=id=>sn(id),join=a=>a.length>1?a.sli
   const nl=after.map(x=>x.fix).slice(0,2);
   const text=cov.length?`You have the pitching side covered: ${cov.join(', and ')}. That is what we were looking for, so this is not about filling that hole any more. ${opened.length?`What it does is open up ${join(opened.slice(0,2))} for us with ${join(inSel.filter(id=>established(id)).map(nm).slice(0,2))} leaving. `:still.length?`We would still like ${join(still)}. `:''}`:(nl.length?`We're looking for ${nl.join(' and ')}. `:'');
   return {text,covered:cov.length>0,opened}}finally{NEED_AFTER=_na}}
-const gmWhy=(id,code)=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id),n=ctrl(id).length,L=gradeTo(id,code,true).label;return f>0?`he helps us at ${gp==='SP'?'starter':gp==='RP'?'the back of the bullpen':(POSN[gp]||gp)}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${n} year${n===1?'':'s'} of control)`:wantsGrp(code,gp)?`we have been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(L)?'an':'a'} ${L}, ${p.proj.war.toFixed(1)} WAR projected with ${n} year${n===1?'':'s'} of control`}
+const gmWhy=(id,code)=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id),n=ctrl(id).length,L=gradeTo(id,code,true).label;return f>0?`he helps us at ${gp==='SP'?'starter':gp==='RP'?'the back of the bullpen':(POSN[gp]||gp)}, which we need (${gmDesc(id)}, ${n} year${n===1?'':'s'} of control)`:wantsGrp(code,gp)?`we have been asking about ${WANT_TXT[gp]||gp}, and he ${gmDesc(id)}`:`we have him as ${/^[aeiou]/i.test(L)?'an':'a'} ${L}: ${gmDesc(id)}, with ${n} year${n===1?'':'s'} of control`}
   const g=hsGrade(id),r=ROLE(id,g),gp=pgrp(id),nd=NEED_AFTER&&needRep(code).rows.some(x=>x.need&&x.k==='p'+gp);return `our scouts have him as ${/^[aeiou]/i.test(r)?'an':'a'} ${r}${top100(id)?', No. '+top100(id)+' in the game':''}${nd?`, and he plays ${POSN[gp]||gp}, where this deal leaves us short`:''}`};
 /* THE GM'S SIDE OF THE CONVERSATION (owner, 11/26: "this is where we need logic built in and not just answers that repeat and ignore the offer like it was never read").
    gmPaths works out, from the offer on the table, (1) how he reads each side of it, (2) what it already covers for his club and what it would open up,
@@ -1919,9 +1924,9 @@ function gmPaths(code,outSel,inSel,cashM,E0,skip){skip=skip||{};const nm=id=>sn(
     const rec=(E0.rec||[]).filter(x=>P[x.id]).slice().sort((a,b)=>b.g-a.g),giv=(E0.giv||[]).filter(x=>P[x.id]).slice().sort((a,b)=>b.g-a.g);
     const role=x=>{const l=x.label||'a piece';return (/^[aeiou]/i.test(l)?'an ':'a ')+l},rent=id=>established(id)&&ctrl(id).length<=1?' on a one-year deal':'';
     if(rec.length&&giv.length){const top=rec.slice(0,3).map(x=>`${nm(x.id)} as ${role(x)}${rent(x.id)}`),rest=rec.slice(3);
-      const mine=giv.map(x=>`${nm(x.id)} (${established(x.id)?P[x.id].proj.war.toFixed(1)+' WAR projected':role(x)})`),ratio=E0.need>0?E0.recv/E0.need:1;
+      const mine=giv.map(x=>`${nm(x.id)} (${role(x).replace(/^an? /,'')}${established(x.id)?': '+gmDesc(x.id):''})`),ratio=E0.need>0?E0.recv/E0.need:1;
       out.push({k:'read',t:`Here is how I read your offer. I have ${join(top)}${rest.length?`, with ${join(rest.map(x=>nm(x.id)))} as depth`:''}. You are asking us for ${join(mine)}. ${!E0.headOK?`${nm(giv[0].id)} is the best player in the deal, and nobody coming back is in his class. `:''}${ratio>=.9?'On talent we are close.':ratio>=.65?'On talent we are one real piece apart.':'On talent we are a long way apart: quantity is not the problem, the quality at the top is.'}`})}
-    const cv=gmCover(code,outSel,inSel);if(cv.text)out.push({k:'cover',t:cv.text.trim()});
+    const cv=gmCover(code,outSel,inSel);if(cv.text&&(cv.covered||cv.opened.length))out.push({k:'cover',t:cv.text.trim()});
     NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};
     /* a smaller deal for the one player he wants most: the GM names the pieces he likes and hands the rest back */
     let solo=null;const t=giv[0];
@@ -1941,6 +1946,12 @@ function gmPaths(code,outSel,inSel,cashM,E0,skip){skip=skip||{};const nm=id=>sn(
       if(b)out.push({k:'add:'+b.id,s:`add ${nm(b.id)} instead`,t:`If ${nm(a.id)} is more than you want to give, ${nm(b.id)} gets us there too: ${gmWhy(b.id,code)}.`})}
     else{const near=vs.filter(y=>y.v==='counter').map(y=>y.x).sort((a,b)=>b.g-a.g)[0];
       out.push(near?{k:'near:'+near.id,s:`${nm(near.id)} plus one more piece`,t:`Nobody in your system closes it alone. ${nm(near.id)} gets us close, ${gmWhy(near.id,code)}; it would be him plus one more real piece.`}:{k:'none',t:`I have been through your system and I do not see the player who closes this with what is on the table.${inSel.length>1?' Asking for one of ours instead of '+(inSel.length>2?'all of them':'both')+' is where I would start.':' You would have to ask for less.'}`})}
+    /* quality for quantity: with the right player added he does not need the whole pile, and hands back the pieces he likes least */
+    if(ok.length&&outSel.length>=2){let bestF=null;for(const a of ok.slice(0,4)){let keep=outSel.concat([a.id]);
+        for(const id of outSel.slice().sort((x,y)=>gradeTo(x,code,true).g-gradeTo(y,code,true).g)){const tr=keep.filter(i=>i!==id);if(tr.length&&V(tr,inSel)==='accept')keep=tr}
+        if(keep.length<outSel.length+1&&(!bestF||keep.length<bestF.keep.length))bestF={a,keep}}
+      if(bestF){const back=outSel.filter(i=>!bestF.keep.includes(i));out.push({k:'fewer:'+bestF.a.id,s:`${join(bestF.keep.map(nm))} for ${join(inSel.map(nm))}`,t:`I would rather have ${bestF.keep.length===1?'one player I really want':bestF.keep.length+' players I really want'} than ${outSel.length+1} I only like. ${join(bestF.keep.map(nm))} for ${join(inSel.map(nm))}, and you keep ${join(back.map(nm))}. ${nm(bestF.a.id)} is the piece that makes it work: ${gmWhy(bestF.a.id,code)}.`})}
+      else out.push({k:'whymany',d:1,t:`It takes this many because none of them is a front-line piece for us: ${nm(giv[0].id)} is the best player in the deal by a distance. One better player would replace several of these.`})}
     if(!ok.length&&E0.add2&&E0.add2.a&&E0.add2.b&&!skip[E0.add2.a.id]&&!skip[E0.add2.b.id])out.push({k:'pair:'+E0.add2.a.id+E0.add2.b.id,s:`add ${nm(E0.add2.a.id)} and ${nm(E0.add2.b.id)}`,t:`Two pieces would do what one cannot: add ${nm(E0.add2.a.id)} and ${nm(E0.add2.b.id)} and I would do it.`});
     if(E0.eat){const M0=v=>'$'+Math.round(v/1e6)+'M';out.push({k:'eat',s:`pay down ${M0(E0.eat.m*1e6)} on ${nm(E0.eat.id)}`,t:`Money can do part of the work. ${nm(E0.eat.id)} is owed ${M0(E0.eat.rem)}, which is more than he gives us: pay down ${M0(E0.eat.m*1e6)} of it (put it in the cash box) and I would say yes.`})}
     /* then, piece by piece, why each of the user's players grades the way it does for this club */
@@ -1948,7 +1959,8 @@ function gmPaths(code,outSel,inSel,cashM,E0,skip){skip=skip||{};const nm=id=>sn(
     for(const x of rec){const ns=(x.notes||[]).filter(n=>!/Hot Stove grade/.test(n)).slice(0,3).map(us);if(ns.length)out.push({k:'p:'+x.id,d:1,t:`On ${nm(x.id)}: ${ns.join('; ')}.`})}
   }finally{NEED_AFTER=_na}
   return out}
-function gmTurn(T,code,outSel,inSel,cashM,E0,pre){T.said=T.said||{};const all=gmPaths(code,outSel,inSel,cashM,E0,T.off),ps=all.filter(p=>!T.said[p.k]);
+function gmTurn(T,code,outSel,inSel,cashM,E0,pre,prefer){T.said=T.said||{};const all=gmPaths(code,outSel,inSel,cashM,E0,T.off);let ps=all.filter(p=>!T.said[p.k]);
+  if(prefer){const rk=p=>{const i=prefer.findIndex(q=>p.k.indexOf(q)===0);return i<0?99:i};ps=ps.slice().sort((a,b)=>rk(a)-rk(b));const hit=ps.filter(p=>rk(p)<99);if(hit.length){T.said.read=T.said.read||0;hit.slice(0,2).forEach(p=>T.said[p.k]=1);return (pre||'')+hit.slice(0,2).map(p=>p.t).join(' ')}}
   const opts=all.filter(p=>p.s).map(p=>p.s);
   if(!ps.length){T.sum=(T.sum||0)+1;const o=opts.join('; or ');return (pre||'')+(opts.length?[`That is everything I have. The ways I see this working: ${o}. Tell me which one you want to work on, or change the offer and I will look at it fresh.`,`Nothing has moved on my side since you last asked. It is still: ${o}. Change one of those and we have something new to talk about.`,`I would rather not go around again. The quickest way to a yes is to ${opts[0]}.`][(T.sum-1)%3]:[`I have told you where I am: I do not see the match with these players. Ask for less and I will look at it fresh.`,`It is the same answer, because it is the same offer. Take one of our players out of it and send it back to me.`][(T.sum-1)%2])}
   /* first the read and one real way forward; after that the remaining ways, then the piece-by-piece detail, two at a time */
@@ -1963,7 +1975,7 @@ function gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const n
   if(E0.verdict==='accept')return "Nothing more. I'd do this as it stands.";
   if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
   if(!inSel.length)return `${want}Tell me who you want from us first, then I'll tell you what it costs.`;
-  const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${p.proj.war.toFixed(1)} WAR projected, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${p.proj.war.toFixed(1)} WAR projected with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
+  const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${gmDesc(id)}, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${gmDesc(id)}, with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
     const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${top100(id)?', No. '+top100(id)+' in the game':''}`};
   const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!skip[id]&&!noAsk(id,code)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
   /* a player the user asked about by name */
@@ -1993,7 +2005,7 @@ function gmReply(text,code,outSel,inSel,cashM){
   let delta=0;const hit=(k,d,line)=>{if(T.used[k]){say.push(line.replace(/^[^.!?]*[.!?]\s*/,'')||line);return}T.used[k]=1;delta+=d;say.push(line)};
   const nm=id=>sn(id);
   /* his turn: the offer read, then the next thing not yet said. A player asked about by name, or a deal that is locked, done or blocked by an untouchable, keeps its own direct answer. */
-  const gmSay=asked=>((asked&&asked.length)||!inSel.length||!(E0.verdict==='reject'||E0.verdict==='counter')||(E0.untouch&&E0.untouch.length))?gmSuggest(code,outSel,inSel,cashM,E0,asked,T.off):gmTurn(T,code,outSel,inSel,cashM,E0);
+  const gmSay=(asked,pre,prefer)=>((asked&&asked.length)||!inSel.length||!(E0.verdict==='reject'||E0.verdict==='counter')||(E0.untouch&&E0.untouch.length))?(pre||'')+gmSuggest(code,outSel,inSel,cashM,E0,asked,T.off):gmTurn(T,code,outSel,inSel,cashM,E0,pre,prefer);
   /* tone */
   if(/idiot|stupid|dumb|moron|clown|\bjoke\b|pathetic|f[u*]ck|sh[i*]t|bullsh|garbage|trash|\bsuck/.test(tx)){T.done=true;T.bonus=Math.max(-.08,T.bonus-.04);
     const gm="We're done for today. Call me when you want to talk baseball.";T.log.push({me:text,gm});return gm}
@@ -2006,6 +2018,12 @@ function gmReply(text,code,outSel,inSel,cashM){
     if(off.length){T.off=T.off||{};off.forEach(id=>T.off[id]=1)}
     T._ask=cand.filter(id=>!(T.off&&T.off[id]));
     if(off.length){const q=(again?`I heard you: ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} out, and I will not bring ${off.length>1?'them':'him'} up again. `:`Understood, ${off.map(nm).join(' and ')} ${off.length>1?'are':'is'} off the table. `)+gmSay(T._ask);T.log.push({me:text,gm:q,q:1});return q}}
+  /* "Five for one? No thanks": the objection is the size of the package, so he answers THAT, with the smallest deal he would do (owner, 11/27: the GM
+     answered with another name to add). A plain no gets the structural alternatives first, never another player to pile on. */
+  if(/\b(\d|two|three|four|five|six|seven)\s*(-|\s)?(for|4)(-|\s)?\s*(1|one|2|two)\b|too many|that'?s a lot|too much|so many|quantity|whole (farm|system)|gutting|the house/.test(tx)){
+    const n=outSel.length+(E0.add?1:0);const q=gmSay([],`You are right that ${n>2?n:'that'} is a lot of players for ${inSel.length===1?nm(inSel[0]):'what you are asking for'}. `,['fewer','solo','drop','whymany']);T.log.push({me:text,gm:q,q:1});return q}
+  if(/^\s*(no|nope|pass|no thanks|no thank you|not happening|not doing that|no deal|no way|hard pass|forget it)\b[\s.!]*$/.test(tx.trim())||/\bno thanks\b|\bnot doing that\b|\bnot happening\b/.test(tx)){
+    const q=gmSay([],'Fair enough. ',['fewer','solo','drop','eat','pair']);T.log.push({me:text,gm:q,q:1});return q}
   /* a question: who do you want, what would it take. He looks at the user's system and at what is already on the table and names players. */
   if(/who (do|would|are|else)|what (do|would|are|will|does) (you|it)|what else|which (player|prospect|pitcher|hitter|one)|name (a|your|the) (player|price|guy)|any(one|body) (you|else)|suggest|what'?s (missing|it going to take)|looking for|interested in|do you (like|want)|how about|what about|would you take|try again|some(one|body) else|another (name|player|option|piece|guy)|other (name|player|option|piece)s?|different (name|player|piece)|give me (a|another) name/.test(tx)){
     const q=gmSay(T._ask);T.log.push({me:text,gm:q,q:1});return q}
@@ -2089,7 +2107,7 @@ function gmReply(text,code,outSel,inSel,cashM){
   if(!say.length&&/good|great|star|ace|elite|best|underrated|proven|\bwar\b|stats|numbers|hits?\b|\bops\b|\bera\b|production|breakout|improv/.test(tx)){const m=my(id=>established(id)?P[id].proj.war:0);
     if(m&&established(m)){const s=scout(m),g=gradeTo(m,code,true),l=line26(m);
       if(s.backed||s.trend===1&&(P[m].age||30)<=28)hit('perf',.03,`${nm(m)} is on the way up, I'll grant you that${s.backed?', and Statcast backs the jump':''}.`);
-      else hit('perfx',0,`We have ${nm(m)} as ${/^[aeiou]/i.test(g.label)?'an':'a'} ${g.label}: ${P[m].proj.war} WAR projected${l?', after '+l.split(' · ').slice(0,2).join(', ')+' in 2026':''}. That's what I'm pricing.`)}}
+      else hit('perfx',0,`We have ${nm(m)} as ${/^[aeiou]/i.test(g.label)?'an':'a'} ${g.label}: ${gmDesc(m)}${l?', after '+l.split(' · ').slice(0,2).join(', ')+' in 2026':''}. That's what I'm pricing.`)}}
   /* leverage */
   if(/other (team|club|offer)|another (team|club|offer|gm)|elsewhere|walk away|final offer|last offer|take it or leave|best offer|moving on|shop/.test(tx)){const t=their(id=>established(id)?-ctrl(id).length:-9),sell=Math.max(prof(code).sell||0,win==='rebuild'?1:0);
     if(t&&established(t)&&ctrl(t).length<=2&&sell>=.6)hit('lev',.03,`Don't make it a threat. But yes, I would rather move ${nm(t)} now than wait and hope.`);
@@ -2417,14 +2435,23 @@ function agentReply(text,id,c,mode){const key=ME+'|'+mode+'|'+id,st=UI.neg[key];
   if(has('security','guarantee','long-term','long term','extra year','more years')){
     pt('yrs',c.years>=(mode==='ext'?4:(p.my||1)),.01,'The years are what he wants. That helps.',"You're not offering the years, so don't sell me security.")}
   if(has('opt-out','opt out','no-trade','no trade','incentive','bonus'))pts.push('Put it in the contract notes ("opt-out after year 2") and it counts toward his number.');
+  /* "That was our final offer, we will move on" (owner, 11/27: the agent answered "I'm not sure how that changes his price"). An ultimatum is a move in the
+     negotiation and he answers it as one: he takes the offer when it is at or above the least he would sign for, gives his own last number when it is close,
+     and otherwise says plainly why he can let the user walk (who else is bidding) and the number that would bring him back. Free: it does not use up a reply. */
+  if(!pts.length&&/final offer|last offer|best offer|best and final|take it or leave|mov(e|ing) on|walk(ing)? away|we('| a)?re done|i('| a)?m done|not going (any )?higher|no more|that'?s it\b|haggl|pull(ing)? (the|our) offer|off the table/.test(x)){
+    const off=c.total||0,r=A0.ratio||0,low=quote(Y)*st.fl/st.f,lowT=Math.ceil(low*2)/2;T.ult=(T.ult||0)+1;
+    if(off>0&&r>=st.fl){st.f=Math.min(st.f,r);pts.push(T.ult>1?`It is done on my end: ${money(off)} over ${Y}. Send the offer and he signs.`:`Understood. I took it to him, and he would rather sign than lose this one: ${money(off)} over ${Y} year${Y>1?'s':''} works. Send the offer and we are done.`)}
+    else if(off>0&&r>=st.fl*.96){st.f=st.fl;pts.push(T.ult>1?`My last number has not moved: ${money(lowT)} over ${Y}. You are ${money(Math.max(0,lowT-off))} from a deal.`:`I believe you, so here is my last number too: ${money(lowT)} over ${Y} year${Y>1?'s':''}. That is ${money(Math.max(0,lowT-off))} above where you are, and there is nothing behind it. If you can get there, he is a ${D.teams[ME].name.replace(/s$/,'')}.`)}
+    else pts.push(T.ult>1?`Same answer: I cannot take ${off?money(off):'that'} to him${clubs.length?` with the ${clubs.slice(0,2).join(' and the ')} in it`:''}. ${money(lowT)} over ${Y} is where it gets done.`
+      :`Then we will part as friends, because I cannot take ${off?money(off)+' over '+Y:'that'} to him. ${su.length?`I have ${su.length} other club${su.length>1?'s':''} with the room and the need${clubs.length?' ('+clubs.join(', ')+')':''}, and that is what holds his price up, not me haggling.`:'His market is quiet, I will give you that, but he would sooner wait than sign there.'} If you come back, the number that gets it done is ${money(lowT)} over ${Y} year${Y>1?'s':''}${Y<A0.my?`, or ${money(Math.ceil(quote(A0.my)*st.fl/st.f*2)/2)} over ${A0.my}`:''}.`)}
   if(!pts.length){const hints=[];if(s.inj&&s.inj.r>=1.5)hints.push('his medicals');if(age>=32)hints.push(`what he looks like at ${Math.floor(age)+Y-1}`);if(s.luck===1)hints.push('the gap between his results and his expected numbers');if(s.platoon||s.spec)hints.push('his splits');if(mode!=='ext'&&su.length<=1)hints.push('how quiet his market is');if(p.qo)hints.push('the draft pick he costs you');hints.push(teamReady(ME)?'where he fits on a club built to win':'the role you can promise him');
     const short=x.trim().split(/\s+/).length<=2;
     pts.push(short?say1('no',[`Then we're ${gap>0?money(gap)+' apart':'right there'} at ${Y} year${Y>1?'s':''}. Is it the years, the money, or the player? Tell me which and I can work with it.`,
         `That's not a counter. ${clubs.length?'The '+clubs[0]+' gave me a number today. ':''}What would you do it at?`,
         `I can't take that back to him. Ask me what he wants, or tell me why he's worth less than ${money(ask/Y)} a year.`])
-      :say1('idk',[`I'm not sure how that changes his price. If you want to talk about ${hints.slice(0,3).join(', ')}, that's where I'd listen.`,
-        `Help me connect that to the contract. With this player the real questions are ${hints.slice(0,2).join(' and ')}. Or ask me straight what it takes.`,
-        `Maybe. But I price him on what he does and who else wants him. ${hints[0].replace(/^./,ch=>ch.toUpperCase())} is the place to push me.`]))}
+      :say1('idk',[`Here is where we stand. You are at ${c.total?money(c.total):'no number yet'} over ${Y} year${Y>1?'s':''}; he is at ${money(ask)}${gap>0?', so we are '+money(gap)+' apart':''}. ${clubs.length?`The ${clubs[0]} ${clubs.length>1?'and '+(su.length-1)+' other club'+(su.length>2?'s':'')+' are':'are'} in on him, which is why I can hold. `:''}What would move his number with me: ${hints.slice(0,3).join(', ')}.`,
+        `Let me put numbers on it. ${Y} year${Y>1?'s':''}: ${money(ask)}.${A0.my!==Y?` ${A0.my} years: ${money(quote(A0.my))}.`:''} You are at ${c.total?money(c.total):'nothing yet'}. Pick the length you want and I will tell you straight whether it works.`,
+        `It is still ${gap>0?money(gap)+' between us':'close'} at ${Y} year${Y>1?'s':''}. The quickest ways to close it: ${Y<A0.my?'add a year, ':''}put an opt-out in the notes, or show me ${hints[0]}.`]))}
   d=Math.max(-.03,Math.min(.015,d));const room=-.06-T.mv;if(d<room)d=room;T.mv+=d;
   st.f=Math.max(.8,st.f+d);if(d<0)st.fl=Math.max(.8,st.fl+d*.5);
   if(used)T.n++;T.log.push({me:text.slice(0,300),ag:pts.join(' '),d});return T}
@@ -3646,7 +3673,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261126234526';
+const BUILD='20261127045928';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
