@@ -745,7 +745,13 @@ function doRelease(id,label){
 }
 function doOutright(id){snap();unslot(id);S.status[id]='MiLB';addLog('OUTRIGHT',`Outrighted ${P[id].n} off the 40-man`+(kind(id)==='guar'?` (salary still counts)`:''),0,kind(id)==='arb'?aav(id):0);commit();closeDrawer()}
 function doSelect(id){snap();S.status[id]='40';addLog('SELECTED',`Added ${P[id].n} to the 40-man`,0,0);commit();closeDrawer();overToast()}
-function doIL(id){snap();S.status[id]='IL60';unslot(id);addLog('60-DAY IL',`Moved ${P[id].n} to the 60-day IL (off the 40-man count)`,0,0);commit();closeDrawer()}
+/* The 60-day injured list (owner, 11/27: "if you put a man on the 60 day IL you get to replace his spot on the 40-man"). An injured player on the
+   40-man can be moved to it from his card or from the injury alert; he stops counting against the 40, so another player can be added in his place.
+   MLB's price is time: he cannot come back until 60 days after he was hurt, so in a season his return date is pushed out to at least that. */
+function canIL60(id){if(!P[id]||!isMets(id)||status(id)!=='40')return false;if(SE&&SE.phase!=='off'&&SE.il&&SE.il[id]&&SE.il[id].ret>SE.day)return true;return !!((SN&&SN.od&&SN.od[id]&&SN.od[id].ret>0)||(D.notes||{})[id])}
+function doIL(id){snap();S.status[id]='IL60';unslot(id);const x=SE&&SE.il&&SE.il[id];let back='';
+  if(x&&x.ret<999){x.ret=Math.max(x.ret,(x.d0??SE.day)+61);x.il60=1;back=`; he cannot return before ${seDate(x.ret)}`}
+  addLog('60-DAY IL',`Moved ${P[id].n} to the 60-day IL: his 40-man spot is open${back}`,0,0);commit();closeDrawer();toast(`${P[id].n} to the 60-day IL · 40-man is at ${count40()}/40, so you can add a player`)}
 function doActivate(id){snap();S.status[id]='40';addLog('ACTIVATED',`Activated ${P[id].n} from the 60-day IL`,0,0);commit();closeDrawer();overToast()}
 function insertProspect(id){
   if(!P[id].fv||S.top.includes(id))return;
@@ -3444,6 +3450,22 @@ function seInjRoll(T,day){const out=[];for(const s of T){
     for(const x of s.lu)if(seRnd()<.0037*seRisk(x.id))out.push(seHurt(x.id,day,s.code));
     for(const p of s.pit)if(seRnd()<(p.sp?.03:.011)*seRisk(p.id))out.push(seHurt(p.id,day,s.code))}
   return out}
+/* Injury alert (owner, 11/27: "in season mode you need a pop up alert if someone gets injured"). Every new IL stint for one of the user's players is
+   shown in a pop-up when the sim hands control back, with how long he is out, when he is due back, and a one-tap move to the 60-day IL when he
+   will miss long enough for it to make sense. By default the sim also stops on the day it happens (SE.stopInj; the user can switch that off in the
+   alert), so a "sim a month" does not run three weeks with a hole in the lineup. */
+function seNewInj(){if(!SE||!SE.il||window.NO_INJ_ALERT)return [];/* NO_INJ_ALERT: set by the automated tests, which click through a season without reading alerts */return Object.keys(SE.il).filter(id=>{const x=SE.il[id];return x&&x.t===ME&&!x.seen&&x.d0!=null&&x.d0>=SE.d0&&P[id]&&owner(id)===ME})}
+function seInjAlert(){const ids=seNewInj();if(!ids.length)return false;
+  const row=id=>{const x=SE.il[id],p=P[id],days=x.ret>=999?999:x.ret-SE.day,s=p.p?SE.ps[id]:SE.bs[id],line=!s?'':p.p?`${s[2]?(s[5]*27/s[2]).toFixed(2):'-'} ERA in ${ipf(s[2])} innings`:`${f3(s[3]/(s[2]||1))}, ${s[6]} HR in ${s[1]} PA`,long=x.ret>=999||x.ret-(x.d0??SE.day)>=45;
+    return `<div class="card" style="margin:8px 0;padding:10px 12px"><div><b><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span></b> <span class="hint">${esc(p.pos||'')}${line?' · '+line:''}</span></div>
+      <div style="margin:4px 0"><span class="tag inj">IL</span> ${esc(x.what)} · ${x.ret>=999?'<b>out for the season</b>':`out about <b>${days>=42?Math.round(days/7)+' weeks':days+' days'}</b>, back around ${seDate(x.ret)}`}</div>
+      ${canIL60(id)&&long?`<div class="dact" style="margin-top:6px"><button class="btn sm" type="button" data-act="se-il60" data-id="${id}">Move to 60-day IL (opens a 40-man spot)</button></div>`:canIL60(id)&&days>=20?'<p class="hint" style="margin:2px 0 0">The 60-day IL would open a 40-man spot, but he would have to stay out 60 days. You can do it from his card.</p>':''}</div>`};
+  $('#modal').innerHTML=`<h2>${ids.length===1?'Injury':'Injuries'}: ${esc(MEN())}</h2><p class="hint" style="margin:4px 0 0">${seDate(SE.day)}. Until you change your roster, the next man on your depth chart fills in.</p>
+    ${ids.map(row).join('')}
+    <label class="hint" style="display:flex;gap:8px;align-items:center;margin:10px 0 0"><input type="checkbox" id="seStopInj"${SE.stopInj===0?'':' checked'}> Stop the sim on the day one of my players is hurt</label>
+    <div class="dact" style="justify-content:flex-end;margin-top:12px"><button class="btn" type="button" data-act="se-injroster">Fix my roster</button><button class="btn primary" type="button" data-act="closemodal">OK</button></div>`;
+  for(const id of ids)SE.il[id].seen=1;seSave();openModal();
+  const cb=$('#seStopInj');if(cb)cb.onchange=()=>{SE.stopInj=cb.checked?1:0;seSave()};return true}
 function seNews(code,k,txt,day){SE.news.push({d:day??SE.day,t:code,k,x:txt});if(SE.news.length>260)SE.news.splice(0,SE.news.length-260)}
 /* ---- save / load ---- */
 function seSave(){try{localStorage.setItem(SEKEY(),JSON.stringify(SE))}catch(e){toast('This device is out of room for the season save. Finish or end another club\'s season to free space.')}}
@@ -3568,7 +3590,7 @@ function seSimDay(){const d=SE.day,T=SN.teams,sc=[],boxes=[];
       H[h][hw?0:1]++;H[a][hw?3:2]++;if(Math.abs(bx.R[1]-bx.R[0])===1){X1[win][0]++;X1[los][1]++}if(bx.ls[0].length>9){XI[win][0]++;XI[los][1]++}}
     sc.push([g[0],g[1],bx.R[1],bx.R[0]]);boxes.push(bx);if(h===ME||a===ME)SE.box[SE.box[d]?d+'b':d]=bx}
   SE.sc[d]=sc;SX.box[d]=boxes;delete SX.box[d-12];SX.last=d;SE.day++;
-  for(const id in SE.il){const x=SE.il[id];if(x.ret===SE.day){seNews(owner(id),'ret',`${P[id].n} is back from the IL`);delete SE.il[id]}}
+  for(const id in SE.il){const x=SE.il[id];if(x.ret===SE.day){seNews(owner(id),'ret',owner(id)===ME&&S.status[id]==='IL60'?`${P[id].n} is healthy: activate him from the 60-day IL (his card) to use him; he needs a 40-man spot`:`${P[id].n} is back from the IL`);delete SE.il[id]}}
   for(const id in SE.cap)if(!SE.il[id]&&SE.ps[id]&&SE.ps[id][2]/3>=SE.cap[id]){SE.il[id]={ret:999,what:'shut down (innings limit after surgery)',t:owner(id),d0:d};seNews(owner(id),'inj',`${P[id].n} shut down for the year at his innings limit`)}
   if((SE.day-SE.d0)%7===0)for(const c in SE.ai)seManage(c);
   try{seMnCatch()}catch(e){}
@@ -3578,7 +3600,7 @@ function seSim(mode){if(!SE||SE.phase==='done')return;
   if(SE.phase==='dl'){toast('Close the trade deadline first.');return}
   if(SE.phase==='post'){if(sePoNeedSet()){UI.seView='post';toast('Set your playoff roster first.');return}sePost(mode)}
   else{let n=0;while(SE.phase==='reg'){if(SE.day===SE.dl&&!SE.dlDone){seDeadline();break}
-      const g=seMineG(SE.day);seSimDay();n++;
+      const g=seMineG(SE.day);seSimDay();n++;if(SE.stopInj!==0&&seNewInj().length)break;
       if(mode==='game'?!!g:mode==='series'?g&&g[2]===g[3]:mode==='2w'?n>=14:mode==='month'?n>=30:false)break}
     if(SE.phase!=='post')seOdds()}
   seSave();save()}
@@ -3714,8 +3736,10 @@ function seAct(a,id){switch(a){
   case 'se-fauto':SE.mauto=+id;seSave();seRender();return;
   case 'se-fsort':if(UI.fmS===id)UI.fmD=-(UI.fmD||({era:1,whip:1,age:1}[id]?1:-1));else{UI.fmS=id;UI.fmD=0}seRender();return;
   case 'se-stv':UI.seStV=id;seRender();return;
-  case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');return;
-  case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';else if(sePoNeedSet())UI.seView='post';render();if(sePoNeedSet())window.scrollTo(0,0);return;
+  case 'se-start':seStart(+$('#seLen').value);UI.seView='home';render();toast('Opening Day. Play ball.');try{seInjAlert()}catch(e){}/* who starts the year on the injured list */return;
+  case 'se-sim':seSim(id);if(SE.phase==='done')UI.seView='report';else if(sePoNeedSet())UI.seView='post';render();if(sePoNeedSet())window.scrollTo(0,0);try{seInjAlert()}catch(e){}return;
+  case 'se-il60':if(canIL60(id)){doIL(id);closeModal();seRender();if(seNewInj().length)seInjAlert()}return;
+  case 'se-injroster':closeModal();goFront('roster');return;
   case 'se-poedit':UI.poEdit=!UI.poEdit;render();return;
   case 'se-poset':if(SE.po){const m=sePoMy();if(m&&m.ros.length>PO_MAX){toast(`Your playoff roster has ${m.ros.length}. Take ${m.ros.length-PO_MAX} off first.`);return}if(m&&m.ros.filter(y=>P[y].p).length>PO_PIT){toast(`MLB allows ${PO_PIT} pitchers on a playoff roster. You have ${m.ros.filter(y=>P[y].p).length}.`);return}SE.po.ok=SE.po.rd;SE.po.gs={};UI.poEdit=false;UI.poRos=false;seSave();render();toast('Roster set. Play ball.')}return;
   case 'se-porosed':UI.poRos=!UI.poRos;render();return;
@@ -3906,7 +3930,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127195153';
+const BUILD='20261127221151';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -4018,6 +4042,7 @@ function openDrawer(id){_drw=id;
   const acts=[];
   if(mets){
     if(st==='40'){acts.push(`<button class="btn" data-act="outright" data-id="${id}">Outright / option off 40</button>`)}
+    if(canIL60(id))acts.push(`<button class="btn" data-act="il" data-id="${id}" title="Takes him off the 40-man count so you can add a player in his place">Move to 60-day IL (opens a 40-man spot)</button>`);
     if(st==='IL60')acts.push(`<button class="btn" data-act="activate" data-id="${id}">Activate to 40</button>`);
     if(st==='MiLB')acts.push(`<button class="btn primary" data-act="select" data-id="${id}">Add to 40-man</button>`);
     acts.push(`<button class="btn" data-act="place" data-id="${id}">Place in a slot</button>`);
