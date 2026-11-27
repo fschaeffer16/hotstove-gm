@@ -1920,12 +1920,12 @@ const gmWhy=(id,code)=>{const p=P[id];if(established(id)){const f=fillsNeed(id,c
    choice), money. Each has a key; gmTurn says only what has not been said yet in this conversation and, when everything is on the table, sums the options up
    in one line. Nothing here is canned: every sentence comes from evalTrade on a real variation of the offer. */
 function gmPaths(code,outSel,inSel,cashM,E0,skip){skip=skip||{};const nm=id=>sn(id),join=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'',out=[],_na=NEED_AFTER;
-  try{const V=(o,i)=>{try{return evalTrade(code,o,i,cashM).verdict}catch(e){return ''}};
+  try{const V=(o,i)=>{const l0=_lite,x0=_liteX;_lite=true;_liteX=E0.X||null;try{return evalTrade(code,o,i,cashM).verdict}catch(e){return ''}finally{_lite=l0;_liteX=x0}};
     const rec=(E0.rec||[]).filter(x=>P[x.id]).slice().sort((a,b)=>b.g-a.g),giv=(E0.giv||[]).filter(x=>P[x.id]).slice().sort((a,b)=>b.g-a.g);
     const role=x=>{const l=x.label||'a piece';return (/^[aeiou]/i.test(l)?'an ':'a ')+l},rent=id=>established(id)&&ctrl(id).length<=1?' on a one-year deal':'';
     if(rec.length&&giv.length){const top=rec.slice(0,3).map(x=>`${nm(x.id)} as ${role(x)}${rent(x.id)}`),rest=rec.slice(3);
       const mine=giv.map(x=>`${nm(x.id)} (${role(x).replace(/^an? /,'')}${established(x.id)?': '+gmDesc(x.id):''})`),ratio=E0.need>0?E0.recv/E0.need:1;
-      out.push({k:'read',t:`Here is how I read your offer. I have ${join(top)}${rest.length?`, with ${join(rest.map(x=>nm(x.id)))} as depth`:''}. You are asking us for ${join(mine)}. ${!E0.headOK?`${nm(giv[0].id)} is the best player in the deal, and nobody coming back is in his class. `:''}${ratio>=.9?'On talent we are close.':ratio>=.65?'On talent we are one real piece apart.':'On talent we are a long way apart: quantity is not the problem, the quality at the top is.'}`})}
+      out.push({k:'read',t:`Here is how I read your offer. I have ${join(top)}${rest.length?`, with ${join(rest.map(x=>nm(x.id)))} as depth`:''}. You are asking us for ${join(mine)}. ${E0.walk?`${nm(giv[0].id)} is a free agent after the season, so I am not holding out for one player as good as he is. I would rather turn him into several good players now than watch him walk for nothing, and what matters is what your side adds up to. ${!E0.headOK?'It does need one real piece at the front of it, though, and I do not see that piece yet. ':''}`:!E0.headOK?`${nm(giv[0].id)} is the best player in the deal, and nobody coming back is in his class. `:''}${E0.walk?(ratio>=.9?'It nearly adds up already.':ratio>=.65?'It adds up to most of it: one more good piece does it.':'Right now it does not add up to enough, even counting every piece.'):(ratio>=.9?'On talent we are close.':ratio>=.65?'On talent we are one real piece apart.':'On talent we are a long way apart: quantity is not the problem, the quality at the top is.')}`})}
     const cv=gmCover(code,outSel,inSel);if(cv.text&&(cv.covered||cv.opened.length))out.push({k:'cover',t:cv.text.trim()});
     NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};
     /* a smaller deal for the one player he wants most: the GM names the pieces he likes and hands the rest back */
@@ -1951,7 +1951,7 @@ function gmPaths(code,outSel,inSel,cashM,E0,skip){skip=skip||{};const nm=id=>sn(
         for(const id of outSel.slice().sort((x,y)=>gradeTo(x,code,true).g-gradeTo(y,code,true).g)){const tr=keep.filter(i=>i!==id);if(tr.length&&V(tr,inSel)==='accept')keep=tr}
         if(keep.length<outSel.length+1&&(!bestF||keep.length<bestF.keep.length))bestF={a,keep}}
       if(bestF){const back=outSel.filter(i=>!bestF.keep.includes(i));out.push({k:'fewer:'+bestF.a.id,s:`${join(bestF.keep.map(nm))} for ${join(inSel.map(nm))}`,t:`I would rather have ${bestF.keep.length===1?'one player I really want':bestF.keep.length+' players I really want'} than ${outSel.length+1} I only like. ${join(bestF.keep.map(nm))} for ${join(inSel.map(nm))}, and you keep ${join(back.map(nm))}. ${nm(bestF.a.id)} is the piece that makes it work: ${gmWhy(bestF.a.id,code)}.`})}
-      else out.push({k:'whymany',d:1,t:`It takes this many because none of them is a front-line piece for us: ${nm(giv[0].id)} is the best player in the deal by a distance. One better player would replace several of these.`})}
+      else out.push({k:'whymany',d:1,t:E0.walk?`With ${nm(giv[0].id)} a year from free agency I am happy to take several players for him. Every one of these counts, and it still needs the one more.`:`It takes this many because none of them is a front-line piece for us: ${nm(giv[0].id)} is the best player in the deal by a distance. One better player would replace several of these.`})}
     if(!ok.length&&E0.add2&&E0.add2.a&&E0.add2.b&&!skip[E0.add2.a.id]&&!skip[E0.add2.b.id])out.push({k:'pair:'+E0.add2.a.id+E0.add2.b.id,s:`add ${nm(E0.add2.a.id)} and ${nm(E0.add2.b.id)}`,t:`Two pieces would do what one cannot: add ${nm(E0.add2.a.id)} and ${nm(E0.add2.b.id)} and I would do it.`});
     if(E0.eat){const M0=v=>'$'+Math.round(v/1e6)+'M';out.push({k:'eat',s:`pay down ${M0(E0.eat.m*1e6)} on ${nm(E0.eat.id)}`,t:`Money can do part of the work. ${nm(E0.eat.id)} is owed ${M0(E0.eat.rem)}, which is more than he gives us: pay down ${M0(E0.eat.m*1e6)} of it (put it in the cash box) and I would say yes.`})}
     /* then, piece by piece, why each of the user's players grades the way it does for this club */
@@ -2153,8 +2153,11 @@ function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(i
   if(rk===1&&hsGrade(id)>=58&&(prof(code).pros==='hoard'||c.win==='ascend'||c.win==='rebuild'))return 'their top prospect';
   return ''}
 /* a weighted package: the best piece counts fully, extra pieces count for less (quantity can't buy quality) */
-function pkg(list){const pos=list.filter(x=>x.pts>0).sort((a,b)=>b.pts-a.pts),neg=list.filter(x=>x.pts<=0);const w=[1,.55,.35,.22,.15,.1];
-  return pos.reduce((s,x,i)=>s+x.pts*(w[i]??.08),0)+neg.reduce((s,x)=>s+x.pts,0)}
+function pkg(list,w0){const pos=list.filter(x=>x.pts>0).sort((a,b)=>b.pts-a.pts),neg=list.filter(x=>x.pts<=0);const w=[1,.55,.35,.22,.15,.1];
+  /* w0 = the flatter walk-year weights: they apply to real pieces only (graded 45+). Depth pieces never add up to a good player (checked 11/27: four
+     depth prospects were landing a walk-year starter). */
+  /* and depth does not stack: after the lead piece, a player graded under 44 counts for very little, however many of them there are */
+  return pos.reduce((s,x,i)=>s+x.pts*(i>0&&x.g!=null&&x.g<44?Math.min(.12,w[i]??.08):((w0&&(x.g==null||x.g>=45)?w0[i]:w[i])??.08)),0)+neg.reduce((s,x)=>s+x.pts,0)}
 /* kept for older callers: v = package points */
 function valueTo(id,code,incoming){const r=gradeTo(id,code,incoming);return {v:r.pts,notes:r.notes,g:r.g,label:r.label}}
 function sumW(vals){return pkg(vals.map(v=>({pts:v})))}
@@ -2212,6 +2215,7 @@ function faConsent(id,to){const from=owner(id),rk={allin:4,contend:3,ascend:2,re
   if(b>=3&&b>a)return {ok:true,why:`${n} signed as a free agent this winter, so he has to approve any trade before June 15. He would: the ${tnm(to)} give him a better chance to win.`};
   if(b>a&&established(id)&&(fillsNeed(id,to)>0||wantsGrp(to,pgrp(id)))&&!(fillsNeed(id,from)>0))return {ok:true,why:`${n} signed as a free agent this winter, so he has to approve any trade before June 15. He would: the ${tnm(to)} need ${WANT_TXT[pgrp(id)]||'him'} and he would have a bigger role there.`};
   return {ok:false,why:`${n} signed as a free agent this winter, so he can't be traded before June 15 without his written consent, and he will not give it: he chose the ${tnm(from)}${b<a?', and the '+tnm(to)+' are further from winning':''}.`}}
+let _lite=false,_liteX=null;/* a quick yes / counter / no for the GM's what-if checks: skips working out the ask and the money options */
 function evalTrade(code,outSel,inSel,cashM){
   const c=ctx(code),R={code,ctx:c,reasons:[],locked:[],checks:[]};
   R.lockWhy=[];R.consent=[];for(const id of [...outSel,...inSel])if(lockedFA(id)){const k=faConsent(id,outSel.includes(id)?code:ME);if(k.ok)R.consent.push(k.why);else{R.locked.push(P[id].n);R.lockWhy.push(k.why)}}
@@ -2229,7 +2233,7 @@ function evalTrade(code,outSel,inSel,cashM){
         else x.notes.unshift(`they would like out of his contract (${M1(o.d.rem)} left), but you are sending back about as much money`)}
       /* in a real dump they have already agreed to eat some salary coming back: those contracts are not held against the players twice */
       if(full)for(const x of rec)if(established(x.id))x.pts=Math.max(x.pts,.25*gpts(x.g))}}
-  const X=tradeExtras(code,outSel,inSel,cashM);R.X=X;R.ruleErrs=X.errs;
+  const X=_lite&&_liteX?_liteX:tradeExtras(code,outSel,inSel,cashM);R.X=X;R.ruleErrs=X.errs;
   /* picks and pool money as pieces: a Competitive Balance pick is about a 45-50 prospect; pool money is small change */
   const pickPiece=p=>({pts:gpts(p.no<=40?49:p.no<=75?46:43),g:p.no<=40?49:p.no<=75?46:43});
   const recX=[...X.picksOut.map(pickPiece)],givX=[...X.picksIn.map(pickPiece)];
@@ -2237,7 +2241,13 @@ function evalTrade(code,outSel,inSel,cashM){
   /* cash pays down salary: it only helps when there is salary to cover, and matters more to small budgets */
   const cashPts=cashM*({small:.25,mid:.18,big:.1}[c.mkt]);
   const all=[...rec,...recX];const allG=[...giv,...givX];
-  R.recv=pkg(all)+Math.max(0,cashPts);R.give=pkg(allG)+Math.max(0,-cashPts);
+  /* WALK YEAR (owner, 11/27: "players who are in their final season before free agency will be traded for multiple prospects rather than losing them at the
+     end of the year for nothing. So WAR or 'those players aren't as good as this one' is a stupid argument"). When the best player the club is giving up is a
+     year from free agency, it is not looking for one player as good as he is: the headliner test is off, and several good pieces add up far more than they do
+     for a controllable star (flatter package weights). The total still has to be there. */
+  const _hO=giv.concat(givX).filter(x=>x.pts>0&&!x.dump).reduce((m,x)=>x.g>m.g?x:m,{g:0});
+  R.walk=!!(_hO.id&&P[_hO.id]&&established(_hO.id)&&ctrl(_hO.id).length<=1);const PW=R.walk?[1,.85,.7,.55,.42,.3]:undefined;
+  R.recv=pkg(all,PW)+Math.max(0,cashPts);R.give=pkg(allG)+Math.max(0,-cashPts);
   {const tk=talkFor(code,outSel,inSel,cashM);if(tk&&tk.bonus&&R.recv>0){R.recv*=1+tk.bonus;R.talk=tk.bonus}}/* the user made his case to the GM (gmReply); never touches rules, payroll, untouchables or the headliner test */
   /* headliners: the best real asset on each side (a contract they're dumping is not a headliner) */
   const hIn=rec.concat(recX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0}),hOut=giv.concat(givX).filter(x=>x.pts>0&&!x.dump).reduce((m,x)=>x.g>m.g?x:m,{g:0});
@@ -2259,7 +2269,7 @@ function evalTrade(code,outSel,inSel,cashM){
   /* a club trying to win now will give a top prospect for a star: the headliner test is looser when a prospect goes out and an established 60+ player comes back */
   const starBack=hOut.id&&hIn.id&&!established(hOut.id)&&established(hIn.id)&&hIn.g>=60;
   const slack=((c.win==='rebuild'||c.win==='ascend'||c.win==='retool')&&rec.length>=2?6:4)+(starBack?(c.win==='allin'?4:c.win==='contend'?2:0):0);
-  R.headOK=!hOut.g?true:hIn.g>=hOut.g-slack;
+  R.headOK=!hOut.g?true:R.walk?hIn.g>=hOut.g-10:hIn.g>=hOut.g-slack;/* walk year: no need for a player in his class, but one real piece has to lead the return */
   const prem=prof(code).pros==='hoard'?.12:c.win==='rebuild'?.0:.06;
   R.ratio=R.give>0?R.recv/R.give:(R.recv>0||R.give<0?9:0);R.need=R.give>0?R.give*(1+prem):R.give;
   R.pkgOK=R.recv>=R.need&&(R.recv>0||R.give<0);
@@ -2267,7 +2277,7 @@ function evalTrade(code,outSel,inSel,cashM){
   R.dumpAsset=!R.dump.length||!R.dumpFull||R.dumpShare<=.2||rec.concat(recX).some(x=>x.g>=45);if(!R.dumpAsset)R.pkgOK=false;else if(R.dump.length&&R.dumpFull&&R.dumpShare<=.2&&!R.pkgOK&&R.recv>=0)R.pkgOK=true;/* the more of the money you take, the less talent they ask for: take 80%+ of it and they need nothing real back */
   R.checks=[
     ...(R.bigK?[['Contract size they will take on',false]]:[]),
-    ['Headliner measures up',R.headOK],
+    ...(R.walk?[['Walk year: several good players can add up',true],['One real piece leads the return',R.headOK]]:[['Headliner measures up',R.headOK]]),
     ...(winNow&&mlbOut.length?[['Big-league help back',!R.needMLB]]:[]),
     ...(untouch.length?[['No untouchables',!R.untouch.length]]:[]),
     ...(R.dump.length&&R.dumpShare<=.7?[['Gets them out of the contract',!!R.dumpFull]]:[]),
@@ -2278,10 +2288,10 @@ function evalTrade(code,outSel,inSel,cashM){
   else if(R.ratio>=.75&&hIn.g>=hOut.g-slack-4)R.verdict='counter';
   else R.verdict='reject';
   /* what would get it done: name players from your system, the way a GM asks */
-  if(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length)){const _na=NEED_AFTER;NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};try{
+  if(!_lite&&(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length))){const _na=NEED_AFTER;NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};try{
     const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id,code)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
     const mlbPool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id,code)&&established(id)&&P[id].proj.war>=1.5).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
-    const works=extra=>{const r2=pkg([...all,...extra]);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-slack};
+    const works=extra=>{const r2=pkg([...all,...extra],PW);const h=Math.max(hIn.g,...extra.map(e=>e.g));return r2>=R.need&&h>=hOut.g-(R.walk?10:slack)};
     const src=R.needMLB?mlbPool:pool;src.sort((a,b)=>a.pts-b.pts);
     R.add=src.find(x=>works([x]))||null;
     if(R.add&&!_eatProbe){/* cost is judged by talent grade, so a star on a big contract is never the "cheap" ask */
@@ -2297,7 +2307,7 @@ function evalTrade(code,outSel,inSel,cashM){
     R.drop=tryDrop||null}finally{NEED_AFTER=_na}}
   /* eating salary (owner, 11/22: real GM logic): when the user is sending a contract the club sees as more money than production,
      find the smallest amount he could pay down (in $2M steps, then $5M, up to 80% of what is owed) that turns the answer into a yes. */
-  if(R.verdict!=='accept'&&R.verdict!=='locked'&&!R.untouch.length&&!_eatProbe){const pay=rec.filter(x=>established(x.id)&&x.burden>.3&&remGuar(x.id)>=8e6).sort((a,b)=>b.burden-a.burden)[0];
+  if(!_lite&&R.verdict!=='accept'&&R.verdict!=='locked'&&!R.untouch.length&&!_eatProbe){const pay=rec.filter(x=>established(x.id)&&x.burden>.3&&remGuar(x.id)>=8e6).sort((a,b)=>b.burden-a.burden)[0];
     if(pay){const max=Math.floor(remGuar(pay.id)*.8/1e6);_eatProbe=1;try{
       /* when the user's own bad contract is what sinks the offer, say so: would it work, or be close, without him? */
       if(outSel.length>1){const v=evalTrade(code,outSel.filter(x=>x!==pay.id),inSel,cashM).verdict;if(v==='accept'||(v==='counter'&&R.verdict==='reject'))R.pull={id:pay.id,v,rem:remGuar(pay.id)}}
@@ -3673,7 +3683,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127045928';
+const BUILD='20261127052533';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
