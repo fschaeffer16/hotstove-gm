@@ -1,6 +1,15 @@
 {
  "items": [
   {
+   "title": "MLBTR Live Chat",
+   "blurb": "Click here to submit questions and follow along with tonight&#8217;s live baseball chat",
+   "link": "https://www.mlbtraderumors.com/2026/11/mlbtr-live-chat-928.html",
+   "time": "2026-11-27T00:48:39Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": []
+  },
+  {
    "title": "White Sox Have Yet To Discuss Extension With Miguel Vargas",
    "blurb": "Miguel Vargas delivered an All-Star season just before becoming arbitration eligible, and MLBTR contributor Matt Swartz projected a healthy $5.4MM salary for the infielder&#8217;s first trip through the arb process. This lines Vargas up for even larger paydays in his following two years of arb-eligi",
    "link": "https://www.mlbtraderumors.com/2026/11/white-sox-have-yet-to-discuss-extension-with-miguel-vargas.html",
@@ -3228,19 +3237,7 @@
    "teams": [
     "TOR"
    ]
-  },
-  {
-   "title": "Toronto Blue Jays claimed SS Christian Cairo off waivers from Los Angeles Dodgers.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-19T21:20:23Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "TOR",
-    "LAD"
-   ]
   }
  ],
- "updated": "2026-11-27T00:08:12Z"
+ "updated": "2026-11-27T00:58:22Z"
 }
