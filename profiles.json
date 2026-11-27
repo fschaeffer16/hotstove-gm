@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22",
+ "updated": "2026-11-27",
  "about": "Player value profiles for Hot Stove GM. One entry per player whose value needs more than the projection and recent results give it: 'war' replaces his on-field value (wins), 'adj' moves his trade grade (-6..+6) for market demand, 'note' is one short line the GM can say, 'src' is where it comes from. Add entries as news and stats come in; never guess.",
  "players": {
   "Shohei Ohtani": {
@@ -11,6 +11,18 @@
    "adj": 1,
    "note": "the most sought-after reliever on the market",
    "src": "Owner note, Nov. 22, 2026"
+  },
+  "Jacob Reimer": {
+   "adj": 3,
+   "note": "he was hurt for part of 2026 and hit the way he had in 2025 once he was healthy",
+   "src": "owner note (11/27/2026)",
+   "owner": true
+  },
+  "Jonah Tong": {
+   "adj": 2,
+   "note": "the 2025 minor-league pitcher of the year; he spent 2026 learning new pitches, then finished well in Triple-A and in the majors",
+   "src": "owner note (11/27/2026)",
+   "owner": true
   }
  }
 }

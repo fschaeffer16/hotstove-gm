@@ -394,12 +394,16 @@
     "RP"
    ],
    "shedding": true,
-   "note": "Finished 65-97, but Posey says the core can turn it around quickly; wants a starter, a closer and a left-handed reliever. Reported to want out of at least one of its huge contracts (Devers, Adames, Chapman).",
+   "note": "Finished 65-97, but Posey says the core can turn it around quickly; wants a starter, a closer and a left-handed reliever. Reported to want out of at least one of its huge contracts (Devers, Adames, Chapman). Collecting young arms: look at what they took back at the 2026 deadline (owner note, 11/27).",
    "win": "retool",
    "src": [
     "https://www.si.com/mlb/giants/onsi/giants-reportedly-want-to-shed-a-big-contract-putting-211-million-star-in-focus",
     "https://www.mlb.com/news/questions-facing-giants-in-2026-27-offseason"
-   ]
+   ],
+   "collect": [
+    "SP"
+   ],
+   "owner": true
   },
   "LAA": {
    "note": "Direction undecided: the club is being sold, and no GM or manager will be hired until the sale is approved. Needs a catcher, a center fielder, left-handed bats and bullpen help.",
