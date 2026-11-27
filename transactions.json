@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26",
+ "updated": "2026-11-27",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -4075,9 +4075,19 @@
    "pos": "LHP",
    "status": "reported",
    "src": "https://www.mlbtraderumors.com/2026/11/nationals-to-sign-tom-cosgrove-to-minor-league-deal.html"
+  },
+  {
+   "date": "2026-11-27",
+   "type": "sign_minor",
+   "summary": "Rangers To Sign Joe Jiménez To Minor League Deal",
+   "name": "Joe Jiménez",
+   "team": "TEX",
+   "pos": "RP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rangers-to-sign-joe-jimenez-to-minor-league-deal.html",
+   "status": "reported"
   }
  ],
- "live": "2026-11-26T05:34:41Z",
+ "live": "2026-11-27T15:41:03Z",
  "seen_sids": [
   950119,
   950220,
