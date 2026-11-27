@@ -1293,8 +1293,20 @@ function prospectValue(id,code,notes){
   if(g==='SP')v*=.82;else if(g==='RP'){v*=.55;notes.push('reliever prospect')}
   let mult={AAA:1.15,AA:1.05,'A+':1,A:.92,Rk:.85,DSL:.85,CPX:.85,MLB:1.15}[p.lvl]||1;
   const st=p.st;
-  if(st&&st.pa>=150){let a=Math.max(-.2,Math.min(.25,(st.wrc-100)/250));if(st.k>=30)a-=.1;mult*=1+a;notes.push(`2026: ${st.wrc} wRC+, ${st.k}% K in ${st.pa} PA`)}
-  else if(st&&st.ip>=40){const a=Math.max(-.2,Math.min(.2,(st.kbb-14)/60));mult*=1+a;notes.push(`2026: ${st.kbb}% K-BB, ${st.xfip!=null?st.xfip+' xFIP':st.era+' ERA'} in ${st.ip} IP`)}
+  /* A prospect is not his last season (owner, 11/27: "prospects are judged off their numbers from the previous year with no regard for their prior
+     performance or whether they had injuries or just struggled to adjust"). The stat read blends 2026 with the season before: a full 2026 counts 1, the year
+     before 0.7 (two years back 0.45), and a 2026 cut short (under 400 PA, or under 90 innings for a starter) counts 0.6, because a short year is an
+     injury or an adjustment far more often than it is who he is. */
+  let prH=null;if(!p.p&&p.mh){let pa=0,w=0;for(const k in p.mh){const a=p.mh[k]['2025'];if(a&&a[0]>=50){pa+=a[0];w+=a[0]*a[1]}}if(pa>=200)prH=[pa,Math.round(w/pa)]}
+  const prP=p.p&&p.mph?(p.mph[2025]&&p.mph[2025][0]>=60?[p.mph[2025],2025,.7]:p.mph[2024]&&p.mph[2024][0]>=60?[p.mph[2024],2024,.45]:null):null;
+  if(st&&st.pa>=150){let wrc=st.wrc;const short=st.pa<400;
+    if(prH){const w26=(short?.6:1)*st.pa,w25=.7*prH[0];wrc=(st.wrc*w26+prH[1]*w25)/(w26+w25)}
+    let a=Math.max(-.2,Math.min(.25,(wrc-100)/250));if(st.k>=30)a-=.1;mult*=1+a;
+    notes.push(prH&&Math.abs(prH[1]-st.wrc)>=12?`two-year read: ${prH[1]} wRC+ in ${prH[0]} PA in 2025, ${st.wrc} in ${st.pa} PA in 2026${short?' (a short season)':''}`:`2026: ${st.wrc} wRC+, ${st.k}% K in ${st.pa} PA`)}
+  else if(st&&st.ip>=40){let kbb=st.kbb;const short=g==='SP'&&st.ip<90;
+    if(prP){const h=prP[0],w26=(short?.6:1)*st.ip,w25=prP[2]*h[0];kbb=(st.kbb*w26+(h[1]-h[2])*w25)/(w26+w25)}
+    const a=Math.max(-.2,Math.min(.2,(kbb-14)/60));mult*=1+a;
+    notes.push(prP&&Math.abs((prP[0][1]-prP[0][2])-st.kbb)>=5?`two-year read: ${(prP[0][1]-prP[0][2]).toFixed(1)}% strikeouts minus walks in ${prP[1]}, ${st.kbb}% in 2026${short?' (a short season)':''}`:`2026: ${st.kbb}% K-BB, ${st.xfip!=null?st.xfip+' xFIP':st.era+' ERA'} in ${st.ip} IP`)}
   /* a pitching prospect's fastball: measured velocity where his park is tracked. Arm strength is the first thing clubs pay for. */
   {const m=p.mp;if(m&&p.p&&m[5]){if(m[5]>=96.5){mult*=1.04;notes.push(`fastball averages ${m[5]} mph`)}else if(m[5]<=90.5&&g==='SP'){mult*=.95;notes.push(`fastball averages only ${m[5]} mph`)}}}
   /* Triple-A swing decisions (tracked pitch by pitch there): contact and chase rates carry to the majors better than a slash line does */
@@ -1658,6 +1670,13 @@ function valW(id){if(_vw[id])return _vw[id];const p=P[id],pj=p.proj||{},proj=pj.
     if(a&&a.inf&&/^(SS|3B)$/.test(pp)){const q=a.inf[1]/a.inf[2],t=a.inf[0].toFixed(1)+' mph';if(q<=.1)add(.1,`a strong arm on the left side of the infield (${t})`);else if(q>=.9)add(-.1,`a light arm for the left side of the infield (${t})`)}
     if(d.rng){const r=d.rng;if(r[0]>=15&&!sgn('Glove by season',/: \+/))add(.2,`elite range at ${r[1]} (+${r[0]} outs above average)`);else if(r[0]<=-10&&!sgn('Glove by season',/: -/))add(-.2,`limited range at ${r[1]} (${r[0]} outs above average)`)}
     m=Math.max(-.35,Math.min(.35,m));if(m){w+=m;parts.push(['Tools on defense',`${why.join('; ')}: ${m>0?'+':''}${m.toFixed(2)}`]);for(const t of why)notes.push(t)}}}
+  /* A young player with little big-league time is still mostly his minor-league record (owner, 11/27: Tong was the minor-league pitcher of the year, spent
+     2026 learning new pitches, and finished well). The projection leans on the latest season, so what he did before it is put back in. */
+  {const car=pj.car||[0,0],age=p.age||30;
+    if(p.p&&age<=25.5&&(car[1]||0)<100&&p.mph){const h=(p.mph[2025]&&p.mph[2025][0]>=80&&p.mph[2025])||(p.mph[2024]&&p.mph[2024][0]>=80&&p.mph[2024]),yr=h&&h===p.mph[2025]?2025:2024;
+      if(h&&h[1]-h[2]>=22&&h[3]<=3.3){const m=h[1]-h[2]>=26?.6:.45;w+=m;parts.push(['Minor-league record',`dominated the minors in ${yr} (${h[1]}% strikeouts, ${h[2]}% walks, ${h[3].toFixed(2)} FIP over ${Math.round(h[0])} innings): +${m.toFixed(2)}`]);notes.push(`he dominated the minors in ${yr}, and one uneven year since does not erase that`)}}
+    else if(!p.p&&age<=25.5&&(car[0]||0)<350&&p.mh){let pa=0,ww=0;for(const k in p.mh)for(const y of ['2025','2024']){const a=p.mh[k][y];if(a&&a[0]>=80&&(k==='aaa'||k==='aa')){pa+=a[0];ww+=a[0]*a[1]}}
+      if(pa>=300&&ww/pa>=135){w+=.4;parts.push(['Minor-league record',`hit in the upper minors in 2024-25 (${Math.round(ww/pa)} wRC+ over ${pa} PA): +0.40`]);notes.push('he hit all the way up the ladder')}}}
   const M_=profOf(id);if(M_&&M_.war!=null){w=+M_.war;parts.push(['Profile correction',`${(+M_.war).toFixed(1)} WAR${M_.note?': '+M_.note:''}`]);if(M_.note)notes.push(M_.note)}
   const od=SN&&SN.od&&SN.od[id];let hf=1;if(od&&od.ret>=150){hf=.15;parts.push(['Health',`${od.what||'injured'}: expected to miss 2027`]);notes.push('he is expected to miss the 2027 season')}
     else if(od&&od.ret>=45){hf=Math.max(.5,1-od.ret/200);parts.push(['Health',`${od.what||'injured'}: out to start 2027`]);notes.push('he opens 2027 on the injured list')}
@@ -1683,7 +1702,7 @@ function gradeTo(id,code,incoming){
   if(established(id)){
     const cy=ctrl(id).length,V=valW(id),w=valFor(id,cy);
     g=40+5*w;let rv=null;if(gp==='RP'){rv=reliefVal(id);g=Math.min(64,40+5*rv.w*(V.hf<1?valFor(id,cy)/Math.max(.1,V.w):1))}if(rv&&rv.role==='closer'){const fl=rv.strong||rv.elite?54:51;if(g<fl){g=fl;notes.push('a closer: he has the ninth inning')}}g+=V.adj;var raw=g;
-    notes.push(`${gmDesc(id)}; ${cy} year${cy===1?'':'s'} of control`);if(rv&&rv.note)notes.push(rv.note);for(const n of V.notes)notes.push(n);
+    notes.push(`${gmDesc(id)}; ${cy} year${cy===1?'':'s'} of control`);{const col=teamIntel(code).collect;if(incoming&&col&&col.includes(gp)&&(p.age||30)<=25.5&&cy>=4){g+=2;notes.push(gp==='SP'?'they have been collecting young arms':`they have been collecting young ${WANT_TXT[gp]||gp}`)}}if(rv&&rv.note)notes.push(rv.note);for(const n of V.notes)notes.push(n);
     if(cy<=1&&incoming&&SE&&SE.win&&(win==='allin'||win==='contend')){g+=1;notes.push('deadline: a contender pays up for help right now')}/* season sim, deadline day: buyers pay more for rentals */
     else if(cy<=1){g-=win==='allin'?2:win==='contend'?3:4;notes.push(incoming?(win==='allin'?'a rental, fine for a team going for it':'only a rental'):'one year from free agency')}
     else if(cy===2)g-=2;else if(cy>=5&&age<=29)g+=2;
@@ -1749,11 +1768,13 @@ function gradeTo(id,code,incoming){
       if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
       else if(jam>=2&&!ahead&&gp!=='SP'&&gp!=='RP'){g-=1;notes.push(`${jam} other good ${gp} prospects in the org, and they cannot all play there`)}
     }
+    {const M_=profOf(id);if(M_&&M_.adj){g+=Math.max(-6,Math.min(6,+M_.adj));if(M_.note)notes.push(M_.note)}}/* a profile note (injury, an adjustment year) moves a prospect's grade the same way it moves a big leaguer's */
+    {const col=teamIntel(code).collect;if(incoming&&col&&col.includes(gp)&&(p.age||30)<=25.5){g+=2;notes.push(gp==='SP'?'they have been collecting young arms':`they have been collecting young ${WANT_TXT[gp]||gp}`)}}
   }else{g=p.proj?Math.min(42,38+2*Math.max(0,p.proj.war)):36;notes.push('organizational depth')}
   g=Math.max(20,Math.min(80,g));
   /* owner, 11/22: a player who has never played in the majors is not worth more than a star to a club trying to win. All-in clubs cap any prospect at 60, contenders at 63. */
   if(!established(id)&&p.fv&&(win==='allin'||win==='contend')){const cap=win==='allin'?60:63;if(g>cap){g=cap;notes.push('however good, he has not done it in the majors, and this club is trying to win now')}}
-  return {g,pts:gpts(g)-burden,burden,label:ROLE(id,established(id)?Math.max(raw,p.fv&&age<=25?hsGrade(id):0):(p.fv?hsGrade(id):g)),notes}}
+  return {g,pts:gpts(g)-burden,burden,label:ROLE(id,established(id)?Math.max(raw,p.fv&&age<=25?hsGrade(id):0):(p.fv?hsGrade(id)+Math.max(-6,Math.min(6,+((profOf(id)||{}).adj||0))):g)),notes}}
 /* ===== Scouting card and side-by-side comparison (trade screen) ===== */
 const PITCHN={FA:'4-seam',FT:'2-seam',FC:'cutter',FS:'splitter',FO:'forkball',SI:'sinker',SL:'slider',CU:'curve',KC:'knuckle curve',EP:'eephus',CH:'changeup',SC:'screwball',KN:'knuckleball'};
 const pct=(x,d)=>x==null?'–':(x*100).toFixed(d||0)+'%';
@@ -1976,7 +1997,7 @@ function gmSuggest0(code,outSel,inSel,cashM,E0,asked,skip){skip=skip||{};const n
   if(E0.bigK||E0.budget)return `It's not a player I'm missing, it's the money. ${E0.bigK?"We don't take on a contract that size":'This puts us past what ownership will spend'}. Take salary back or send cash and then we can talk names.`;
   if(!inSel.length)return `${want}Tell me who you want from us first, then I'll tell you what it costs.`;
   const why=id=>{const p=P[id];if(established(id)){const f=fillsNeed(id,code),gp=pgrp(id);return f>0?`he helps us at ${gp}, which we need (${gmDesc(id)}, ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control)`:wantsGrp(code,gp)?`we've been asking about ${WANT_TXT[gp]||gp}`:`we have him as ${/^[aeiou]/i.test(gradeTo(id,code,true).label)?'an':'a'} ${gradeTo(id,code,true).label}, ${gmDesc(id)}, with ${ctrl(id).length} year${ctrl(id).length===1?'':'s'} of control`}
-    const g=hsGrade(id);return `our scouts have him as a ${ROLE(id,g)}${top100(id)?', No. '+top100(id)+' in the game':''}`};
+    const g=hsGrade(id);return `our scouts have him as ${/^[aeiou]/i.test(ROLE(id,g))?'an':'a'} ${ROLE(id,g)}${top100(id)?', No. '+top100(id)+' in the game':''}`};
   const pool=roster(ME).filter(id=>!outSel.includes(id)&&P[id]&&!skip[id]&&!noAsk(id,code)&&(established(id)||P[id].fv)).map(id=>({id,g:gradeTo(id,code,true).g,f:established(id)?fillsNeed(id,code):0})).filter(x=>x.g>=38).sort((a,b)=>b.g-a.g).slice(0,45);
   /* a player the user asked about by name */
   if(asked&&asked.length){const id=asked[0],E=evalTrade(code,outSel.concat([id]),inSel,cashM);
@@ -2088,8 +2109,16 @@ function gmReply(text,code,outSel,inSel,cashM){
     if(m&&established(m)&&ctrl(m).length>=4&&(P[m].age||30)<=28)hit('ctrl',.03,`${ctrl(m).length} years of control on ${nm(m)} does matter to us. That's why we're still talking.`);
     else if(m&&established(m))hit('ctrlx',0,`${nm(m)} comes with ${ctrl(m).length} year${ctrl(m).length===1?'':'s'} of control. That is already in my math.`)}
   if(/salary|payroll|money|overpaid|expensive|afford|relief|dump|eat (the|his)|off your books|albatross/.test(tx)){const t=their(id=>gradeTo(id,code,false).burden);const b=t?gradeTo(t,code,false).burden:0;
-    if(t&&b>.5)hit('sal',.05,`Yes, moving ${nm(t)}'s contract helps us. ${M1(partnerCount(t))} a year is more than he gives us now.`);
+    const big=theirs.slice().sort((x,y)=>remGuar(y)-remGuar(x))[0],dp=big&&(dumpOf(big,code)||(intelOf(big)&&intelOf(big).dump)),net=inSel.reduce((q,id)=>q+remGuar(id),0)-outSel.reduce((q,id)=>q+remGuar(id),0)+cashM*1e6;
+    /* a contract the club is known to want out of: the money IS the point (owner, 11/27: the Giants GM said "Devers earns his money" about a deal that took $200M off his books) */
+    if(dp&&net>=3e7)hit('sal',.06,`You are right, and I will not pretend otherwise. ${nm(big)} is owed ${M0(remGuar(big))}, and getting out from under it is the reason we are on the phone. This takes about ${M0(net)} off our books, and that counts for a lot with me.`);
+    else if(dp)hit('sal',.02,`Getting out from under ${nm(big)}'s ${M0(remGuar(big))} is why we are talking, yes. But you are sending back ${M0(outSel.reduce((q,id)=>q+remGuar(id),0))} in contracts of your own, so the relief is ${net>0?'only about '+M0(net):'not really there'}.`);
+    else if(t&&b>.5)hit('sal',.05,`Yes, moving ${nm(t)}'s contract helps us. ${M1(partnerCount(t))} a year is more than he gives us now.`);
     else if(t)hit('salx',-.01,`${nm(t)} earns his money. I'm not paying you to take a good contract.`)}
+  /* conduct: checked against what is known about the player (intel.json problem / note), never waved away */
+  if(/clubhouse|attitude|headache|distraction|cancer|malcontent|disgruntled|unhappy|wants out|problem child|\bissues?\b|suspend|benched|no-?show|refus/.test(tx)){const t=named(theirs)[0]||theirs.find(id=>intelOf(id)&&intelOf(id).problem)||their(),it=t&&intelOf(t);
+    if(it&&it.problem)hit('prob',.05,`I am not going to argue that with you. ${nm(t)} has been hard on our clubhouse, and it is a big part of why he is available at all. It is also why I am not asking you for what his bat alone would be worth.`);
+    else if(t)hit('probx',0,`I have not seen that from ${nm(t)}, and I am around him every day. If there were a problem, I would not be asking this much for him.`)}
   /* age and decline of their player */
   if(/\bold\b|\bage\b|aging|declin|past his prime|slowing|washed|over the hill|on the way down|getting older|years old|\b3[2-9]\b/.test(tx)){const t=their(id=>(P[id].age||0)+(scout(id).trend===-1?5:0));
     if(t){const s=scout(t),ag=P[t].age||0;
@@ -2101,7 +2130,7 @@ function gmReply(text,code,outSel,inSel,cashM){
     if(m&&P[m].fv&&!established(m)){const g=hsGrade(m),real=top100(m)||g>=55;
       if(real&&!now)hit('up',.05,`Our scouts like ${nm(m)} too: a ${Math.round(g)} on our board${top100(m)?', No. '+top100(m)+' in the game':''}. That's the kind of player we're collecting.`);
       else if(real)hit('up',.01,`${nm(m)} might be very good in 2029. I need wins in 2027.`);
-      else hit('upx',-.01,`Our scouts have ${nm(m)} as a ${ROLE(m,g)}, a ${Math.round(g)}. That's not the piece that moves me.`)}
+      else hit('upx',-.01,`Our scouts have ${nm(m)} as ${/^[aeiou]/i.test(gradeTo(m,code,true).label)?'an':'a'} ${gradeTo(m,code,true).label}${(gradeTo(m,code,true).notes||[]).filter(n=>/two-year read|short season|hurt|injur|owner note/i.test(n)).slice(0,1).map(n=>' ('+n+')').join('')}. He helps, but he is not the piece that carries a deal this size.`)}
     else hit('upx',0,`I don't see a prospect in this offer for me to dream on.`)}
   /* how good is my big leaguer */
   if(!say.length&&/good|great|star|ace|elite|best|underrated|proven|\bwar\b|stats|numbers|hits?\b|\bops\b|\bera\b|production|breakout|improv/.test(tx)){const m=my(id=>established(id)?P[id].proj.war:0);
@@ -3683,7 +3712,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127052533';
+const BUILD='20261127073028';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
