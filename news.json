@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Sources: Blue Jays, Jazz Chisholm Jr. reach agreement on 1-year deal",
+   "blurb": "The Blue Jays and second baseman Jazz Chisholm Jr. are in agreement on a one-year contract with an option for a second year that guarantees him $34.5 million, sources told ESPN's Jeff Passan on Friday.",
+   "link": "https://www.espn.com/mlb/story/_/id/50614637/toronto-blue-jays-jazz-chisholm-jr-reach-1-year-deal",
+   "time": "2026-11-27T21:46:58Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "TOR"
+   ]
+  },
+  {
    "title": "Cubs finalize contracts with P Trevor Rogers, OF Teruaki Sato",
    "blurb": "The Cubs have finalized their contracts with left-hander Trevor Rogers and Japanese outfielder Teruaki Sato.",
    "link": "https://www.espn.com/mlb/story/_/id/50614117/cubs-finalize-deals-p-trevor-rogers-teruaki-sato",
@@ -3219,16 +3230,7 @@
    "teams": [
     "NYY"
    ]
-  },
-  {
-   "title": "MLB labor battle: Latest updates, full coverage on CBA, salary cap, more",
-   "blurb": "We tackle the toughest questions and burning issues as the owners and players negotiate on a new CBA.",
-   "link": "https://www.espn.com/mlb/story/_/id/49425027/mlb-labor-cba-owners-players-union-salary-cap-draft-proposals-mlbpa-negotiations-latest-updates",
-   "time": "2026-11-20T11:53:39Z",
-   "source": "ESPN",
-   "kind": "news",
-   "teams": []
   }
  ],
- "updated": "2026-11-27T21:22:25Z"
+ "updated": "2026-11-27T21:52:40Z"
 }
