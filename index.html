@@ -2765,6 +2765,10 @@ function injectExtra(){if(!MX||!D||!P)return 0;const have=new Set(Object.keys(P)
   for(const x of MX.players){const id='mx'+x[0];if(P[id]||have.has(nmz(x[1]))||!D.teams[x[3]]||twin(x))continue;
     P[id]={n:x[1],pos:x[2]||(x[8]?'RP':'?'),team:x[3],lvl:x[4],age:x[5],hand:x[8]?x[7]:x[6],p:!!x[8],mx:x[0],mxg:x[9],mxl:x[10]};
     (D.teams[x[3]].players=D.teams[x[3]].players||[]).push(id);if(x[3]===ME&&!BASE_METS.includes(id))BASE_METS.push(id);n++}
+  /* minor leaguers in the baseline who have since elected free agency or been released (MLB's transaction log, via build_milb.py):
+     off their club and onto the free-agent list, unless the user or a real move has already put them somewhere else */
+  for(const [nm,org] of MX.gone||[]){const id=Object.keys(P).find(i=>P[i].team===org&&P[i].kind==='min'&&nmz(P[i].n)===nmz(nm));
+    if(!id||S.team[id]!=null||(S.contract&&S.contract[id]))continue;try{dropFrom(id,org);toFA(id,org,false);n++}catch(e){}}
   return n}
 function loadExtra(){if(MX){if(injectExtra())render();return}fetch('milb_extra.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.players){MX=d;if(injectExtra())render()}}).catch(()=>{})}
 /* the minor-league record on a player's card, year by year and level by level (owner, 11/27), from milb.json (loaded when a card first asks for it).
@@ -3752,7 +3756,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127082818';
+const BUILD='20261127090834';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
