@@ -189,11 +189,12 @@
     "OF",
     "RP"
    ],
-   "note": "Won the NL East and returns its core; starting pitching is the clear top need, then shortstop, left field and the bullpen.",
+   "note": "Won the NL East and returns its core; starting pitching is the clear top need, then shortstop, left field and the bullpen. Needs one more starter; re-signing RHP Tyler Mahle looks like the priority (Mark Bowman, MLB.com, 11/27).",
    "win": "contend",
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-atlanta-braves-15.html",
-    "https://www.mlb.com/news/braves-choices-2026-27-offseason-needs"
+    "https://www.mlb.com/news/braves-choices-2026-27-offseason-needs",
+    "https://www.mlb.com/news/braves-free-agent-starting-pitcher-options-ahead-of-2027"
    ]
   },
   "PIT": {
@@ -202,12 +203,13 @@
     "SP",
     "RP"
    ],
-   "note": "First winning season since 2018; Cherington says the club is not financially constrained and will attack free agency and trades.",
+   "note": "First winning season since 2018; Cherington says the club is not financially constrained and will attack free agency and trades. Traded C Henry Davis to ARI for right-handed UT Tim Tawa (Passan, ESPN, 11/27).",
    "win": "ascend",
    "shedding": false,
    "src": [
     "https://www.mlbtraderumors.com/2026/10/offseason-outlook-pittsburgh-pirates-16.html",
-    "https://www.si.com/mlb/pirates/onsi/five-things-learned-pittsburgh-pirates-gm-meetings"
+    "https://www.si.com/mlb/pirates/onsi/five-things-learned-pittsburgh-pirates-gm-meetings",
+    "https://www.mlbtraderumors.com/2026/11/pirates-trade-henry-davis-to-diamondbacks.html"
    ]
   },
   "CHC": {
@@ -305,7 +307,7 @@
     "1B",
     "SP"
    ],
-   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. Wants to move Marte before the lockout to clear payroll; still needs 1-2 starters and a reliever, Alex Vesia on its radar (Nightengale, USA Today). Arenado is working out at first base (Steve Gilbert, MLB.com). Has gotten calls on SPs Eduardo Rodriguez and Merrill Kelly; any Kelly deal likely needs ARI to pay down salary (Rosenthal/Sammon, The Athletic, 11/24).",
+   "note": "Trying to win in 2027, but Hazen says payroll comes down from 2026's franchise record. Wants to move Marte before the lockout to clear payroll; still needs 1-2 starters and a reliever, Alex Vesia on its radar (Nightengale, USA Today). Arenado is working out at first base (Steve Gilbert, MLB.com). Has gotten calls on SPs Eduardo Rodriguez and Merrill Kelly; any Kelly deal likely needs ARI to pay down salary (Rosenthal/Sammon, The Athletic, 11/24). Got C Henry Davis from PIT for UT Tim Tawa as Moreno's backup (Passan, ESPN, 11/27).",
    "win": "retool",
    "shedding": true,
    "src": [
@@ -313,7 +315,8 @@
     "https://www.mlb.com/news/questions-facing-d-backs-in-2026-offseason",
     "https://clutchpoints.com/mlb/mlb-stories/mlb-rumors-blue-jays-rays-getting-serious-for-a-potential-ketel-marte-trade",
     "https://www.mlbtraderumors.com/2026/11/nolan-arenado-working-out-at-first-base.html",
-    "https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html"
+    "https://www.mlbtraderumors.com/2026/11/d-backs-have-gotten-calls-on-eduardo-rodriguez-merrill-kelly.html",
+    "https://www.mlbtraderumors.com/2026/11/pirates-trade-henry-davis-to-diamondbacks.html"
    ]
   },
   "MIA": {
@@ -1390,6 +1393,8 @@
   "MLBTR: Yankees Reportedly Considering Luis Campusano, Freddy Fermin (Heyman, NY Post; 11/27) https://www.mlbtraderumors.com/2026/11/yankees-reportedly-considering-luis-campusano-freddy-fermin.html",
   "MLB.com: Where Yankees' roster stands (Bryan Hoch; 11/27) https://www.mlb.com/news/yankees-2027-roster-outlook-offseason-needs",
   "MLB.com: Which righty starter could balance Red Sox's rotation? (Ian Browne; 11/27) https://www.mlb.com/news/red-sox-options-for-right-handed-starters-on-free-agent-market",
-  "MLB.com: Woodruff sets sights on pitching in '27 (Adam McCalvy; 11/27) https://www.mlb.com/news/brandon-woodruff-plans-to-pitch-in-2027"
+  "MLB.com: Woodruff sets sights on pitching in '27 (Adam McCalvy; 11/27) https://www.mlb.com/news/brandon-woodruff-plans-to-pitch-in-2027",
+  "MLBTR: Pirates Trade Henry Davis To Diamondbacks (Passan, ESPN; 11/27) https://www.mlbtraderumors.com/2026/11/pirates-trade-henry-davis-to-diamondbacks.html",
+  "MLB.com: Which free-agent starters are on Braves' wish list? (Mark Bowman; 11/27) https://www.mlb.com/news/braves-free-agent-starting-pitcher-options-ahead-of-2027"
  ]
 }
