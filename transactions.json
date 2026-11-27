@@ -3261,7 +3261,7 @@
    }
   },
   {
-   "status": "reported",
+   "status": "official",
    "date": "2026-11-24",
    "type": "sign",
    "summary": "Blue Jays sign NPB RHP Kaima Taira (Seibu): 5 yrs, $80M with an opt-out after year 3 (Heyman, NY Post)",
@@ -3281,7 +3281,8 @@
      "2032": "FREE AGENT"
     }
    },
-   "src": "MLB Trade Rumors (Heyman, NY Post) https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html"
+   "src": "MLB Trade Rumors (Heyman, NY Post) https://www.mlbtraderumors.com/2026/11/blue-jays-to-sign-kaima-taira.html",
+   "sid": 951269
   },
   {
    "status": "reported",
@@ -4377,6 +4378,7 @@
   951223,
   951257,
   951258,
-  951260
+  951260,
+  951269
  ]
 }
