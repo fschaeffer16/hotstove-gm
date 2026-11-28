@@ -9,14 +9,15 @@
     "2B",
     "SS"
    ],
-   "note": "Tax payroll near $385M; never made Skubal a formal offer (Gonzalez, ESPN) and not inclined to chase starters (Woo, The Athletic). Added Royce Lewis; RHP Ben Casparius (Tommy John, Nov. 25) joins Halvorsen out for 2027 (AP); bullpen and getting younger remain the needs.",
+   "note": "Tax payroll near $385M; never made Skubal a formal offer (Gonzalez, ESPN) and not inclined to chase starters (Woo, The Athletic). Added Royce Lewis; RHP Ben Casparius (Tommy John, Nov. 25) joins Halvorsen out for 2027 (AP); bullpen and getting younger remain the needs. Owner note (11/28): the outfield is full (Tucker in right, Pages in center, De Paula taking left once Hernández is dealt, Call and Edman as backups), so the upper-level outfielders behind them (Sirota, George, Ehrhard, Davalan, Newell, Tibbs) have nowhere to play and will be moved; Quintero is held because he is further away.",
    "win": "allin",
    "src": [
     "https://www.mlbtraderumors.com/2026/11/dodgers-notes-hernandez-vesia-phillips-infielders.html",
     "https://www.mlb.com/news/dodgers-most-pressing-offseason-questions",
     "https://www.mlbtraderumors.com/2026/11/latest-details-on-tarik-skubal-bidding.html",
     "https://www.foxsports.com/articles/mlb/dodgers-righthander-ben-casparius-has-tommy-john-surgery-and-will-miss-2027-season"
-   ]
+   ],
+   "owner": true
   },
   "NYY": {
    "wants": [
@@ -872,8 +873,10 @@
    "name": "Teoscar Hernández",
    "team": "LAD",
    "status": "available",
-   "note": "Reported on the trade block after a down 2026, to open left field for Josue De Paula",
-   "src": "https://dodgerblue.com/teoscar-hernandez-trade-dodgers-options/2026/11/15/"
+   "note": "On the block: the Dodgers will trade him to open left field for Josue De Paula (owner note, 11/28/2026; first reported 11/15)",
+   "src": "https://dodgerblue.com/teoscar-hernandez-trade-dodgers-options/2026/11/15/",
+   "owner": true,
+   "dump": true
   },
   {
    "name": "Matt Chapman",
@@ -901,20 +904,20 @@
   {
    "name": "Josue De Paula",
    "team": "LAD",
-   "status": "listening",
-   "note": "Treated as a nonstarter in trade talks (deadline reporting); lined up for left field",
-   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable",
-   "price": "high",
-   "denied": true
+   "status": "untouchable",
+   "owner": true,
+   "note": "not available: he takes over left field once Teoscar Hernández is traded, with Pages in center and Tucker in right",
+   "src": "owner note (11/28/2026)"
   },
   {
    "name": "Eduardo Quintero",
    "team": "LAD",
    "status": "listening",
-   "note": "Named with De Paula as a nonstarter in trade talks (deadline reporting)",
-   "src": "https://roundtable.io/sports/mlb/dodgers/news/de-paulas-breakout-season-strengthens-case-as-dodgers-untouchable",
    "price": "high",
-   "denied": true
+   "denied": true,
+   "owner": true,
+   "note": "not being shopped: he opens 2027 in Double-A and will not be ready until Tucker's contract is up, so the Dodgers can hold him",
+   "src": "owner note (11/28/2026)"
   },
   {
    "name": "Fernando Tatis Jr.",
