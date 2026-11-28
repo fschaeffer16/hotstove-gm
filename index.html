@@ -1423,10 +1423,14 @@ function applyIntel(){INTEL_P={};if(!INTEL)return;
        Only an owner entry or a full no-trade clause is a hard no; anything else reported as untouchable means "not shopping him, it takes an overpay". */
     const y=(x.status==='untouchable'&&!x.owner&&!x.ntc)?{...x,status:'listening',price:'high',pub:1}:x.denied?{...x,pub:1}:x;INTEL_P[id]=y;if(x.pos)P[id].pos=x.pos}}
 const intelOf=id=>INTEL_P[id]||null;
-const blockTag=id=>{const it=intelOf(id);if(!it||isMets(id))return '';if(it.status==='untouchable'&&intelOn(it))return `<span class="tag lst" title="${esc(it.note||'Not available')}">NOT AVAILABLE</span>`;return it.status==='available'?`<span class="tag blk" title="${esc(it.note||'Reported available')}">ON THE BLOCK</span>`:it.status==='listening'?`<span class="tag lst" title="${esc(it.note||'Club is listening')}">LISTENING</span>`:''};
+const blockTag=id=>{const it=intelOf(id);if(!it||isMets(id))return '';if(it.status==='untouchable'&&intelOn(it))return `<span class="tag lst" title="${esc(it.note||'Not available')}">NOT AVAILABLE</span>`;return it.status==='available'?`<span class="tag blk" title="${esc(it.note||'Reported available')}">ON THE BLOCK</span>`:it.status==='listening'&&it.pub?`<span class="tag lst" title="${esc(it.note||'The club is not shopping him')}">NOT SHOPPING</span>`:it.status==='listening'?`<span class="tag lst" title="${esc(it.note||'Club is listening')}">LISTENING</span>`:logjam(id,owner(id))?`<span class="tag blk" title="No job for him at his position: ${esc(logjam(id,owner(id)).why)}">BLOCKED</span>`:''};
 function intelLine(code){const t=teamIntel(code),on=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status==='available').sort((a,b)=>(INTEL_P[a].status==='available'?0:1)-(INTEL_P[b].status==='available'?0:1)).map(id=>P[id].n);
-  const lis=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status==='listening').map(id=>P[id].n);
-  const bits=[];if(on.length)bits.push('On the block: '+on.slice(0,4).join(', '));if(lis.length)bits.push('Listening on: '+lis.slice(0,3).join(', '));if((t.wants||[]).length)bits.push('Looking for: '+t.wants.map(w=>WANT_TXT[w]||w).join(', '));if(t.shedding)bits.push('Shedding salary');
+  /* a player the club has publicly said no on (pub) is not one it is 'listening on' (owner, 11/28, Dodgers: "You say they are listening on De Paula and Quintero. No they aren't") */
+  const lis=Object.keys(INTEL_P).filter(id=>owner(id)===code&&INTEL_P[id].status==='listening'&&!INTEL_P[id].pub).map(id=>P[id].n);
+  const hold=Object.keys(INTEL_P).filter(id=>owner(id)===code&&((INTEL_P[id].status==='listening'&&INTEL_P[id].pub)||(INTEL_P[id].status==='untouchable'&&intelOn(INTEL_P[id])))).map(id=>P[id].n);
+  const bits=[];if(on.length)bits.push('On the block: '+on.slice(0,4).join(', '));if(lis.length)bits.push('Listening on: '+lis.slice(0,3).join(', '));if(hold.length)bits.push('Not shopping: '+hold.slice(0,4).join(', '));
+  {const B=backlogOf(code),GN={OF:'outfield',C:'catcher',SP:'starting pitching','1B':'first base','2B':'second base','3B':'third base',SS:'shortstop',DH:'DH'},gs=Object.keys(B).filter(g=>B[g].length>=(g==='SP'?2:1)).sort((a,b)=>B[b].length-B[a].length).slice(0,2);
+    for(const g of gs)bits.push(`Backlog at ${GN[g]||g}: ${B[g].slice(0,5).map(x=>sn(x)).join(', ')}${B[g].length>5?' and '+(B[g].length-5)+' more':''} (nowhere to play, available)`)}if((t.wants||[]).length)bits.push('Looking for: '+t.wants.map(w=>WANT_TXT[w]||w).join(', '));if(t.shedding)bits.push('Shedding salary');
   return bits.join(' · ')}
 const teamIntel=code=>(INTEL&&INTEL.teams&&INTEL.teams[code])||{};
 function wantsGrp(code,gp){const w=teamIntel(code).wants||[];return w.includes(gp)||(gp==='2B'&&w.includes('INF'))||((gp==='SP'||gp==='RP')&&w.includes('P'))}
@@ -1444,6 +1448,28 @@ function groupDepth(code,g,except){/* established big leaguers at a group, best 
   return roster(code).filter(x=>x!==except&&!_leaving.has(x)&&established(x)&&pgrp(x)===g).sort((a,b)=>P[b].proj.war-P[a].proj.war)}
 function needAt(code,g,except){/* how much a club needs help at a group: WAR of the weakest starter slot */
   const d=groupDepth(code,g,except),n=GRP_SLOTS[g]||1,w=d[n-1]?P[d[n-1]].proj.war:-.5;return w}
+/* Position backlog (owner, 11/28: the Dodgers have Tucker and Pages signed in the outfield and De Paula ready, so Sirota, George, Ehrhard, Davalan
+   and Tibbs "have to be moved or they just sit and lose value"; "I am sure there are other teams with backlogs like that: the Brewers at SS and the
+   Rays with their catchers and pitchers"). A near-ready prospect is SURPLUS to his own club when the jobs at his position are already taken:
+   by established players the club controls for two more years, plus the near-ready prospects it rates above him. A club does not hold out for
+   full value on a surplus prospect, he is never a 'top-3 prospect' it protects, and the trade screen lists the backlog in the club's header.
+   A prospect who is still far away is NOT surplus: the club can hold him until the jobs open (Quintero, due after Tucker's deal ends).
+   Jobs by group: three in the outfield, two behind the plate, five in the rotation, one at each infield spot. Relievers never back up. */
+const LOG_SLOTS={OF:3,C:2,SP:7,'1B':1,'2B':1,'3B':1,SS:1,DH:1};/* SP: five starters and two in reserve, because arms get hurt; only a real surplus of starters counts */
+const nearReady=id=>{const p=P[id];if(!p||!p.fv||established(id))return false;const e=+p.eta||0,l=p.lvl,a=p.age||0;return l==='AAA'||l==='MLB'||(e&&e<=2027&&l!=='A'&&l!=='Rk')||(l==='AA'&&a>=22.5&&!(e>=2028&&a<22))};
+let _lgj={},_lgjK='';
+function logjam(id,code){const key=code+'|'+id,stamp=ME+'|'+(S&&S.log?S.log.length:0)+'|'+(SE?SE.day:'')+'|'+(INTEL?1:0)+'|'+Object.keys(S&&S.team||{}).length;if(_lgjK!==stamp){_lgj={};_lgjK=stamp}if(key in _lgj)return _lgj[key];
+  let out=null;const p=P[id],gp=pgrp(id),slots=LOG_SLOTS[gp];
+  if(slots&&nearReady(id)&&fvn(p.fv)>=40){const R=roster(code).filter(x=>x!==id&&P[x]),it=x=>intelOf(x);
+    /* a job is held by an established player the club controls for two more seasons and still wants: not one on the block, not an old one on a short deal */
+    const held=R.filter(x=>established(x)&&pgrp(x)===gp&&P[x].proj&&ctrl(x).length>=2&&!(it(x)&&it(x).status==='available')&&((gp==='SP'?P[x].proj.war>=1.5&&P[x].proj.gs>=12:P[x].proj.war>=(gp==='C'?1:1.5))||(gp!=='SP'&&(P[x].age||30)<=25.5&&fvn(P[x].fv)>=50)||(it(x)&&it(x).status==='untouchable'&&intelOn(it(x))))&&((P[x].age||30)<=31||P[x].proj.war>=2.5||ctrl(x).length>=3))/* a young player the club has just handed the job (a top prospect in the majors, or one it calls untouchable) holds it too */.sort((a,b)=>P[b].proj.war-P[a].proj.war);
+    const mine=hsValue(id),ahead=R.filter(x=>nearReady(x)&&pgrp(x)===gp&&fvn(P[x].fv)>=40&&hsValue(x)>mine).sort((a,b)=>hsValue(b)-hsValue(a));
+    const n=held.length+ahead.length;
+    if(n>=slots&&held.length>=(gp==='SP'?4:1)){const who=held.slice(0,3).map(x=>sn(x)),top=ahead.slice(0,2).map(x=>sn(x));
+      out={n,over:n-slots+1,held,ahead,why:`${who.join(', ')}${who.length>1?' are':' is'} signed ${gp==='OF'?'in the outfield':gp==='SP'?'in the rotation':gp==='C'?'behind the plate':'at '+gp}${top.length?`, and ${top.join(' and ')} ${top.length>1?'are':'is'} ahead of him`:''}`}}}
+  return _lgj[key]=out}
+function backlogOf(code){const out={};for(const id of roster(code)){if(!P[id]||!P[id].fv)continue;const L=logjam(id,code);if(L){const g=pgrp(id);(out[g]=out[g]||[]).push(id)}}
+  for(const g in out)out[g].sort((a,b)=>hsValue(b)-hsValue(a));return out}
 function orgPros(code){return roster(code).filter(x=>P[x].fv&&!established(x)).sort((a,b)=>hsValue(b)-hsValue(a))}
 function salYr(id){const v=isMets(id)?cbtOf(id):partnerCount(id);return v||.8e6}
 const ROLE=(id,g)=>{const p=P[id],gp=pgrp(id);
@@ -1811,17 +1837,20 @@ function gradeTo(id,code,incoming){
       if(jam>=3){g-=2;notes.push(`they already have ${jam} good ${gp} prospects`)}
     }else{
       const rk=orgPros(code).indexOf(id)+1;
-      const it=intelOf(id);
+      const it=intelOf(id),LJ=logjam(id,code);
       if(it&&it.ntc)notes.push('he has a full no-trade clause and would have to approve the deal');
       if(it&&it.status==='available'){g-=1.5;notes.push('on the block: they have been shopping him')}
-      else if(rk&&rk<=3){g+=2;notes.push(`their No. ${rk} prospect`)}
+      else if(rk&&rk<=3&&!LJ){g+=2;notes.push(`their No. ${rk} prospect`)}
+      if(LJ){/* every job taken by an established player (the Dodgers' outfield) costs more than being stuck behind other prospects, which can sort itself out */
+        const full=LJ.held.length>=(LOG_SLOTS[gp]||9),d=full?Math.min(9,7.5+LJ.ahead.length*.5):Math.min(6,3.5+LJ.over*.75);g-=d;notes.push(`nowhere to play him: ${LJ.why}. They have to move him before he sits and loses value`)}
       if(win==='allin'&&!(it&&it.status==='untouchable')){g-=2;notes.push('they are all in: prospects are what they pay with for big-league help')}
       if(pr.pros==='hoard'){g+=1.5;notes.push('this front office hoards prospects')}
       {const bs=orgStyle(code).build;if(bs==='home'&&rk&&rk<=10){g+=.75;notes.push('a draft-and-develop club: it builds from its own system')}else if(bs==='trade'&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=.75;notes.push('this club is built by trades and moves prospects freely')}}
       {const fr=farmRk(code);if(fr&&fr<=5&&!(rk&&rk<=3)&&pr.pros!=='hoard'){g-=1;notes.push(`deep system (No. ${fr}), they can deal from it`)}else if(fr>=24&&rk&&rk<=5){g+=1;notes.push(`thin system (No. ${fr}), he matters more to them`)}}
-      if(ahead){g-=3;notes.push(`blocked by ${P[ahead].n} at ${gp}`)}
-      if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
-      else if(jam>=2&&!ahead&&gp!=='SP'&&gp!=='RP'){g-=1;notes.push(`${jam} other good ${gp} prospects in the org, and they cannot all play there`)}
+      if(!LJ){/* the backlog rule above already covers a surplus prospect; these are the milder cases */
+        if(ahead){g-=3;notes.push(`blocked by ${P[ahead].n} at ${gp}`)}
+        if(jam>=3){g-=2;notes.push(`${jam} other good ${gp} prospects in the org`)}
+        else if(jam>=2&&!ahead&&gp!=='SP'&&gp!=='RP'){g-=1;notes.push(`${jam} other good ${gp} prospects in the org, and they cannot all play there`)}}
     }
     {const M_=profOf(id);if(M_&&M_.adj){g+=Math.max(-6,Math.min(6,+M_.adj));if(M_.note)notes.push(M_.note)}}/* a profile note (injury, an adjustment year) moves a prospect's grade the same way it moves a big leaguer's */
     {const col=teamIntel(code).collect;if(incoming&&col&&col.includes(gp)&&(p.age||30)<=25.5){g+=2;notes.push(gp==='SP'?'they have been collecting young arms':`they have been collecting young ${WANT_TXT[gp]||gp}`)}}
@@ -1930,8 +1959,12 @@ function tradeQuote(R,code,c){const nm=id=>sn(id),hO=R.hOut&&R.hOut.id,hI=R.hIn&
   const others=rec.filter(x=>x.id!==hI&&established(x.id)).sort((a,b)=>b.g-a.g).slice(0,2).map(x=>nm(x.id)),pros=rec.filter(x=>x.id!==hI&&isPro(x.id)).length;
   const like=hI?(established(hI)?`${nm(hI)} is ${an(gradeTo(hI,code,true).label)}${wantsGrp(code,pgrp(hI))?', and we have been looking for '+(WANT_TXT[pgrp(hI)]||'help at '+pgrp(hI)):''}`:`We like ${nm(hI)}, ${an(ROLE(hI,hsGrade(hI)))}`):'';
   if(R.dump&&R.dump.length){const d=R.dump[0],dn=nm(d.id),M=v=>'$'+Math.round(v/1e6)+'M',why='';
-    if(R.dumpFull&&R.verdict==='accept')return `We are ready to move on from ${dn} and the ${M(d.rem)} left on his deal.${why} ${R.dumpBack<1e6?'You taking on the whole contract works for us':'Taking back '+M(R.dumpBack)+' is money we can live with'}${hI?`, and ${isPro(hI)?'we like '+nm(hI)+', '+an(ROLE(hI,hsGrade(hI))):nm(hI)+' helps us'}`:''}.`;
+    if(R.dumpFull&&R.verdict==='accept'){const base=`We are ready to move on from ${dn} and the ${M(d.rem)} left on his deal.${why} ${R.dumpBack<1e6?'You taking on the whole contract works for us':'Taking back '+M(R.dumpBack)+' is money we can live with'}${hI?`, and ${isPro(hI)?'we like '+nm(hI)+', '+an(ROLE(hI,hsGrade(hI))):nm(hI)+' helps us'}`:''}.`;
+      if(R.relief>0&&R.sweet)return base+` We know a contract like that does not move for free. Take it and we will put ${P[R.sweet.id].n} in the deal${R.sweet.deep?': we have more players than jobs where he plays':''}.`;
+      if(R.relief>0)return base+' We know what it costs to move a contract like that, and you are already getting the most we would put with it.';
+      return base}
     if(R.dumpFull&&!R.dumpAsset)return `We will move ${dn}, and we know what that takes: we eat some money back. But for taking ${M(R.dumpBack)} of it we need one real young player in the deal, not only contracts.`;
+    if(!R.dumpFull&&R.dumpShare>1&&R.verdict!=='accept')return `We want out of ${dn}'s contract, and that is the whole point for us: he is owed ${M(d.rem)} and you are sending ${M(R.dumpBack)} back. A bad contract for a bad contract only works if ours is the bigger one.`;
     if(!R.dumpFull&&R.dumpShare<=1&&R.verdict!=='accept')return `We would move ${dn}, but the point for us is the money: he is owed ${M(d.rem)} and you are sending ${M(R.dumpBack)} back. Get that under ${M(d.rem*.45)} and add young talent, and we can talk.`}
   if(R.verdict==='accept')return hI?`${like}${others.length?', and '+others.join(' and ')+(others.length>1?' help':' helps')+' too':''}.${now&&established(hI)?' That makes us better this year.':!now&&isPro(hI)?' That is the kind of talent we are building around.':''}`:'That works for us.';
   if(R.needMLB){const L=R.mlbLead||hO;return `We are trying to win in 2027.${L?' '+nm(L)+' is part of that.':''}`}
@@ -2236,6 +2269,7 @@ function untouchable(id,code){const p=P[id],c=ctx(code),gp=pgrp(id),it=intelOf(i
     if((c.win==='allin'||c.win==='contend')&&w>=4.5)return 'core player on a contender';
     return ''}
   const rk=orgPros(code).indexOf(id)+1;
+  if(logjam(id,code))return '';
   if(rk===1&&hsGrade(id)>=58&&(prof(code).pros==='hoard'||c.win==='ascend'||c.win==='rebuild'))return 'their top prospect';
   return ''}
 /* a weighted package: the best piece counts fully, extra pieces count for less (quantity can't buy quality) */
@@ -2333,7 +2367,16 @@ function evalTrade(code,outSel,inSel,cashM){
      for a controllable star (flatter package weights). The total still has to be there. */
   const _hO=giv.concat(givX).filter(x=>x.pts>0&&!x.dump).reduce((m,x)=>x.g>m.g?x:m,{g:0});
   R.walk=!!(_hO.id&&P[_hO.id]&&established(_hO.id)&&ctrl(_hO.id).length<=1);const PW=R.walk?[1,.85,.7,.55,.42,.3]:undefined;
-  R.recv=pkg(all,PW)+Math.max(0,cashPts);R.give=pkg(allG)+Math.max(0,-cashPts);
+  /* Getting out of dead money is worth talent (owner, 11/28: "if the Dodgers want to unload Teoscar Hernandez's contract they will either have to
+     take a bad contract back OR package him with one of their top prospects, and usually a team does that from a position of depth"). When the
+     contract being dumped belongs to a player who no longer earns it (under 1.5 wins of value) and the user takes most of the money (a full dump),
+     the money coming off their books counts on the user's side of the deal like a player would: about a grade-45 piece for $14M of relief, 50 for
+     $28M, held to 55 at $42M. Sending a contract back shrinks it, which is the other way a club gets out. It is what lets the user ask for a
+     prospect WITH the contract. A productive player on a big deal (Devers) is not this: that is the older rule, where they still want a real piece. */
+  R.relief=0;R.reliefM=0;
+  if(R.dump.length&&R.dumpFull){const dead=R.dump.filter(o=>valW(o.id).w<1.5);
+    if(dead.length){const net=Math.max(0,dead.reduce((t,o)=>t+o.rem,0)-R.dumpBack)/1e6;if(net>=8){R.reliefM=net;R.relief=gpts(Math.min(55,40+.36*net))}}}
+  R.recv=pkg(all,PW)+Math.max(0,cashPts)+R.relief;R.give=pkg(allG)+Math.max(0,-cashPts);
   {const tk=talkFor(code,outSel,inSel,cashM);if(tk&&tk.bonus&&R.recv>0){R.recv*=1+tk.bonus;R.talk=tk.bonus}}/* the user made his case to the GM (gmReply); never touches rules, payroll, untouchables or the headliner test */
   /* headliners: the best real asset on each side (a contract they're dumping is not a headliner) */
   const hIn=rec.concat(recX).filter(x=>x.pts>0).reduce((m,x)=>x.g>m.g?x:m,{g:0}),hOut=giv.concat(givX).filter(x=>x.pts>0&&!x.dump).reduce((m,x)=>x.g>m.g?x:m,{g:0});
@@ -2355,24 +2398,31 @@ function evalTrade(code,outSel,inSel,cashM){
   /* a club trying to win now will give a top prospect for a star: the headliner test is looser when a prospect goes out and an established 60+ player comes back */
   const starBack=hOut.id&&hIn.id&&!established(hOut.id)&&established(hIn.id)&&hIn.g>=60;
   const slack=((c.win==='rebuild'||c.win==='ascend'||c.win==='retool')&&rec.length>=2?6:4)+(starBack?(c.win==='allin'?4:c.win==='contend'?2:0):0);
-  R.headOK=!hOut.g?true:R.walk?hIn.g>=hOut.g-10:hIn.g>=hOut.g-slack;/* walk year: no need for a player in his class, but one real piece has to lead the return */
+  {const rg=R.relief>0?Math.min(55,40+.36*R.reliefM):0;R.headOK=!hOut.g?true:R.walk?Math.max(hIn.g,rg)>=hOut.g-10:Math.max(hIn.g,rg)>=hOut.g-slack}/* walk year: no need for a player in his class, but one real piece has to lead the return */
   const prem=prof(code).pros==='hoard'?.12:c.win==='rebuild'?.0:.06;
   R.ratio=R.give>0?R.recv/R.give:(R.recv>0||R.give<0?9:0);R.need=R.give>0?R.give*(1+prem):R.give;
   R.pkgOK=R.recv>=R.need&&(R.recv>0||R.give<0);
   /* a dump still has to bring back something real: one prospect or player worth having */
-  R.dumpAsset=!R.dump.length||!R.dumpFull||R.dumpShare<=.2||rec.concat(recX).some(x=>x.g>=45);if(!R.dumpAsset)R.pkgOK=false;else if(R.dump.length&&R.dumpFull&&R.dumpShare<=.2&&!R.pkgOK&&R.recv>=0)R.pkgOK=true;/* the more of the money you take, the less talent they ask for: take 80%+ of it and they need nothing real back */
+  R.dumpAsset=!R.dump.length||!R.dumpFull||R.dumpShare<=.2||R.relief>0||rec.concat(recX).some(x=>x.g>=45);if(!R.dumpAsset)R.pkgOK=false;else if(R.dump.length&&R.dumpFull&&R.dumpShare<=.2&&!R.pkgOK&&R.recv>=0&&giv.every(x=>x.dump))R.pkgOK=true;/* only when the contract is ALL the user is asking for: it must not wave through a good player asked for alongside it *//* the more of the money you take, the less talent they ask for: take 80%+ of it and they need nothing real back */
   R.checks=[
     ...(R.bigK?[['Contract size they will take on',false]]:[]),
     ...(R.walk?[['Walk year: several good players can add up',true],['One real piece leads the return',R.headOK]]:[['Headliner measures up',R.headOK]]),
     ...(winNow&&mlbOut.length?[['Big-league help back',!R.needMLB]]:[]),
     ...(untouch.length?[['No untouchables',!R.untouch.length]]:[]),
     ...(R.dump.length&&R.dumpShare<=.7?[['Gets them out of the contract',!!R.dumpFull]]:[]),
+    ...(R.relief>0?[[`Taking $${Math.round(R.reliefM)}M off their books is worth a prospect`,true]]:[]),
     ['Enough talent overall',R.pkgOK]];
   if(R.locked.length||X.errs.length)R.verdict='locked';
   else if(R.budget||R.bigK||R.untouch.length)R.verdict='reject';
   else if(R.headOK&&R.pkgOK&&!R.needMLB)R.verdict='accept';
-  else if(R.ratio>=.75&&hIn.g>=hOut.g-slack-4)R.verdict='counter';
+  else if(R.ratio>=.75&&Math.max(hIn.g,R.relief>0?Math.min(55,40+.36*R.reliefM):0)>=hOut.g-slack-4)R.verdict='counter';
   else R.verdict='reject';
+  /* the prospect they would put in to get the contract taken, chosen from a position where they have more players than jobs */
+  R.sweet=null;
+  if(!_lite&&R.relief>0&&R.verdict==='accept'){const B=backlogOf(code),deep=[].concat(...Object.values(B)).filter(x=>!inSel.includes(x)),rest=orgPros(code).filter(x=>!inSel.includes(x)&&!deep.includes(x)&&!untouchable(x,code)).slice(2,14);
+    const V=i=>{const l0=_lite,x0=_liteX;_lite=true;_liteX=null;try{return evalTrade(code,outSel,i,cashM).verdict==='accept'}catch(e){return false}finally{_lite=l0;_liteX=x0}};
+    const pick=L=>L.slice().sort((a,b)=>hsValue(b)-hsValue(a)).find(x=>V(inSel.concat([x])));
+    const a=pick(deep),b=a?null:pick(rest),id=a||b;if(id){const L=logjam(id,code);R.sweet={id,deep:!!a,why:L?L.why:''}}}
   /* what would get it done: name players from your system, the way a GM asks */
   if(!_lite&&(R.verdict==='counter'||(R.verdict==='reject'&&!R.budget&&!R.bigK&&!R.untouch.length))){const _na=NEED_AFTER;NEED_AFTER={code,ids:afterIds(code,outSel,inSel)};try{
     const pool=metsIds().filter(id=>!outSel.includes(id)&&!lockedFA(id)&&!noAsk(id,code)).map(id=>({id,...gradeTo(id,code,true)})).filter(x=>x.pts>0);
@@ -3930,7 +3980,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261127221151';
+const BUILD='20261128005929';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
