@@ -4193,12 +4193,31 @@
    "status": "reported",
    "date": "2026-11-27",
    "type": "sign",
-   "summary": "Diamondbacks sign RHP Kona Takahashi: 1 yr, money not yet reported (Robert Murray, FanSided; Will Sammon, The Athletic, for the length; via MLBTR). No CBT number yet.",
+   "summary": "Diamondbacks sign RHP Kona Takahashi: 1 yr, $3M (multiple reports via ESPN; Robert Murray, FanSided, and Will Sammon, The Athletic, first had the deal). He's 29 and spent nine seasons with Seibu.",
    "name": "Kona Takahashi",
    "team": "ARI",
    "pos": "SP",
    "forty": true,
-   "src": "https://www.mlbtraderumors.com/2026/11/diamondbacks-to-sign-kona-takahashi.html"
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/diamondbacks-to-sign-kona-takahashi.html; ESPN https://www.espn.com/mlb/story/_/id/50616551/diamondbacks-kona-takahashi-reach-1-year-deal",
+   "contract": {
+    "aav": 3000000,
+    "desc": "1 yr, $3M (2027); no options, bonus or deferrals reported",
+    "yrs": {
+     "2027": 3000000,
+     "2028": "FREE AGENT"
+    }
+   }
+  },
+  {
+   "status": "reported",
+   "date": "2026-11-27",
+   "type": "sign",
+   "summary": "Twins sign UT Ryan Fitzgerald to a major league deal (Ken Rosenthal, The Athletic, via MLBTR); terms not yet reported, so no CBT number yet. Minnesota has open 40-man spots, so no corresponding move is needed. He debuted with the Twins in 2025 before the Dodgers claimed him.",
+   "name": "Ryan Fitzgerald",
+   "team": "MIN",
+   "pos": "UT",
+   "forty": true,
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-ryan-fitzgerald-to-major-league-deal.html"
   }
  ],
  "live": "2026-11-28T00:23:06Z",
