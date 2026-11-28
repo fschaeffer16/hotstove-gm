@@ -1,6 +1,28 @@
 {
  "items": [
   {
+   "title": "Reports: Diamondbacks, RHP Kona Takahashi reach 1-year, $3 million deal",
+   "blurb": "The Diamondbacks and Japanese right-hander Kona Takahashi have agreed to a one-year, $3 million deal, according to multiple reports.",
+   "link": "https://www.espn.com/mlb/story/_/id/50616551/diamondbacks-kona-takahashi-reach-1-year-deal",
+   "time": "2026-11-28T00:55:31Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": [
+    "ARI"
+   ]
+  },
+  {
+   "title": "Twins To Sign Ryan Fitzgerald To Major League Deal",
+   "blurb": "The Twins and utility player Ryan Fitzgerald are in agreement on a major league deal, reports Ken Rosenthal of The Athletic. The Twins have open 40-man spots and won&#8217;t need to make a corresponding move to add the Gaeta Sports Management client. More to come.",
+   "link": "https://www.mlbtraderumors.com/2026/11/twins-to-sign-ryan-fitzgerald-to-major-league-deal.html",
+   "time": "2026-11-28T00:53:06Z",
+   "source": "MLB Trade Rumors",
+   "kind": "news",
+   "teams": [
+    "MIN"
+   ]
+  },
+  {
    "title": "Colorado Rockies designated LHP Hayden Harris for assignment.",
    "blurb": "",
    "link": "",
@@ -3205,29 +3227,7 @@
     "CHW",
     "COL"
    ]
-  },
-  {
-   "title": "San Diego Padres signed free agent 3B Luis Suisbel to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-20T15:04:01Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "SDP"
-   ]
-  },
-  {
-   "title": "St. Louis Cardinals signed free agent LHP Steven Pérez to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-20T15:04:01Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "STL"
-   ]
   }
  ],
- "updated": "2026-11-28T00:23:06Z"
+ "updated": "2026-11-28T01:03:13Z"
 }
