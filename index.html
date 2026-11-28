@@ -1083,7 +1083,11 @@ function renderCBT(c){
 }
 
 /* ---------- FA ---------- */
-function faList(){return D.fa.filter(id=>owner(id)==='FA')}
+/* minor-league free agents (P[id].mfa) are kept apart from the big-league market (owner, 11/28: "MiLB free agents should have their own section
+   because they can be signed during the lockout"): their own list on the Free Agents screen, minor-league deals only, and the AI clubs' big-league
+   signings never read them */
+function faList(){return D.fa.filter(id=>owner(id)==='FA'&&!P[id].mfa)}
+function mfaList(){return D.fa.filter(id=>owner(id)==='FA'&&P[id].mfa)}
 /* players this save released or non-tendered are free agents too. P is shared by every team's save, so the change is undone and redone for the save in use */
 let UFA=[];
 function userFA(){
@@ -1097,12 +1101,32 @@ function renderFA(){
   const faGrp=id=>{const ps=String(P[id].pos||'').split('/');const f=ps[0];
     if(P[id].p||['SP','RP','P','RHP','LHP'].includes(f))return /SP/.test(P[id].pos)?'SP':'RP';
     if(f==='C')return 'C';if(['LF','CF','RF','OF'].includes(f))return 'OF';if(f==='DH')return 'DH';return 'INF'};
+  const nMaj=faList().length,nMin=mfaList().length,kind=UI.faKind==='min'&&nMin?'min':'maj';
+  const kindBar=nMin?`<div class="filters" style="margin-bottom:6px"><button class="btn sm${kind==='maj'?' primary':''}" type="button" data-fakind="maj" aria-pressed="${kind==='maj'}">Major-league free agents (${nMaj})</button><button class="btn sm${kind==='min'?' primary':''}" type="button" data-fakind="min" aria-pressed="${kind==='min'}">Minor-league free agents (${nMin})</button></div>`:'';
+  if(kind==='min'){const lo={AAA:0,AA:1,'A+':2,A:3};
+    let m=mfaList().filter(id=>{const p=P[id];if(UI.faQ&&!p.n.toLowerCase().includes(UI.faQ.toLowerCase()))return false;return UI.faPos==='All'||faGrp(id)===UI.faPos});
+    const mk={n:id=>P[id].n,age:id=>P[id].age||0,gr:id=>P[id].mxg||0,lv:id=>-(lo[P[id].mfl]??9),prev:id=>P[id].prev||''},ms=mk[UI.faSort]?UI.faSort:'gr',mf=mk[ms],md=mk[UI.faSort]?UI.faDir:-1;
+    m.sort((a,b)=>{const x=mf(a),y=mf(b);return (x>y?1:x<y?-1:0)*md||(P[b].mxg||0)-(P[a].mxg||0)||(P[a].age||0)-(P[b].age||0)});
+    const th=(k,l,r)=>`<th class="${r?'r':''}" data-sort="${k}">${l}${ms===k?(md<0?' ▾':' ▴'):''}</th>`;
+    return `${kindBar}<div class="filters">
+    <input type="search" id="faQ" placeholder="Search minor-league free agents…" value="${esc(UI.faQ)}" aria-label="Search minor-league free agents">
+    <div class="chips" role="group" aria-label="Position">${FAG.map(k=>`<button type="button" data-fapos="${k}" aria-pressed="${UI.faPos===k}">${k}</button>`).join('')}</div>
+    <span class="hint">${m.length} unsigned · minor-league deals are not covered by a lockout, so these players can be signed while the big-league market is frozen · no 40-man spot until you add him</span>
+  </div>
+  <div class="scroll"><table class="list">
+    <thead><tr>${th('n','Player')}<th>Pos</th><th>B/T</th>${th('age','Age',1)}${th('prev','Last org')}${th('lv','Level')}<th>Last season</th>${th('gr','Our grade',1)}<th></th></tr></thead>
+    <tbody>${m.map(id=>{const p=P[id];return `<tr>
+      <td><span class="nmb" data-open="${id}" style="cursor:pointer">${esc(p.n)}</span></td>
+      <td>${esc(p.pos)}</td><td>${esc(p.hand||'')}</td><td class="r">${p.age?Math.floor(p.age):''}</td><td>${esc(p.prev||'')}</td><td>${esc(p.mfl||'')}</td>
+      <td class="hint">${esc(p.mxl||(p.proj?projTxt(id):''))}</td><td class="r">${p.mxg||(p.fv?esc(String(p.fv)):'')}</td>
+      <td><button class="btn sm gold" type="button" data-sign="${id}">Offer minor deal</button></td></tr>`}).join('')}</tbody>
+  </table></div>`}
   let l=faList().filter(id=>{const p=P[id];if(UI.faQ&&!p.n.toLowerCase().includes(UI.faQ.toLowerCase()))return false;return UI.faPos==='All'||faGrp(id)===UI.faPos});
   const key={n:id=>P[id].n,age:id=>P[id].age,w26:id=>P[id].war26,pwar:id=>P[id].pwar,maav:id=>P[id].maav||0,mt:id=>P[id].mt||0};
   const kf=key[UI.faSort]||key.pwar;l.sort((a,b)=>{const x=kf(a),y=kf(b);return (x>y?1:x<y?-1:0)*UI.faDir});
   const th=(k,l,r)=>`<th class="${r?'r':''}" data-sort="${k}">${l}${UI.faSort===k?(UI.faDir<0?' ▾':' ▴'):''}</th>`;
   const signed=Object.keys(S.contract).filter(id=>P[id].team==='FA');
-  return `<div class="filters">
+  return `${kindBar}<div class="filters">
     <input type="search" id="faQ" placeholder="Search free agents…" value="${esc(UI.faQ)}" aria-label="Search free agents">
     <div class="chips" role="group" aria-label="Position">${FAG.map(k=>`<button type="button" data-fapos="${k}" aria-pressed="${UI.faPos===k}">${k}</button>`).join('')}</div>
     <span class="hint">${l.length} unsigned · market = Fangraphs median crowdsource · QO = draft-pick cost</span>
@@ -2903,9 +2927,12 @@ function injectExtra(){if(!MX||!D||!P)return 0;const have=new Set(Object.keys(P)
     (D.teams[x[3]].players=D.teams[x[3]].players||[]).push(id);if(x[3]===ME&&!BASE_METS.includes(id))BASE_METS.push(id);n++}
   /* minor leaguers in the baseline who have since elected free agency or been released (MLB's transaction log, via build_milb.py):
      off their club and onto the free-agent list, unless the user or a real move has already put them somewhere else */
+  for(const x of MX.fa||[]){const id='mx'+x[0];if(P[id]||have.has(nmz(x[1]))||twin(x))continue;
+    P[id]={n:x[1],pos:x[2]||(x[8]?'RP':'?'),team:'FA',prev:x[3]||'',lvl:'FA',kind:'fa',age:x[5],hand:x[8]?x[7]:x[6],p:!!x[8],mx:x[0],mxg:x[9],mxl:x[10],mfa:1,mfl:x[4],pwar:0,war26:0,aav:0,contract:'',yrs:{}};
+    D.fa.push(id);n++}
   for(const [nm,org,nt] of MX.gone||[]){const id=Object.keys(P).find(i=>P[i].team===org&&['min','arb','pre'].includes(P[i].kind)&&nmz(P[i].n)===nmz(nm));
     if(!id||S.team[id]!=null||(S.contract&&S.contract[id]))continue;
-    try{dropFrom(id,org);if(D.fa.some(f=>P[f]&&f!==id&&nmz(P[f].n)===nmz(nm))){P[id].team='DUP';P[id].lvl='FA'}else toFA(id,org,!!nt);n++}catch(e){}}
+    try{dropFrom(id,org);if(D.fa.some(f=>P[f]&&f!==id&&nmz(P[f].n)===nmz(nm))){P[id].team='DUP';P[id].lvl='FA'}else{toFA(id,org,!!nt);if(!nt&&!(P[id].mt>0)&&(P[id].pwar||0)<.5){P[id].mfa=1;P[id].mfl=P[id].mfl||''}}n++}catch(e){}}
   return n}
 function loadExtra(){if(MX){if(injectExtra())render();return}fetch('milb_extra.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.players){MX=d;if(injectExtra())render()}}).catch(()=>{})}
 /* the minor-league record on a player's card, year by year and level by level (owner, 11/27), from milb.json (loaded when a card first asks for it).
@@ -4013,7 +4040,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261128012810';
+const BUILD='20261128024941';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -4174,6 +4201,7 @@ document.addEventListener('click',e=>{
   {const ch=e.target.closest('.cardhead');if(ch&&!e.target.closest('button,a,input,select,label,[data-act],[data-open]')){toggleCard(ch.closest('.card'));return}}
   {const h=!e.target.closest('.tbadge')&&e.target.closest('[data-tfold]');if(h){const sd=h.dataset.tfold;UI.tFold[sd]=!UI.tFold[sd];render();return}}
   {const fp=e.target.closest('[data-fapos]');if(fp){UI.faPos=fp.dataset.fapos;render();return}}
+  {const fk=e.target.closest('[data-fakind]');if(fk){UI.faKind=fk.dataset.fakind;render();return}}
   const t=e.target.closest('[data-scout],[data-club],[data-goto],[data-g40],[data-gmin],[data-tgrp],[data-tpf],[data-newsf],[data-tview],[data-rotn],[data-tdf],[data-tdall],[data-act],[data-tab],[data-clear],[data-sign],[data-pick],[data-open],[data-slot],[data-sort],[data-prsort]');
   if(!t)return;
   if(t.dataset.scout){e.preventDefault();scoutModal(t.dataset.scout,!!t.dataset.back);return}
