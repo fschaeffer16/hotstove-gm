@@ -1270,7 +1270,20 @@ function baseWAR(code){if(_rw[code]!=null)return _rw[code];const b=code==='NYM'?
   return _rw[code]=ids.reduce((s,id)=>s+(P[id]&&P[id].proj?P[id].proj.war:0),0)}
 function teamReady(code){const w=D.teams[code]&&D.teams[code].win;return w==='allin'||w==='contend'||baseWAR(code)>=36}
 /* guaranteed money still owed (2027 on) and the most a club will take on for one player in a trade */
-function remGuar(id){const y=(S.contract[id]&&S.contract[id].yrs)||P[id].yrs||{};return Object.entries(y).reduce((s,[k,v])=>s+(+k>=2027&&typeof v==='number'?v:0),0)}
+/* Option years (owner, 11/28: "fix the club option so it doesn't count as money owed unless the club picks up the option"). The contract text
+   names them ("2028 club option", "2030-31 club options", "2028 mutual option", "2030 vesting option", "2028 player option", "... exercised").
+   A club, mutual or vesting option year is NOT money owed until it is exercised: the club can walk away. A player option IS owed, because the
+   player decides and he keeps it when the deal is too rich. The user picks up one of his own players' club options from the card (S.optUp).
+   Buyouts are not in the data, so they are not counted. */
+let _opt={};
+function optYears(id){if(_opt[id])return _opt[id];const out={},t=String(P[id]&&P[id].contract||'');
+  for(const m of t.matchAll(/(\d{4})(?:\s*-\s*(\d{2,4}))?\s+(club|mutual|vesting|player)\s+options?(\s+exercised)?/gi)){const a=+m[1];let b=m[2]?+m[2]:a;if(b<100)b=Math.floor(a/100)*100+b;
+    for(let y=a;y<=b&&y<a+6;y++)out[y]={k:m[3].toLowerCase(),done:!!m[4]}}
+  return _opt[id]=out}
+/* is this season's salary owed for sure? */
+function optOwed(id,yr){if(S.contract[id])return true;const o=optYears(id)[yr];if(!o||o.done||o.k==='player')return true;return !!(S.optUp&&S.optUp[id]&&S.optUp[id][yr])}
+function remGuar(id){const y=(S.contract[id]&&S.contract[id].yrs)||P[id].yrs||{};return Object.entries(y).reduce((s,[k,v])=>s+(+k>=2027&&typeof v==='number'&&optOwed(id,+k)?v:0),0)}
+function doOptUp(id,yr){snap();S.optUp=S.optUp||{};(S.optUp[id]=S.optUp[id]||{})[yr]=1;const v=(P[id].yrs||{})[yr];addLog('OPTION',`Picked up ${P[id].n}'s ${yr} club option${typeof v==='number'?' ('+M1(v)+')':''}: that season is now guaranteed`,0,0);commit();openDrawer(id)}
 function kMaxOf(code,win){const m=(D.teams[code]||{}).mkt;let x=m==='small'?75e6:m==='mid'?150e6:275e6;if(win==='rebuild')x*=.4;else if(win==='retool')x*=.7;return x}
 function capOf(code){const p=prof(code);return (teamReady(code)&&p.capReady)?p.capReady:p.cap}
 
@@ -3980,7 +3993,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261128005929';
+const BUILD='20261128012050';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
@@ -4087,7 +4100,8 @@ function openDrawer(id){_drw=id;
   const p=P[id];const milbRec=milbRecHTML(id);const mets=isMets(id),st=mets?status(id):'',k=kind(id);
   const c=S.contract[id];
   const yrs=c?c.yrs:p.yrs;
-  const yrRows=Object.entries(yrs||{}).map(([y,v])=>`<tr><td>${y}</td><td>${typeof v==='number'?M(v):esc(v)}</td></tr>`).join('');
+  const yrRows=Object.entries(yrs||{}).map(([y,v])=>{const o=!c&&optYears(id)[y],up=o&&S.optUp&&S.optUp[id]&&S.optUp[id][y],open=o&&!o.done&&!up&&o.k!=='player';
+    return `<tr><td>${y}${o?` <span class="hint">${o.done||up?o.k+' option, picked up':o.k+' option'}</span>`:''}</td><td${open?' style="opacity:.6" title="Not owed unless the option is exercised"':''}>${typeof v==='number'?M(v):esc(v)}${open&&o.k==='club'&&mets&&typeof v==='number'?` <button class="btn sm" type="button" data-act="optup" data-id="${id}|${y}">Pick up</button>`:''}</td></tr>`}).join('');
   const pj=p.proj;
   const acts=[];
   if(mets){
@@ -4176,6 +4190,7 @@ document.addEventListener('click',e=>{
     case 'closedrawer':closeDrawer();break;
     case 'closemodal':closeModal();break;
     case 'il':doIL(id);break;
+    case 'optup':{const [pid,yr]=String(id).split('|');doOptUp(pid,+yr);break}
     case 'outright':doOutright(id);break;
     case 'activate':doActivate(id);break;
     case 'select':doSelect(id);break;
