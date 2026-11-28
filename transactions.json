@@ -4013,7 +4013,7 @@
    "status": "official"
   },
   {
-   "status": "reported",
+   "status": "official",
    "date": "2026-11-26",
    "type": "sign",
    "summary": "Twins sign RHP Kevin Ginkel: 2 yrs, $18M (Mark Feinsand, MLB.com; ESPN sources); former Diamondbacks reliever",
@@ -4030,7 +4030,8 @@
      "2028": 9000000,
      "2029": "FREE AGENT"
     }
-   }
+   },
+   "sid": 951331
   },
   {
    "status": "official",
@@ -4517,6 +4518,7 @@
   951282,
   951283,
   951315,
-  951316
+  951316,
+  951331
  ]
 }
