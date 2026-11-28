@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27",
+ "updated": "2026-11-28",
  "baseline": "2026-11-14",
  "moves": [
   {
@@ -4241,9 +4241,29 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/cubs-to-sign-ryan-yarbrough.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "date": "2026-11-28",
+   "type": "sign",
+   "summary": "Braves Sign Tyler Mahle",
+   "name": "Tyler Mahle",
+   "team": "ATL",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/braves-sign-tyler-mahle.html",
+   "status": "reported",
+   "forty": true,
+   "contract": {
+    "aav": 20000000,
+    "desc": "2 yr, $40M (2027-28)",
+    "yrs": {
+     "2027": 20000000,
+     "2028": 20000000,
+     "2029": "FREE AGENT"
+    }
+   }
   }
  ],
- "live": "2026-11-28T03:43:43Z",
+ "live": "2026-11-28T17:05:48Z",
  "seen_sids": [
   950119,
   950220,
