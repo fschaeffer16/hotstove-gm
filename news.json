@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Source: Cubs agree to terms with Japanese pitcher Hiromi Itoh",
+   "blurb": "The Cubs continued a busy month by agreeing to terms with Japanese right-hander Hiromi Itoh on Friday night, a source told ESPN on Friday, confirming a report by FanSided.",
+   "link": "https://www.espn.com/mlb/story/_/id/50618251/cubs-agree-terms-japanese-pitcher-hiromi-itoh",
+   "time": "2026-11-28T03:43:29Z",
+   "source": "ESPN",
+   "kind": "report",
+   "teams": [
+    "CHC"
+   ]
+  },
+  {
    "title": "Cubs To Sign Ryan Yarbrough",
    "blurb": "The Cubs and left-hander Ryan Yarbrough have agreed to a one-year deal, reports Robert Murray of FanSided. The salary for the Excel Sports Management client has not yet been reported. Chicago technically has an open 40-man roster spot but has also agreed to a deal with Hiromi Itoh, so they will need",
    "link": "https://www.mlbtraderumors.com/2026/11/cubs-to-sign-ryan-yarbrough.html",
@@ -65,6 +76,15 @@
    "teams": [
     "COL"
    ]
+  },
+  {
+   "title": "2026-27 MLB free agency, trade grades: Offseason analysis",
+   "blurb": "We've got you covered with grades and analysis on every winter signing and big offseason trade.",
+   "link": "https://www.espn.com/mlb/story/_/id/50473334/2026-27-offseason-free-agency-trade-grades",
+   "time": "2026-11-27T22:49:42Z",
+   "source": "ESPN",
+   "kind": "news",
+   "teams": []
   },
   {
    "title": "Detroit Tigers designated RHP Beau Brieske for assignment.",
@@ -3206,29 +3226,7 @@
    "teams": [
     "COL"
    ]
-  },
-  {
-   "title": "Dodgers To Sign Tink Hence To Minor League Deal",
-   "blurb": "The Dodgers are bringing in right-hander Tink Hence on a minor league agreement, per Chase Ford of MiLB Central. The former Cardinals prospect hit minor-league free agency at the end of the season. Hence&#8217;s stock has fallen precipitously over the past few years. He zoomed through the Cardinals ",
-   "link": "https://www.mlbtraderumors.com/2026/11/dodgers-to-sign-tink-hence-to-minor-league-deal.html",
-   "time": "2026-11-20T16:20:56Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "LAD"
-   ]
-  },
-  {
-   "title": "Rockies Interested In David Peterson",
-   "blurb": "The Rockies added a pair of new rotation members in last night&#8217;s trade to acquire Luis Castillo and Davis Martin from the White Sox. They&#8217;re still looking to add more arms, and lefty David Peterson is among the free agents in whom they&#8217;re interested, reports Ken Rosenthal of The At",
-   "link": "https://www.mlbtraderumors.com/2026/11/rockies-rumors-david-peterson-free-agent-interest.html",
-   "time": "2026-11-20T16:01:44Z",
-   "source": "MLB Trade Rumors",
-   "kind": "news",
-   "teams": [
-    "COL"
-   ]
   }
  ],
- "updated": "2026-11-28T03:43:43Z"
+ "updated": "2026-11-28T03:53:47Z"
 }
