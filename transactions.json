@@ -2940,9 +2940,11 @@
    "status": "official"
   },
   {
+   "status": "official",
+   "sid": 951281,
    "date": "2026-11-22",
    "type": "sign",
-   "summary": "Tigers sign RHP Luis Gil: 1 yr, $2.3M, plus up to $2M in performance bonuses (pending physical)",
+   "summary": "Tigers sign RHP Luis Gil: 1 yr, $2.3M, plus up to $2M in performance bonuses; official Nov. 27 (Brieske and Cheng designated)",
    "name": "Luis Gil",
    "team": "DET",
    "pos": "SP",
@@ -2957,9 +2959,7 @@
      "2030": "FREE AGENT"
     }
    },
-   "src": "Jeff Passan, ESPN",
-   "status": "official",
-   "sid": 951281
+   "src": "Jeff Passan, ESPN"
   },
   {
    "status": "official",
@@ -3244,9 +3244,10 @@
   },
   {
    "status": "official",
+   "sid": 951280,
    "date": "2026-11-24",
    "type": "sign",
-   "summary": "Tigers sign INF Ha-Seong Kim: 1 yr, $5M (Passan, ESPN); Detroit needs a 40-man move",
+   "summary": "Tigers sign INF Ha-Seong Kim: 1 yr, $5M (Passan, ESPN); official Nov. 27 (Brieske and Cheng designated)",
    "name": "Ha-Seong Kim",
    "team": "DET",
    "pos": "SS/2B",
@@ -3259,8 +3260,7 @@
      "2027": 5000000,
      "2028": "FREE AGENT"
     }
-   },
-   "sid": 951280
+   }
   },
   {
    "status": "official",
@@ -3731,9 +3731,10 @@
   },
   {
    "status": "official",
+   "sid": 951315,
    "date": "2026-11-25",
    "type": "sign",
-   "summary": "Rockies sign LHP David Peterson: 2 yrs, $32M (Thomas Harding, MLB.com, agreement; Robert Murray, FanSided, terms); Colorado's 40-man is full",
+   "summary": "Rockies sign LHP David Peterson: 2 yrs, $32M (Thomas Harding, MLB.com, agreement; Robert Murray, FanSided, terms); official Nov. 27 (LHP Hayden Harris designated)",
    "name": "David Peterson",
    "team": "COL",
    "pos": "SP",
@@ -3747,8 +3748,7 @@
      "2029": "FREE AGENT"
     }
    },
-   "src": "Thomas Harding, MLB.com; Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html",
-   "sid": 951315
+   "src": "Thomas Harding, MLB.com; Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html"
   },
   {
    "date": "2026-11-25",
@@ -4140,45 +4140,65 @@
    "status": "reported",
    "date": "2026-11-27",
    "type": "sign",
-   "summary": "Blue Jays sign 2B Jazz Chisholm Jr.: 1 yr plus a 2028 player option that becomes a club option if he declines it, with a $6M signing bonus; total salary not yet reported (Robert Murray, FanSided; Mark Feinsand, MLB.com; Jon Heyman, NY Post; via MLBTR). No CBT number yet.",
+   "summary": "Blue Jays sign 2B Jazz Chisholm Jr.: 1 yr plus a $16M 2028 player option, $34.5M guaranteed (Jeff Passan, ESPN); if he declines, it becomes a $40M club option",
    "name": "Jazz Chisholm Jr.",
    "team": "TOR",
    "pos": "2B",
    "forty": true,
-   "src": "https://www.mlbtraderumors.com/2026/11/blue-jays-nearing-deal-with-jazz-chisholm-j.html"
+   "src": "https://www.espn.com/mlb/story/_/id/50614637/toronto-blue-jays-jazz-chisholm-jr-reach-1-year-deal; https://www.mlbtraderumors.com/2026/11/blue-jays-nearing-deal-with-jazz-chisholm-j.html",
+   "contract": {
+    "aav": 17250000,
+    "desc": "$34.5M guaranteed: $6M signing bonus (Heyman, NY Post), $12.5M 2027 salary and a $16M 2028 player option (Passan, ESPN). If he declines the player option it becomes a $40M club option with a $1.5M buyout, paid only if both sides decline. Player option counts as guaranteed, so the CBT AAV is $34.5M over 2 yrs = $17.25M (2027-28). No deferrals reported.",
+    "yrs": {
+     "2027": 18500000,
+     "2028": 16000000,
+     "2029": "FREE AGENT"
+    }
+   }
   },
   {
+   "sid": 951282,
+   "status": "official",
    "type": "dfa",
    "name": "Beau Brieske",
    "team": "DET",
    "pos": "RHP",
    "date": "2026-11-27",
-   "summary": "Detroit Tigers designated RHP Beau Brieske for assignment.",
-   "src": "MLB Stats API",
-   "sid": 951282,
-   "status": "official"
+   "summary": "Detroit Tigers designated RHP Beau Brieske for assignment to clear a 40-man spot for Luis Gil and Ha-Seong Kim (official).",
+   "src": "MLB Stats API"
   },
   {
+   "sid": 951283,
+   "status": "official",
    "type": "dfa",
    "name": "Tsung-Che Cheng",
    "team": "DET",
    "pos": "SS",
    "date": "2026-11-27",
-   "summary": "Detroit Tigers designated SS Tsung-Che Cheng for assignment.",
-   "src": "MLB Stats API",
-   "sid": 951283,
-   "status": "official"
+   "summary": "Detroit Tigers designated SS Tsung-Che Cheng for assignment to clear a 40-man spot for Luis Gil and Ha-Seong Kim (official).",
+   "src": "MLB Stats API"
   },
   {
+   "sid": 951316,
+   "status": "official",
+   "date": "2026-11-27",
    "type": "dfa",
+   "summary": "Colorado Rockies designated LHP Hayden Harris for assignment to clear a 40-man spot for David Peterson (official). Colorado still needs one more spot to finalize Patrick Sandoval.",
    "name": "Hayden Harris",
    "team": "COL",
    "pos": "LHP",
+   "src": "MLB Stats API; https://www.mlbtraderumors.com/2026/11/rockies-designate-hayden-harris-for-assignment.html"
+  },
+  {
+   "status": "reported",
    "date": "2026-11-27",
-   "summary": "Colorado Rockies designated LHP Hayden Harris for assignment.",
-   "src": "MLB Stats API",
-   "sid": 951316,
-   "status": "official"
+   "type": "sign",
+   "summary": "Diamondbacks sign RHP Kona Takahashi: 1 yr, money not yet reported (Robert Murray, FanSided; Will Sammon, The Athletic, for the length; via MLBTR). No CBT number yet.",
+   "name": "Kona Takahashi",
+   "team": "ARI",
+   "pos": "SP",
+   "forty": true,
+   "src": "https://www.mlbtraderumors.com/2026/11/diamondbacks-to-sign-kona-takahashi.html"
   }
  ],
  "live": "2026-11-28T00:23:06Z",
