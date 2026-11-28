@@ -4218,9 +4218,20 @@
    "pos": "UT",
    "forty": true,
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/twins-to-sign-ryan-fitzgerald-to-major-league-deal.html"
+  },
+  {
+   "date": "2026-11-28",
+   "type": "sign",
+   "summary": "Cubs To Sign Hiromi Itoh",
+   "name": "Hiromi Itoh",
+   "team": "CHC",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/cubs-to-sign-hiromi-itoh.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-28T00:23:06Z",
+ "live": "2026-11-28T02:33:25Z",
  "seen_sids": [
   950119,
   950220,
