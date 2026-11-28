@@ -4229,9 +4229,20 @@
    "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/cubs-to-sign-hiromi-itoh.html",
    "status": "reported",
    "forty": true
+  },
+  {
+   "date": "2026-11-28",
+   "type": "sign",
+   "summary": "Cubs To Sign Ryan Yarbrough",
+   "name": "Ryan Yarbrough",
+   "team": "CHC",
+   "pos": "SP",
+   "src": "MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/cubs-to-sign-ryan-yarbrough.html",
+   "status": "reported",
+   "forty": true
   }
  ],
- "live": "2026-11-28T02:33:25Z",
+ "live": "2026-11-28T03:43:43Z",
  "seen_sids": [
   950119,
   950220,
