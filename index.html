@@ -842,10 +842,10 @@ function mbPrep(d){const lb={},lp={};
 const mbB=(r,d)=>{const ab=r[7],pa=r[6],h=r[8],den=ab+r[12]+r[14]+r[15],obp=den?(h+r[12]+r[14])/den:0,slg=ab?(h+r[9]+2*r[10]+3*r[11])/ab:0,lg=d.lb[r[1]*8+r[2]]||[.33,.4];
   return {pa,age:r[4],avg:ab?h/ab:0,obp,slg,ops:obp+slg,hr:r[11],sb:r[16],bb:pa?r[12]/pa:0,k:pa?r[13]/pa:0,iso:ab?(r[9]+2*r[10]+3*r[11])/ab:0,idx:Math.round(100*(obp/lg[0]+slg/lg[1]-1)),g:r[5],r:r[18],rbi:r[19],d2:r[9],d3:r[10],cs:r[17],ct:(r[20]||0)/10}};
 const mbP=(r,d)=>{const ip=r[7]/3,bf=r[15]||1,c=d.lp[r[1]*8+r[2]]||3.2;
-  return {ip,age:r[4],g:r[5],gs:r[6],era:ip?9*r[10]/ip:99,fip:ip?(13*r[11]+3*(r[12]+r[14])-2*r[13])/ip+c:99,whip:ip?(r[12]+r[8])/ip:99,k:r[13]/bf,bb:r[12]/bf,kbb:(r[13]-r[12])/bf,hr9:ip?9*r[11]/ip:0,sv:r[16],w:r[17],l:r[18],so:r[13],h:r[8],fb:(r[19]||0)/10,top:(r[22]||0)/10,sl:r[20]||0,st:r[23]||0,cu:r[21]||0}};
+  return {ip,age:r[4],g:r[5],gs:r[6],era:ip?9*r[10]/ip:99,fip:ip?(13*r[11]+3*(r[12]+r[14])-2*r[13])/ip+c:99,whip:ip?(r[12]+r[8])/ip:99,k:r[13]/bf,bb:r[12]/bf,kbb:(r[13]-r[12])/bf,hr9:ip?9*r[11]/ip:0,sv:r[16],w:r[17],l:r[18],so:r[13],h:r[8],bbn:r[12],fb:(r[19]||0)/10,top:(r[22]||0)/10,sl:r[20]||0,st:r[23]||0,cu:r[21]||0}};
 const mbIP=v=>Math.floor(v+1e-9)+'.'+Math.round((v-Math.floor(v+1e-9))*3);
 const MBC={b:[['age','Age'],['pa','PA'],['avg','AVG'],['obp','OBP'],['slg','SLG'],['hr','HR'],['sb','SB'],['bb','BB%'],['k','K%'],['ct','Contact'],['iso','ISO'],['idx','Lvl+']],
-  p:[['age','Age'],['ip','IP'],['fb','FB mph'],['top','Top mph'],['era','ERA'],['fip','FIP'],['whip','WHIP'],['k','K%'],['bb','BB%'],['kbb','K-BB'],['hr9','HR/9'],['sl','SL rpm'],['st','Sweeper rpm'],['cu','CU rpm'],['g','G'],['gs','GS'],['sv','SV']]};
+  p:[['age','Age'],['ip','IP'],['h','H'],['bbn','BB'],['so','K'],['fb','FB mph'],['top','Top mph'],['era','ERA'],['fip','FIP'],['whip','WHIP'],['k','K%'],['bb','BB%'],['kbb','K-BB'],['hr9','HR/9'],['sl','SL rpm'],['st','Sweeper rpm'],['cu','CU rpm'],['g','G'],['gs','GS'],['sv','SV']]};
 const MBLOW={age:1,era:1,fip:1,whip:1,hr9:1},MBMIN={b:[0,50,100,200,400],p:[0,10,20,50,100]};
 const mbFmt=(k,v)=>k==='avg'||k==='obp'||k==='slg'||k==='iso'?f3(v):k==='bb'||k==='k'||k==='kbb'?(v*100).toFixed(1)+'%':k==='era'||k==='fip'||k==='whip'?(v>=99?'-':v.toFixed(2)):k==='hr9'?v.toFixed(1):k==='fb'||k==='top'?(v?v.toFixed(1):''):k==='ct'?(v?v.toFixed(1)+'%':''):k==='sl'||k==='st'||k==='cu'?(v?v.toLocaleString():''):k==='ip'?mbIP(v):v;
 function mbState(){return UI.mb||(UI.mb={k:'b',y:2,lv:-1,org:-2,q:'',min:{b:200,p:50},age:0,velo:0,sort:{b:'idx',p:'kbb'},dir:{b:-1,p:-1},pg:0})}
@@ -1469,7 +1469,23 @@ function needAt(code,g,except){/* how much a club needs help at a group: WAR of 
    A prospect who is still far away is NOT surplus: the club can hold him until the jobs open (Quintero, due after Tucker's deal ends).
    Jobs by group: three in the outfield, two behind the plate, five in the rotation, one at each infield spot. Relievers never back up. */
 const LOG_SLOTS={OF:3,C:2,SP:7,'1B':1,'2B':1,'3B':1,SS:1,DH:1};/* SP: five starters and two in reserve, because arms get hurt; only a real surplus of starters counts */
-const nearReady=id=>{const p=P[id];if(!p||!p.fv||established(id))return false;const e=+p.eta||0,l=p.lvl,a=p.age||0;return l==='AAA'||l==='MLB'||(e&&e<=2027&&l!=='A'&&l!=='Rk')||(l==='AA'&&a>=22.5&&!(e>=2028&&a<22))};
+/* where he really is: the level he played at last season (the minor-league lines), not the depth chart's label, which lists a 19-year-old who
+   finished in Double-A as 'AAA' (owner, 11/28: "are they in the upper levels and blocked by someone, or in the lower levels still working their way up") */
+const LVN={AAA:5,AA:4,'A+':3,HiA:3,A:2,CPX:1,Rk:1,DSL:0};
+function lastLvl(id){const p=P[id],m=p.ml&&p.ml[0];if(m&&LVN[m]!=null)return m==='HiA'?'A+':m==='CPX'?'Rk':m;if(p.lvl==='MLB'||p.lvl==='IL')return 'MLB';return LVN[p.lvl]!=null?p.lvl:''}
+const nearReady=id=>{const p=P[id];if(!p||!p.fv||established(id))return false;const e=+p.eta||0,l=lastLvl(id),a=p.age||0;
+  if(l==='MLB'||l==='AAA')return true;if(l==='AA')return (e&&e<=2027)||a>=22.5;if(l==='A+')return !!(e&&e<=2027)&&a>=21;if(!l)return !!(e&&e<=2027)&&(p.lvl==='AAA'||p.lvl==='AA');return false};
+/* the study, one prospect at a time: BLOCKED (ready, no job), NEXT (ready, and a job is open or about to be), or DEVELOPING (still working his way up) */
+function pathOf(id,code){if(!P[id]||!P[id].fv||established(id))return null;const L=logjam(id,code);if(L)return {k:'blocked',t:'BLOCKED',why:L.why};
+  return nearReady(id)?{k:'next',t:'NEXT UP',why:'ready or close, with a job open for him'}:{k:'dev',t:'DEVELOPING',why:'still working his way up; time is on the club\'s side'}}
+function depthStudyHTML(code){const R=roster(code).filter(x=>P[x]),GN={C:'Catcher','1B':'First base','2B':'Second base','3B':'Third base',SS:'Shortstop',OF:'Outfield',SP:'Starting pitchers',RP:'Relievers'},out=[];
+  for(const g of ['SP','RP','C','1B','2B','3B','SS','OF']){const n=g==='SP'?6:g==='OF'?4:g==='RP'?4:2;
+    const est=R.filter(x=>established(x)&&pgrp(x)===g).sort((a,b)=>P[b].proj.war-P[a].proj.war).slice(0,n),pr=R.filter(x=>P[x].fv&&!established(x)&&pgrp(x)===g&&(P[x].mlbp||fvn(P[x].fv)>=45)).sort((a,b)=>hsValue(b)-hsValue(a)).slice(0,g==='SP'?8:5);
+    if(!pr.length)continue;
+    const yrs=x=>{const c=ctrl(x).length;return c<=1?'free agent after 2027':'signed through '+(2026+c)},it=x=>{const i=intelOf(x);return i&&i.status==='available'?' · on the block':''};
+    out.push(`<div style="margin:8px 0 2px"><b>${GN[g]}</b></div><p class="hint" style="margin:0 0 3px">Jobs: ${est.length?est.map(x=>`${esc(sn(x))} (${Math.floor(P[x].age||0)}, ${yrs(x)}${it(x)})`).join('; '):'nobody established'}</p>`+
+      pr.map(x=>{const t=pathOf(x,code),p=P[x],lv=lastLvl(x)||p.lvl;return `<div class="kv" style="align-items:baseline"><span><span class="nmb" data-open="${x}" style="cursor:pointer">${esc(p.n)}</span> <span class="hint">${p.mlbp?'#'+p.mlbp+' · ':''}${esc(lv||'?')}${p.age?' · '+Math.floor(p.age):''}${p.eta?' · ETA '+p.eta:''}</span></span><b><span class="tag ${t.k==='blocked'?'blk':t.k==='next'?'lst':''}" title="${esc(t.why)}">${t.t}</span></b></div>`}).join(''))}
+  return out.length?`<details class="dstudy" style="margin:8px 0"><summary style="cursor:pointer"><b>${esc(tnm(code))}: jobs and prospects by position</b> <span class="hint">who is blocked, who is next, who is still developing</span></summary>${out.join('')}<p class="hint" style="margin:6px 0 0">BLOCKED = ready or close, but the jobs at his position are taken for two more years, so the club has to move him. NEXT UP = ready or close with a job open. DEVELOPING = in the lower levels with time to work his way up.</p></details>`:''}
 let _lgj={},_lgjK='';
 function logjam(id,code){const key=code+'|'+id,stamp=ME+'|'+(S&&S.log?S.log.length:0)+'|'+(SE?SE.day:'')+'|'+(INTEL?1:0)+'|'+Object.keys(S&&S.team||{}).length;if(_lgjK!==stamp){_lgj={};_lgjK=stamp}if(key in _lgj)return _lgj[key];
   let out=null;const p=P[id],gp=pgrp(id),slots=LOG_SLOTS[gp];
@@ -2696,6 +2712,7 @@ function renderTrade(){
   <div class="filters" style="margin-top:10px"><label class="field" style="max-width:240px">Cash (${esc(MEN())} pay +, receive −) $M<input id="tCash" type="number" step="0.5" value="${UI.tCash}"></label></div></details>
   ${prev}
   ${needsBoardHTML(code,outSel,inSel)}
+  ${depthStudyHTML(code)}${depthStudyHTML(ME)}
   <div class="ttry"><button class="btn" type="button" data-act="tclear">Clear</button><button class="btn primary" type="button" data-act="ttry"${any?'':' disabled'}>Try trade</button></div>
   ${tried?`<div class="tsum" id="tsum">
     <div class="cols">
@@ -2908,13 +2925,16 @@ function milbRecHTML(id){const p=P[id];if(!p)return '';const mid=p.mx||((metaOf(
   const hitT=()=>`<div class="scroll"><table class="list">${head(['PA','AVG/OBP/SLG','HR','SB','K%','BB%','Contact','In-zone','Chase','Whiff','Lvl+'])}<tbody>${L.b.filter(r=>r[6]>=10).sort(ord).map(r=>{const x=mbB(r,MB),ds=big(r)&&pjy.ds&&pjy.ds[2024+r[1]],t=ds?[0,0,(ds[2]*100).toFixed(1),(ds[1]*100).toFixed(1),(100-ds[3]*100).toFixed(1)]:((tk.b||{})[r[1]]||{})[r[2]],ct=ds?ds[3]*100:x.ct;
       return row(r,[x.pa,`${f3(x.avg)}/${f3(x.obp)}/${f3(x.slg)}`,x.hr,x.sb,pc(x.k),pc(x.bb),ct?ct.toFixed(1)+'%':dash,t?t[2]+'%':dash,t?t[3]+'%':dash,t?t[4]+'%':dash,big(r)?(pjy.hs&&pjy.hs[2024+r[1]]?pjy.hs[2024+r[1]][1]+' wRC+':dash):x.idx])}).join('')}</tbody></table></div>`;
   const num=v=>v?v.toLocaleString():dash;
-  const pitT=()=>`<div class="scroll"><table class="list">${head(['IP','ERA','FIP','K%','BB%','FB mph','Top mph','Slider rpm','Sweeper rpm','Curve rpm','G/GS'])}<tbody>${L.p.filter(r=>r[15]>=10).sort(ord).map(r=>{const x=mbP(r,MB),vs=big(r)&&pjy.vs&&pjy.vs[2024+r[1]],fb=vs&&vs[1]?+vs[1]:x.fb;
-      return row(r,[mbIP(x.ip),x.era>=99?dash:x.era.toFixed(2),x.fip>=99?dash:x.fip.toFixed(2),pc(x.k),pc(x.bb),fb?fb.toFixed(1):dash,x.top?x.top.toFixed(1):dash,num(x.sl),num(x.st),num(x.cu),`${x.g}/${x.gs}`])}).join('')}</tbody></table></div>`;
+  /* innings against hits, walks and strikeouts (owner, 11/28: "it shows do they give up more hits than innings pitched, do they strike out more
+     batters than innings pitched"): strikeouts above innings are green, hits above innings are red */
+  const cmp=(v,ip,good)=>v>ip+.001?`<b style="color:var(--${good?'good':'bad'})">${v}</b>`:String(v);
+  const pitT=()=>`<div class="scroll"><table class="list">${head(['IP','H','BB','K','ERA','FIP','K%','BB%','FB mph','Top mph','Slider rpm','Sweeper rpm','Curve rpm','G/GS'])}<tbody>${L.p.filter(r=>r[15]>=10).sort(ord).map(r=>{const x=mbP(r,MB),vs=big(r)&&pjy.vs&&pjy.vs[2024+r[1]],fb=vs&&vs[1]?+vs[1]:x.fb;
+      return row(r,[mbIP(x.ip),cmp(x.h,x.ip,false),r[12],cmp(x.so,x.ip,true),x.era>=99?dash:x.era.toFixed(2),x.fip>=99?dash:x.fip.toFixed(2),pc(x.k),pc(x.bb),fb?fb.toFixed(1):dash,x.top?x.top.toFixed(1):dash,num(x.sl),num(x.st),num(x.cu),`${x.g}/${x.gs}`])}).join('')}</tbody></table></div>`;
   /* his pitches, one table per tracked season and level, newest first (two at most) */
   const ars=()=>{const T=tk.p||{},ks=[];for(const y of Object.keys(T).sort((a,b)=>b-a))for(const l of Object.keys(T[y]).sort((a,b)=>a-b))ks.push([+y,+l]);
     return ks.slice(0,2).map(([y,l])=>`<p class="hint" style="margin:10px 0 2px"><b>His pitches, ${2024+y} ${MB.lv[l]||'big-league spring training'}</b> (pitch by pitch)</p><div class="scroll"><table class="list"><thead><tr><th>Pitch</th><th class="r">Use</th><th class="r">mph</th><th class="r">Top</th><th class="r">Spin</th><th class="r">Whiffs</th></tr></thead><tbody>${T[y][l].map(a=>`<tr><td>${PN[a[0]]||a[0]}</td><td class="r">${a[1]}%</td><td class="r">${a[2]?(a[2]/10).toFixed(1):dash}</td><td class="r">${a[3]?(a[3]/10).toFixed(1):dash}</td><td class="r">${num(a[4])}</td><td class="r">${a[5]>=0?a[5]+'%':dash}</td></tr>`).join('')}</tbody></table></div>`).join('')};
   const two=pa>=60&&bf>=60,hit=pa>=bf;
-  return `${two||hit?hitT():''}${two||!hit?pitT()+ars():''}<p class="hint" style="margin:6px 0 0">${two||!hit?'Velocity, top speed, spin and whiffs come from pitch-by-pitch tracking, which exists in every Triple-A park and the Single-A Florida State League. Whiffs = misses per swing. ':''}${two||hit?'Contact = contact per swing. In-zone contact, chase and whiff rates show where pitches are tracked (the majors, Triple-A, the Florida State League). Lvl+ is our own number: on-base and slugging against the average for that level that year (100 = average). Big-league seasons are in bold.':''}</p>`}
+  return `${two||hit?hitT():''}${two||!hit?pitT()+ars():''}<p class="hint" style="margin:6px 0 0">${two||!hit?'Velocity, top speed, spin and whiffs come from pitch-by-pitch tracking, which exists in every Triple-A park and the Single-A Florida State League. Whiffs = misses per swing. Strikeouts in green = more strikeouts than innings; hits in red = more hits than innings. ':''}${two||hit?'Contact = contact per swing. In-zone contact, chase and whiff rates show where pitches are tracked (the majors, Triple-A, the Florida State League). Lvl+ is our own number: on-base and slugging against the average for that level that year (100 = average). Big-league seasons are in bold.':''}</p>`}
 
 function loadMeta(){if(META!==null)return Promise.resolve(META);META=false;return fetch('player_meta.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{META=m||false;META_IX={};if(m)for(const x of m.players){META_IX[nmz(x.n)+'|'+x.o]=x;if(!META_IX[nmz(x.n)])META_IX[nmz(x.n)]=x}_vw={};if(D){fillFromMeta();render()}return META}).catch(()=>{META=false})}
 /* height and weight from player_meta.json (MLB Stats API), e.g. 6'7", 282 lb */
@@ -3375,10 +3395,10 @@ function seMnCardHTML(id){if(!SE||!SE.mn||!SE.mn[id])return '';const p=P[id];ret
 function seLvSel(id){const cur=seMnLvl(id);return `<select data-fmlv="${id}" aria-label="Level for ${esc(P[id].n)}" style="font-size:13px;padding:3px 4px;margin-top:3px">${SE_LORD.slice().reverse().map(l=>`<option value="${l}"${l===cur?' selected':''}>${l==='Rk'?'Rookie ball':SE_LNM[l]}</option>`).join('')}</select>${SE.mlock&&SE.mlock[id]?' <span class="hint" title="You placed him here">placed by you</span>':''}`}
 function seFarmHTML(){seMnCatch();const k=UI.fmK||'bat',lv=UI.fmLv||'all',org=seMnOrg().filter(id=>SE.mn[id]&&(k==='pit')===!!P[id].p),day=Math.max(1,SE.mnDay-SE.d0);
   const last=id=>SE.mn[id][SE.mn[id].length-1],rows=org.filter(id=>lv==='all'||last(id)[0]===lv).filter(id=>k==='bat'?last(id)[2]>0:last(id)[3]>0);
-  const H={bat:[['pa','PA'],['avg','AVG'],['obp','OBP'],['slg','SLG'],['ops','OPS'],['hr','HR'],['sb','SB'],['k','K%'],['bb','BB%'],['g','G'],['age','Age']],pit:[['ip','IP'],['era','ERA'],['whip','WHIP'],['k','K%'],['bb','BB%'],['hr','HR'],['wl','W-L'],['g','G'],['gs','GS'],['age','Age']]}[k];
+  const H={bat:[['pa','PA'],['avg','AVG'],['obp','OBP'],['slg','SLG'],['ops','OPS'],['hr','HR'],['sb','SB'],['k','K%'],['bb','BB%'],['g','G'],['age','Age']],pit:[['ip','IP'],['h','H'],['bbn','BB'],['so','K'],['era','ERA'],['whip','WHIP'],['k','K%'],['bb','BB%'],['hr','HR'],['wl','W-L'],['g','G'],['gs','GS'],['age','Age']]}[k];
   const val=id=>{const L=last(id),p=P[id];if(k==='bat'){const ab=L[3]||1,pa=L[2]||1,b1=L[4]-L[5]-L[6]-L[7];return {pa:L[2],avg:L[4]/ab,obp:(L[4]+L[8])/pa,slg:(b1+2*L[5]+3*L[6]+4*L[7])/ab,ops:seMnOPS(L),hr:L[7],sb:L[10],k:L[9]/pa,bb:L[8]/pa,g:L[1],age:p.age||0}}
-    const bf=L[3]+L[4]+L[7]||1;return {ip:L[3],era:seMnERA(L),whip:(L[4]+L[7])*3/(L[3]||1),k:L[8]/bf,bb:L[7]/bf,hr:L[9],wl:L[10]-L[11],g:L[1],gs:L[2],age:p.age||0}};
-  const srt=UI.fmS&&H.some(h=>h[0]===UI.fmS)?UI.fmS:k==='bat'?'ops':'era',low={era:1,whip:1,age:1,bb:k==='pit'?1:0,k:k==='bat'?1:0},dir=(UI.fmD||0)||(low[srt]?1:-1);
+    const bf=L[3]+L[4]+L[7]||1;return {ip:L[3],h:L[4],bbn:L[7],so:L[8],era:seMnERA(L),whip:(L[4]+L[7])*3/(L[3]||1),k:L[8]/bf,bb:L[7]/bf,hr:L[9],wl:L[10]-L[11],g:L[1],gs:L[2],age:p.age||0}};
+  const srt=UI.fmS&&H.some(h=>h[0]===UI.fmS)?UI.fmS:k==='bat'?'ops':'era',low={era:1,whip:1,age:1,h:1,bbn:1,bb:k==='pit'?1:0,k:k==='bat'?1:0},dir=(UI.fmD||0)||(low[srt]?1:-1);
   const V={};rows.forEach(id=>V[id]=val(id));const minQ=id=>k==='bat'?V[id].pa>=day*1.6:V[id].ip/3>=(isSPp(id)?day*.42:day*.13);
   rows.sort((a,b)=>(minQ(b)-minQ(a))||dir*(V[a][srt]-V[b][srt]));
   const fm=(c,v,id)=>c==='avg'||c==='obp'||c==='slg'||c==='ops'?f3(v):c==='k'||c==='bb'?(v*100).toFixed(1)+'%':c==='era'||c==='whip'?(v>=99?'-':v.toFixed(2)):c==='ip'?ipf(v):c==='wl'?`${last(id)[10]}-${last(id)[11]}`:c==='age'?(v?v.toFixed(1):''):v;
@@ -3993,7 +4013,7 @@ async function importFromHash(){const m=location.hash.match(/^#save=(.+)$/);if(!
   for(const [k,v] of Object.entries(o))if(k.startsWith(SAVEPFX)||k==='gm-last-team'){try{localStorage.setItem(k,v)}catch(e){}}
   return true}
 /* ---------- self-update: the Home Screen app reloads itself when a new version is published ---------- */
-const BUILD='20261128012050';
+const BUILD='20261128012810';
 function checkVersion(){if(BUILD==='dev')return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.build&&v.build!==BUILD){let tried='';try{tried=sessionStorage.getItem('hs-reload')||''}catch(e){}if(tried===v.build)return;try{sessionStorage.setItem('hs-reload',v.build)}catch(e){}location.replace(location.pathname+'?v='+encodeURIComponent(v.build))}}).catch(()=>{})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkVersion();if(typeof loadNews==='function')loadNews()}});
