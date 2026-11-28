@@ -3730,7 +3730,7 @@
    "src": "Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/guardians-to-sign-foster-griffin.html"
   },
   {
-   "status": "reported",
+   "status": "official",
    "date": "2026-11-25",
    "type": "sign",
    "summary": "Rockies sign LHP David Peterson: 2 yrs, $32M (Thomas Harding, MLB.com, agreement; Robert Murray, FanSided, terms); Colorado's 40-man is full",
@@ -3747,7 +3747,8 @@
      "2029": "FREE AGENT"
     }
    },
-   "src": "Thomas Harding, MLB.com; Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html"
+   "src": "Thomas Harding, MLB.com; Robert Murray, FanSided; MLB Trade Rumors https://www.mlbtraderumors.com/2026/11/rockies-to-sign-david-peterson.html",
+   "sid": 951315
   },
   {
    "date": "2026-11-25",
@@ -4167,9 +4168,20 @@
    "src": "MLB Stats API",
    "sid": 951283,
    "status": "official"
+  },
+  {
+   "type": "dfa",
+   "name": "Hayden Harris",
+   "team": "COL",
+   "pos": "LHP",
+   "date": "2026-11-27",
+   "summary": "Colorado Rockies designated LHP Hayden Harris for assignment.",
+   "src": "MLB Stats API",
+   "sid": 951316,
+   "status": "official"
   }
  ],
- "live": "2026-11-27T22:12:47Z",
+ "live": "2026-11-28T00:23:06Z",
  "seen_sids": [
   950119,
   950220,
@@ -4442,6 +4454,8 @@
   951280,
   951281,
   951282,
-  951283
+  951283,
+  951315,
+  951316
  ]
 }

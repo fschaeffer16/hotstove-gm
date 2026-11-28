@@ -1,6 +1,17 @@
 {
  "items": [
   {
+   "title": "Colorado Rockies designated LHP Hayden Harris for assignment.",
+   "blurb": "",
+   "link": "",
+   "time": "2026-11-28T00:23:06Z",
+   "source": "MLB transactions",
+   "kind": "official",
+   "teams": [
+    "COL"
+   ]
+  },
+  {
    "title": "Rockies Designate Hayden Harris For Assignment",
    "blurb": "The Rockies announced that they have designated left-hander Hayden Harris for assignment. That opens a roster spot for fellow lefty David Peterson, whose signing is now official. They will have to open one more roster spot to make their deal with Patrick Sandoval official. More to come.",
    "link": "https://www.mlbtraderumors.com/2026/11/rockies-designate-hayden-harris-for-assignment.html",
@@ -3216,18 +3227,7 @@
    "teams": [
     "STL"
    ]
-  },
-  {
-   "title": "Tampa Bay Rays signed free agent RHP Adisyn Coffey to a minor league contract.",
-   "blurb": "",
-   "link": "",
-   "time": "2026-11-20T15:04:01Z",
-   "source": "MLB transactions",
-   "kind": "official",
-   "teams": [
-    "TBR"
-   ]
   }
  ],
- "updated": "2026-11-28T00:13:03Z"
+ "updated": "2026-11-28T00:23:06Z"
 }
